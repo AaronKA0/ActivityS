@@ -46,4 +46,3 @@ hibernate.cfg.xml
 
 ### .java ###
 IndexController.java
-/src/main/resources/application.properties
