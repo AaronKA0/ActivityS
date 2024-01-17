@@ -41,8 +41,8 @@ target/
 .idea
 *.iml
 hibernate.cfg.xml
-
-
+application.properties
+pom.xml
 
 ### .java ###
 IndexController.java
