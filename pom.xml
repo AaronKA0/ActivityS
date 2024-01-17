@@ -8,12 +8,12 @@
 		<version>2.7.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>demo</groupId>
-	<artifactId>demo</artifactId>
+	<groupId>ActivityS</groupId>
+	<artifactId>ActivityS</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>demo</name>
-	<description>demo</description>
+	<name>ActivityS</name>
+	<description>ActivityS</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
