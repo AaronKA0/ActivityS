@@ -43,10 +43,6 @@ target/
 hibernate.cfg.xml
 application.properties
 pom.xml
-<<<<<<< HEAD
-
-=======
->>>>>>> refs/heads/master
 
 ### .java ###
 IndexController.java
