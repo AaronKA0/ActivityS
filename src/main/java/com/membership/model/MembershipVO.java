@@ -247,14 +247,14 @@ public class MembershipVO implements java.io.Serializable {
 		this.memLoginTime = memLoginTime;
 	}
 
-	@Override
-	public String toString() {
-		return "MembershipVO [memId=" + memId + ", memAcc=" + memAcc + ", memEmail=" + memEmail + ", memPwd=" + memPwd
-				+ ", memName=" + memName + ", memGender=" + memGender + ", memBirthdate=" + memBirthdate
-				+ ", memUsername=" + memUsername + ", memIntro=" + memIntro + ", memPhone=" + memPhone
-				+ ", blockStartTime=" + blockStartTime + ", blockEndTime=" + blockEndTime + ", isAccEna=" + isAccEna
-				+ ", isPartEna=" + isPartEna + ", isHostEna=" + isHostEna + ", isRentEna=" + isRentEna + ", isMsgEna="
-				+ isMsgEna + ", memCrTime=" + memCrTime + ", memLoginTime=" + memLoginTime + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "MembershipVO [memId=" + memId + ", memAcc=" + memAcc + ", memEmail=" + memEmail + ", memPwd=" + memPwd
+//				+ ", memName=" + memName + ", memGender=" + memGender + ", memBirthdate=" + memBirthdate
+//				+ ", memUsername=" + memUsername + ", memIntro=" + memIntro + ", memPhone=" + memPhone
+//				+ ", blockStartTime=" + blockStartTime + ", blockEndTime=" + blockEndTime + ", isAccEna=" + isAccEna
+//				+ ", isPartEna=" + isPartEna + ", isHostEna=" + isHostEna + ", isRentEna=" + isRentEna + ", isMsgEna="
+//				+ isMsgEna + ", memCrTime=" + memCrTime + ", memLoginTime=" + memLoginTime + "]";
+//	}
 
 }
