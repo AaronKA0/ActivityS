@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>員工資料 - listOneEmp.html</title>
+
+<head>
+<style type="text/css">
+	
+    span {
+		display: inline-block;
+		width: 150px;
+		text-align: left;
+		font-weight: bold;
+	}
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+		 <div align="center"> <h2>場地不開放日 - listOneVenClosed</h2>
+		 <h3><a class="navbar-brand" th:href="@{/ven-closed/listAllVenClosed}">回查詢頁<label th:text="${success}"></label></a></h3></div>
+</nav>
+
+	<div align="center" th:fragment="listOneVenClosed-div">
+		<h3><span>查詢結果 :</span></h3>
+		<span>場地不開放編號:</span><span th:text="${venClosedVO.closedDateId}"></span><br/>
+		<span>場地:</span><span th:text="${venClosedVO.venVO.venName}"></span><br/>
+		<span>不開放日期:</span><span th:text="${venClosedVO.closedDate}"></span><br/>
+		<span>不開放原因:</span><span th:text="${venClosedVO.closedReason}"></span><br/>
+
+	</div>
+
+
+</body>
+</html>

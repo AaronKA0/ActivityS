@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>場地租借</title>
+  <!-- 引入 Bootstrap CSS 文件 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <style>
+    main {
+      min-height: calc(100vh - 70px);
+    }
+
+    #top {
+      margin-bottom: 30px;
+    }
+
+  </style>
+</head>
+
+<body>
+ 
+  <div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+      <div class="col-md-3 mb-2 mb-md-0">
+        <a href="index.html" class="d-inline-flex link-body-emphasis text-decoration-none">
+          <span class="fs-4">做伙</span>
+        </a>
+      </div>
+
+      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="index.html" class="nav-link px-2 link-secondary">首頁</a></li>
+        <li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+        <li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
+        <li><a href="rent.html" class="nav-link px-2 link-secondary">場地租借</a></li>
+        <li><a href="customer.html" class="nav-link px-2 link-secondary">FAQs</a></li>
+        <li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
+      </ul>
+
+      <div class="col-md-3 text-end">
+        <button type="button" class="btn btn-outline-primary me-2"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">登入</a></button>
+        <button type="button" class="btn btn-primary"><a class="nav-link" href="register.html">註冊</a></button>
+      </div>
+    </header>
+  </div>
+
+  <main id="top" class="container mt-5">
+    <section id="venue-rental" class="mt-5">
+      <h2 style="display: flex; justify-content: space-between;">
+            場地租借 <a href='addVenOrder' class="btn btn-outline-primary me-2">立即預訂</a>
+      </h2>
+      <p>歡迎租借我們的場地！</p>
+
+      <div class="container mt-3">
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+          <div class="btn-group me-2" role="group" aria-label="First group">
+            <button type="button" class="btn btn-outline-secondary" data-filter="all">全部</button>
+          </div>
+          <div class="btn-group me-2" role="group" aria-label="Second group">
+            <button type="button" class="btn btn-outline-secondary" data-filter="">大</button>
+          </div>
+          <div class="btn-group me-2" role="group" aria-label="Third group">
+            <button type="button" class="btn btn-outline-secondary" data-filter="">中</button>
+          </div>
+          <div class="btn-group me-2" role="group" aria-label="Fourth group">
+            <button type="button" class="btn btn-outline-secondary" data-filter="">小</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 間距用 -->
+      <div class="my-4"></div>
+
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col">
+          <div class="card">
+            <img src="/front-end/images/dog.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
+                content. This content is a little bit longer.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <img src="/front-end/images/dog.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
+                content. This content is a little bit longer.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <img src="/front-end/images/dog.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
+                content.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <img src="/front-end/images/dog.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
+                content. This content is a little bit longer.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col">
+          <div class="card">
+            <img src="/front-end/images/dog.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
+                content. This content is a little bit longer.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <img src="/front-end/images/dog.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
+                content. This content is a little bit longer.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <img src="/front-end/images/dog.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
+                content.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <img src="/front-end/images/dog.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
+                content. This content is a little bit longer.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container">
+    <footer class="py-3 my-4">
+      <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+        <li class="nav-item"><a href="index.html" class="nav-link px-2 text-muted">首頁</a></li>
+        <li class="nav-item"><a href="customer.html" class="nav-link px-2 text-muted">客服中心</a></li>
+        <li class="nav-item"><a href="about.html" class="nav-link px-2 text-muted">關於我們</a></li>
+      </ul>
+      <p class="text-center text-muted">© 2023 Company, Inc</p>
+    </footer>
+  </div>
+
+  <!-- 引入 Bootstrap JavaScript 文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+
+  <!-- 登入選項的Modal 彈窗 -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLabel">會員登入</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- 在這裡加入登入表單的 HTML 代碼 -->
+          <form>
+            <!-- 登入表單的輸入欄位 -->
+            <div class="mb-3">
+              <label for="username" class="form-label">帳號：</label>
+              <input type="text" class="form-control" id="username" name="username" placeholder="輸入您的帳號" required>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">密碼：</label>
+              <div class="input-group">
+                <input type="password" class="form-control" id="password" name="password" placeholder="輸入您的密碼" required>
+                <!-- 在密碼輸入框右上方新增"忘記密碼"的連結 -->
+                <a href="#" class="input-group-text" id="forgotPasswordLink">忘記密碼</a>
+              </div>
+            </div>
+            <!-- 登入按鈕 -->
+            <button type="submit" class="btn btn-primary">登入</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
