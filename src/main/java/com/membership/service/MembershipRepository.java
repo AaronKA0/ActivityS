@@ -27,4 +27,13 @@ public interface MembershipRepository extends JpaRepository<MembershipVO, Intege
 //	---------------------登入------------------------
 	MembershipVO findByMemAcc1(String memAcc);
 
+//	------------從MembershipVO中獲取會員編號-----------------
+	@Query(value = "from MembershipVO where memAcc =:memAcc")
+	MembershipVO getMemId(String memAcc);
+
+	
+//	------------從MembershipVO中獲取會員姓名-----------------
+	@Query(value = "from MembershipVO where memAcc =:memAcc")
+	MembershipVO getMemName(String memAcc);
+
 }

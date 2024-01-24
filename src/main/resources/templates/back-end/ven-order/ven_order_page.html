@@ -40,7 +40,7 @@
   <aside class="aside">
     <nav class="nav">
       <div class="sidenav">
-        <a th:href="@{../}">首頁</a>
+        <a th:href="@{/emp_Index}">首頁</a>
         <hr>
         <button class="dropdown-btn">員工管理
           <i class="fa fa-caret-down"></i>
@@ -80,8 +80,8 @@
         </button>
         <div class="dropdown-container">
           <a href="新增場地.html">場地管理</a>
-          <a th:href="@{/ven_order/ven_order_page}">場地訂單管理</a>
-          <a th:href="@{/ven_closed/listAllVenClosed}">場地狀態管理</a>
+          <a th:href="@{/back_end/ven-order/ven_order_page}">場地訂單管理</a>
+          <a th:href="@{/back_end/ven-closed/listAllVenClosed}">場地狀態管理</a>
         </div>
       </div>
 
@@ -128,14 +128,14 @@
                 <tr>       
                 
                     <td>
-                       <form method="post" th:action="@{/ven-order/getOne_For_Display}" style="margin-bottom: 0px;">
+                       <form method="post" th:action="@{getOne_For_Display}" style="margin-bottom: 0px;">
                             <input style="color: blue; font-weight: bold;" type="submit" value="查看">
                             <input type="hidden" name="venOrderId" th:value="${venOrderVO.venOrderId}">
                        </form>
                     </td>
                     
                     <td>
-                       <form method="post" th:action="@{/ven-order/getOne_For_Update}" style="margin-bottom: 0px;">
+                       <form method="post" th:action="@{getOne_For_Update}" style="margin-bottom: 0px;">
                             <input style="color: red; font-weight: bold;" type="submit" value="修改">
                             <input type="hidden" name="venOrderId" th:value="${venOrderVO.venOrderId}">
                        </form>
