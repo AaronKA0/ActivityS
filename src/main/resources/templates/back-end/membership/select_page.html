@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>會員資料管理 - select_page.html</title>
+
+
+<head th:insert="~{/back-end/membership/included-fragment}"></head>
+<!-- 使用included-fragment.html網頁的全部 -->
+
+<!-- +++++++++新增++++++++++ -->
+<!-- --------------------------------------------------------------------------------------------------- -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<!-- --------------------------------------------------------------------------------------------------- -->
+<!-- +++++++++新增++++++++++ -->
+
+
+
+
+
+
+
+
+<style type="text/css">
+button {
+	padding: 5px;
+}
+
+form {
+	display: table;
+}
+
+form div {
+	display: table-row;
+}
+
+label, input, span, select {
+	display: table-cell;
+	margin: 2px;
+	text-align: left;
+}
+
+input[type=text], input[type=password], select, textarea {
+	width: 200px;
+	margin: 2px;
+}
+
+form div div {
+	display: table-cell;
+}
+
+.center {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+span {
+	display: inline-block;
+	width: 150px;
+	text-align: left;
+	font-weight: bold;
+}
+
+div.a {
+	display: inline-block;
+	width: 50%;
+	height: auto;
+	padding: 5px;
+	border: 0px solid blue;
+	background-color: white;
+}
+
+div.b {
+	display: inline-block;
+	width: 45%;
+	height: auto;
+	padding: 5px;
+	border: 1px solid blue;
+	background-color: white;
+}
+
+div#display {
+	display: none;
+}
+</style>
+</head>
+
+<body>
+
+	<nav
+		class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+		<div align="center">
+			<h2>會員資料管理 - select_page.html</h2>
+			<h3>
+				<a class="navbar-brand" th:href="@{/}"><img
+					th:src="@{/back-end/16/images/back1.gif}"></a>
+			</h3>
+		</div>
+	</nav>
+
+	<h4>
+		<span>資料查詢:</span>
+	</h4>
+	
+	<!-- 錯誤表列 -->
+	<div class="errorblock" th:utext="${errorMessage}">${errorMessage}</div>
+	<br>
+	<div class="a">
+	
+	
+		<ul>
+
+			<li>
+				<form method="post" th:action="@{getOne_For_Display}">
+					輸入會員編號: <input type="text" name="memId" th:value="${param.memId}">
+					<input type="submit" value="送出"> (輸入如1)
+				</form> <br>
+			</li>
+
+
+
+
+			<li><form method="post" th:action="@{getOne_For_Display}">
+					選擇會員編號: <select name="memId">
+						<option th:each="membershipVO : ${membershipListData}"
+							th:value="${membershipVO.memId}" th:text="${membershipVO.memId}" />
+					</select> <input type="submit" value="送出">
+				</form> <br></li>
+
+
+
+
+			<li><form method="post" th:action="@{getOne_For_Display}">
+					選擇會員編號: <select name="memId">
+						<option th:each="membershipVO : ${membershipListData}"
+							th:value="${membershipVO.memId}" th:text="${membershipVO.memId}" />
+					</select> <input type="submit" value="送出">
+				</form> <br></li>
+
+
+			<li><form method="post" th:action="@{getOne_For_Status}">
+					輸入會員編號(權限狀態修改): <select name="memId">
+						<option th:each="membershipVO : ${membershipListData}"
+							th:value="${membershipVO.memId}" th:text="${membershipVO.memId}" />
+					</select> <input type="submit" value="送出">
+				</form> <br></li>
+
+		</ul>
+
+		<h4>
+			<span>會員管理</span>
+		</h4>
+
+		<ul>
+			<li><h5>
+					<a href='listAllMembership'>查詢全部會員(後台)</a> all Memberships.
+				</h5></li>
+
+			<li><h5>
+					<a href='addMembership'>會員註冊(前台)</a> a new Membership.
+				</h5></li>
+
+
+		</ul>
+	</div>
+
+
+
+
+	<!-- 	<!-- 旗標getOne_For_Display見EmpnoController.java的第58行 -->
+	<!-- 	<div class="b" th:if="${status_For_Update}"> -->
+	<!-- 		<!--使用listOneEmp.html網頁的listOneEmp-div片段 -->
+	<!-- 		<!-- 見listOneEmp.html的第35行的th:fragment="listOneEmp-div" -->
+	<!-- 		<!-- 使用th:replace也可 -->
+	<!-- 		<div -->
+	<!-- 			th:insert="~{/back-end/membership/status_update :: status_update-div}"></div> -->
+	<!-- 	</div> -->
+
+
+	<!-- +++++++++新增++++++++++ -->
+	<!-- --------------------------------------------------------------------------------------------------- -->
+	<!-- 旗標getOne_For_Display見EmpnoController.java的第74行 -->
+	<div class="b" th:if="${getOne_For_Status}">
+		<div class="modal fade" id="basicModal" tabindex="-1" role="dialog"
+			aria-labelledby="basicModal" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h3 class="modal-title" id="myModalLabel">個人資料</h3>
+					</div>
+
+					<div class="modal-body">
+						<!-- 						=========================================以下為原listOneEmp.jsp的內容========================================== -->
+						<div align="center" th:fragment="status_update-div">
+							<!-- 							此div被select_page.html第128行insert用 -->
+
+							<form id="yourFormId" th:action="@{update_Status}" method="post"
+								th:object="${membershipVO}" enctype="multipart/form-data">
+
+								<div>
+									<h3>查詢結果</h3>
+								</div>
+
+								<div id="memId">
+									<label>會員編號:</label> <input id="pk" type="text"
+										th:field="*{memId}" style="border: 0px; font-weight: bold;"
+										readonly /><br />
+								</div>
+								<br>
+								<div id="memAcc">
+									<label>會員帳號:</label> <input type="text" th:field="*{memAcc}"
+										style="border: 0px; font-weight: bold;" readonly /><br />
+								</div>
+								<br>
+
+
+								<!-- ---------------------------------隱藏欄位------------------------------------- -->
+								<div id="display">
+									<div id="memEmail">
+										<label>會員信箱:</label> <input type="text" th:field="*{memEmail}"
+											style="border: 0px; font-weight: bold;" readonly /><br />
+									</div>
+
+									<div id="memBirthdate">
+										<label>會員生日:</label> <input type="text"
+											th:field="*{memBirthdate}"
+											style="border: 0px; font-weight: bold;" readonly /><br />
+									</div>
+
+									<div id="memGender">
+										<label>會員性別:</label> <input type="text"
+											th:field="*{memGender}"
+											style="border: 0px; font-weight: bold;" readonly /><br />
+									</div>
+
+									<div id="memName">
+										<label>會員姓名:</label> <input type="text" th:field="*{memName}"
+											style="border: 0px; font-weight: bold;" readonly /><br />
+									</div>
+
+									<div id="memPwd">
+										<label>會員密碼:</label> <input type="text" th:field="*{memPwd}"
+											style="border: 0px; font-weight: bold;" readonly /><br />
+									</div>
+
+
+									<div id="memUsernam">
+										<label>使用者名稱:</label> <input type="text"
+											th:field="*{memUsername}"
+											style="border: 0px; font-weight: bold;" readonly /><br />
+									</div>
+
+
+								</div>
+								<!-- ---------------------------------隱藏欄位------------------------------------- -->
+
+								<div>
+									<label for="isAccEna">會員帳戶狀態:</label> <select id="isAccEna"
+										name="isAccEna" th:field="${membershipVO.isAccEna}">
+										<option value="1" th:selected="${membershipVO.isAccEna == 1}">已停用會員帳戶</option>
+										<option value="2" th:selected="${membershipVO.isAccEna == 2}">沒有停用會員帳戶</option>
+									</select>
+								</div>
+								<br>
+								<div>
+									<label for="isPartEna">會員參加活動權限:</label> <select id="isPartEna"
+										name="isPartEna" th:field="${membershipVO.isPartEna}">
+										<option value="1" th:selected="${membershipVO.isPartEna == 1}">會員無法參加活動</option>
+										<option value="2" th:selected="${membershipVO.isPartEna == 2}">會員可以參加活動</option>
+									</select>
+								</div>
+								<br>
+								<div>
+									<label for="isHostEna">會員舉辦活動權限:</label> <select id="isHostEna"
+										name="isHostEna" th:field="${membershipVO.isHostEna}">
+										<option value="1" th:selected="${membershipVO.isHostEna == 1}">會員無法舉辦活動</option>
+										<option value="2" th:selected="${membershipVO.isHostEna == 2}">會員可以舉辦活動</option>
+									</select>
+								</div>
+								<br>
+								<div>
+									<label for="isRentEna">會員租借場地權限:</label> <select id="isRentEna"
+										name="isRentEna" th:field="${membershipVO.isRentEna}">
+										<option value="1" th:selected="${membershipVO.isRentEna == 1}">會員無法租借場地</option>
+										<option value="2" th:selected="${membershipVO.isRentEna == 2}">會員可以租借場地</option>
+									</select>
+								</div>
+								<br>
+								<div>
+									<label for="isMsgEna">會員留言權限:</label> <select id="isMsgEna"
+										name="isMsgEna" th:field="${membershipVO.isMsgEna}">
+										<option value="1" th:selected="${membershipVO.isMsgEna == 1}">會員無法留言</option>
+										<option value="2" th:selected="${membershipVO.isMsgEna == 2}">會員可以留言</option>
+									</select>
+								</div>
+								<br>
+
+								<div>
+									<button type="submit" id="submit">送出修改</button>
+								</div>
+							</form>
+						</div>
+
+						<!-- 						=========================================以上為原listOneEmp.jsp的內容========================================== -->
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save
+							changes</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<script>
+			$("#basicModal").modal({
+				show : true
+			});
+		</script>
+	</div>
+	<!-- --------------------------------------------------------------------------------------------------- -->
+	<!-- +++++++++新增++++++++++ -->
+
+
+
+
+</body>
+</html>
