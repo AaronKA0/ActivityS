@@ -22,7 +22,7 @@ import com.notify.service.NotifyService;
 
 
 @Controller
-@RequestMapping("/notify")
+@RequestMapping("/back_end/notify")
 public class NotifyController {
 
     @Autowired

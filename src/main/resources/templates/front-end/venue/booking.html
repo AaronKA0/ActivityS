@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>form</title>
 
-  <link rel="stylesheet" th:href="@{/back-end/css/order_test.css}">
+  <link rel="stylesheet" th:href="@{/front-end/css/booking.css}">
 </head>
 <body>
   <div class="container">
@@ -29,6 +29,7 @@
         <div class="user-input-box">
           <label for="memId">場地<span class="star">*</span></label>
           <select th:field="*{venVO.venId}" id="venid" onchange="getPrice()">
+              <option th:value="0" selected>請選擇</option> 
               <option th:each="venVO : ${venListData}" th:value="${venVO.venId}" th:text="${venVO.venName + '&emsp;&emsp;＄' + venVO.venPrice}"/>
           </select>
           <span th:if="${#fields.hasErrors('venVO.venId')}" th:errors="*{venVO.venId}" class="error" id="venVO.venId.errors"></span>
@@ -77,6 +78,39 @@
       </div>
       <span  th:if="${#fields.hasErrors('orderPayType')}" th:errors="*{orderPayType}" class="error" id="orderPayType.errors"></span>
       
+      
+      <!-- -------------------- credit card -------------------- -->
+      
+      <div class="container-right" style="display:none;">
+        <div class="card">
+            <div class="intern">
+                <img class="approximation" src="/front-end/images/aprox.png" alt="aproximation">
+                <img class="chip" src="/front-end/images/chip.png" alt="chip">
+                <div class="card-number">
+                    <label>Account Number</label>
+                    <input class="number-vl" placeholder="1234123412341234";/>
+                </div>
+                <div class="card-holder">
+                    <label>Holder</label>
+                    <input class="number-vl" placeholder="Aaron";/>
+                </div>
+                <div class="card-infos">
+                    <div class="exp">
+                        <label>valid-thru</label>
+                        <input class="number-v2" placeholder="08/28";/>
+                    </div>
+                    <div class="cvv">
+                        <label>CVV</label>
+                        <input class="number-v2" placeholder="123"/>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+      
+    <!-- -------------------- credit card -------------------- -->
+      
       <div class="form-submit-btn">
         <input type="submit" value="確認送出">
       </div>
@@ -84,6 +118,7 @@
     </form>
   </div>
   
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script type="text/javascript">
 //清除提示信息
 function hideContent(d) {
@@ -91,10 +126,23 @@ function hideContent(d) {
 }
 
 function getPrice() {
-    var selectedOption = document.getElementById('venid').value;
-    document.getElementById('price').value = selectedOption;
-    document.getElementById('viewPrice').innerHTML = '$ '+ selectedOption +' .US';
+
+	pick = $("#venid").val();
+	if (pick == 0){
+		document.getElementById('viewPrice').innerHTML = "";
+	} else {
+	    let p = $("#venid").find(":selected").first().text().split("＄")[1];
+	   	let halfprice = (parseFloat(p)/2).toFixed(2);
+	    $("#price").val(halfprice);
+	    document.getElementById('viewPrice').innerHTML = '$ '+ halfprice +' .US';
+	}
+    
 }
+
+$("#credit").on("click", function(){
+    $(".container-right").css("display", "block");
+  });
+
 </script>
 </body>
 </html>

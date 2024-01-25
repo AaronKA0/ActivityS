@@ -38,14 +38,14 @@ public class VenOrderController {
     public String addVenOrder(ModelMap model) {
         VenOrderVO venOrderVO = new VenOrderVO();
         model.addAttribute("venOrderVO", venOrderVO);
-        return "back-end/ven-order/order_test";
+        return "back-end/ven-order/addVenOrder";
     }
 
     @PostMapping("insert")
     public String insert(@Valid VenOrderVO venOrderVO, BindingResult result, ModelMap model) throws IOException {
 
         if (result.hasErrors()) {
-            return "back-end/ven-order/order_test";
+            return "back-end/ven-order/addVenOrder";
         }
         
         venOrderSvc.addVenOrder(venOrderVO);

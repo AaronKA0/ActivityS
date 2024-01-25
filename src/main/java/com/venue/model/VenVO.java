@@ -3,7 +3,6 @@ package com.venue.model;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,13 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ventype.model.VenTypeVO;
-import com.venclosed.model.VenClosedVO;
-import com.venorder.model.VenOrderVO;
 
 @Entity
 @Table(name = "venue")
@@ -27,14 +24,27 @@ public class VenVO implements java.io.Serializable {
 
 //	@Transient
 	private static final long serialVersionUID = 7247353469714932743L;
+	
+	
+	@Transient
+	private Double venRating;
+	
+	public void setVenRating(Double venRating) {
+		this.venRating = venRating;
+	}
 
+	public Double getVenRating() {
+		return venRating;
+	}
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // uses auto_increment
 	@Column(name = "ven_id", insertable = false, updatable = false)
 	private Integer venId;
 
 	// fetch 預設為 EAGER
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "ven_type_id", referencedColumnName = "ven_type_id")
 	private VenTypeVO venType;
 
@@ -49,6 +59,12 @@ public class VenVO implements java.io.Serializable {
 
 	@Column(name = "ven_loc")
 	private String venLoc;
+	
+//	@Column(name = "ven_city")
+//	private String venCity;
+	
+//	@Column(name = "ven_district")
+//	private String venDistrict;
 
 	@Column(name = "ven_price")
 	private BigDecimal venPrice;
@@ -56,29 +72,22 @@ public class VenVO implements java.io.Serializable {
 	@Column(name = "ven_status", nullable = false, columnDefinition = "tinyint default 1")
 	private Byte venStatus;
 
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "Asia/Taipei")
 	@Column(name = "ven_uptime")
 	private Timestamp venUptime;
 
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "Asia/Taipei")
 	@Column(name = "ven_downtime")
 	private Timestamp venDowntime;
 
-	@Column(name = "ven_mod_time")
+	@Column(name = "ven_mod_time", insertable = false)
 	private Timestamp venModTime;
 
-	@Column(name = "ven_tot_rating")
+	@Column(name = "ven_tot_rating", insertable = false)
 	private Double venTotRating;
 
-	@Column(name = "ven_rate_count")
+	@Column(name = "ven_rate_count", insertable = false)
 	private Integer venRateCount;
-	
-	@OneToMany(mappedBy = "venVO")
-	@OrderBy("venId asc")
-	private Set<VenOrderVO> venOrder;
-	
-	@OneToMany(mappedBy = "venVO")
-	@OrderBy("venId asc")
-	private Set<VenClosedVO> venClosed;
-	
 
 	public VenVO() {
 	}
@@ -130,6 +139,22 @@ public class VenVO implements java.io.Serializable {
 	public void setVenLoc(String venLoc) {
 		this.venLoc = venLoc;
 	}
+	
+//	public String getVenCity() {
+//		return venCity;
+//	}
+//
+//	public void setVenCity(String venCity) {
+//		this.venCity = venCity;
+//	}
+	
+//	public String getVenDistrict() {
+//		return venDistrict;
+//	}
+//
+//	public void setVenDistrict(String venDistrict) {
+//		this.venDistrict = venDistrict;
+//	}
 
 	public BigDecimal getVenPrice() {
 		return venPrice;
@@ -185,26 +210,11 @@ public class VenVO implements java.io.Serializable {
 
 	public void setVenRateCount(Integer venRateCount) {
 		this.venRateCount = venRateCount;
-	}	
-
-	public Set<VenOrderVO> getVenOrder() {
-        return venOrder;
-    }
-
-    public void setVenOrder(Set<VenOrderVO> venOrder) {
-        this.venOrder = venOrder;
-    }	
-	
-	public Set<VenClosedVO> getVenClosed() {
-        return venClosed;
-    }
-
-    public void setVenClosed(Set<VenClosedVO> venClosed) {
-        this.venClosed = venClosed;
-    }
+	}
 
 
-    @Override
+
+	@Override
 	public String toString() {
 		return "VenueVO [venId=" + venId + ", venType=" + venType + ", venName=" + venName + ", venDescr="
 				+ venDescr + ", venLoc=" + venLoc + ", venPrice=" + venPrice + ", venStatus=" + venStatus
