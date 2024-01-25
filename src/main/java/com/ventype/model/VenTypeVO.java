@@ -26,13 +26,23 @@ public class VenTypeVO implements Serializable {
 	
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ven_type_id")
+	@Column(name = "ven_type_id", insertable = false, updatable = false)
 	private Integer venTypeId;
 	
 	@Column(name = "ven_type_name")
 	private String venTypeName;
 	
+//	@Column(name = "ven_type_descr")
+//	private String venTypeDescr;
 
+
+//	public String getVenTypeDescr() {
+//		return venTypeDescr;
+//	}
+//
+//	public void setVenTypeDescr(String venTypeDescr) {
+//		this.venTypeDescr = venTypeDescr;
+//	}
 
 	public Integer getVenTypeId() {
 		return venTypeId;
@@ -52,18 +62,18 @@ public class VenTypeVO implements Serializable {
 	
 
 	// fetch 預設為 LAZY
-	@OneToMany(mappedBy = "venType", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
-	@OrderBy("venId asc")
-	private Set<VenVO> vens = new HashSet<VenVO>();;
-	
-	
-	public Set<VenVO> getVens() {
-		return this.vens;
-	}
-
-	public void setVens(Set<VenVO> vens) {
-		this.vens = vens;
-	}
+//	@OneToMany(mappedBy = "venType", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+//	@OrderBy("venId asc")
+//	private Set<VenVO> vens = new HashSet<VenVO>();;
+//	
+//	
+//	public Set<VenVO> getVens() {
+//		return this.vens;
+//	}
+//
+//	public void setVens(Set<VenVO> vens) {
+//		this.vens = vens;
+//	}
 
 	@Override
 	public int hashCode() {
@@ -81,5 +91,14 @@ public class VenTypeVO implements Serializable {
 		VenTypeVO other = (VenTypeVO) obj;
 		return Objects.equals(venTypeId, other.venTypeId) && Objects.equals(venTypeName, other.venTypeName);
 	}
+
+	@Override
+	public String toString() {
+		return "VenTypeVO [venTypeId=" + venTypeId + ", venTypeName=" + venTypeName + "]";
+	}
+	 
+	
+	
+	
 
 }

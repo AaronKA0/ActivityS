@@ -120,7 +120,7 @@
         <li><a href="activity.html" class="nav-link px-2 link-secondary">首頁</a></li>
         <li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
         <li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
-        <li><a th:href="@{front_end/venue/rent}" class="nav-link px-2 link-secondary">場地租借</a></li>
+        <li><a th:href="@{front_end/venue/venue}" class="nav-link px-2 link-secondary">場地租借</a></li>
         <li><a href="customer.html" class="nav-link px-2 link-secondary">FAQs</a></li>
         <li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
       </ul>
@@ -128,14 +128,17 @@
       <div class="col-md-3 text-end">
 
         <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px;"></i>
-        <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 25px;"> 
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-            <li><a class="dropdown-item" href="#">顯示全部</a></li>
-          </ul>
-        </i>
+        
+        <!-- -------------------- 通知訊息功能  下拉選單 -------------------- -->
+        <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 25px;"></i>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <li><a class="dropdown-item" th:href="@{front_end/notify}">顯示全部</a></li>
+            </ul>          
+        <!-- -------------------- 通知訊息功能  下拉選單 -------------------- -->
+        
         <i class="icon bi bi-person-circle" style="font-size: 40px; margin: 20px;"></i>
         <!-- 這邊放會員登入後的選項 -->
         <button type="button" class="btn btn-outline-primary me-2">
@@ -175,12 +178,12 @@
     <section id="buttons" class="center mt-3 d-flex justify-content-center align-items-center">
       <div class="mr-3">
         <a href="join.html">
-          <img src="/front-end/images/join3.png" alt="參加活動" width="100" height="100">
+          <img src="/front-end/zuo-huo/images/join3.png" alt="參加活動" width="100" height="100">
         </a>
       </div>
       <div>
         <a href="create.html">
-          <img src="/front-end/images/group.png" alt="舉辦活動" width="100" height="100">
+          <img src="/front-end/zuo-huo/images/group.png" alt="舉辦活動" width="100" height="100">
         </a>
       </div>
     </section>
@@ -194,7 +197,7 @@
       <div class="row">
         <div class="col-md-6">
           <div class="card border-0" style="margin-left:150px; width: 267px; height: 377px;">
-            <img src="/front-end/images/logo.jpg" class="card-img-top" alt="...">
+            <img src="/front-end/zuo-huo/images/logo.jpg" class="card-img-top" alt="...">
           </div>
         </div>
         <div class="col-md-6">
@@ -232,7 +235,7 @@
       <div class="col">
         <div class="card h-100">
           <a href="#">
-            <img src="/front-end/images/dog.jpg" class="card-img-top" alt="...">
+            <img src="/front-end/zuo-huo/images/dog.jpg" class="card-img-top" alt="...">
           </a>
           <div class="card-body">
             <h5 class="card-title">Card title</h5>
@@ -255,7 +258,7 @@
       <div class="col">
         <div class="card h-100">
           <a href="#">
-            <img src="/front-end/images/dog.jpg" class="card-img-top" alt="...">
+            <img src="/front-end/zuo-huo/images/dog.jpg" class="card-img-top" alt="...">
           </a>
           <div class="card-body">
             <h5 class="card-title">Card title</h5>
@@ -268,7 +271,7 @@
       <div class="col">
         <div class="card h-100">
           <a href="#">
-            <img src="/front-end/images/dog.jpg" class="card-img-top" alt="...">
+            <img src="/front-end/zuo-huo/images/dog.jpg" class="card-img-top" alt="...">
           </a>
           <div class="card-body">
             <h5 class="card-title">Card title</h5>
@@ -282,7 +285,7 @@
       <div class="col">
         <div class="card h-100">
           <a href="#">
-            <img src="/front-end/images/dog.jpg" class="card-img-top" alt="...">
+            <img src="/front-end/zuo-huo/images/dog.jpg" class="card-img-top" alt="...">
           </a>
           <div class="card-body">
             <h5 class="card-title">Card title</h5>
@@ -317,7 +320,7 @@
       <div class="col">
         <div class="card h-100">
           <a href="#">
-            <img src="/front-end/images/dog.jpg" class="card-img-top" alt="...">
+            <img src="/front-end/zuo-huo/images/dog.jpg" class="card-img-top" alt="...">
           </a>
           <div class="card-body">
             <h5 class="card-title">Card title</h5>
@@ -331,7 +334,7 @@
       <div class="col">
         <div class="card h-100">
           <a href="#">
-            <img src="/front-end/images/dog.jpg" class="card-img-top" alt="...">
+            <img src="/front-end/zuo-huo/images/dog.jpg" class="card-img-top" alt="...">
           </a>
           <div class="card-body">
             <h5 class="card-title">Card title</h5>
@@ -344,7 +347,7 @@
       <div class="col">
         <div class="card h-100">
           <a href="#">
-            <img src="/front-end/images/dog.jpg" class="card-img-top" alt="...">
+            <img src="/front-end/zuo-huo/images/dog.jpg" class="card-img-top" alt="...">
           </a>
           <div class="card-body">
             <h5 class="card-title">Card title</h5>
@@ -358,7 +361,7 @@
       <div class="col">
         <div class="card h-100">
           <a href="#">
-            <img src="/front-end/images/dog.jpg" class="card-img-top" alt="...">
+            <img src="/front-end/zuo-huo/images/dog.jpg" class="card-img-top" alt="...">
           </a>
           <div class="card-body">
             <h5 class="card-title">Card title</h5>
@@ -399,32 +402,32 @@
       <div class="row row-cols-2 row-cols-lg-6 g-2 g-lg-3">
         <div class="col">
           <a href="#" class="text-decoration-none">
-            <div class="p-5 m-4 border bg-light"><img src="/front-end/images/1.png" class="img-fluid"></div>
+            <div class="p-5 m-4 border bg-light"><img src="/front-end/zuo-huo/images/1.png" class="img-fluid"></div>
           </a>
         </div>
         <div class="col">
           <a href="#" class="text-decoration-none">
-            <div class="p-5 m-4 border bg-light"><img src="/front-end/images/2.png" class="img-fluid"></div>
+            <div class="p-5 m-4 border bg-light"><img src="/front-end/zuo-huo/images/2.png" class="img-fluid"></div>
           </a>
         </div>
         <div class="col">
           <a href="#" class="text-decoration-none">
-            <div class="p-5 m-4 border bg-light"><img src="/front-end/images/3.png" class="img-fluid"></div>
+            <div class="p-5 m-4 border bg-light"><img src="/front-end/zuo-huo/images/3.png" class="img-fluid"></div>
           </a>
         </div>
         <div class="col">
           <a href="#" class="text-decoration-none">
-            <div class="p-5 m-4 border bg-light"><img src="/front-end/images/4.png" class="img-fluid"></div>
+            <div class="p-5 m-4 border bg-light"><img src="/front-end/zuo-huo/images/4.png" class="img-fluid"></div>
           </a>
         </div>
         <div class="col">
           <a href="#" class="text-decoration-none">
-            <div class="p-5 m-4 border bg-light"><img src="/front-end/images/5.png" class="img-fluid"></div>
+            <div class="p-5 m-4 border bg-light"><img src="/front-end/zuo-huo/images/5.png" class="img-fluid"></div>
           </a>
         </div>
         <div class="col">
           <a href="#" class="text-decoration-none">
-            <div class="p-5 m-4 border bg-light"><img src="/front-end/images/6.png" class="img-fluid"></div>
+            <div class="p-5 m-4 border bg-light"><img src="/front-end/zuo-huo/images/6.png" class="img-fluid"></div>
           </a>
         </div>
       </div>

@@ -21,6 +21,8 @@ import javax.validation.constraints.Pattern;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.membership.model.MembershipVO;
 import com.venue.model.VenVO;
 
 @Entity
@@ -33,16 +35,21 @@ public class VenOrderVO implements java.io.Serializable {
 	private Integer venOrderId;
 	
 	@ManyToOne
-    @JoinColumn(name = "ven_Id", referencedColumnName = "ven_Id")
+    @JoinColumn(name = "ven_id", referencedColumnName = "ven_id")
     private VenVO venVO;
 	
-	@Column(name = "mem_id")
-	@NotNull(message="請選擇會員資料")
-	private Integer memId;
+	@ManyToOne
+    @JoinColumn(name = "mem_id", referencedColumnName = "mem_id")
+	private MembershipVO memVO;
+	
+//	@Column(name = "mem_id")
+//	@NotNull(message="請選擇會員資料")
+//	private Integer memId;
 	
 	@Column(name = "emp_id")
 	private Integer empId;
 	
+	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Taipei")
 	@Column(name = "order_date")
     @Future(message="日期必須是在今日(不含)之後")
 	private Date orderDate;
@@ -118,16 +125,24 @@ public class VenOrderVO implements java.io.Serializable {
     public void setVenVO(VenVO venVO) {
         this.venVO = venVO;
     }
+    
+    public MembershipVO getMemVO() {
+        return memVO;
+    }
 
-    public Integer getMemId() {
-		return memId;
-	}
+    public void setMemVO(MembershipVO memVO) {
+        this.memVO = memVO;
+    }
 
-	public void setMemId(Integer memId) {
-		this.memId = memId;
-	}
+//    public Integer getMemId() {
+//		return memId;
+//	}
+//
+//	public void setMemId(Integer memId) {
+//		this.memId = memId;
+//	}
 
-	public Integer getEmpId() {
+    public Integer getEmpId() {
 		return empId;
 	}
 
@@ -263,7 +278,10 @@ public class VenOrderVO implements java.io.Serializable {
 		this.venResFee = venResFee;
 	}
 
-
+	
+	
+	
+	
     @Override
     public int hashCode() {
         return Objects.hash(venOrderId);

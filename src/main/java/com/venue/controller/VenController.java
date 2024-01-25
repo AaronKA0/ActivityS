@@ -1,5 +1,6 @@
-package com.notify.controller;
+package com.venue.controller;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,35 +18,54 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.notify.model.NotifyVO;
-import com.notify.service.NotifyService;
+import com.venorder.model.VenOrderVO;
+import com.venue.model.VenVO;
+import com.venue.service.VenService;
 
 
 @Controller
-@RequestMapping("/front_end/notify")
-public class FrontendNotifyController {
+@RequestMapping("/front_end/venue")
+public class VenController {
 
     @Autowired
-    NotifyService notifySvc;
+    VenService venSvc;
 
-    @RequestMapping("notify")
-    public @ResponseBody List<NotifyVO> findByTitle(@RequestBody String json) {
+    @RequestMapping("venType")
+    public @ResponseBody VenVO findByName(@RequestBody String json) {
         
-        NotifyVO notify = null;
-        
+        VenVO ven = null;
+       
         try {
-            notify = new ObjectMapper().readValue(json, NotifyVO.class);
+            ven = new ObjectMapper().readValue(json, VenVO.class);
         } catch (JsonMappingException e) {
             e.printStackTrace();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return notifySvc.findByTitle(notify.getNotifyTitle());
+        return venSvc.getByName(ven.getVenName());
     }
     
-    @RequestMapping("all")
-    public @ResponseBody List<NotifyVO> getAll(){
-        return notifySvc.getAll();
+    @RequestMapping("orderVen")
+    public @ResponseBody List<VenVO> findByDate(@RequestBody String json) {
+        
+        VenOrderVO ven = null;
+       
+        try {
+            ven = new ObjectMapper().readValue(json, VenOrderVO.class);
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return venSvc.pickByOrderDate(ven.getOrderDate());
     }
+    
+    
+    @RequestMapping("all")
+    public @ResponseBody List<VenVO> getAll(){        
+        return venSvc.getAll();
+    }
+    
     
     
     
@@ -52,10 +73,10 @@ public class FrontendNotifyController {
 
     
     // 去除BindingResult中某個欄位的FieldError紀錄
-    public BindingResult removeFieldError(NotifyVO notifyVO, BindingResult result, String removedFieldname) {
+    public BindingResult removeFieldError(VenVO venVO, BindingResult result, String removedFieldname) {
         List<FieldError> errorsListToKeep = result.getFieldErrors().stream()
                 .filter(fieldname -> !fieldname.getField().equals(removedFieldname)).collect(Collectors.toList());
-        result = new BeanPropertyBindingResult(notifyVO, "notifyVO");
+        result = new BeanPropertyBindingResult(venVO, "venVO");
         for (FieldError fieldError : errorsListToKeep) {
             result.addError(fieldError);
         }

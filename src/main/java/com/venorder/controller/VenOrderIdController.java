@@ -27,7 +27,7 @@ import com.venorder.service.VenOrderService;
 
 @Controller
 @Validated
-@RequestMapping("back_end/ven-order")
+@RequestMapping("/back_end/ven-order")
 public class VenOrderIdController {
 
     @Autowired

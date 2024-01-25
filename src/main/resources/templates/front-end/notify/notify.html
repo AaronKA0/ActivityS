@@ -83,6 +83,8 @@
 	                        
 	                        <tbody id="notify-items">
 	                            <!-- 資料庫資料 -->
+	                            <!-- 資料庫資料 -->
+	                            <!-- 資料庫資料 -->
 	                        </tbody>
                         
                       </table>
@@ -150,25 +152,21 @@
 $(document).ready(async function(){
     
 	async function getAll(){
-		await fetch("/front_end/all", {
+		await fetch("/front_end/notify/all", {
 	        method: "GET",
-	        // 將選擇的城市從 request body 傳遞給控制
 	        }).then(function(response){;
 	            return response.json();
 	        }).then(function(notifies){     
 	            // 清除清單內容
 	            $("#notify-items").html("");
-	            
-	            // 將每個場地名稱顯示至清單中
-	            // vens 是一個 VenVO 的 array
-	            // venName 是 VenVO 的一個屬性
+
 	            for(let notify of notifies){
 	                $("#notify-items").append(
-	                		  `<tr>
-	                		     <th>${notify.notifyTitle}</th>
-	                		     <td>${notify.notifyContent}</td>
-	                		     <td>${moment(notify.notifyTime).format('YYYY-MM-DD HH:mm:ss')}</td>
-	                		  </tr>`);
+						`<tr>
+						  <th>${notify.notifyTitle}</th>
+						  <td>${notify.notifyContent}</td>
+						  <td>${moment(notify.notifyTime).format('YYYY-MM-DD HH:mm:ss')}</td>
+						</tr>`);
 	            }
 	        }).catch(function(err){
 	            console.log(err);
@@ -178,7 +176,7 @@ $(document).ready(async function(){
 	
     // fetch 是一個非同步函數所以需要使用 await
     async function getVens(notifyTitle){
-        await fetch("/front_end/notify",{
+        await fetch("/front_end/notify/notify",{
             method: "POST",
             body: JSON.stringify({notifyTitle: notifyTitle})
         }).then(function(response){;
@@ -188,13 +186,18 @@ $(document).ready(async function(){
             $("#notify-items").html("");
             
             for(let notify of notifies){
-            	$("#notify-items").append(`<tr><th>${notify.notifyTitle}</th><td>${notify.notifyContent}</td><td>${notify.notifyTime}</td></tr>`);
+            	$("#notify-items").append(
+					`<tr>
+					<th>${notify.notifyTitle}</th>
+					<td>${notify.notifyContent}</td>
+					<td>${moment(notify.notifyTime).format('YYYY-MM-DD HH:mm:ss')}</td>
+					</tr>`);
             }
         }).catch(function(err){
             console.log(err);
         }); 
     }
-    
+
     await getAll();
 
     $("#city-tab li").on("click", async function(){

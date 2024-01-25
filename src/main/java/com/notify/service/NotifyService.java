@@ -39,6 +39,11 @@ public class NotifyService{
         List<NotifyVO> notifies = repository.findByTitle(notifyTitle);
         return notifies;    
     }
+	
+	public List<NotifyVO> findByMemId(Integer memId) {
+        List<NotifyVO> notifies = repository.findByMemId(memId);
+        return notifies;    
+    }
 
 	
 	
