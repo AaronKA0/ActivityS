@@ -16,9 +16,16 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.membership.model.MembershipVO;
+import com.membership.service.MembershipService;
 import com.venorder.model.VenOrderVO;
 import com.venorder.service.VenOrderService;
 import com.venue.model.VenVO;
@@ -29,23 +36,58 @@ import com.venue.service.VenService;
 public class FrontendVenOrderController {
 
     @Autowired
+    MembershipService memSvc;
+    
+    @Autowired
     VenOrderService venOrderSvc;
     
     @Autowired
     VenService venSvc;
+    
+    @RequestMapping("getByDate")
+    public @ResponseBody List<VenOrderVO> findByDate(@RequestBody String json) {
+        
+        VenOrderVO venOrder = null;
+
+        try {
+            venOrder = new ObjectMapper().readValue(json, VenOrderVO.class);
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return venOrderSvc.getByOrderDate(venOrder.getOrderDate());
+
+    }   
+    
+    @RequestMapping("getVenCom")
+    public @ResponseBody List<VenOrderVO> findVenCom(@RequestBody String json) {
+        
+        VenVO venVO = null;
+       
+        try {
+            venVO = new ObjectMapper().readValue(json, VenVO.class);
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return venOrderSvc.getVenCom(venVO);
+    }
+    
 
     @GetMapping("addVenOrder")
     public String addVenOrder(ModelMap model) {
         VenOrderVO venOrderVO = new VenOrderVO();
         model.addAttribute("venOrderVO", venOrderVO);
-        return "front-end/venue/booking";
+        return "front-end/venue/venType";
     }
 
     @PostMapping("insert")
     public String insert(@Valid VenOrderVO venOrderVO, BindingResult result, ModelMap model) throws IOException {
 
         if (result.hasErrors()) {
-            return "front-end/venue/booking";
+            return "front-end/venue/venType";
         }
         
         venOrderSvc.addVenOrder(venOrderVO);
@@ -81,6 +123,12 @@ public class FrontendVenOrderController {
         return "back-end/ven-order/listOneVenOrder";
     }
 
+    
+    @ModelAttribute("memListData")
+    protected List<MembershipVO> memListData(Model model) {        
+        List<MembershipVO> list = memSvc.getAll();
+        return list;
+    } 
     
     @ModelAttribute("venListData")
     protected List<VenVO> venListData(Model model) {        

@@ -1,5 +1,6 @@
 package com.venue.service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -11,17 +12,14 @@ import org.springframework.stereotype.Service;
 
 import com.venue.model.VenVO;
 
-//import hibernate.util.CompositeQuery.HibernateUtil_CompositeQuery_Emp3;
-
-
 @Service("venService")
 public class VenService {
 
 	@Autowired
 	VenRepository repository;
 	
-//	@Autowired
-//    private SessionFactory sessionFactory;
+	@Autowired
+    private SessionFactory sessionFactory;
 
 	public void addVen(VenVO venVO) {
 		repository.save(venVO);
@@ -46,10 +44,15 @@ public class VenService {
 		return repository.findAll();
 	}
 	
-	public Boolean findByName(String name) {
-		VenVO ven = repository.findByName(name);
-		return ven == null;	
+	public VenVO getByName(String name) {
+		VenVO ven = repository.getByName(name);
+		return ven;	
 	}
+	
+	public List<VenVO> pickByOrderDate(Date date){
+	    return repository.pickByOrderDate(date);
+	}
+	
 
 //	public List<VenVO> getAll(Map<String, String[]> map) {
 //		return HibernateUtil_CompositeQuery_Emp3.getAllC(map,sessionFactory.openSession());
