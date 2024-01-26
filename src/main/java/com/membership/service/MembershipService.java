@@ -125,10 +125,9 @@ public class MembershipService {
 	
 	
 	
-	// Aaron
-//  ------------從MembershipVO中獲取會員基本資料-----------------
+	// +++++++++++++++ 從MembershipVO中獲取會員基本資料 +++++++++++++++
 	public MembershipVO getMemInfo(Integer memId){
         return repository.getMemInfo(memId);
     }
-
+	// +++++++++++++++ 從MembershipVO中獲取會員基本資料 +++++++++++++++
 }
