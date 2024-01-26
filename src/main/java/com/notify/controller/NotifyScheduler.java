@@ -2,9 +2,7 @@ package com.notify.controller;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -30,7 +28,7 @@ public class NotifyScheduler {
     private NotifyService notifySrv;
     
     // 場地訂單通知
-//    @Scheduled(cron = "0/3 * * * * ?")
+//    @Scheduled(cron = "0 0 12 * * ?")
 //    public void getBookingNotify() throws InterruptedException {
 //     
 //        Integer memId = null;
@@ -38,6 +36,8 @@ public class NotifyScheduler {
 //        
 //        MembershipVO memVO = new MembershipVO();
 //        
+////        String d = "2024-02-15";
+////        Date afterSomeDays = Date.valueOf(d);
 //        Date afterSomeDays = Date.valueOf(LocalDate.now().plusDays(3));
 //       
 //        List<VenOrderVO> bookings = venOrderSrv.getLessDay(afterSomeDays);
