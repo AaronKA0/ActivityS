@@ -27,7 +27,7 @@ public class NotifyVO implements java.io.Serializable {
 	
 	@ManyToOne
     @JoinColumn(name = "mem_id", referencedColumnName = "mem_id")
-    private MembershipVO membershipVO;
+    private MembershipVO memVO;
 	
 	@Column(name = "notify_title")
 	@NotEmpty(message="請填通知訊息標題")
@@ -57,11 +57,11 @@ public class NotifyVO implements java.io.Serializable {
 	
 	
 	public MembershipVO getMembershipVO() {
-	    return membershipVO;
+	    return memVO;
 	}
 	
 	public void setMembershipVO(MembershipVO membershipVO) {
-	    this.membershipVO = membershipVO;
+	    this.memVO = membershipVO;
 	}
 
     public String getNotifyTitle() {
