@@ -32,7 +32,6 @@ public class FrontendNotifyController {
     public @ResponseBody List<NotifyVO> findByMemId(@RequestBody String json) {
         
         MembershipVO memVO = null;
-        
         try {
             memVO = new ObjectMapper().readValue(json, MembershipVO.class);
         } catch (JsonMappingException e) {
@@ -43,6 +42,7 @@ public class FrontendNotifyController {
         return notifySvc.findByMemId(memVO.getMemId());
     } 
 
+    
     @RequestMapping("notifyTitle")
     public @ResponseBody List<NotifyVO> findByTitle(@RequestBody String json) {
         
