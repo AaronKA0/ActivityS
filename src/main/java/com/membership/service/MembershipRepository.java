@@ -36,4 +36,10 @@ public interface MembershipRepository extends JpaRepository<MembershipVO, Intege
 	@Query(value = "from MembershipVO where memAcc =:memAcc")
 	MembershipVO getMemName(String memAcc);
 
+	
+	// Aaron
+//  ------------從MembershipVO中獲取會員基本資料-----------------	
+	@Query(value = "SELECT mem_id, mem_acc, mem_email, mem_name, mem_gender, mem_birthdate, mem_username, mem_phone "
+	             + "FROM membership WHERE mem_id =:memId", nativeQuery = true)
+	MembershipVO getMemInfo(Integer memId);
 }

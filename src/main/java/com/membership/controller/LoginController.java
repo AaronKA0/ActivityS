@@ -50,7 +50,7 @@ public class LoginController {
 			System.out.println(a);
 			System.out.println(b);
 //	        System.out.print("line 65 :" + "memId:" + memId +" "+"memAcc:" + memAcc +" " + "memPwd:" + memPwd);
-			return "redirect:/membership/listAllMembership";
+			return "redirect:/Zuo-Huo";
 
 		} else {
 			// 登入失敗

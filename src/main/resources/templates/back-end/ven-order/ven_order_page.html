@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<link rel="stylesheet" th:href="@{/back-end/css/emp_Index.css}">
-<link rel="stylesheet" th:href="@{/back-end/css/data_table.css}">
+<link rel="stylesheet" th:href="@{/back-end/emp_Index/css/emp_Index.css}">
+<link rel="stylesheet" th:href="@{/back-end/07/css/data_table.css}">
 
 <title>場地訂單 - ven_order_page.html</title>
 
@@ -143,7 +143,7 @@
                          
 	                <td th:text="${venOrderVO.venOrderId}"></td>
 	                <td th:text="${venOrderVO.venVO.venName}"></td>
-	                <td th:text="${venOrderVO.memId}"></td>
+	                <td th:text="${venOrderVO.memVO.memName}"></td>
 	                <td th:text="${venOrderVO.empId}"></td>
 	                <td th:text="${venOrderVO.orderDate}"></td>
 	                <td th:text="${venOrderVO.memPhone}"></td>
@@ -196,10 +196,10 @@
 </main>
 
 
-<script th:src="@{/back-end/js/jquery-3.7.0.js}"></script>
-<script th:src="@{/back-end/js/emp_Index.js}"></script>
-<script th:src="@{/back-end/js/data_table.js}"></script>
-<script th:src="@{/back-end/js/data_table_menu.js}"></script>
+<script th:src="@{/back-end/07/js/jquery-3.7.0.js}"></script>
+<script th:src="@{/back-end/emp_Index/js/emp_Index.js}"></script>
+<script th:src="@{/back-end/07/js/data_table.js}"></script>
+<script th:src="@{/back-end/07/js/data_table_menu.js}"></script>
 
 </body>
 </html>

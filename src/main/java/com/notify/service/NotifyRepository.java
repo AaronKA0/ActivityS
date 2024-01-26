@@ -14,7 +14,7 @@ public interface NotifyRepository extends JpaRepository<NotifyVO, Integer>{
     List<NotifyVO> findByTitle(String notifyTitle);
     
     
-    @Query(value = "select n from NotifyVO n where n.membershipVO.memId = :memId")
+    @Query(value = "select n from NotifyVO n where n.memVO.memId = :memId")
     List<NotifyVO> findByMemId(Integer memId);
     
 }

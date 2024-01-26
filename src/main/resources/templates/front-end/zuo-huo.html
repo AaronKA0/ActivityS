@@ -142,12 +142,13 @@
         <i class="icon bi bi-person-circle" style="font-size: 40px; margin: 20px;"></i>
         <!-- 這邊放會員登入後的選項 -->
         <button type="button" class="btn btn-outline-primary me-2">
-          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">登入</a>
+          <a class="nav-link" th:href="@{/membership/logging}">登入</a>
         </button>
         <button type="button" class="btn btn-primary">
           <a class="nav-link" href="register.html">註冊</a>
         </button>
       </div>
+      <h6 th:text="${session.memId}"></h6>
     </header>
   </div>
 
@@ -486,6 +487,37 @@
   </div>
 
   <script>
+  
+  $(document).ready(async function(){
+	    
+	    var memId = $("#memId").text();
+	    
+	    async function getNotifyByMemId(id){
+	        await fetch("/front_end/notify/memberNotify",{
+	            method: "POST",
+	            body: JSON.stringify({memId: id})
+	        }).then(function(response){;
+	            return response.json();
+	        }).then(function(notifies){  
+	            // 清除清單內容
+	            $(".dropdown-menu").empty();
+	            console.log(`${notify.notifyContent}`);
+	            for(let notify of notifies){
+	                $(".dropdown-menu").append(
+	                  `<li><a class="dropdown-item">${notify.notifyContent}</a></li>
+                        <li><a class="dropdown-item" th:href="@{front_end/notify}">顯示全部</a>
+                        </li>`);
+	            }
+	        }).catch(function(err){
+	            console.log(err);
+	        }); 
+	    }
+	    
+	    await getNotifyByMemId(memId);
+  
+  });
+  
+  
     // 打開彈窗
     function openPopup() {
       document.getElementById("popupBox").style.display = "block";
