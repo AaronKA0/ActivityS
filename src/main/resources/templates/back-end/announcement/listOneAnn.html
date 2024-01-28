@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>場地不開放資料</title>
+<title>公告資料</title>
 
 <link rel="stylesheet" th:href="@{/back-end/07/css/listOne.css}">
 
@@ -13,12 +13,12 @@
 <body>
 
 <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
-         <div align="center"> <h2>場地不開放資料</h2></div>
+         <div align="center"> <h2>公告資料</h2></div>
          
          <div class="nav-content">
               
               <div>
-                  <a class="back" th:href="@{/back_end/ven-closed/ven_closed_date}">
+                  <a class="back" th:href="@{/back_end/announcement/ann_page}">
                       <<<<<< 回查詢頁</a>
               </div>
               
@@ -29,18 +29,20 @@
 
         <div id="center" align="center">
         
-            <span class="title">編號:</span><span th:text="${venClosedVO.closedDateId}"></span><br/>
-            <span class="title">場地:</span><span th:text="${venClosedVO.venVO.venName}"></span><br/>
-            <span class="title">不開放日期:</span><span th:text="${venClosedVO.closedDate}"></span><br/>
+            <span class="title">公告編號:</span><span th:text="${announcementVO.annId}"></span><br/>
+            <span class="title">編輯人員:</span><span th:text="${announcementVO.empId}"></span><br/>
+            <span class="title">公告時間:</span><span th:text="${#dates.format(announcementVO.annTime, 'yyyy-MM-dd HH:mm:ss')}"></span><br/>      
+            <span class="title">公告標題:</span><span th:text="${announcementVO.annName}"></span><br/>
             <div class="text_block">
-                <span class="title">不開放原因:</span>
-                <textarea class="texthighter" th:text="${venClosedVO.closedReason}" readonly></textarea><br/>
-            </div>   
+                <span class="title">公告內容:</span>
+                <textarea class="texthighter" th:text="${announcementVO.annDescr}" readonly></textarea>
+            </div>
+            
         </div>        
         
         <div>
             <form method="post" th:action="@{getOne_For_Update}">
-                <input type="hidden" name="closedDateId" th:value="${venClosedVO.closedDateId}">
+                <input type="hidden" name="annId" th:value="${announcementVO.annId}">
                 <button class="submit_button" type="submit" style="padding: 5px;">修改資料</button>
             </form>
         </div>

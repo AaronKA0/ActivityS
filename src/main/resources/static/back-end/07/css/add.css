@@ -3,14 +3,14 @@
 }
 
 body {
-    background-color: #b0c4de;
+    background-color: #00bfff;
 }
 
 .nav-content {
-	display: flex; 
-	align-items: center; 
-	justify-content: space-around; 
-	margin-bottom: 20px;
+    display: flex; 
+    align-items: center; 
+    justify-content: space-around; 
+    margin-bottom: 20px;
 }
 
 a.back {
@@ -70,17 +70,16 @@ span.title {
 }
 
 span.error {
-	color: red;
-	font-size: 12px;
-	text-align: end;
-	margin-top: 0;
-	margin-left: 150px;
+    color: red;
+    font-size: 12px;
+    text-align: end;
+    margin-top: 0;
+    margin-left: 150px;
 }
 
 .immutable {
     background-color: #b0c4de;
     border: 2px solid white;
-    border-radius: 5px;
     color: gray;
 }
 
@@ -98,4 +97,10 @@ button {
     margin-top: 20px;
     display: flex;
     justify-content: center;
+}
+
+span.extra_error {
+	width: 100%;
+	text-align: center;
+	color: red;
 }

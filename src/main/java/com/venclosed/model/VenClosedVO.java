@@ -44,7 +44,15 @@ public class VenClosedVO implements java.io.Serializable {
 		super();
 	}
 
-	public Integer getClosedDateId() {
+	public VenClosedVO(VenVO venVO,
+        @NotNull(message = "請選擇日期") @Future(message = "日期必須是在今日(不含)之後") Date closedDate,
+        @NotEmpty(message = "請填寫原因") String closedReason) {
+        this.venVO = venVO;
+        this.closedDate = closedDate;
+        this.closedReason = closedReason;
+    }
+
+    public Integer getClosedDateId() {
 		return closedDateId;
 	}
 
@@ -75,6 +83,12 @@ public class VenClosedVO implements java.io.Serializable {
 	public void setClosedReason(String closedReason) {
 		this.closedReason = closedReason;
 	}
+
+    @Override
+    public String toString() {
+        return "VenClosedVO [closedDateId=" + closedDateId + ", venVO=" + venVO + ", closedDate=" + closedDate
+                + ", closedReason=" + closedReason + "]";
+    }
 
     @Override
     public int hashCode() {

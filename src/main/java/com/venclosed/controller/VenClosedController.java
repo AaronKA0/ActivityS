@@ -1,6 +1,7 @@
 package com.venclosed.controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,15 +22,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.venclosed.model.VenClosedVO;
 import com.venclosed.service.VenClosedService;
+import com.venorder.model.VenOrderVO;
+import com.venorder.service.VenOrderService;
 import com.venue.model.VenVO;
 import com.venue.service.VenService;
 
 @Controller
-@RequestMapping("/ven-closed")
+@RequestMapping("/back_end/ven-closed")
 public class VenClosedController {
 
     @Autowired
     VenClosedService venClosedSvc;
+    
+    @Autowired
+    VenOrderService venOrderSvc;
     
     @Autowired
     VenService venSvc;
@@ -44,17 +50,65 @@ public class VenClosedController {
     @PostMapping("insert")
     public String insert(@Valid VenClosedVO venClosedVO, BindingResult result, ModelMap model) throws IOException {
 
+        Integer selectedVenId = (venClosedVO.getVenVO()).getVenId();
+        
+        Date date = venClosedVO.getClosedDate();
+        List<VenOrderVO> venOrderVO = venOrderSvc.getByOrderDate(date);
+        
         if (result.hasErrors()) {
             return "back-end/ven-closed/addVenClosedDate";
         }
         
+        for (VenOrderVO venOrder : venOrderVO) {
+            Integer orderVenId = (venOrder.getVenVO()).getVenId();
+            if (selectedVenId == orderVenId) {
+                model.addAttribute("hasOrder", date + " 已有訂單，無法設定");
+                return "back-end/ven-closed/addVenClosedDate";
+            }
+        }
         venClosedSvc.addVenClosed(venClosedVO);
         
         List<VenClosedVO> list = venClosedSvc.getAll();
         model.addAttribute("venClosedListData", list);
         model.addAttribute("success", "- (新增成功)");
-        return "redirect:/ven-closed/listAllVenClosed";
+        return "redirect:/back_end/ven-closed/ven_closed_date";
     }
+    
+    @GetMapping("addAllClosed")
+    public String addAllClosed(ModelMap model) {
+        VenClosedVO venClosedVO = new VenClosedVO();
+        model.addAttribute("venClosedVO", venClosedVO);
+        return "back-end/ven-closed/allClosed";
+    }
+    
+    @PostMapping("allClosed")
+    public String allClosed(@Valid VenClosedVO venClosedVO, BindingResult result, ModelMap model) throws IOException {
+        
+        Date date = venClosedVO.getClosedDate();
+        String reason = venClosedVO.getClosedReason();
+        List<VenOrderVO> venOrderVO = venOrderSvc.getByOrderDate(date);
+        
+        if (result.hasErrors()) {
+            return "back-end/ven-closed/allClosed";
+        }
+                
+        if (!venOrderVO.isEmpty()) {
+            model.addAttribute("hasOrder", date + " 已有 " + venOrderVO.size() + " 筆訂單，無法設定");
+            return "back-end/ven-closed/allClosed";
+        }
+        
+        List<VenVO> vens = venSvc.getAll();
+        
+        for(VenVO ven :vens) {
+            VenClosedVO v = new VenClosedVO(ven, date, reason);       
+            venClosedSvc.addVenClosed(v);
+        }
+        
+        List<VenClosedVO> list = venClosedSvc.getAll();
+        model.addAttribute("venClosedListData", list);
+        model.addAttribute("success", "- (新增成功)");
+        return "redirect:/back_end/ven-closed/ven_closed_date";
+    } 
 
     
     @PostMapping("getOne_For_Update")
@@ -63,14 +117,14 @@ public class VenClosedController {
         VenClosedVO venClosedVO = venClosedSvc.getOneVenClosed(Integer.valueOf(closedDateId));
 
         model.addAttribute("venClosedVO", venClosedVO);
-        return "back-end/ven-closed/update_venClosed_input";
+        return "back-end/ven-closed/updateVenClosed";
     }
 
     @PostMapping("update")
     public String update(@Valid VenClosedVO venClosedVO, BindingResult result, ModelMap model) throws IOException {
 
         if (result.hasErrors()) {
-            return "back-end/ven-closed/update_venClosed_input";
+            return "back-end/ven-closed/updateVenClosed";
         }
 
         venClosedSvc.updateVenClosed(venClosedVO);

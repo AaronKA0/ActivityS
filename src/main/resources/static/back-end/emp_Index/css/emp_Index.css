@@ -18,6 +18,7 @@ img {
 
 /* ==================== header 區域 ==================== */
 header.header {
+  z-index: 100 !important;
   border: 2px solid #d68a8a;
   width: 100%;
   position: sticky;
