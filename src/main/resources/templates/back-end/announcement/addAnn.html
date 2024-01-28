@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>新增公告</title>
+
+<link rel="stylesheet" th:href="@{/back-end/07/css/add.css}">
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+         <div align="center"> <h2>新增公告</h2></div>
+         
+         <div class="nav-content">
+              
+              <div>
+                  <a class="back" th:href="@{/back_end/announcement/ann_page}">
+                      <<<<<< 回查詢頁</a>
+              </div>
+              
+         </div>
+</nav>
+
+    <div align="center">
+
+        <div id="center" align="center">
+        <form th:action="@{insert}" method="post" th:object="${announcementVO}">
+            
+            <div>
+                <span class="title">編輯人員:</span>
+                <input type="text" th:field="*{empId}" placeholder="請輸入員工編號"/><br/>
+            </div>
+            
+            <br/>
+            
+            <div>
+                <span class="title">公告標題:</span>
+                <input type="text" th:field="*{annName}" onclick="hideContent('annName.errors');" placeholder="請輸入公告標題"/><br/>
+                <span  th:if="${#fields.hasErrors('annName')}" th:errors="*{annName}" class="error" id="annName.errors"></span>
+            </div>
+            
+            <div class="text_block">
+                <span class="title">公告內容:</span>
+                <textarea th:field="*{annDescr}" class="texthighter" onclick="hideContent('annDescr.errors');" placeholder="請輸入公告內容" /></textarea><br/>  
+            </div>
+                <span  th:if="${#fields.hasErrors('annDescr')}" th:errors="*{annDescr}" class="error" id="annDescr.errors"></span>
+            
+            <div class="submit_button">
+                <button type="submit">確認新增</button>
+            </div>
+             
+       </form>
+       </div>
+
+        <span class="extra_error" th:text="${hasOrder}"></span>
+    </div>
+    
+    
+<script type="text/javascript">
+
+    //清除提示信息
+    function hideContent(d) {
+        document.getElementById(d).style.display = "none";     
+    }
+
+</script>
+
+
+</body>
+</html>

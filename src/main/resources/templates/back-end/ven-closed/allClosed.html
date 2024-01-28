@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>新增場地關閉日期</title>
+<title>關閉全部場地</title>
 
 <link rel="stylesheet" th:href="@{/back-end/07/css/add.css}">
 
@@ -13,7 +13,7 @@
 <body>
 
 <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
-         <div align="center"> <h2>新增場地關閉日期</h2></div>
+         <div align="center"> <h2>關閉全部場地</h2></div>
          
          <div class="nav-content">
               
@@ -28,21 +28,8 @@
     <div align="center">
 
         <div id="center" align="center">
-        <form th:action="@{insert}" method="post" th:object="${venClosedVO}">
-        
-<!--             <div th:each="venVO : ${venListData}"> -->
-<!--                 <input type="checkbox" th:field="*{venVO.venId}" th:value="${venVO.venId}" /> -->
-<!--                 <label th:for="${'checkbox_' + venVO.venId}" th:text="${venVO.venName}"></label> -->
-<!--                 <span th:if="${#fields.hasErrors('venVO.venId')}" th:errors="*{venVO.venId}" class="error" id="venVO.venId.errors"></span> -->
-<!--             </div> -->
+        <form th:action="@{allClosed}" method="post" th:object="${venClosedVO}">
             
-            <div>
-                <span class="title">選擇場地:</span>
-                <select th:field="*{venVO.venId}">
-                    <option th:each="venVO : ${venListData}" th:value="${venVO.venId}" th:text="${venVO.venName}" />
-                </select>
-            </div>
-        
             <div>
                 <span class="title">不開放日期:</span>
                 <input type="date" th:field="*{closedDate}" onclick="hideContent('closedDate.errors');"/><br/>

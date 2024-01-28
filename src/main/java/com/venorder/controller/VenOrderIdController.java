@@ -6,8 +6,6 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotEmpty;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.venorder.model.VenOrderVO;
 import com.venorder.service.VenOrderService;
-
 
 
 @Controller

@@ -1,6 +1,8 @@
 package com.announcement.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +23,7 @@ import com.announcement.model.AnnouncementVO;
 import com.announcement.service.AnnouncementService;
 
 @Controller
-@RequestMapping("/announcement")
+@RequestMapping("/back_end/announcement")
 public class AnnController {
 
     @Autowired
@@ -50,7 +52,7 @@ public class AnnController {
         List<AnnouncementVO> list = annSvc.getAll();
         model.addAttribute("annListData", list);
         model.addAttribute("success", "- (新增成功)");
-        return "redirect:/announcement/listAllAnn";   // 新增成功後重導至IndexController_inSpringBoot.java的第50行@GetMapping("/emp/listAllEmp")
+        return "redirect:/back_end/announcement/ann_page";   // 新增成功後重導至IndexController_inSpringBoot.java的第50行@GetMapping("/emp/listAllEmp")
     }
     
     
@@ -78,6 +80,7 @@ public class AnnController {
         }
         /*************************** 2.開始修改資料 *****************************************/
 //      EmpService empSvc = new EmpService();
+        announcementVO.setAnnTime(Timestamp.valueOf(LocalDateTime.now()));
         annSvc.updateAnnouncement(announcementVO);
 
         /*************************** 3.修改完成,準備轉交(Send the Success view) **************/
