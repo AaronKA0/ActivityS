@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" th:href="@{/back-end/css/addAnn.css}">
+
+<title>新增通知訊息 - addNotify.html</title>
+
+<head>
+<style type="text/css">
+    
+    button {
+        padding: 5px;
+    }
+    form {
+        display: table;
+    }
+    form div {
+        display: table-row;
+    }
+    label, input, span, select {
+        display: table-cell;
+        margin: 5px;
+        text-align: left;       
+    }
+    input[type=text], input[type=password], select, textarea {
+        width: 200px;
+        margin: 5px;
+    }
+    form div div {
+        display: table-cell;
+    }
+    .center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+    <div align="center"> <h2>新增公告</h2></div>
+    <h3><a class="navbar-brand" th:href="@{/notify/notify_page}">回查詢頁</a></h3>
+</nav>
+
+    <h4 style="text-align: end;"><b>*所有欄位皆為必填欄位</b></h4>
+    <section class="sec_form">
+        <form class="ann_form" th:action="@{insert}" method="post"  th:object="${notifyVO}" enctype="multipart/form-data">
+  
+<!-- 	        <div class="item_block"> -->
+<!-- 	            <label>會員編號</label> -->
+<!-- 	            <input type="text" th:field="*{memId}" onclick="hideContent('memId.errors');" placeholder="請輸入員工編號"/><br/> -->
+<!-- 	            <span  th:if="${#fields.hasErrors('memId')}" th:errors="*{memId}" class="error" id="memId.errors"></span> -->
+<!-- 	        </div> -->
+	
+	        <div class="item_block">
+	            <label>通知訊息標題</label>
+	            <input type="text" th:field="*{notifyTitle}" onclick="hideContent('notifyTitle.errors');" placeholder="請輸入標題名稱"/><br/>
+	            <span  th:if="${#fields.hasErrors('notifyTitle')}" th:errors="*{notifyTitle}" class="error" id="notifyTitle.errors"></span>
+	        </div>
+	
+	        <div class="item_block -text">
+	            <label>訊息內容</label>
+	            <textarea class="annDescr_text" th:field="*{notifyContent}" onclick="hideContent('notifyContent.errors');" /></textarea><br/>
+	            <span  th:if="${#fields.hasErrors('notifyContent')}" th:errors="*{notifyContent}" class="error" id="notifyContent.errors"></span>
+	        </div>
+	
+	        <div class="item_block">
+	            <label></label>
+	            <button type="submit">確認新增</button>
+	        </div>     
+       </form>
+    </section>
+    
+
+<script type="text/javascript">
+//清除提示信息
+function hideContent(d) {
+     document.getElementById(d).style.display = "none";
+}
+</script>
+</body>
+</html>

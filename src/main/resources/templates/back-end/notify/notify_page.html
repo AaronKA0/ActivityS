@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>Notification</title>
+<style>
+	div.a {
+        display: inline-block;
+        width: 50%;
+        height: auto;
+        padding: 5px;
+        border: 0px solid blue;    
+        background-color: white; 
+    }
+
+	div.b {
+        display: inline-block;
+        width: 45%;
+        height: auto;
+        padding: 5px;
+        border: 1px solid blue;    
+        background-color: #c6d2e2;
+    }
+
+</style>
+
+</head>
+<body>
+	<h2>會員通知訊息</h2>
+	
+	<div class="errorblock" th:utext="${errorMessage}">${errorMessage}</div><br>
+	
+	<div class="a">
+		<a href="listAllNotify">查詢所有通知訊息</a>
+		<br>
+		<ul>
+			<li>
+		    	<form method="post" th:action="@{getOne_For_Display}" >
+		        	<b>輸入編號 (1.2.3...):</b>
+		        	<input type="text" name="notifyId" th:value="${param.notifyId}">
+		        	<input type="submit" value="送出">
+		    	</form>
+		  	</li>
+	  	
+	  	    <li>
+	  	        <form method="post" th:action="@{getOne_For_Display}">
+	                <b>選擇編號:</b>
+	                <select name="notifyId">
+	                     <option th:each="notifyVO : ${notifyListData}" th:value="${notifyVO.notifyId}" th:text="${notifyVO.notifyId}" />
+	                </select>
+	                <input type="submit" value="送出">
+                </form><br>
+            </li>
+
+            <li>
+                <form method="post" th:action="@{getOne_For_Display}">
+	                <b>選擇通知標題:</b>
+	                <select name="notifyId">
+                         <option th:each="notifyVO : ${notifyListData}" th:value="${notifyVO.notifyId}" th:text="${notifyVO.notifyTitle}" />
+                    </select>
+                    <input type="submit" value="送出">
+                </form><br>
+            </li>
+        </ul>
+        
+        <b><span>員工管理</span></b>
+        <ul>
+          <li><a href='addNotify'>新增</a></li>
+		</ul>
+			 
+	</div>
+	
+	<div class="b" th:if="${getOne_For_Display}">
+        <div th:insert="~{/back-end/notify/listOneNotify :: listOneNotify-div}"></div>
+    </div>
+	 
+</body>
+</html>
