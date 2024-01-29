@@ -173,7 +173,44 @@
   <main class="container mt-4">
 
     <!-- 觸發彈窗的按鈕 -->
-    <button type="button" class="btn btn-outline-warning" onclick="openPopup()">顯示公告</button>
+<!--     <button type="button" class="btn btn-outline-warning" onclick="openPopup()">顯示公告</button> -->
+    <div style="display: flex; justify-content: center;">
+        <span style="width: 100%; text-align: center; font-size: 20px; font-weight: bold; color: blue;">最新公告</span>
+    </div>
+    <div class="ann_block" style="display: flex; justify-content: center; flex-wrap: wrap; height: 100px; overflow-y: auto;">
+       <table class="ann_table" style="width: 100%; text-align: center;">
+            <tbody id="ann_items">
+                <tr id="this_ann">
+                    <th scope="col" style="width: 15%">2024-01-29</th>
+                    <td scope="col" style="width: 25%">12312312323123312313213213</td>
+                    <td scope="col" style="cursor: pointer;" onclick="openPopup()">1231231321321321321321321321321321313123321323123</td>
+                </tr>
+                <tr id="this_ann">
+                    <th scope="col" style="width: 15%">2024-01-29</th>
+                    <td scope="col" style="width: 25%">12312312323123312313213213</td>
+                    <td scope="col" style="cursor: pointer;" onclick="openPopup()">1231231321321321321321321321321321313123321323123</td>
+                </tr>
+                <tr id="this_ann">
+                    <th scope="col" style="width: 15%">2024-01-29</th>
+                    <td scope="col" style="width: 25%">12312312323123312313213213</td>
+                    <td scope="col" style="cursor: pointer;" onclick="openPopup()">1231231321321321321321321321321321313123321323123</td>
+                </tr>
+                <tr id="this_ann">
+                    <th scope="col" style="width: 15%">2024-01-29</th>
+                    <td scope="col" style="width: 25%">12312312323123312313213213</td>
+                    <td scope="col" style="cursor: pointer;" onclick="openPopup()">1231231321321321321321321321321321313123321323123</td>
+                </tr>
+                <tr id="this_ann">
+                    <th scope="col" style="width: 15%">2024-01-29</th>
+                    <td scope="col" style="width: 25%">12312312323123312313213213</td>
+                    <td scope="col" style="cursor: pointer;" onclick="openPopup()">1231231321321321321321321321321321313123321323123</td>
+                </tr>
+                <!-- 資料庫資料 -->
+                <!-- 資料庫資料 -->
+                <!-- 資料庫資料 -->
+            </tbody>
+       </table>
+    </div>
 
     <!-- 彈窗內容 -->
     <div id="popupBox" class="popup">

@@ -43,11 +43,20 @@ public class NotifyVO implements java.io.Serializable {
 	@Column(name = "notify_time", insertable = false, updatable = false)
 	private	Timestamp notifyTime;	
 	
+	
 	public NotifyVO() {
 		super();
-	}
+	}	
+	
+    public NotifyVO(MembershipVO memVO, @NotEmpty(message = "請填通知訊息標題") String notifyTitle,
+            @NotEmpty(message = "請填訊息標題") String notifyContent) {
+        super();
+        this.memVO = memVO;
+        this.notifyTitle = notifyTitle;
+        this.notifyContent = notifyContent;
+    }
 
-	public Integer getNotifyId() {
+    public Integer getNotifyId() {
 		return notifyId;
 	}
 
@@ -100,6 +109,6 @@ public class NotifyVO implements java.io.Serializable {
     public String toString() {
         return "NotifyVO [notifyTitle=" + notifyTitle + ", notifyContent=" + notifyContent + "]";
     }
-	
+
 	
 }
