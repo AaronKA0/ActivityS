@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" th:href="@{/front-end/01/css/friendchat.css}" />
+
+<style type="text/css">
+.context-menu {
+	display: none;
+	z-index: 10000;
+	width: 150px;
+	background: #1b1a1a;
+	border-radius: 5px;
+	position: fixed;
+	padding: 0px !important;
+}
+
+.context-menu .item {
+	padding: 8px 10px;
+	font-size: 15px;
+	color: white;
+}
+
+.context-menu .item:hover {
+	cursor: pointer;
+	background-color: #eeeeee;
+	color: black;
+}
+</style>
+<title>最大私人聊天室</title>
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body onload="connect();" onunload="disconnect();">
+	<!-- 	<h3 id="statusOutput" class="statusOutput"></h3> -->
+	<!-- 	<div id="row"></div> -->
+	<!-- 	<div id="messagesArea" class="panel message-area"></div> -->
+
+
+
+	<div id="chat-menu-self" class="context-menu">
+		<div class="retrieve-msg item" data-action="retrieve">收回</div>
+		<div class="delete-msg item" data-action="delete">刪除</div>
+	</div>
+
+	<div id="chat-menu-friend" class="context-menu">
+		<div class="delete-msg item" data-action="delete">刪除</div>
+	</div>
+
+	<div style="width: 1100px">
+		<div class="row">
+			<div id="contacts-div" class="col-5">
+				<div id="contacts-welcome-div"
+					style="background: orange">
+					<div class="row">
+						<div class="col-8 text-end">
+							<h3>聊天夥伴</h3>
+						</div>
+						<div style="padding: 0px" class="col-4" >
+							<i id="add-contacts" class="fa fa-plus-circle"
+								style="font-size: 30px; color: green"><a th:href="@{/member}"></a></i>
+						</div>
+					</div>
+				</div>
+				<div id="contacts-search-div"><input id="contacts-search" placeholder="搜尋夥伴"><button id="contacts-search-btn" style="font-size:24px"><i class="fa fa-remove"></i></button></div>
+				<div id="contacts-display"></div>
+			</div>
+			<div id="chat-div" class="col-7">
+				<div id="chat-friend" class="text-center"></div>
+				<div class="chat">
+					<div id="welcome-div"
+						style="display: none; margin-top: 200px; text-align: center">
+						<h1>開始聊天吧！</h1>
+					</div>
+				</div>
+				<div style="display: none" id="input-div" class="panel input-area">
+					<input style="width: 90%; height: 50px" id="input-message"
+						class="text-field" type="text" placeholder="Message"
+						onkeydown="if (event.keyCode == 13) sendMessage();" />
+					<button type="submit" id="sendMessage" class="button"
+						onclick="sendMessage();"
+						style="width: 10%; height: 50px; float: right;">Send</button>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		let user = /*[[${session.memId}]]*/'';
+		let receiver = /*[[${rMemId}]]*/'';
+
+		if (!receiver) {
+			$("#welcome-div").show();
+		}
+
+		var selectedUser = receiver ? true : false;
+		receiver = receiver ? receiver : "none";
+
+
+		/*]]>*/
+	</script>
+	
+		<!-- 	load member -->
+	<script>
+		async function loadMember(memId){
+			let member = await fetch("/member/getById", {
+				method: "POST",
+				body: JSON.stringify({memId: memId})
+			}).then(function(response){
+				return response.json();
+			}).then(function(mem){
+				console.log(mem);
+				return mem;
+			});
+			return member;
+		}	
+
+	</script>
+
+<!-- search function -->
+	<script>
+		$("#contacts-search").on("input", function(){
+			let input = $(this).val().toLowerCase();
+			$("#contacts-display .contact").each(function(){
+				if(!$(this).find(".contact-name").text().toLowerCase().startsWith(input)){
+					$(this).hide();
+				} else{
+					$(this).show();
+				}
+			});
+			
+		});
+		
+		$("#contacts-search-btn").on("click", function(){
+			$("#contacts-search").val("");
+			$("#contacts-display .contact").show();
+		});
+	</script>
+
+
+	<script>
+	
+	jQuery.fn.visible = function() {
+	    return this.css('visibility', 'visible');
+	};
+
+	jQuery.fn.invisible = function() {
+	    return this.css('visibility', 'hidden');
+	};
+	
+		var MyPoint = `/FriendWS/${user}/${receiver}`;
+		var host = window.location.host;
+		var path = window.location.pathname;
+		var webCtx = path.substring(0, path.indexOf('/', 1));
+		var endPointURL = "ws://" + window.location.host + MyPoint;
+
+		var self = `${user}`;
+		var webSocket;
+
+		function connect() {
+			// create a websocket
+			webSocket = new WebSocket(endPointURL);
+
+			webSocket.onopen = function(event) {
+				console.log("Connect Success!");
+				var friend = receiver;
+			};
+
+			webSocket.onmessage = async function(event) {
+
+				var jsonObj = JSON.parse(event.data);
+
+				if ("open" === jsonObj.type) {
+					await loadFriendList(jsonObj);
+				} else if ("history" === jsonObj.type) {
+
+					$(".chat").html("");
+					$(".contact").removeClass("selected");
+					$(`.contact[data-contact='${jsonObj.receiver}']`).addClass(
+							"selected");
+
+					updateFriendName();
+
+					var messages = JSON.parse(jsonObj.message);
+					for (var i = 0; i < messages.length; i++) {
+						var historyData = JSON.parse(messages[i]);
+						var showMsg = historyData.message;
+						var status = historyData.status;
+						var id = historyData.id;
+						var sender = historyData.sender;
+
+						if (status == 4 && sender == self) {
+							$(".chat")
+									.append(
+											`<div class="retrieved-div self-retrieved"><div class="retrieved">您已收回訊息。</div></div>`);
+						} else if (status == 4
+								&& sender == $(".contact.selected").data(
+										"contact")) {
+							$(".chat")
+									.append(
+											`<div class="retrieved-div friend-retrieved"><div class="retrieved">${$(".contact.selected").find(".contact-name").text()}已收回訊息。</div></div>`);
+						} else {
+							$(".chat")
+									.append(
+											`<div class="messages ${historyData.sender === self? 'self': 'friend'}"><div class="message" data-id="${id}">${showMsg}</div><div class="status">${historyData.sender === self? (status == 2? "已讀": "未讀"): ""}</div></div>`);
+						}
+					}
+					if (selectedUser) {
+						document.querySelector(".chat").scrollTop = document
+								.querySelector(".chat").scrollHeight;
+					}
+					selectedUser = false;
+				} else if ("chat" === jsonObj.type) {
+					
+					if (jsonObj.status == 1
+							&& $(".contact.selected").data("contact") != jsonObj.sender) {
+						$(`.contact[data-contact='${jsonObj.sender}']`).find(
+								".new").visible();
+					}
+
+					if ($(".contact.selected").data("contact") == jsonObj.sender
+							|| $(".contact.selected").data("contact") == jsonObj.receiver) {
+
+						$(".chat")
+								.append(
+										`<div class="messages ${jsonObj.sender === self? 'self': 'friend'}"><div class="message" data-id="${jsonObj.id}">${jsonObj.message}</div><div class="status">${jsonObj.sender === self? (jsonObj.status == 2? "已讀": "未讀"): ""}</div></div>`);
+
+						if (jsonObj.sender === self) {
+							document.querySelector(".chat").scrollTop = document
+									.querySelector(".chat").scrollHeight;
+						}
+					}
+					
+					if(jsonObj.sender === self){
+						displayTime($(".contact.selected").data("contact"), jsonObj.time);
+						updateFriendList($(".contact.selected"));
+					} else{
+						displayTime(jsonObj.sender, jsonObj.time);
+						updateFriendList($(`.contact[data-contact='${jsonObj.sender}']`));
+					}
+
+				} else if ("close" === jsonObj.type) {
+					// 					refreshFriendList(jsonObj);
+				}
+
+			};
+
+			webSocket.onclose = function(event) {
+				console.log("Disconnected!");
+			};
+		}
+
+		function sendMessage() {
+			var inputMessage = $("#input-message");
+			var friend = $(".contact.selected").data("contact");
+			var message = inputMessage.val().trim();
+
+			if (message === "") {
+				// 				alert("Input a message");
+				inputMessage.focus();
+			} else if (friend === "") {
+				alert("Choose a friend");
+			} else {
+				var jsonObj = {
+					"type" : "chat",
+					"sender" : self,
+					"receiver" : friend,
+					"message" : message
+				};
+				webSocket.send(JSON.stringify(jsonObj));
+				inputMessage.val("");
+				inputMessage.focus();
+			}
+		}
+
+
+		async function loadFriendList(jsonObj) {
+
+			var friends = jsonObj.readStatuses;
+
+			if (!friends.length) {
+				// 				$("#contacts-welcome-div").show();
+			} else {
+
+				$("#contacts-display").html("");
+
+				for (var i = 0; i < friends.length; i++) {
+
+					if (friends[i].userName === self) {
+						continue;
+					}
+					
+					let friend = await loadMember(friends[i].userName);
+
+					$("#contacts-display")
+							.append(
+									`<div class="contact row" data-contact="${friend.memId}"><div class="col-3 text-center contact-img"><img src="${friend.memPic? 'data:image/png;base64,' + friend.memPic: '/front-end/16/images/notfind.jpg'}"></div><div style="margin-top:20px" class="col-6 contact-name"><h3>${friend.memUsername}</h3></div><div class="col-3 contact-info"><div class="new row"></div><div class="row contact-time"></div></div></div>`);
+
+
+
+					displayTime(friend.memId, friends[i].time);
+					
+					if (friends[i].isRead === false) {
+						$(`.contact[data-contact='${friend.memId}']`)
+								.find(".new").visible();
+					}
+					
+				}
+			}
+			
+			if(receiver != "none"){
+				getChatHistory(receiver);
+			}
+		}
+
+		$(document).on("click", ".contact", function() {
+			selectedUser = true;
+			getChatHistory($(this).data("contact"));
+			$(this).find(".new").invisible();
+		});
+
+		function disconnect() {
+			webSocket.close();
+		}
+
+		function updateFriendName() {
+
+			if ($(".contact.selected").length) {
+				let name = $(".contact.selected").find(".contact-name").text();
+				$("#chat-friend").html(`<h3 style="margin: 0px;">${name}</h3>`);
+				$("#chat-friend").show();
+				$("#input-div").show();
+			}
+		}
+
+		function getChatHistory(friend) {
+		
+			var jsonObj = {
+				"type" : "history",
+				"sender" : self,
+				"receiver" : friend,
+				"message" : ""
+			};
+			webSocket.send(JSON.stringify(jsonObj));
+		}
+	</script>
+
+
+	<script>
+	
+	function displayTime(name, datetime){
+		
+		if(!datetime) return;
+
+		var today = new Date().toISOString().substring(0, 10);
+		let date = datetime.substring(0,10);
+		let time = datetime.substring(11,16);
+		let hour = parseInt(time.substring(0,2), 10);
+		if(hour < 12){
+			if(hour == 0) time = 12 + time.substring(2);
+			time = "上午 " + time; 
+		} else{
+			hour = hour % 12;
+			if(hour == 0) hour = 12;
+			time = "下午 " + hour + time.substring(2); 
+		}
+		$(`.contact[data-contact='${name}']`).find(".contact-time").html("");
+		if(date >= today){
+			$(`.contact[data-contact='${name}']`).find(".contact-time").text(time);
+		} else{
+			$(`.contact[data-contact='${name}']`).find(".contact-time").text(date);
+		}
+	}
+	
+		function deleteMessage(id) {
+			var friend = $(".contact.selected").data("contact");
+			var jsonObj = {
+				"type" : "delete",
+				"sender" : self,
+				"receiver" : friend,
+				"id" : id
+			};
+			webSocket.send(JSON.stringify(jsonObj));
+		}
+
+		function retrieveMessage(id) {
+			var friend = $(".contact.selected").data("contact");
+			var jsonObj = {
+				"type" : "retrieve",
+				"sender" : self,
+				"receiver" : friend,
+				"id" : id
+			};
+			webSocket.send(JSON.stringify(jsonObj));
+		}
+
+		$(document)
+				.ready(
+						function() {
+
+							$(document).on("click contextmenu", function() {
+								$("#chat-menu-friend").hide();
+								$("#chat-menu-self").hide();
+							});
+
+							$(document).on(
+									"contextmenu",
+									".friend div.message",
+									function(e) {
+										$("#chat-menu-self").hide();
+										$("#chat-menu-friend").css({
+											'top' : e.pageY,
+											'left' : e.pageX,
+											'position' : 'absolute',
+											'border' : '1px solid black',
+											'padding' : '5px'
+										});
+										$("#chat-menu-friend").data("id",
+												$(this).data("id"));
+										$("#chat-menu-friend").show();
+										return false;
+									});
+
+							$('#chat-menu-friend div')
+									.on(
+											"click",
+											function(e) {
+
+												if ($(this).data("action") == "delete") {
+													deleteMessage($(this)
+															.closest(
+																	"#chat-menu-friend")
+															.data("id"));
+												} else if ($(this).data(
+														"action") == "retrieve") {
+													retrieveMessage($(this)
+															.closest(
+																	"#chat-menu-friend")
+															.data("id"));
+												}
+											});
+
+							$(document).on(
+									"contextmenu",
+									".self div.message",
+									function(e) {
+
+										$("#chat-menu-friend").hide();
+										$("#chat-menu-self").css({
+											'top' : e.pageY,
+											'left' : e.pageX,
+											'position' : 'absolute',
+											'border' : '1px solid black',
+											'padding' : '5px'
+										});
+
+										$("#chat-menu-self").data("id",
+												$(this).data("id"));
+										$("#chat-menu-self").show();
+
+										return false;
+									});
+
+							$('#chat-menu-self div')
+									.on(
+											"click",
+											function(e) {
+
+												if ($(this).data("action") == "delete") {
+													deleteMessage($(this)
+															.closest(
+																	"#chat-menu-self")
+															.data("id"));
+												} else if ($(this).data(
+														"action") == "retrieve") {
+													retrieveMessage($(this)
+															.closest(
+																	"#chat-menu-self")
+															.data("id"));
+												}
+											});
+							
+
+
+						});
+	</script>
+	
+	
+<!-- 	update friend list order -->
+	<script>
+	
+	function updateFriendList(curFriend){
+		while(curFriend.index() != 0){
+			curFriend.prev().insertAfter(curFriend);
+		}
+	}
+	
+	</script>
+
+
+
+
+
+	
+	
+	
+	
+	
+
+</body>
+</html>

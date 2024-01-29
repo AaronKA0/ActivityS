@@ -45,12 +45,13 @@ public class LoginController {
 			request.getSession().setAttribute("memAcc", memAcc);
 			request.getSession().setAttribute("memId", memId); // 將會員編號存入 session
 			request.getSession().setAttribute("memName", memName);
+			
 			Integer a = (Integer) session.getAttribute("memId");
 			String b = (String) session.getAttribute("memName");
 			System.out.println(a);
 			System.out.println(b);
 //	        System.out.print("line 65 :" + "memId:" + memId +" "+"memAcc:" + memAcc +" " + "memPwd:" + memPwd);
-			return "redirect:/membership/listAllMembership";
+			return "redirect:/member";
 
 		} else {
 			// 登入失敗
