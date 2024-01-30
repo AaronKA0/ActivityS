@@ -1,6 +1,6 @@
 package com.actreport.service.impl;
 
-import com.details.act.repository.ActRepository;
+import com.details.act.repository.ActRepositorys;
 import com.actreport.dto.ActivityReportQueryParams;
 import com.actreport.dto.ActivityReportRequest;
 import com.actreport.dto.ReportStatus;
@@ -24,7 +24,7 @@ public class ActivityReportService implements IActivityReportService {
     private ActivityReportReopsitory activityReportReopsitory;
 
     @Autowired
-    private ActRepository actRepository;
+    private ActRepositorys actRepository;
 
     @Autowired
     private ModelMapper modelMapper;
