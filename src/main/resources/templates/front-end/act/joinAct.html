@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>參加活動</title>
+    <!-- 引入 Bootstrap CSS 文件 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        /* 整体背景色 */
+        body {
+            background: #f5f5f5; /* 浅灰色背景 */
+            color: #333; /* 深灰色文字 */
+        }
+
+        /* 主题色 - 蓝色系 */
+        :root {
+            --primary-color: #ffffff; /* 主色调 */
+            --secondary-color: #0056b3; /* 辅助色 */
+            --button-hover-color: #e7dede; /* 按钮悬停颜色 */
+            --theme-color: #98c5f5;
+            --theme-hover-color: #0056b3;
+        }
+
+        /* 按鈕樣式統一 */
+        .category-button, #latestActivityButton, #officialActivityButton, #ongoingActivityButton, #registrationOpenButton, #endActivityButton,.card-button {
+            position: relative;
+            min-width: 100px;
+            background: white; /* 默认背景色 */
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            text-transform: uppercase;
+            padding: 10px 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            border: none; /* 去掉边框 */
+        }
+
+        /* 按钮内的文本样式 */
+        .category-button span, #latestActivityButton span, #officialActivityButton span, #ongoingActivityButton span, #registrationOpenButton span, #endActivityButton span,.card-button span {
+            z-index: 3;
+            position: relative;
+            transition: color 0.3s; /* 添加颜色变化的过渡效果 */
+        }
+
+        /* 按钮的背景动画效果 */
+        .category-button:before, #latestActivityButton:before, #officialActivityButton:before, #ongoingActivityButton:before, #registrationOpenButton:before,  #endActivityButton:before,.card-button:before {
+            z-index: 2; /* 确保这个值低于按钮文本的z-index */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 52px; /* 初始宽度 */
+            height: 100%;
+            background-color: var(--theme-color); /* 动画背景色 */
+            transition: all 0.85s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-radius: 20px; /* 和按钮相同的圆角 */
+        }
+
+        /* 懸停 */
+        .category-button:hover:before, #latestActivityButton:hover:before, #officialActivityButton:hover:before,#ongoingActivityButton:hover:before, #registrationOpenButton:hover:before, #endActivityButton:hover:before,.card-button:hover:before {
+            width: 100%; /* 懸停時擴展到整個按鈕 */
+        }
+
+        /* 按钮文本颜色在悬停时的变化 */
+        .category-button:hover span, #latestActivityButton:hover span, #officialActivityButton:hover span,#ongoingActivityButton:hover span, #registrationOpenButton:hover span, #endActivityButton:hover span , .card-button:hover span {
+            color: #000000; /* 懸停時的文本颜色 */
+        }
+
+
+        /* 搜索框和按鈕對齊 */
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+
+        /* 卡片样式 */
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+            transition: transform 0.3s ease; /* 平滑变换效果 */
+        }
+
+        .card:hover {
+            transform: translateY(-5px); /* 鼠标悬停时卡片上移 */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* 增强阴影 */
+        }
+
+        .card-img-top {
+            width: 100%; /* 设置图片宽度为容器宽度的100% */
+            height: 200px; /* 设置图片高度为固定值 */
+            object-fit: cover; /* 确保图片在调整大小时不会变形 */
+            object-position: center; /* 图片居中显示 */
+        }
+
+        /* 查看詳情按鈕樣式 */
+        .card-button {
+            background-color: var(--primary-color); /* 主题色 */
+            color: #000000; /* 文字颜色 */
+            border: none; /* 去除边框 */
+            border-radius: 20px; /* 圆角 */
+            padding: 10px 20px; /* 内边距 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 轻微阴影 */
+            transition: all 0.3s; /* 过渡效果 */
+        }
+
+        /* 按钮悬停效果 */
+        .card-button:hover {
+            background-color: var(--button-hover-color); /* 悬停颜色 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 增强阴影 */
+            transform: translateY(-2px); /* 轻微上移 */
+        }
+
+        /* 按钮焦点和激活状态 */
+        .card-button:focus,
+        .card-button:active {
+            background-color: var(--button-hover-color); /* 点击或聚焦颜色 */
+            outline: none; /* 去除焦点轮廓 */
+        }
+
+        /* 已结束活动的卡片样式 */
+        .card-ended {
+            background-color: #e0e0e0; /* 浅灰色背景表示活动已结束 */
+            color: #9e9e9e; /* 淡化文字颜色 */
+            position: relative; /* 为水印定位 */
+        }
+
+        .card-ended::after {
+            content: "已结束";
+            position: absolute;
+            top: 80%;
+            left: 80%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 1.5rem;
+            color: rgba(0, 0, 0, 0.1); /* 水印文字颜色 */
+            z-index: 0;
+        }
+
+        /* 官方活動樣式 */
+        .official-activity-ribbon {
+            position: absolute;
+            top: 25px;
+            right: -15px;
+            z-index: 1; /* 确保它在卡片上方 */
+            padding: 5px 15px;
+            background: linear-gradient(45deg, #f6d365 0%, #fda085 100%); /* 渐变背景色 */
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            transform: rotate(45deg);
+            transform-origin: top right;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+            border: 1px solid #fff; /* 白色边框 */
+            font-size: 14px; /* 字体大小 */
+        }
+
+        /* 最新活动和官方活动按钮的样式 */
+        #latestActivityButton, #officialActivityButton,#ongoingActivityButton, #registrationOpenButton, #endActivityButton {
+            color: #000000; /* 设置默认文字颜色为黑色 */
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <div class="col-md-3 mb-2 mb-md-0">
+            <a href="index.html" class="d-inline-flex link-body-emphasis text-decoration-none">
+                <span class="fs-4">做伙</span>
+            </a>
+        </div>
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="index.html" class="nav-link px-2 link-secondary">首頁</a></li>
+            <li><a href="joinAct.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+            <li><a href="createAct.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
+            <li><a href="../static/web/rent.html" class="nav-link px-2 link-secondary">場地租借</a></li>
+            <li><a href="../static/web/customer.html" class="nav-link px-2 link-secondary">FAQs</a></li>
+            <li><a href="../static/web/about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
+        </ul>
+
+        <div class="col-md-3 text-end">
+            <button type="button" class="btn btn-outline-primary me-2"><a class="nav-link" href="#"
+                                                                          data-bs-toggle="modal"
+                                                                          data-bs-target="#loginModal">登入</a></button>
+            <button type="button" class="btn btn-primary"><a class="nav-link" href="../static/web/register.html">註冊</a></button>
+        </div>
+    </header>
+</div>
+
+<main class="container mt-5">
+    <section id="join-event" class="mt-5">
+        <h2>加入活動</h2>
+        <p>歡迎參加精彩活動！</p>
+        <!-- 在這裡添加你需要的表單元素或其他內容 -->
+
+        <!-- 搜索框 -->
+        <div class="search-container mb-4 w-25">
+            <input type="text" id="searchInput" class="form-control me-3 border-0 box-shadow-none"
+                   placeholder="搜索活動...">
+            <button
+                    class="btn btn-primary rounded-3 px-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" class="bi bi-search"
+                     viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+            </button>
+        </div>
+
+    </section>
+
+    <div class="container mt-3">
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            <div id="categoryButtons" class="btn-group me-2" role="group" aria-label="First group">
+                <!-- 動態生成的按鈕放在這裡-->
+            </div>
+        </div>
+        <!-- 新增“最新活动”按钮 -->
+        <button id="latestActivityButton" class="btn btn-outline-info rounded-pill m-1"><span>最新活動</span></button>
+        <!-- 新增“官方活动”按钮 -->
+        <button id="officialActivityButton" class="btn btn-outline-success rounded-pill m-1"><span>官方活動</span></button>
+        <!-- 新增“進行中的活動”按钮 -->
+        <button id="ongoingActivityButton" class="btn btn-outline-warning rounded-pill m-1"><span>進行中</span></button>
+        <!-- 新增“報名中的活動”按钮 -->
+        <button id="registrationOpenButton" class="btn btn-outline-danger rounded-pill m-1"><span>報名中</span></button>
+        <!-- 新增“已結束的活動”按钮 -->
+        <button id="endActivityButton" class="btn btn-outline-danger rounded-pill m-1"><span>已結束</span></button>
+    </div>
+
+    <!-- 間距用 -->
+    <div class="my-4"></div>
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="activitiesContainer">
+        <!-- 動態生成的活動卡片放在這裡 -->
+    </div>
+
+    <!-- 間距用 -->
+    <div class="my-4"></div>
+
+    <div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+</main>
+
+<div class="container">
+    <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="index.html" class="nav-link px-2 text-muted">首頁</a></li>
+            <li class="nav-item"><a href="../static/web/customer.html" class="nav-link px-2 text-muted">客服中心</a></li>
+            <li class="nav-item"><a href="../static/web/about.html" class="nav-link px-2 text-muted">關於我們</a></li>
+        </ul>
+        <p class="text-center text-muted">© 2023 Company, Inc</p>
+    </footer>
+</div>
+
+
+<!-- 登入選項的Modal 彈窗 -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">會員登入</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 在這裡加入登入表單的 HTML 代碼 -->
+                <form>
+                    <!-- 登入表單的輸入欄位 -->
+                    <div class="mb-3">
+                        <label for="username" class="form-label">帳號：</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="輸入您的帳號"
+                               required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">密碼：</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password" name="password"
+                                   placeholder="輸入您的密碼" required>
+                            <!-- 在密碼輸入框右上方新增"忘記密碼"的連結 -->
+                            <a href="#" class="input-group-text" id="forgotPasswordLink">忘記密碼</a>
+                        </div>
+                    </div>
+                    <!-- 登入按鈕 -->
+                    <button type="submit" class="btn btn-primary">登入</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<!-- 引入 Bootstrap JavaScript 文件 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+
+    var isSortedDescending = true; // 默認降序排序
+
+    $(document).ready(function () {
+        var allActivities = []; // 儲存從 /act/allAct API 獲取的所有活動數據
+
+        // 請求獲取類別數據,並且生成按鈕
+        function fetchCategories() {
+            $.ajax({
+                url: '/act/actTypes',
+                type: 'GET',
+                dataType: 'json',
+                success: function (categories) {
+                    var buttonsHtml = '';
+                    $.each(categories, function (index, category) {
+                        // 生成類別按鈕,附帶類別ID
+                        // 現代化按鈕格式，加入徽章和邊框圓角
+                        buttonsHtml += '<button type="button" class="btn btn-outline rounded-pill m-1 category-button" data-id="' + category.actTypeId + '">';
+                        buttonsHtml += '<span>' + category.actTypeName + '</span>';
+                        buttonsHtml += '</button>';
+                    });
+                    $('#categoryButtons').html(buttonsHtml);
+                },
+
+                error: function () {
+                    alert('載入類別數據失敗！');
+                }
+            });
+        }
+
+        //請求獲取活動數據
+        $.ajax({
+            url: '/act/allAct',
+            type: 'GET',
+            success: function (activities) {
+                allActivities = activities.sort(function(a, b) {
+                        return b.actStatus - a.actStatus;
+                }); // 儲存得到的數據
+                displayActivities(allActivities, '#activitiesContainer'); // 顯示最新活動
+
+                // 載入和顯示類別按鈕
+                fetchCategories();
+
+                // 實時搜索邏輯
+                $('#searchInput').on('keyup', function () {
+                    var searchTerm = $(this).val().toLowerCase();
+                    var filteredActivities = allActivities.filter(function (activity) {
+                        return activity.actName.toLowerCase().includes(searchTerm) ||
+                            activity.actDescr.toLowerCase().includes(searchTerm); // 多字段搜索
+                    });
+                    displayActivities(filteredActivities, '#activitiesContainer');
+                });
+            },
+            error: function () {
+                alert('無法載入全部的活動數據');
+            }
+        });
+
+
+        // 動態生成顯示活動卡片
+        function displayActivities(activities, container) {
+            var content = '';
+            $.each(activities, function (index, activity) {
+                var imageUrl = 'data:image/jpeg;base64,' + activity.actPic;
+                var lastUpdated = new Date(activity.actCrTime).toLocaleString();
+
+                // 检查是否是官方活动
+                var isOfficialActivity = activity.memId === 1;
+                var ribbonHtml = isOfficialActivity ? '<div class="official-activity-ribbon">官方</div>' : '';
+                var cardClass = activity.actStatus === 1 ? ' card-ended' : '';
+
+                content += '<div class="col">' +
+                    '<div class="card h-100 position-relative' + cardClass + '">' + ribbonHtml + //插入緞帶
+                    '<img src="' + imageUrl + '" class="card-img-top" alt="活動圖片">' +
+                    '<div class="card-body">' +
+                    '<h4 class="card-title">' + '<b><I>' + activity.actName + '</b></I>' + '</h4>' +
+                    '<p class="card-text">' + activity.actDescr + '</p>' +
+                    '<button type="button" class="btn btn-primary card-button" data-actid="' + activity.actId + '"><span>查看詳情</span></button>' +
+                    '</div>' +
+                    '<div class="card-footer">' +
+                    '<small class="text-muted">創建時間 ' + lastUpdated + '</small>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+            });
+            $(container).html(content);
+        }
+
+
+        // 搜索功能
+        $('#searchButton').click(function () {
+            var searchTerm = $('#searchInput').val().toLowerCase();
+            var filteredActivities = allActivities.filter(function (activity) {
+                return activity.actName.toLowerCase().includes(searchTerm);
+            });
+            displayActivities(filteredActivities, '#activitiesContainer'); // 顯示搜尋結果
+        });
+
+        //綁定類別按鈕點擊事件
+        $('#categoryButtons').on('click', '.category-button', function () {
+            var typeId = $(this).data('id'); // 獲取該按鈕的類別名稱
+            var filteredActivities = allActivities.filter(function (activity) {
+                return activity.actType === typeId; // 根據類別ID過濾活動
+            });
+            displayActivities(filteredActivities, '#activitiesContainer'); // 顯示與類別名稱匹配的活動
+        });
+
+        // 為動態生成的詳情按鈕添加點擊監聽事件
+        $(document).on('click', '.card-button', function () {
+            var actId = $(this).data('actid');
+            window.location.href = '/activity/' + actId;
+        });
+
+        //顯示最新活動
+        function displayLatestActivities() {
+
+            // 根据actCrTime對活動進行排序，最近的時間排在前面
+            var sortedActivities = allActivities.slice().sort(function (a, b) {
+                return isSortedDescending
+                    ? new Date(b.actCrTime) - new Date(a.actCrTime)
+                    : new Date(a.actCrTime) - new Date(b.actCrTime);
+            });
+
+            displayActivities(sortedActivities, '#activitiesContainer');
+
+            if (isSortedDescending) {
+                $('#latestActivityButton').text('最舊活動');
+            } else {
+                $('#latestActivityButton').text('最新活動');
+            }
+            // 切换排序方向
+            isSortedDescending = !isSortedDescending;
+        }
+
+        $('#latestActivityButton').on('click', function () {
+            displayLatestActivities();
+        });
+
+
+        // 顯示官方活動的函數
+        function displayOfficialActivities() {
+            var filteredActivities = allActivities.filter(function (activity) {
+                return activity.memId === 1; // 篩選 memId 為 1 的活動
+            });
+            displayActivities(filteredActivities, '#activitiesContainer');
+        }
+
+        // 顯示進行中的活動
+        function displayOngoingActivities() {
+            var filteredActivities = allActivities.filter(function (activity) {
+                return activity.actStatus === 3; // 篩選 actStatus 為 3 (進行中) 的活動
+            });
+            displayActivities(filteredActivities, '#activitiesContainer');
+        }
+
+        // 顯示報名中的活動
+        function displayRegistrationOpenActivities() {
+            var filteredActivities = allActivities.filter(function (activity) {
+                return activity.actStatus === 4; // 篩選 actStatus 為 4 (報名中) 的活動
+            });
+            displayActivities(filteredActivities, '#activitiesContainer');
+        }
+
+        // 顯示已結束的活動
+        function displayEndActivities() {
+            var filteredActivities = allActivities.filter(function (activity) {
+                return activity.actStatus === 1; // 篩選 actStatus 為 4 (已結束) 的活動
+            });
+            displayActivities(filteredActivities, '#activitiesContainer');
+        }
+
+        // 綁定官方活動按鈕點擊事件
+        $('#officialActivityButton').on('click', function () {
+            displayOfficialActivities();
+        });
+
+        // 綁定進行中按鈕點擊事件
+        $('#ongoingActivityButton').on('click', function () {
+            displayOngoingActivities();
+        });
+
+        // 綁定報名中按鈕點擊事件
+        $('#registrationOpenButton').on('click', function () {
+            displayRegistrationOpenActivities();
+        });
+
+        // 綁定已結束按鈕點擊事件
+        $('#endActivityButton').on('click', function () {
+            displayEndActivities();
+        });
+
+    });
+</script>
+
+</html>
