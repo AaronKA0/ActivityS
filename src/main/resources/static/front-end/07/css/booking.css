@@ -37,6 +37,11 @@ span.error {
   font-weight: bold;
 }
 
+span#memInfo {
+	color: white;
+	font-size: 20px;
+}
+
 .user-input-box {
   display: flex;
   flex-wrap: wrap;
@@ -73,8 +78,13 @@ span.error {
   padding: 0 10px;
 }
 
+.paytype-venue{
+	display: flex;
+	justify-content: space-between;
+}
 .pay-type-box {
   display: flex;
+  justify-content: space-between;
 }
 
 .pay-type-title {
@@ -91,10 +101,6 @@ span.error {
   color: white;
   font-size: 20px;
   text-shadow: 2px 2px 2px black;
-}
-
-.ven-res-fee {
-	margin-left: 330px;
 }
 
 .pay-type-category label {

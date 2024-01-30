@@ -7,9 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import com.emp.model.EmpVO;
+import com.venue.model.VenVO;
 
 @Entity
 @Table(name = "announcement")
@@ -43,15 +48,15 @@ public class AnnouncementVO implements java.io.Serializable {
 		this.annId = annId;
 	}
 
-	public Integer getEmpId() {
-		return empId;
-	}
+    public Integer getEmpId() {
+        return empId;
+    }
 
-	public void setEmpId(Integer empId) {
-		this.empId = empId;
-	}
+    public void setEmpId(Integer empId) {
+        this.empId = empId;
+    }
 
-	public String getAnnName() {
+    public String getAnnName() {
 		return annName;
 	}
 

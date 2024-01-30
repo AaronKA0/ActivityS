@@ -64,6 +64,8 @@
         <button type="button" class="btn btn-outline-primary me-2"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">登入</a></button>
         <button type="button" class="btn btn-primary"><a class="nav-link" href="register.html">註冊</a></button>
       </div>
+      <h6 th:text="${session.memId}" ></h6>
+      <input type="hidden" id="sessionId" th:value="${session.memId}" />
     </header>
   </div>
 
@@ -72,7 +74,7 @@
       <input type="date" id="datepicker" class="form-select" aria-label="Default select example" style="width: 450px; display: inline-block">
       
       <select id="venuepicker" class="form-select" aria-label="Default select example" style="width: 450px; display: inline-block; margin-left: 50px;">
-        <option selected>請選擇場地</option>
+        <option value="" selected>請選擇場地</option>
         <!-- 嵌入所有場地資料庫 -->
         
       </select>
@@ -140,40 +142,26 @@
       
       <div class="main-user-info">
         <div class="user-input-box">
-          <label for="memId">會員帳號<span class="star">*</span></label>
-          <select th:field="*{memVO.memId}" id="memid">
-              <option th:value="0" selected>請選擇</option> 
-              <option th:value="1" selected>會員1</option> 
-<!--               <option th:each="memVO : ${memListData}" th:value="${memVO.memId}" th:text="${memVO.memName}"/> -->
-          </select>
-          <span th:if="${#fields.hasErrors('memVO.memId')}" th:errors="*{memVO.memId}" class="error" id="memVO.memId.errors"></span>
+          <label for="memName">會員姓名</label>
+          <span  id="memInfo" class="memName"></span>
+          <input id="memId" type="hidden" th:field="*{memVO.memId}" th:value="${session.memId}" readonly/><br/>
         </div>
 
         <div class="user-input-box">
-          <label for="orderDate">預訂日期<span class="star">*</span></label>
-          <input type="date" th:field="*{orderDate}" onclick="hideContent('orderDate.errors');"/><br/>
-          <span  th:if="${#fields.hasErrors('orderDate')}" th:errors="*{orderDate}" class="error" id="orderDate.errors"></span>
+          <label for="memEmail">E-mail</label>
+          <span id="memInfo" class="memEmail"></span>
         </div>
-
+        
         <div class="user-input-box">
-          <label for="venId">場地<span class="star">*</span></label>
-          <select th:field="*{venVO.venId}" id="venid" onchange="getPrice()">
-              <option th:value="0" selected>請選擇</option> 
-              <option th:each="venVO : ${venListData}" th:value="${venVO.venId}" th:text="${venVO.venName + '&emsp;&emsp;＄' + venVO.venPrice}"/>
-          </select>
-          <span th:if="${#fields.hasErrors('venVO.venId')}" th:errors="*{venVO.venId}" class="error" id="venVO.venId.errors"></span>
+          <label for="orderDate">預訂日期</label>
+          <span id="memInfo" class="orderDate"></span>
+          <input id="orderDate" type="hidden" th:field="*{orderDate}" value="" readonly/><br/>
         </div>
 
         <div class="user-input-box">
           <label for="memPhone">手機號碼<span class="star">*</span></label>
-          <input type="text" th:field="*{memPhone}" onclick="hideContent('memPhone.errors');"/><br/>
+          <input type="text" th:field="*{memPhone}" id="memPhone" onclick="hideContent('memPhone.errors');"/><br/>
           <span  th:if="${#fields.hasErrors('memPhone')}" th:errors="*{memPhone}" class="error" id="memPhone.errors"></span>
-        </div>
-
-        <div class="user-input-box">
-          <label for="memTaxid">統一編號</label>
-          <input type="text" th:field="*{memTaxid}" onclick="hideContent('memTaxid.errors');"/><br/>
-          <span  th:if="${#fields.hasErrors('memTaxid')}" th:errors="*{memTaxid}" class="error" id="memTaxid.errors"></span>
         </div>
 
         <div class="user-input-box">
@@ -181,7 +169,13 @@
           <input type="text" th:field="*{userCount}" onclick="hideContent('userCount.errors');"/><br/>
           <span  th:if="${#fields.hasErrors('userCount')}" th:errors="*{userCount}" class="error" id="userCount.errors"></span>
         </div>
-  
+        
+        <div class="user-input-box">
+          <label for="memTaxid">統一編號</label>
+          <input type="text" th:field="*{memTaxid}" onclick="hideContent('memTaxid.errors');"/><br/>
+          <span  th:if="${#fields.hasErrors('memTaxid')}" th:errors="*{memTaxid}" class="error" id="memTaxid.errors"></span>
+        </div>
+
       </div>
 
       <div class="user-input-box" style="width: 100%">
@@ -190,7 +184,14 @@
         <span  th:if="${#fields.hasErrors('actDescr')}" th:errors="*{actDescr}" class="error" id="actDescr.errors"></span>
       </div>
 
-      <span class="pay-type-title">付款方式<span class="star">*</span></span>
+      <div class="paytype-venue">
+        <div class="pay-type-title">付款方式<span class="star">*</span></div>
+        <div class="user-input-box" style="width: 50%;">
+          <label for="venId" id="venId" style="font-size: 20px;">場地：<span id="memInfo" class="venId"></span></label>
+          <input id="venueId" type="hidden" th:field="*{venVO.venId}" value="" readonly/><br/>
+        </div>
+      </div>
+      
       <div class="pay-type-box">
         <div class="pay-type-category">
           <input type="radio" name="pay-type" id="credit" value="1" th:field="*{orderPayType}" onclick="hideContent('orderPayType.errors');">
@@ -199,13 +200,13 @@
           <label for="transfer">線上轉帳</label>
         </div>
         
-        <div class="ven-res-fee">
-          <label>場地訂金：</label>
-          <input type="hidden" id="price" value="" th:field="*{venResFee}">
-          <span id="viewPrice"></span>
+        <div class="ven-res-fee" style="width: 50%;">
+          <label for="venResFee">訂金：<span id="memInfo" class="venResFee"></span></label>
+          <input id="halfprice" type="hidden" th:field="*{venResFee}" value="" readonly/><br/>
         </div>
       </div>
       <span  th:if="${#fields.hasErrors('orderPayType')}" th:errors="*{orderPayType}" class="error" id="orderPayType.errors"></span>
+      <span  th:if="${#fields.hasErrors('memCreditNum')}" th:errors="*{memCreditNum}" class="error" id="memCreditNum.errors"></span>
       
       
       <!-- -------------------- 傳帳帳號 -------------------- -->
@@ -225,7 +226,7 @@
                 <img class="chip" src="/front-end/07/images/chip.png" alt="chip">
                 <div class="card-number">
                     <label>Account Number</label>
-                    <input class="number-vl" placeholder="1234123412341234" />
+                    <input class="number-vl" th:field="*{memCreditNum}" placeholder="1234123412341234" />
                 </div>
                 <div class="card-holder">
                     <label>Holder</label>
@@ -333,6 +334,9 @@ function getPrice() {
    
 $(document).ready(async function(){
 	
+	var id = $("#sessionId").val();
+	$("#memId").val(id);
+	
 	// 取得所有場地資訊
 	async function getAll(){
         await fetch("/front_end/venue/all", {
@@ -346,7 +350,7 @@ $(document).ready(async function(){
             	getVenCom(vens[0].venId);
             	
             	$("#ven-user").html("");   
-            	$("#ven-user").append("<option selected>請選擇場地</option>");
+            	$("#ven-user").append(`<option value="" selected>請選擇場地</option>`);
                 for(let ven of vens){
                 	$(".form-select").append(`<option value="${ven.venName}">${ven.venName}</option>`);                       
                 }
@@ -355,6 +359,28 @@ $(document).ready(async function(){
             }); 
 	}
 	await getAll();
+	
+	// 取得所有場地資訊
+    async function getMemInfo(id){
+        await fetch("/front_end/venue/getMemInfo", {
+            method: "POST",
+            body: JSON.stringify({memId: id})
+            }).then(function(response){;
+                return response.json();
+            }).then(function(mem){ 
+//             	console.log(mem);
+            	$("span.memName").html("");
+            	$("span.memName").html(`${mem.memName}`);
+            	$("span.memEmail").html("");
+            	$("span.memEmail").html(`${mem.memEmail}`);
+            	$("#memPhone").val(`${mem.memPhone}`);
+            }).catch(function(err){
+                console.log(err);
+            }); 
+    }
+	
+    await getMemInfo(id);
+	
 	
 	async function getVenCom(id){
         await fetch("/front_end/venue/getVenCom", {
@@ -365,7 +391,6 @@ $(document).ready(async function(){
             }).then(function(vens){    
                 $("#ven-experience").empty();  
                 for(let ven of vens){
-                	console.log(ven);
                 	if(ven.venCom != null){
                     $("#ven-experience").append(`
                     		<thead id="comment">
@@ -428,10 +453,11 @@ $(document).ready(async function(){
             	getVenCom(vens[0].venId);
             	
                 $(".form-select").empty();   
-                $(".form-select").append("<option selected>請選擇場地</option>");
+                $(".form-select").append(`<option value="" selected>請選擇場地</option>`);
                 for(let ven of vens){
                     $(".form-select").append(`<option value="${ven.venName}">${ven.venName}</option>`);                       
                 }
+                
             }).catch(function(err){
                 console.log(err);
             }); 
@@ -456,6 +482,8 @@ $(document).ready(async function(){
             $("#ven-descr").html(`${ven.venDescr}`);
             $("#ven-price").html("");
             $("#ven-price").html(`租金：＄${ven.venPrice} / 天`);
+            
+            
             $("#ven-star").html("");
             $("#ven-star").html(`${ven.venTotRating}`);
             
@@ -477,6 +505,12 @@ $(document).ready(async function(){
             });
             
             getVenCom(ven.venId);
+            
+            let halfprice = parseFloat(ven.venPrice/2);
+            $(".venResFee").html("");
+            $(".venResFee").html(`＄${halfprice}`);
+            $("#halfprice").val(halfprice);
+            $("input#venueId").val(ven.venId);
 
         }).catch(function(err){
             console.log(err);
@@ -488,6 +522,9 @@ $(document).ready(async function(){
     $('#datepicker').change(async function() {
         var selectedDate = $(this).val();     
         $(".bookingform").css("display", "none");
+        $("span.orderDate").html("");
+        $("span.orderDate").html(`${selectedDate}`);
+        $("input#orderDate").val(selectedDate);
         await getOrderVen(selectedDate);
     });
     
@@ -496,6 +533,8 @@ $(document).ready(async function(){
     $('.form-select').change(async function() {
         var selectedVen = $(this).val();     
         $(".bookingform").css("display", "none");
+        $("span.venId").html("");
+        $("span.venId").html(`${selectedVen}`);
         await getVen(selectedVen);
     });
     
@@ -511,13 +550,21 @@ $(document).ready(async function(){
 	  $(".transfer-number").css("display", "block");
   });
 
+  // 點擊立即預訂
   $("#bookingnow").on("click", function(){
-	    
-	  $(".bookingform").css("display", "block");
-
-	  // 將頁面滾動到預定表單
-      var formBottom = $(".bookingform").offset().top;
-      $("html, body").animate({ scrollTop: formBottom }, "fast"); 
+	  let date = $("#datepicker").val();
+	  let venpicked = $("#venuepicker").val();
+	  
+	  if(date !== "" && venpicked !== ""){
+		  
+		  $(".bookingform").css("display", "block");
+          // 將頁面滾動到預定表單
+          var formBottom = $(".bookingform").offset().top;
+          $("html, body").animate({ scrollTop: formBottom }, "fast"); 
+	  }else{
+		  alert("請選擇日期和場地");  
+	  }
+	  
   });
 
 

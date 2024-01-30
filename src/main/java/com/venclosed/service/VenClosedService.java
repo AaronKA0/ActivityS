@@ -7,12 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.venclosed.model.VenClosedVO;
+import com.venue.service.VenService;
 
 @Service("VenClosedService")
 public class VenClosedService{
 	
 	@Autowired
 	VenClosedRepository repository;
+	
+	@Autowired
+	VenService venSvc;
 	
 	// add 新增
 	public void addVenClosed(VenClosedVO venClosedVO) {

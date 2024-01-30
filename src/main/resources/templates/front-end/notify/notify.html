@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -54,6 +54,7 @@
             <button type="button" class="btn btn-outline-primary me-2"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">登入</a></button>
             <button type="button" class="btn btn-primary"><a class="nav-link" href="register.html">註冊</a></button>
           </div>
+          <h6 id="memId" th:text="${session.memId}" ></h6>
         </header>
       </div>
 
@@ -151,32 +152,36 @@
 // 確保 DOM 內容已加載
 $(document).ready(async function(){
     
-	async function getAll(){
-		await fetch("/front_end/notify/all", {
-	        method: "GET",
-	        }).then(function(response){;
-	            return response.json();
-	        }).then(function(notifies){     
-	            // 清除清單內容
-	            $("#notify-items").html("");
-
-	            for(let notify of notifies){
-	                $("#notify-items").append(
-						`<tr>
-						  <th>${notify.notifyTitle}</th>
-						  <td>${notify.notifyContent}</td>
-						  <td>${moment(notify.notifyTime).format('YYYY-MM-DD HH:mm:ss')}</td>
-						</tr>`);
-	            }
-	        }).catch(function(err){
-	            console.log(err);
-	        }); 
-	    }
+	var memId = $("#memId").text();
+	
+	async function getNotifyByMemId(id){
+        await fetch("/front_end/notify/memberNotify",{
+            method: "POST",
+            body: JSON.stringify({memId: id})
+        }).then(function(response){;
+            return response.json();
+        }).then(function(notifies){  
+            // 清除清單內容
+            $("#notify-items").html("");
+            
+            for(let notify of notifies){
+                $("#notify-items").append(
+                    `<tr id="this_notify">
+                    <th>${notify.notifyTitle}</th>
+                    <td>${notify.notifyContent}</td>
+                    <td>${moment(notify.notifyTime).format('YYYY-MM-DD HH:mm:ss')}</td>
+                    </tr>`);
+            }
+            
+        }).catch(function(err){
+            console.log(err);
+        }); 
+    }
 	
 	
     // fetch 是一個非同步函數所以需要使用 await
-    async function getVens(notifyTitle){
-        await fetch("/front_end/notify/notify",{
+    async function getNotifyByTitle(notifyTitle){
+        await fetch("/front_end/notify/notifyTitle",{
             method: "POST",
             body: JSON.stringify({notifyTitle: notifyTitle})
         }).then(function(response){;
@@ -186,34 +191,39 @@ $(document).ready(async function(){
             $("#notify-items").html("");
             
             for(let notify of notifies){
+            	if(memId == `${notify.membershipVO.memId}`){
+            	
             	$("#notify-items").append(
-					`<tr>
+					`<tr id="this_notify">
 					<th>${notify.notifyTitle}</th>
 					<td>${notify.notifyContent}</td>
 					<td>${moment(notify.notifyTime).format('YYYY-MM-DD HH:mm:ss')}</td>
 					</tr>`);
+            	}
             }
         }).catch(function(err){
             console.log(err);
         }); 
     }
 
-    await getAll();
-
+    await getNotifyByMemId(memId);
+    
     $("#city-tab li").on("click", async function(){
-    	if($(this).data("notifytitle") == "全部"){
-    		await getAll();
+    	let title = $(this).data("notifytitle");
+    	if(title == "全部"){
+    		await getNotifyByMemId(memId);
     	}else{
-    	    await getVens($(this).data("notifytitle"));
+    	    await getNotifyByTitle($(this).data("notifytitle"));
     	}
+    });
+    
+    $("#notify-items").on("click", "tr#this_notify", function(){
+    	console.log(this);
     });
     
 });
 
 </script>
-
-
-
 
 
 </body>

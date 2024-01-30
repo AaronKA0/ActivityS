@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.membership.model.MembershipVO;
 import com.notify.model.NotifyVO;
 import com.notify.service.NotifyService;
 
@@ -25,8 +26,24 @@ public class FrontendNotifyController {
 
     @Autowired
     NotifyService notifySvc;
+    
+    
+    @RequestMapping("memberNotify")
+    public @ResponseBody List<NotifyVO> findByMemId(@RequestBody String json) {
+        
+        MembershipVO memVO = null;
+        try {
+            memVO = new ObjectMapper().readValue(json, MembershipVO.class);
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return notifySvc.findByMemId(memVO.getMemId());
+    } 
 
-    @RequestMapping("notify")
+    
+    @RequestMapping("notifyTitle")
     public @ResponseBody List<NotifyVO> findByTitle(@RequestBody String json) {
         
         NotifyVO notify = null;

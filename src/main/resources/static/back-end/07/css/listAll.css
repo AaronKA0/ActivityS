@@ -1,0 +1,44 @@
+div.title {
+    text-align: left; 
+    width: 100%; 
+    margin-left: auto; 
+    margin-right: auto; 
+    display: flex; 
+    justify-content: space-between;
+}
+
+div.function {
+	display: flex; 
+
+}
+
+a.navbar-brand {
+	border: 1px solid black;
+	border-radius: 5px;
+    color: blue; 
+    background-color: #b0c4de; 
+    text-decoration: none; 
+    padding: 5px; 
+    margin: 0 5px;
+    box-shadow: 3px 3px black;
+}
+
+table.display {
+    width: 100%; 
+    white-space: nowrap; 
+    overflow-x: auto;
+}
+
+input.getOne-button {
+    color: blue; 
+    font-weight: bold;
+}
+
+main.main {
+    z-index: 1!important;
+    text-align: center !important;
+}
+
+th.th_title {
+    text-align: center !important;
+}

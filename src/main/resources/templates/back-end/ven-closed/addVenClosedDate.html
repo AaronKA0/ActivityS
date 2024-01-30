@@ -1,89 +1,80 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="stylesheet" th:href="@{/back-end/css/update.css}">
+<title>新增場地關閉日期</title>
 
-<title>場地關閉新增 - addVenClosedDate.html</title>
+<link rel="stylesheet" th:href="@{/back-end/07/css/add.css}">
 
-<head>
-<style type="text/css">
-    
-    button {
-        padding: 5px;
-    }
-    form {
-        display: table;
-    }
-    form div {
-        display: table-row;
-    }
-    label, input, span, select {
-        display: table-cell;
-        margin: 5px;
-        text-align: left;       
-    }
-    input[type=text], input[type=password], select, textarea {
-        width: 200px;
-        margin: 5px;
-    }
-    form div div {
-        display: table-cell;
-    }
-    .center {
-        margin-left: auto;
-        margin-right: auto;
-    }
-</style>
 </head>
+
 <body>
 
 <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
-    <div style="width: 500px; margin-left: auto; margin-right: auto; display: flex; justify-content: space-between;"> 
-        <h2>場地關閉新增</h2>
-        <h3><a class="navbar-brand" th:href="@{/ven-closed/listAllVenClosed}">回查詢頁</a></h3>
-    </div>
+         <div align="center"> <h2>新增場地關閉日期</h2></div>
+         
+         <div class="nav-content">
+              
+              <div>
+                  <a class="back" th:href="@{/back_end/ven-closed/ven_closed_date}">
+                      <<<<<< 回查詢頁</a>
+              </div>
+              
+         </div>
 </nav>
 
+    <div align="center">
 
-<h4 style="text-align: end;"><b>*所有欄位皆為必填欄位</b></h4>
-    <section class="sec_form">
-        <form class="ann_form" th:action="@{insert}" method="post"  th:object="${venClosedVO}" enctype="multipart/form-data">
+        <div id="center" align="center">
+        <form th:action="@{insert}" method="post" th:object="${venClosedVO}">
+        
+<!--             <div th:each="venVO : ${venListData}"> -->
+<!--                 <input type="checkbox" th:field="*{venVO.venId}" th:value="${venVO.venId}" /> -->
+<!--                 <label th:for="${'checkbox_' + venVO.venId}" th:text="${venVO.venName}"></label> -->
+<!--                 <span th:if="${#fields.hasErrors('venVO.venId')}" th:errors="*{venVO.venId}" class="error" id="venVO.venId.errors"></span> -->
+<!--             </div> -->
             
-            <div class="item_block">
-                <label>場地</label>
+            <div>
+                <span class="title">選擇場地:</span>
                 <select th:field="*{venVO.venId}">
                     <option th:each="venVO : ${venListData}" th:value="${venVO.venId}" th:text="${venVO.venName}" />
                 </select>
-                <span th:if="${#fields.hasErrors('venVO.venId')}" th:errors="*{venVO.venId}" class="error" id="venVO.venId.errors"></span>
             </div>
-    
-            <div class="item_block">
-                <label>關閉日期</label>
+        
+            <div>
+                <span class="title">不開放日期:</span>
                 <input type="date" th:field="*{closedDate}" onclick="hideContent('closedDate.errors');"/><br/>
                 <span  th:if="${#fields.hasErrors('closedDate')}" th:errors="*{closedDate}" class="error" id="closedDate.errors"></span>
             </div>
-    
-            <div class="item_block -text">
-                <label>關閉原因</label>
-                <textarea class="annDescr_text" th:field="*{closedReason}" onclick="hideContent('closedReason.errors');" /></textarea><br/>
-                <span  th:if="${#fields.hasErrors('closedReason')}" th:errors="*{closedReason}" class="error" id="closedReason.errors"></span>
+            
+            <div class="text_block">
+                <span class="title">不開放原因:</span>
+                <textarea class="texthighter" th:field="*{closedReason}" onclick="hideContent('closedReason.errors');"/></textarea><br/> 
             </div>
-    
-            <div class="item_block">
-                <label></label>
+                <span  th:if="${#fields.hasErrors('closedReason')}" th:errors="*{closedReason}" class="error" id="closedReason.errors"></span><br/>   
+                
+            <div class="submit_button">
                 <button type="submit">確認新增</button>
-            </div>     
+            </div>    
+             
        </form>
-    </section>
-    
+       </div>
 
+        <span class="extra_error" th:text="${hasOrder}"></span>
+    </div>
+    
+    
 <script type="text/javascript">
-//清除提示信息
-function hideContent(d) {
-     document.getElementById(d).style.display = "none";
-}
+
+    //清除提示信息
+    function hideContent(d) {
+        document.getElementById(d).style.display = "none";     
+    }
+
 </script>
+
+
 </body>
 </html>

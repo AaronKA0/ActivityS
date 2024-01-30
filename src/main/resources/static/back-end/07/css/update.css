@@ -1,69 +1,101 @@
-section.sec_form{
-  /* border: 1px solid black; */
-  padding: 50px 0;
-  background: linear-gradient(white, #b0c4de);
-  min-width: 1000px;
+*{
+    box-sizing: border-box;
 }
 
-section.sec_form h1.title1{
-  text-align: center;
-  /* border: 1px solid red; */
-  margin: 0;
+body {
+    background-color: #b0c4de;
 }
 
-form.ann_form{
-  /* border: 1px solid green; */
-  width: 800px;
-  margin: 0 auto;
-}
-form.ann_form div.item_block{
-  /* border: 1px solid black; */
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-form.ann_form div.item_block:last-child{
-  margin-bottom: 0;
+.nav-content {
+	display: flex; 
+	align-items: center; 
+	justify-content: space-around; 
+	margin-bottom: 20px;
 }
 
-form.ann_form div.item_block label{
-  /* border: 1px solid red; */
-  flex-basis: 100px;
-  flex-shrink: 0;
-  text-align: right;
-  margin-right: 5px;
+a.back {
+    text-decoration: none; 
+    font-weight: bold;
 }
 
-form.ann_form div.item_block input.pk_item{
-	background-color: whitesmoke;
-	border: none;
-}
-form.ann_form div.item_block input.pk_item:focus{
-	outline: none;
+div#center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-form.ann_form div.item_block input,
-form.ann_form div.item_block select,
-form.ann_form div.item_block textarea,
-form.ann_form div.item_block button{
-  flex-grow: 1;
-  padding: 8px 5px 5px;
-  font-size: 18px;
+form {
+    text-align: left;
 }
 
-form.ann_form div.item_block textarea{
-  height: 180px;
+input,
+textarea,
+select {
+    width: 300px;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 5px;
+    margin-right: 20px;
+    font-weight: bold;
 }
 
-form.ann_form div.item_block.-text label{
-  align-self: flex-start;
+textarea {
+    resize: none;
+    height: 65px;
+    vertical-align: bottom;
+    margin-left: 3px;
 }
 
-form.ann_form div.item_block button:hover{
-  border-color: white;
-  background-color: #b0c4de;
-  color: white;
+div.text_block {
+    display: flex; 
+    align-items: top; 
+    justify-content: center;
 }
-form.ann_form div.item_block button:active{
-  box-shadow: 0px 0px 8px black inset;
+
+textarea.texthighter {
+    height: 100px;
+}
+
+span {
+    display: inline-block;
+    width: 200px;
+    text-align: left;
+    font-weight: bold;
+    margin: 10px 20px 10px 0px;
+}
+
+span.title {
+   width: 150px;
+   margin-right: 0px;
+}
+
+span.error {
+	color: red;
+	font-size: 12px;
+	text-align: end;
+	margin-top: 0;
+	margin-left: 150px;
+}
+
+.immutable {
+    background-color: #b0c4de;
+    border: 2px solid white;
+    border-radius: 5px;
+    color: gray;
+}
+
+.immutable:focus {
+    outline: none;
+}
+
+button {
+    color: red;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.submit_button {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
 }

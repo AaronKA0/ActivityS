@@ -1,180 +1,126 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="stylesheet" th:href="@{/back-end/css/update.css}">
+<title>修改場地訂單資料</title>
 
-<title>修改場地訂單 - updateVenOrder.html</title>
+<link rel="stylesheet" th:href="@{/back-end/07/css/update.css}">
 
-<head>
-<style type="text/css">
-    
-    button {
-        padding: 5px;
-    }
-    form {
-        display: table;
-    }
-    form div {
-        display: table-row;
-    }
-    label, input, span, select {
-        display: table-cell;
-        margin: 5px;
-        text-align: left;       
-    }
-    input[type=text], input[type=password], select, textarea {
-        width: 200px;
-        margin: 5px;
-    }
-    form div div {
-        display: table-cell;
-    }
-    .center {
-        margin-left: auto;
-        margin-right: auto;
-    }
-</style>
 </head>
+
 <body>
 
 <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
-    <div style="width: 500px; margin-left: auto; margin-right: auto; display: flex; justify-content: space-between;"> 
-        <h2>訂單修改</h2>
-        <h3><a class="navbar-brand" th:href="@{/back_end/ven-order/ven_order_page}">回查詢頁</a></h3>
-    </div>
+		 <div align="center"> <h2>修改場地訂單資料</h2></div>
+		 
+		 <div class="nav-content">
+		      
+		      <div>
+		          <a class="back" th:href="@{/back_end/ven-order/ven_order_page}">
+		              <<<<<< 回查詢頁</a>
+              </div>
+              
+         </div>
 </nav>
 
+	<div align="center">
 
-<h4 style="text-align: end;"><b>*所有欄位皆為必填欄位</b></h4>
-    <section class="sec_form">
-        <form class="ann_form" th:action="@{update}" method="post"  th:object="${venOrderVO}" enctype="multipart/form-data">
+        <div id="center" align="center">
+        <form th:action="@{update}" method="post" th:object="${venOrderVO}" enctype="multipart/form-data">
             
-            <div class="item_block">
-                <label>編號</label>
-                <input class="pk_item" type="text" th:field="*{venOrderId}" onclick="hideContent('venOrderId.errors');" readonly/><br/>
-                <span  th:if="${#fields.hasErrors('venOrderId')}" th:errors="*{venOrderId}" class="error" id="venOrderId.errors"></span>
-            </div>
+            <span class="title">訂單編號:</span>
+                <input class="immutable" type="text" th:field="*{venOrderId}" readonly/>
             
-            <div class="item_block">
-                <label>場地</label>
+            <span class="title">活動概述:</span>
+                <textarea class="immutable" th:field="*{actDescr}" onclick="hideContent('actDescr.errors');" readonly /></textarea><br/>
+            
+            <span class="title">場地:</span>
                 <select th:field="*{venVO.venId}">
                     <option th:each="venVO : ${venListData}" th:value="${venVO.venId}" th:text="${venVO.venName}" />
                 </select>
-                <span th:if="${#fields.hasErrors('venVO.venId')}" th:errors="*{venVO.venId}" class="error" id="venVO.venId.errors"></span>
-            </div>
-    
-            <div class="item_block">
-                <label>會員帳號</label>
-                <input type="text" th:field="*{memId}" onclick="hideContent('memId.errors');"/><br/>
-                <span  th:if="${#fields.hasErrors('memId')}" th:errors="*{memId}" class="error" id="memId.errors"></span>
-            </div>
             
-            <div class="item_block">
-                <label>員工編號</label>
-                <input type="text" th:field="*{empId}" onclick="hideContent('empId.errors');"/><br/>
-                <span  th:if="${#fields.hasErrors('empId')}" th:errors="*{empId}" class="error" id="empId.errors"></span>
-            </div>
+            <span class="title">會員帳號:</span>
+                <input class="immutable" type="text" th:field="*{memVO.memId}" readonly/><br/>
             
-            <div class="item_block">
-                <label>選擇預訂日期</label>
-                <input type="date" th:field="*{orderDate}" onclick="hideContent('orderDate.errors');"/><br/>
-                <span  th:if="${#fields.hasErrors('orderDate')}" th:errors="*{orderDate}" class="error" id="orderDate.errors"></span>
-            </div>
+            <span class="title">負責員工:</span>
+                <input type="text" th:field="*{empId}" readonly/>
             
-            <div class="item_block">
-                <label style="width: 200px;">連絡電話(手機)</label>
-                <input type="text" th:field="*{memPhone}" onclick="hideContent('memPhone.errors');"/><br/>
+            <span class="title">預約日期:</span>
+                <input type="date" th:field="*{orderDate}" onclick="hideContent('orderDate.errors');"/>
+                <span  th:if="${#fields.hasErrors('orderDate')}" th:errors="*{orderDate}" class="error" id="orderDate.errors"></span><br/>
+            
                 <span  th:if="${#fields.hasErrors('memPhone')}" th:errors="*{memPhone}" class="error" id="memPhone.errors"></span>
-            </div>
+            <span class="title">手機號碼:</span>
+                <input type="text" th:field="*{memPhone}" onclick="hideContent('memPhone.errors');"/>
+              
+            <span class="title">預估人數:</span>
+                <input type="text" th:field="*{userCount}" onclick="hideContent('userCount.errors');"/>
+                <span  th:if="${#fields.hasErrors('userCount')}" th:errors="*{userCount}" class="error" id="userCount.errors"></span><br/>
             
-            <div class="item_block -text">
-                <label>活動內容概述</label>
-                <textarea class="annDescr_text" th:field="*{actDescr}" onclick="hideContent('actDescr.errors');" /></textarea><br/>
-                <span  th:if="${#fields.hasErrors('actDescr')}" th:errors="*{actDescr}" class="error" id="actDescr.errors"></span>
-            </div>
-            
-            <div class="item_block">
-                <label>預估人數</label>
-                <input type="text" th:field="*{userCount}" onclick="hideContent('userCount.errors');"/><br/>
-                <span  th:if="${#fields.hasErrors('userCount')}" th:errors="*{userCount}" class="error" id="userCount.errors"></span>
-            </div>
-            
-            <div class="item_block">
-                <label>公司統編號碼</label>
-                <input type="text" th:field="*{memTaxid}" onclick="hideContent('memTaxid.errors');"/><br/>
                 <span  th:if="${#fields.hasErrors('memTaxid')}" th:errors="*{memTaxid}" class="error" id="memTaxid.errors"></span>
-            </div>
+            <span class="title">公司統編:</span>
+                <input type="text" th:field="*{memTaxid}" onclick="hideContent('memTaxid.errors');"/>
             
-            <div class="item_block">
-                <label>付款方式</label>
-                <input type="text" th:field="*{orderPayType}" onclick="hideContent('orderPayType.errors');"/><br/>
+            <span class="title">訂單成立時間:</span>
+                <span class="immutable" th:text="${venOrderVO.orderTime}"></span><br/>
+            
                 <span  th:if="${#fields.hasErrors('orderPayType')}" th:errors="*{orderPayType}" class="error" id="orderPayType.errors"></span>
-            </div>
+            <span class="title">付款方式:</span>
+                <input type="text" th:field="*{orderPayType}" onclick="hideContent('orderPayType.errors');"/>
             
-            <div class="item_block">
-                <label>轉帳帳號</label>
-                <input type="text" th:field="*{memTransferNum}" onclick="hideContent('memTransferNum.errors');"/><br/>
-                <span  th:if="${#fields.hasErrors('memTransferNum')}" th:errors="*{memTransferNum}" class="error" id="memTransferNum.errors"></span>
-            </div>
+            <span class="title">會員轉帳帳號:</span>
+                <input class="immutable" type="text" th:field="*{memTransferNum}" readonly /><br/>
+                
+            <span class="title">信用卡卡號:</span>
+                <input class="immutable" type="text" th:field="*{memCreditNum}" readonly/>
             
-            <div class="item_block">
-                <label>信用卡號碼</label>
-                <input type="text" th:field="*{memCreditNum}" onclick="hideContent('memCreditNum.errors');"/><br/>
-                <span  th:if="${#fields.hasErrors('memCreditNum')}" th:errors="*{memCreditNum}" class="error" id="memCreditNum.errors"></span>
-            </div>
+            <span class="title">訂單狀態:</span>
+                <input type="text" th:field="*{orderStatus}" onclick="hideContent('orderStatus.errors');"/>
+                <span  th:if="${#fields.hasErrors('orderStatus')}" th:errors="*{orderStatus}" class="error" id="orderStatus.errors"></span><br/>
             
-            <div class="item_block">
-                <label>訂單狀態</label>
-                <input type="text" th:field="*{orderStatus}" onclick="hideContent('orderStatus.errors');"/><br/>
-                <span  th:if="${#fields.hasErrors('orderStatus')}" th:errors="*{orderStatus}" class="error" id="orderStatus.errors"></span>
-            </div>
-            
-            <div class="item_block">
-                <label>租借狀態</label>
-                <input type="text" th:field="*{venRentStatus}" onclick="hideContent('venRentStatus.errors');"/><br/>
                 <span  th:if="${#fields.hasErrors('venRentStatus')}" th:errors="*{venRentStatus}" class="error" id="venRentStatus.errors"></span>
-            </div>
+            <span class="title">租借狀態:</span>
+                <input type="text" th:field="*{venRentStatus}" onclick="hideContent('venRentStatus.errors');"/>
+                
+            <span class="title">場地滿意度:</span>
+                <input class="immutable" type="text" th:field="*{venRating}" readonly/><br/>
             
-            <div class="item_block">
-                <label>場地滿意度</label>
-                <input type="text" th:field="*{venRating}" onclick="hideContent('venRating.errors');"/><br/>
-                <span  th:if="${#fields.hasErrors('venRating')}" th:errors="*{venRating}" class="error" id="venRating.errors"></span>
-            </div>
-            
-            <div class="item_block">
-                <label>場地評論</label>
-                <input type="text" th:field="*{venCom}" onclick="hideContent('venCom.errors');"/><br/>
                 <span  th:if="${#fields.hasErrors('venCom')}" th:errors="*{venCom}" class="error" id="venCom.errors"></span>
-            </div>
+            <span class="title">使用評論:</span>
+                <input type="text" th:field="*{venCom}" onclick="hideContent('venCom.errors');"/>
             
-            <div class="item_block">
-                <label>場地評論狀態</label>
-                <input type="text" th:field="*{venComStatus}" onclick="hideContent('venComStatus.errors');"/><br/>
-                <span  th:if="${#fields.hasErrors('venComStatus')}" th:errors="*{venComStatus}" class="error" id="venComStatus.errors"></span>
-            </div>
+            <span class="title">評論狀態:</span>
+                <input type="text" th:field="*{venComStatus}" onclick="hideContent('venComStatus.errors');"/>
+                <span  th:if="${#fields.hasErrors('venComStatus')}" th:errors="*{venComStatus}" class="error" id="venComStatus.errors"></span><br/>
             
-            <div class="item_block">
-                <label>場地訂金</label>
-                <input type="text" th:field="*{venResFee}" onclick="hideContent('venResFee.errors');"/><br/>
-                <span  th:if="${#fields.hasErrors('venResFee')}" th:errors="*{venResFee}" class="error" id="venResFee.errors"></span>
-            </div>
+            <span class="title">評論時間:</span>
+                <span th:text="${venOrderVO.venComTime}"></span>
             
-            
-            <div class="item_block">
-                <label></label>
+            <span class="title">場地訂金:</span>
+                <input class="immutable" type="text" th:field="*{venResFee}" readonly/><br/>
+                  
+                  
+            <div class="submit_button">
                 <button type="submit">確認修改</button>
-            </div>     
+            </div>    
+             
        </form>
-    </section>
-    
+       </div>
 
+	</div>
+	
+	
 <script type="text/javascript">
-//清除提示信息
-function hideContent(d) {
-     document.getElementById(d).style.display = "none";
-}
+
+    //清除提示信息
+    function hideContent(d) {
+        document.getElementById(d).style.display = "none";     
+    }
+
 </script>
+
+
 </body>
 </html>
