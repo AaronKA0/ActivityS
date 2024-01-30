@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/act")
+@RequestMapping("/type")
 public class ActTypeController {
 
     @Autowired
