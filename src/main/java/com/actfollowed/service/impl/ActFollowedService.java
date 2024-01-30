@@ -1,7 +1,7 @@
 package com.actfollowed.service.impl;
 
-import com.details.act.model.ActVO;
-import com.details.act.repository.ActRepository;
+import com.details.act.model.ActVOs;
+import com.details.act.repository.ActRepositorys;
 import com.actfollowed.dto.ActFollowRequest;
 import com.actfollowed.model.ActFollowedVO;
 import com.actfollowed.repository.ActFollowedRepository;
@@ -20,7 +20,7 @@ public class ActFollowedService implements IActFollowedService {
     @Autowired
     private ActFollowedRepository actFollowedRepository;
     @Autowired
-    private ActRepository actRepository;
+    private ActRepositorys actRepository;
 
     @Override
     public Page<ActFollowedVO> getActFollows(Integer memId, Pageable pageable) {
@@ -52,7 +52,7 @@ public class ActFollowedService implements IActFollowedService {
         ActFollowedVO actFollowed = new ActFollowedVO();
         BeanUtils.copyProperties(actFollowRequest, actFollowed);
 
-        ActVO act = actRepository.findById(actFollowRequest.getActId())
+        ActVOs act = actRepository.findById(actFollowRequest.getActId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         //將活動table的關注人數欄位增加
@@ -67,7 +67,7 @@ public class ActFollowedService implements IActFollowedService {
         ActFollowedVO actFollowed = new ActFollowedVO();
         BeanUtils.copyProperties(actFollowRequest, actFollowed);
 
-        ActVO act = actRepository.findById(actFollowRequest.getActId())
+        ActVOs act = actRepository.findById(actFollowRequest.getActId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         //將活動table的關注人數欄位減去

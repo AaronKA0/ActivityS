@@ -17,7 +17,7 @@ import java.util.Set;
 @Entity
 @Table(name = "activity")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class ActVO implements Serializable {
+public class ActVOs implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

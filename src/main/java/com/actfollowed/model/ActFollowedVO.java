@@ -1,6 +1,6 @@
 package com.actfollowed.model;
 
-import com.details.act.model.ActVO;
+import com.details.act.model.ActVOs;
 import com.membership.model.MembershipVO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,7 +26,7 @@ public class ActFollowedVO implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "act_id", insertable = false, updatable = false)
-    private ActVO act;
+    private ActVOs act;
 
     @JsonIgnore
     @ManyToOne
@@ -57,11 +57,11 @@ public class ActFollowedVO implements Serializable {
         this.folStatus = folStatus;
     }
 
-    public ActVO getAct() {
+    public ActVOs getAct() {
         return act;
     }
 
-    public void setAct(ActVO act) {
+    public void setAct(ActVOs act) {
         this.act = act;
     }
 

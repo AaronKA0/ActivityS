@@ -1,7 +1,7 @@
 package com.actreg.service.impl;
 
-import com.details.act.model.ActVO;
-import com.details.act.repository.ActRepository;
+import com.details.act.model.ActVOs;
+import com.details.act.repository.ActRepositorys;
 import com.actreg.dto.*;
 import com.actreg.model.ActRegVO;
 import com.actreg.repository.ActRegRepository;
@@ -29,7 +29,7 @@ public class ActRegService implements IActRegService {
     private ActRegRepository actRegRepository;
 
     @Autowired
-    private ActRepository actRepository;
+    private ActRepositorys actRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -78,7 +78,7 @@ public class ActRegService implements IActRegService {
             actReg.setAct(actRepository.findById(actRegRequest.getActId()).orElse(null));
 
             //如果報名人數超過活動人數上限 則不能報名
-            ActVO act = actRepository.findById(actRegRequest.getActId()).orElse(null);
+            ActVOs act = actRepository.findById(actRegRequest.getActId()).orElse(null);
             if ((act.getActUpper() - act.getActCount()) - actRegRequest.getRegTotal() < 0) {
                 throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED);
             }

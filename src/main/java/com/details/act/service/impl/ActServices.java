@@ -1,9 +1,9 @@
 package com.details.act.service.impl;
 
 import com.details.act.dto.ActQueryParams;
-import com.details.act.model.ActVO;
-import com.details.act.repository.ActRepository;
-import com.details.act.service.IActService;
+import com.details.act.model.ActVOs;
+import com.details.act.repository.ActRepositorys;
+import com.details.act.service.IActServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,13 +14,13 @@ import java.util.Optional;
 
 @Component
 @Slf4j
-public class ActService implements IActService {
+public class ActServices implements IActServices {
 
     @Autowired
-    private ActRepository actRepository;
+    private ActRepositorys actRepository;
 
     @Override
-    public Page<ActVO> reviewActs(ActQueryParams actQueryParams, Pageable pageable) {
+    public Page<ActVOs> reviewActs(ActQueryParams actQueryParams, Pageable pageable) {
 
         if (actQueryParams.getActStatus() != null) {
             return actRepository.findByMemIdAndActStatus(actQueryParams.getMemId(), actQueryParams.getActStatus(), pageable);
@@ -30,8 +30,8 @@ public class ActService implements IActService {
     }
 
     @Override
-    public ActVO deleteActReg(Integer actId) {
-        Optional<ActVO> actById = actRepository.findById(actId);
+    public ActVOs deleteActReg(Integer actId) {
+        Optional<ActVOs> actById = actRepository.findById(actId);
 
         if (actById.isPresent()) {
             if (actById.get().getActStatus() != 4) { //4 = 報名中的才能取消

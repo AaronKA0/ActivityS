@@ -1,6 +1,6 @@
 package com.actreport.model;
 
-import com.details.act.model.ActVO;
+import com.details.act.model.ActVOs;
 import com.actreport.constant.ReportTitle;
 
 import javax.persistence.*;
@@ -19,7 +19,7 @@ public class ActivityReportVO implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "act_id", referencedColumnName = "act_id")
-    private ActVO act;
+    private ActVOs act;
 
     @Column(name = "mem_id")
     private Integer memId;
@@ -51,11 +51,11 @@ public class ActivityReportVO implements Serializable {
 		this.repId = repId;
 	}
 
-	public ActVO getAct() {
+	public ActVOs getAct() {
 		return act;
 	}
 
-	public void setAct(ActVO act) {
+	public void setAct(ActVOs act) {
 		this.act = act;
 	}
 

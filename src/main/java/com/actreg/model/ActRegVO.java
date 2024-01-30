@@ -1,6 +1,6 @@
 package com.actreg.model;
 
-import com.details.act.model.ActVO;
+import com.details.act.model.ActVOs;
 import javax.persistence.*;
 import java.util.Date;
 
@@ -18,7 +18,7 @@ public class ActRegVO {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "act_id", referencedColumnName = "act_id")
-    private ActVO act;
+    private ActVOs act;
 
     @Column(name = "reg_total")
     private Integer regTotal;
@@ -54,11 +54,11 @@ public class ActRegVO {
         this.memId = memId;
     }
 
-    public ActVO getAct() {
+    public ActVOs getAct() {
         return act;
     }
 
-    public void setAct(ActVO act) {
+    public void setAct(ActVOs act) {
         this.act = act;
     }
 
