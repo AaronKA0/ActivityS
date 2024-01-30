@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>會員查詢報名活動</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/後台首頁頁面.css}">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+
+    <style>
+        main {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+
+        th {
+            white-space: nowrap;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        td {
+            text-align: center;
+            vertical-align: middle;
+            font-size: 16px;
+        }
+
+    </style>
+</head>
+
+<body>
+<header class="header">
+    <h1>【會員查詢報名活動】</h1>
+    <p class="welcome">歡迎您 管理員</p>
+    <nav>
+        <ul>
+            <li><a href="後台登入頁面.html">登出</a></li>
+        </ul>
+    </nav>
+</header>
+
+<aside class="aside">
+    <nav class="nav">
+        <div class="sidenav">
+            <a href="../static/後台首頁頁面.html">首頁</a>
+            <hr>
+            <button class="dropdown-btn">員工管理
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="修改密碼頁面.html">修改密碼</a>
+                <a href="員工資料管理首頁.html">員工資料管理</a>
+            </div>
+            <hr>
+            <button class="dropdown-btn">一般功能管理
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="新增公告.html">公告管理</a>
+                <a href="新增FAQ.html">FQA管理</a>
+            </div>
+            <hr>
+            <button class="dropdown-btn">會員功能管理
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="查詢會員.html">查詢會員</a>
+                <a href="產生會員通知訊息.html">產生通知訊息</a>
+                <a href="#">審核會員檢舉</a>
+            </div>
+            <hr>
+            <button class="dropdown-btn">活動功能管理
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a th:href="@{/membership/report}">審核活動管理</a>
+                <a th:href="@{/membership/commentreport}">審核留言管理</a>
+            </div>
+            <hr>
+            <button class="dropdown-btn">場地功能管理
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="新增場地.html">場地管理</a>
+                <a href="#">場地訂單管理</a>
+                <a href="#">場地狀態管理</a>
+            </div>
+        </div>
+    </nav>
+</aside>
+
+<main class="main">
+
+    <div>
+        <h1 class="fw-bold">報名的活動</h1>
+        <div class="d-md-flex justify-content-md-end mb-1">
+            <div class="btn-group" role="group">
+                <button class="filterButton btn btn-secondary btn-sm" data-rep-status="">所有
+                </button>
+                <button class="filterButton btn btn-warning btn-sm" data-reg-status="2">審核中</button>
+                <button class="filterButton btn btn-danger btn-sm" data-reg-status="1">未通過</button>
+                <button class="filterButton btn btn-success btn-sm" data-reg-status="3">報名成功</button>
+                <button class="historyButton btn btn-dark btn-sm" data-act-status="1">歷史紀錄</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover shadow-sm">
+            <caption id="count">筆</caption>
+            <thead class="thead-inverse table-primary">
+            <tr>
+                <th>活動編號</th>
+                <th>活動名稱</th>
+                <th>活動詳情</th>
+                <th>開始時間
+                    <select id="time">
+                        <option value="DESC">新到舊</option>
+                        <option value="ASC">舊到新</option>
+                    </select>
+                </th>
+                <th>審核狀態</th>
+                <th>報名狀態</th>
+                <th>活動狀態</th>
+            </tr>
+            </thead>
+            <tbody id="actreg">
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="fixed-bottom">
+        <div class="container">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link">上一頁</a>
+                    </li>
+                    <li class="page-item">
+                        <!--                <a class="page-link" href="#">1</a>-->
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">下一頁</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</main>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+
+<script th:src="@{/js/後台首頁頁面.js}"></script>
+
+<script>
+    $(function () {
+        checkActReg();
+    })
+
+    let statusMap = {
+        "1": "未通過",
+        "2": "審核中",
+        "3": "報名成功"
+    };
+    let regStatus; // 狀態預設
+    let pageNumber = 1; //第幾頁預設(進function會 -1 所以會變0)
+    let actTime = "DESC"; // 排序預設
+    // let size = 5; //顯示筆數預設
+    //歷史紀錄
+    let actStatus;
+
+    //審核狀態篩選
+    $(".filterButton").click(function () {
+        pageNumber = 1; //龜0 不然原先在所有然後第二頁 再進狀態篩選會有問題
+        regStatus = $(this).data("regStatus");
+        actStatus = null;
+        checkActReg(pageNumber, actTime, regStatus, actStatus);
+    });
+
+    //歷史紀錄
+    $(".historyButton").click(function () {
+        pageNumber = 1; //龜0 不然原先在所有然後第二頁 再進狀態篩選會有問題
+        actStatus = $(this).data("actStatus");
+        checkActReg(pageNumber, actTime, null, actStatus);
+    });
+
+    //時間排序
+    $("#time").change(function () {
+        actTime = $("#time").val();
+        if (actStatus) {
+            regStatus = null;
+        }
+        checkActReg(pageNumber, actTime, regStatus, actStatus);
+    });
+
+    //分頁
+    function loadPage(newPageNumber, actTime, regStatus, actStatus) {
+        pageNumber = newPageNumber;
+        checkActReg(pageNumber, actTime, regStatus, actStatus);
+    }
+
+    //多顯示5筆
+    // function plusFive() {
+    //     size += 5;
+    //     checkActReg(pageNumber, actTime, regStatus, size);
+    // }
+
+    //查會員報名的所有活動
+    function checkActReg(pageNumber, actTime, regStatus, actStatus) {
+        let url = "/actreg";
+
+        if (regStatus !== undefined && regStatus !== null) {
+            url = url + `?regStatus=${regStatus}`;
+
+        }
+        if (actStatus !== undefined && actStatus !== null) {
+            url = url + `?actStatus=${actStatus}`;
+        }
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {
+                page: pageNumber - 1,
+                sortDirection: actTime
+                // size: size
+            },
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (actRegsPageable) {
+                let actregHTML = "";
+                let pageCount = 0;
+
+                let actRegs = actRegsPageable.content;
+                let totalElements = actRegsPageable.totalElements; //總數量
+                let totalPages = actRegsPageable.totalPages; //總頁數
+                let size = actRegsPageable.size; //顯示幾筆
+                let number = actRegsPageable.number; //第幾頁
+                let first = actRegsPageable.first;
+                let last = actRegsPageable.last;
+
+                nextPage(totalPages, actTime, regStatus, actStatus);
+
+                //在哪頁就將那頁的按鈕加顏色
+                $(".number").each(function () {
+                    if ($(this).text() === (number + 1).toString()) {
+                        $(this).addClass("active");
+                    }
+                })
+
+                //判斷上下頁可不可以按
+                if (!first || !last) {
+                    $("#first").removeClass("disabled")
+                    $("#last").removeClass("disabled")
+                }
+                if (first) {
+                    $("#first").addClass("disabled")
+                }
+                if (last) {
+                    $("#last").addClass("disabled")
+                }
+
+                let actStatusMap = {
+                    "1": "已結束",
+                    "2": "已取消",
+                    "3": "進行中",
+                    "4": "報名中",
+                }
+
+                actRegs.forEach(function (actReg) {
+                    let statusChinese = statusMap[actReg.regStatus];
+                    let actStatusChinese = actStatusMap[actReg.act.actStatus];
+
+                    if (actReg.regStatus !== 4) { //4 = 自己取消報名 就不用再顯示給使用者看到
+                        actregHTML +=
+                            `<tr class="pb-5 pt-5">
+                                <td><span class="badge rounded-circle bg-dark">${actReg.act.actId}</span></td>
+                                <td><span class="fw-bold">${actReg.act.actName}</span></td>
+                                <td>
+                                    <button class="rounded-pill btn btn-info" data-act-id="${actReg.act.actId}" onclick="view(this)">查看</button>
+                                </td>
+                                <td>${actReg.act.actStartTime}</td>
+                                <td class="status">${statusChinese}</td>
+                                <td>
+                                    <button class="delbtn rounded-pill btn btn-danger"
+                                    data-act-id="${actReg.act.actId}" data-actreg-status="${actReg.regStatus}" onclick="del(this)">取消
+                                    </button>
+                                </td>
+                                <td class="actStatus pb-3">${actStatusChinese}</td>
+                            </tr>`;
+
+                        pageCount++;
+                    }
+                });
+                $("#actreg").html(actregHTML);
+
+                let count = $("#count");
+                count.html(`${pageCount}筆`);
+
+                $(".status").each(function () {
+
+                    let delbtn = $(this).closest('tr').find(".delbtn");
+
+                    switch ($(this).text()) {
+                        case "審核中":
+                            $(this).addClass("text-warning");
+                            break;
+                        case "報名成功":
+                            $(this).addClass("text-success");
+
+                            delbtn.text("報名成功");
+                            delbtn.removeClass("btn-danger");
+                            delbtn.addClass("btn-success");
+                            delbtn.addClass("disabled");
+                            break;
+                        case "未通過":
+                            $(this).addClass("text-danger");
+
+                            delbtn.text("未通過");
+                            delbtn.addClass("disabled");
+                            break;
+                    }
+                })
+
+                $(".actStatus").each(function () {
+                    switch ($(this).text()) {
+                        case "已結束":
+                            $(this).addClass("text-danger");
+                            $(this).closest("tr").find(".delbtn").addClass("disabled");
+                            break;
+                        case "已取消":
+                            $(this).addClass("text-warning");
+                            $(this).closest("tr").find(".delbtn").addClass("disabled");
+                            break;
+                        case "進行中":
+                            $(this).addClass("text-primary");
+                            $(this).closest("tr").find(".delbtn").addClass("disabled");
+                            break;
+                        case "報名中":
+                            $(this).addClass("text-success");
+                            break;
+                    }
+                });
+            },
+            error(xhr, status, error) {
+            }
+        })
+    }
+
+    //查看活動詳情
+    function view(e) {
+        let actId = $(e).data("actId");
+        window.location.href = `/CHA104G3/activity/${actId}`;
+    }
+
+    //取消報名
+    function del(e) {
+        let btn = $(e);
+        let actId = btn.data("actId");
+        let actregStatus = btn.data("actregStatus");
+
+        // 3 = 報名審核通過 不給再取消 防止用戶搞事
+        if (actregStatus === 3) {
+            return;
+        }
+
+        Swal.fire({
+            title: "要取消報名嗎?",
+            width: "300px",
+            showCancelButton: true,
+            confirmButtonText: "確定",
+            cancelButtonText: "取消"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                unsignupData = {
+                    actId: actId,
+                    regStatus: 4
+                }
+                $.ajax({
+                    url: "/actreg",
+                    type: "PUT",
+                    data: JSON.stringify(unsignupData),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (actReg) {
+                        btn.text("已取消");
+                        btn.addClass("disabled");
+                    },
+                    error(xhr, status, error) {
+                        console.error(status, error);
+                    }
+                });
+            }
+        });
+    }
+
+    function nextPage(totalPages, actTime, regStatus, actStatus) {
+        let pageHTML = "";
+        for (let i = 0; i < totalPages; i++) {
+            pageHTML +=
+                `<li  class="page-item">
+                <a class="number page-link" href="#" onclick="loadPage(${i + 1},'${actTime}',${regStatus},${actStatus}); return false;">${i + 1}</a>
+                </li>`;
+        }
+
+        $(".pagination").html(pageHTML); //插入頁碼
+        $(".pagination").prepend('<li id="first" class="page-item disabled"><a class="page-link" href="#" onclick="previous()">上一頁</a></li>'); //將上一頁插入
+        $(".pagination").append('<li id="last" class="page-item"><a class="page-link" href="#" onclick="next()">下一頁</a></li>');  //將下一頁插入
+    }
+
+    //下一頁
+    function next() {
+        pageNumber++;
+        checkActReg(pageNumber, actTime, regStatus, actStatus)
+    }
+
+    //上一頁
+    function previous() {
+        pageNumber--;
+        checkActReg(pageNumber, actTime, regStatus, actStatus);
+    }
+</script>
+
+</body>
+
+</html>

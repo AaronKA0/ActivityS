@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>活動主審核報名</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/後台首頁頁面.css}">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+
+    <style>
+        main {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+
+        th {
+            white-space: nowrap;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        td {
+            text-align: center;
+            vertical-align: middle;
+            font-size: 16px;
+        }
+
+    </style>
+</head>
+
+<body>
+<header class="header">
+    <h1>【會員審核報名活動】</h1>
+    <p class="welcome">歡迎您 管理員</p>
+    <nav>
+        <ul>
+            <li><a href="後台登入頁面.html">登出</a></li>
+        </ul>
+    </nav>
+</header>
+
+<aside class="aside">
+    <nav class="nav">
+        <div class="sidenav">
+            <a href="../static/後台首頁頁面.html">首頁</a>
+            <hr>
+            <button class="dropdown-btn">員工管理
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="修改密碼頁面.html">修改密碼</a>
+                <a href="員工資料管理首頁.html">員工資料管理</a>
+            </div>
+            <hr>
+            <button class="dropdown-btn">一般功能管理
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="新增公告.html">公告管理</a>
+                <a href="新增FAQ.html">FQA管理</a>
+            </div>
+            <hr>
+            <button class="dropdown-btn">會員功能管理
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="查詢會員.html">查詢會員</a>
+                <a href="產生會員通知訊息.html">產生通知訊息</a>
+                <a href="#">審核會員檢舉</a>
+            </div>
+            <hr>
+            <button class="dropdown-btn">活動功能管理
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a th:href="@{/CHA104G3/member/report}">審核活動管理</a>
+                <a th:href="@{/CHA104G3/member/commentreport}">審核留言管理</a>
+            </div>
+            <hr>
+            <button class="dropdown-btn">場地功能管理
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="新增場地.html">場地管理</a>
+                <a href="#">場地訂單管理</a>
+                <a href="#">場地狀態管理</a>
+            </div>
+        </div>
+    </nav>
+</aside>
+
+<main class="main">
+
+
+    <div>
+        <div>
+            <h1 class="fw-bold">我的活動</h1>
+        </div>
+        <div class="d-md-flex justify-content-md-end mb-1">
+            <div class="btn-group" role="group">
+                <button class="filterButton btn btn-secondary btn-sm" data-act-status="">所有活動</button>
+                <button class="historyButton btn btn-dark btn-sm" data-act-status="1">歷史紀錄</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover shadow-sm">
+            <thead class="thead-inverse table-primary">
+            <tr>
+                <th>活動編號</th>
+                <th>活動名稱</th>
+                <th>活動詳情</th>
+                <th>活動開始時間</th>
+                <th>審核報名</th>
+                <th>活動狀態</th>
+                <th>取消活動</th>
+                <th>修改活動</th>
+            </tr>
+            </thead>
+            <tbody id="actreg">
+
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 查看報名活動的會員modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">會員列表</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-sm shadow-sm">
+                            <thead class="thead-inverse">
+                            <tr>
+                                <th>會員ID</th>
+                                <th>會員資訊</th>
+                                <th>報名人數</th>
+                                <th>報名原因</th>
+                                <th>報名狀態</th>
+                                <th>審核</th>
+                            </tr>
+                            </thead>
+                            <tbody id="actmember">
+                            <tr>
+                                <td>1</td>
+                                <td>這邊放連結可以連到會員個人頁面</td>
+                                <td>6人</td>
+                                <td>報名原因</td>
+                                <td>狀態</td>
+                                <td>
+                                    <button>這邊連update api</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed-bottom">
+        <div class="container">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link">上一頁</a>
+                    </li>
+                    <li class="page-item">
+                        <!--                <a class="page-link" href="#">1</a>-->
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">下一頁</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+
+<script th:src="@{/js/後台首頁頁面.js}"></script>
+
+<script>
+
+    $(function () {
+        actReview();
+    })
+
+    let pageNumber = 1;
+
+    function loadPage(pageNumber) {
+        actReview(pageNumber);
+    }
+
+    //所有活動
+    $(".filterButton").click(function () {
+        let actStatus = $(this).data("actStatus");
+        actReview(pageNumber, actStatus);
+
+    });
+    //歷史紀錄
+    $(".historyButton").click(function () {
+        let actStatus = $(this).data("actStatus");
+        actReview(pageNumber, actStatus);
+    });
+
+    //自己舉辦的所有活動
+    function actReview(pageNumber, actStatus) {
+
+        let url = "/acts";
+
+        if (actStatus !== undefined && actStatus !== null) {
+            url += `?actStatus=${actStatus}`;
+        }
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {
+                page: pageNumber - 1
+            },
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (actPageable) {
+                let actHTML = "";
+                let acts = actPageable.content;
+                let number = actPageable.number;
+                let totalPages = actPageable.totalPages;
+                let first = actPageable.first;
+                let last = actPageable.last;
+
+                nextPage(totalPages);
+
+                $(".number").each(function () {
+                    if ($(this).text() === (number + 1).toString()) {
+                        $(this).addClass("active");
+                    }
+                })
+
+                //判斷上下頁可不可以按
+                if (!first || !last) {
+                    $("#first").removeClass("disabled")
+                    $("#last").removeClass("disabled")
+                }
+                if (first) {
+                    $("#first").addClass("disabled")
+                }
+                if (last) {
+                    $("#last").addClass("disabled")
+                }
+
+                // 1:活動結束; 2:活動取消; 3:活動進行中; 4:活動報名中(預設))
+                let actStatusMap = {
+                    "1": "已結束",
+                    "2": "已取消",
+                    "3": "進行中",
+                    "4": "報名中"
+                }
+                acts.forEach(function (act) {
+                    let actStatusChinese = actStatusMap[act.actStatus];
+
+                    actHTML +=
+                        `<tr>
+                            <td><span class="badge rounded-circle bg-dark">${act.actId}</span></td>
+                            <td><span class="fw-bold">${act.actName}</span></td>
+                            <td>
+                                <button class="rounded-pill btn btn-info" data-act-id="${act.actId}" onclick="view(this)">查看</button>
+                            </td>
+                            <td>${act.actStartTime}</td>
+                            <td>
+                                <button type="button" class="showMem rounded-pill btn btn-warning" data-act-id="${act.actId}"
+                                data-bs-toggle="modal" data-bs-target="#exampleModal">查看</button>
+                            </td>
+                            <td class="actStatus">${actStatusChinese}</td>
+                            <td data-act-id="${act.actId}">
+                            <button class="delAct rounded-pill btn btn-danger" onclick="delAct(this)">取消</button>
+                            </td>
+                            <td class="actStatus pb-3" data-act-id="${act.actId}">
+                            <button class="delAct rounded-pill btn btn-danger" onclick="updateAct(this)">修改</button>
+                            </td>
+                         </tr>`;
+
+                });
+                $("#actreg").html(actHTML);
+
+                $(".actStatus").each(function () {
+
+                    switch ($(this).text()) {
+                        case "已結束": //1
+                            $(this).addClass("text-danger");
+                            $(this).closest('tr').find($(".delAct")).addClass("disabled");
+                            break;
+                        case "已取消": //2
+                            $(this).addClass("text-warning");
+                            $(this).closest('tr').find($(".delAct")).addClass("disabled");
+                            break;
+                        case "進行中": //3
+                            $(this).addClass("text-primary");
+                            $(this).closest('tr').find($(".delAct")).addClass("disabled");
+                            break;
+                        case "報名中": //4
+                            $(this).addClass("text-success");
+                            break;
+                    }
+                });
+
+            }, error: function (xhr, status, error) {
+                alert("!!!!")
+            }
+        });
+    }
+
+    //活動詳情
+    function view(e) {
+        let actId = $(e).data("actId");
+        window.location.href = `/CHA104G3/activity/${actId}`;
+    }
+
+    //查看報名的會員
+    $(document).on("click", ".showMem", function (e) {
+        let actId = $(this).data("actId");
+
+        let statusMap = {
+            "1": "未通過",
+            "2": "審核中",
+            "3": "已通過"
+        };
+
+        $.ajax({
+            url: '/actregs/members',
+            type: 'GET',
+            data: {
+                actId: actId
+            },
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (actMemberPageable) {
+                let actMembers = actMemberPageable.content;
+
+                let memberHTML = "";
+                actMembers.forEach(function (actMember) {
+                    if (actMember.regStatus !== 4) {
+                        let statusChinese = statusMap[actMember.regStatus];
+                        memberHTML +=
+                            `<tr>
+                                <td><span class="badge rounded-circle bg-secondary">${actMember.memId}</span></td>
+                                <td><button class="rounded-pill btn btn-info btn-sm" data-mem-id="${actMember.memId}" onclick="member(this)">查看</button></td>
+                                <td>${actMember.regTotal}</td>
+                                <td>${actMember.regReason}</td>
+                                <td class="status">${statusChinese}</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button class="ok btn btn-success btn-sm" data-act-reg-id="${actMember.actRegId}">通過</button>
+                                        <button class="not btn btn-danger btn-sm" data-act-reg-id="${actMember.actRegId}">未通過</button>
+                                    </div>
+                                </td>
+                            </tr>`;
+                    }
+                });
+                $("#actmember").html(memberHTML);
+
+                $(".status").each(function () {
+
+                    let ok = $(this).closest("tr").find(".ok");
+                    let not = $(this).closest("tr").find(".not");
+
+                    switch ($(this).text()) {
+                        case "審核中":
+                            $(this).addClass("text-warning");
+                            break;
+                        case "已通過":
+                            $(this).addClass("text-success");
+                            ok.addClass("disabled")
+                            not.addClass("disabled")
+                            break;
+                        case "未通過":
+                            $(this).addClass("text-danger");
+                            ok.addClass("disabled")
+                            not.addClass("disabled")
+                            break;
+                    }
+
+                });
+            },
+            error: function () {
+            }
+        });
+    });
+
+    function member(e) {
+        let memId = $(e).data("memId");
+        // window.location.href = `/CHA104G3/activity/${memId}`;
+    }
+
+    //審核通過
+    $(document).on("click", ".ok", function () {
+        let thisBtn = $(this);
+        let notBtn = thisBtn.next(".not");
+
+        reviewData = {
+            actRegId: $(this).data("actRegId"),
+            regStatus: 3
+        }
+        $.ajax({
+            url: '/actreg/member',
+            type: 'PUT',
+            data: JSON.stringify(reviewData),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function () {
+
+                let status = thisBtn.closest("tr").find(".status");
+                status.text("已通過");
+                status.removeClass("text-warning");
+                status.removeClass("text-danger"); //再刪掉 只需要warning才對 審核通過後即不再審核
+                status.addClass("text-success");
+                thisBtn.addClass("disabled");
+
+                notBtn.addClass("disabled")
+                Toast.fire({
+                    icon: 'success',
+                    title: '完成審核！'
+                })
+            },
+            error() {
+                alert("!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            }
+        });
+    });
+    //不通過
+    $(document).on("click", ".not", function () {
+        let thisBtn = $(this);
+        let okBtn = thisBtn.prev(".ok");
+
+        reviewData = {
+            actRegId: $(this).data("actRegId"),
+            regStatus: 1
+        }
+
+        $.ajax({
+            url: '/actreg/member',
+            type: 'PUT',
+            data: JSON.stringify(reviewData),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function () {
+
+                let status = thisBtn.closest("tr").find(".status");
+                status.text("未通過");
+                status.removeClass("text-warning");
+                status.removeClass("text-success"); //再刪掉 只需要warning才對 審核通過後即不再審核
+                status.addClass("text-danger");
+                thisBtn.addClass("disabled");
+
+                okBtn.addClass("disabled")
+                Toast.fire({
+                    icon: 'success',
+                    title: '完成審核！'
+                })
+            },
+            error() {
+                alert("!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            }
+        });
+    });
+
+    //分頁元件生成
+    function nextPage(totalPages) {
+        let pageHTML = "";
+        for (let i = 0; i < totalPages; i++) {
+            pageHTML += `<li  class="page-item">` +
+                `<a class="number page-link" href="#" onclick="loadPage(${i + 1}); return false;">${i + 1}</a>` +
+                `</li>`;
+        }
+        $(".pagination").html(pageHTML); //插入頁碼
+        $(".pagination").prepend('<li id="first" class="page-item disabled"><a class="page-link" href="#" onclick="previous()">上一頁</a></li>'); //將上一頁插入
+        $(".pagination").append('<li id="last" class="page-item"><a class="page-link" href="#" onclick="next()">下一頁</a></li>');  //將下一頁插入
+    }
+
+    //下一頁
+    function next() {
+        actReview(++pageNumber);
+    }
+
+    //上一頁
+    function previous() {
+        actReview(--pageNumber);
+    }
+
+    //取消活動
+    function delAct(e) {
+        let actId = $(e).closest("td").data("actId");
+        Swal.fire({
+            title: "要取消活動嗎?",
+            width: "300px",
+            showCancelButton: true,
+            confirmButtonText: "確定",
+            cancelButtonText: "取消"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `/acts/${actId}`,
+                    type: 'PUT',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function () {
+                        Toast.fire({
+                            icon: 'success',
+                            title: '已取消！'
+                        });
+                        actReview(pageNumber);
+                    },
+                    error: function (xhr, status, error) {
+                        Toast.fire({
+                            title: '失敗！'
+                        });
+
+                    }
+                });
+            }
+        });
+    }
+
+    //Sweetalart2
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000,
+        onOpen: toast => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+</script>
+
+</body>
+
+</html>
