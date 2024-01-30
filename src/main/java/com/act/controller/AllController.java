@@ -8,17 +8,17 @@ public class AllController {
 	
     @RequestMapping("")
     public String index(){
-        return "index";
+        return "front-end/zuo-huo";
     }
 
     @RequestMapping("/act/createAct")
     public String createAct(){
-        return "createAct";
+        return "front-end/act/createAct";
     }
 
     @RequestMapping("/act/updateAct")
     public String updateAct(){
-        return "updateAct";
+        return "front-end/act/updateAct";
     }
 
     @RequestMapping("/act/joinAct")
