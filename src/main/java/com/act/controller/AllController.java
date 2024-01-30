@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class AllController {
+	
     @RequestMapping("")
     public String index(){
         return "index";
@@ -22,6 +23,6 @@ public class AllController {
 
     @RequestMapping("/act/joinAct")
     public String joinAct(){
-        return "joinAct";
+        return "front-end/act/joinAct";
     }
 }

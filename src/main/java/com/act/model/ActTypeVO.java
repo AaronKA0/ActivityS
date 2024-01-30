@@ -28,7 +28,33 @@ public class ActTypeVO {
         this.actTypeName = actTypeName;
     }
 
-    @Override
+    
+    public Integer getActTypeId() {
+		return actTypeId;
+	}
+
+
+	public void setActTypeId(Integer actTypeId) {
+		this.actTypeId = actTypeId;
+	}
+
+
+	public List<ActVO> getActivities() {
+		return activities;
+	}
+
+
+	public void setActivities(List<ActVO> activities) {
+		this.activities = activities;
+	}
+
+
+	public String getActTypeName() {
+		return actTypeName;
+	}
+
+
+	@Override
     public String toString() {
         return "ActTypeVO{" +
                 "actTypeId=" + actTypeId +

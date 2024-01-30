@@ -74,22 +74,13 @@
 
 
 
-		<!-- Spring Boot Starter Security -->
-		<dependency>
-   			 <groupId>org.springframework.boot</groupId>
-   			 <artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
+		
 		<!--Thymeleaf 與 Spring Security 的整合依賴-->
 		<dependency>
    		     <groupId>org.thymeleaf.extras</groupId>
     		 <artifactId>thymeleaf-extras-springsecurity5</artifactId>
         </dependency>
-        <!--圖形驗證碼的依賴-->
-		<dependency>
-   			 <groupId>com.github.penggle</groupId>
-   			 <artifactId>kaptcha</artifactId>
-    		 <version>2.3.2</version>
-		</dependency>
+     
 
 
 
