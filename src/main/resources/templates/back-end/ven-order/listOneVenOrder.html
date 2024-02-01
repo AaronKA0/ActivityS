@@ -29,8 +29,15 @@
 
         <div id="center" align="center">
         
-            <span class="title">訂單編號:</span><span th:text="${venOrderVO.venOrderId}"></span>
-            <span class="title">活動概述:</span><textarea th:text="${venOrderVO.actDescr}" readonly></textarea><br/>
+            <div class="has_two">
+                <span class="title">訂單編號:</span><span th:text="${venOrderVO.venOrderId}"></span>
+                
+                <div class="text_block">
+                    <span class="title">活動概述:</span>
+                    <textarea th:text="${venOrderVO.actDescr}" readonly></textarea><br/>
+                </div>
+            </div>
+            
             <span class="title">場地:</span><span th:text="${venOrderVO.venVO.venName}"></span>
             <span class="title">會員帳號:</span><span th:text="${venOrderVO.memVO.memName}"></span><br/>
             <span class="title">負責員工:</span><span th:text="${venOrderVO.empId}"></span>

@@ -37,17 +37,26 @@ public class NotifyVO implements java.io.Serializable {
 	@NotEmpty(message="請填訊息標題")
 	private	String	notifyContent;
 	
-	@Column(name = "notify_status", insertable = false, updatable = false)
+	@Column(name = "notify_status", insertable = false)
 	private	Byte	notifyStatus;
 	
 	@Column(name = "notify_time", insertable = false, updatable = false)
 	private	Timestamp notifyTime;	
 	
+	
 	public NotifyVO() {
 		super();
-	}
+	}	
+	
+    public NotifyVO(MembershipVO memVO, @NotEmpty(message = "請填通知訊息標題") String notifyTitle,
+            @NotEmpty(message = "請填訊息標題") String notifyContent) {
+        super();
+        this.memVO = memVO;
+        this.notifyTitle = notifyTitle;
+        this.notifyContent = notifyContent;
+    }
 
-	public Integer getNotifyId() {
+    public Integer getNotifyId() {
 		return notifyId;
 	}
 
@@ -56,12 +65,12 @@ public class NotifyVO implements java.io.Serializable {
 	}
 	
 	
-	public MembershipVO getMembershipVO() {
+	public MembershipVO getMemVO() {
 	    return memVO;
 	}
 	
-	public void setMembershipVO(MembershipVO membershipVO) {
-	    this.memVO = membershipVO;
+	public void setMemVO(MembershipVO memVO) {
+	    this.memVO = memVO;
 	}
 
     public String getNotifyTitle() {
@@ -98,8 +107,8 @@ public class NotifyVO implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return "NotifyVO [notifyTitle=" + notifyTitle + ", notifyContent=" + notifyContent + "]";
+        return "NotifyVO [notifyId=" + notifyId + ", notifyTitle=" + notifyTitle + ", notifyContent=" + notifyContent + ", notifyStatus=" + notifyStatus +"]";
     }
-	
+
 	
 }

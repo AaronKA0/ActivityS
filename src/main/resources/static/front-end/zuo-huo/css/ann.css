@@ -1,0 +1,50 @@
+/*  公告區  */ 
+
+div.ann_block::-webkit-scrollbar {
+  /* WebKit */
+  /*側邊欄卷軸隱藏*/
+  width: 0px;
+}
+
+span.ann_main {
+    width: 100%; 
+    text-align: center; 
+    font-size: 20px; 
+    font-weight: bold; 
+    color: blue;
+}
+
+div.ann_block {
+    display: flex; 
+    justify-content: center; 
+    flex-wrap: wrap; 
+    height: 100px; 
+    overflow-y: auto;
+    border-radius: 10px;
+}
+
+table.ann_table {
+    width: 100%;
+    text-align: center; 
+    background-color: WhiteSmoke;
+    border-collapse: collapse;
+}
+
+table.ann_table td {
+	border: 2px solid white;
+    border-top: none;
+    padding: 3px;
+}
+td.ann_time {
+    width: 15%;
+}
+
+td.ann_title {
+    width: 25%;
+    cursor: pointer;
+}
+
+td.ann_content {
+    width: 60%;
+    cursor: pointer;
+}

@@ -58,6 +58,39 @@ public class FrontendNotifyController {
         return notifySvc.findByTitle(notify.getNotifyTitle());
     }
     
+    
+    @RequestMapping("Unread")
+    public @ResponseBody List<NotifyVO> findUnread(@RequestBody String json) {
+        
+        MembershipVO memVO = null;
+        
+        try {
+            memVO = new ObjectMapper().readValue(json, MembershipVO.class);
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        
+        return notifySvc.findUnread(memVO.getMemId());
+    }
+    
+    @RequestMapping("readAll")
+    public @ResponseBody List<NotifyVO> readAll(@RequestBody String json) {
+        
+        MembershipVO memVO = null;
+        
+        try {
+            memVO = new ObjectMapper().readValue(json, MembershipVO.class);
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }      
+        return notifySvc.readAll(memVO.getMemId());
+    }
+    
+    
     @RequestMapping("all")
     public @ResponseBody List<NotifyVO> getAll(){
         return notifySvc.getAll();

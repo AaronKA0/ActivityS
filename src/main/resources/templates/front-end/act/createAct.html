@@ -24,7 +24,7 @@
             color: #333; /* 字体颜色 */
 
             background: linear-gradient(to right, rgb(243, 134, 183), rgb(108, 225, 254));
-            linear-gradient(to right, #F386B7, #6CE1FE);/* Standard syntax */
+            linear-gradient:(to right, #F386B7, #6CE1FE);/* Standard syntax */
              /* 為整個頁面設置背景顏色 */
         }
 
@@ -162,18 +162,19 @@
                 <span class="fs-4">做伙</span>
             </a>
         </div>
+        
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li>
-                <a href="index.html" class="nav-link px-2 link-secondary">首頁</a>
+                <a th:href="@{/}" class="nav-link px-2 link-secondary">首頁</a>
             </li>
             <li>
-                <a href="joinAct.html" class="nav-link px-2 link-secondary"
+                <a th:href="@{/act/joinAct}" class="nav-link px-2 link-secondary"
                 >瀏覽活動</a
                 >
             </li>
             <li>
-                <a href="createAct.html" class="nav-link px-2 link-secondary"
+                <a th:href="@{/act/createAct}" class="nav-link px-2 link-secondary"
                 >舉辦活動</a
                 >
             </li>
