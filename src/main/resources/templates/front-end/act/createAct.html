@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>舉辦活動</title>
+    <!-- 引入 Bootstrap CSS 文件 -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        /* 导入Google字体 */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        /* 设置全局字体 */
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px; /* 标准字体大小 */
+            line-height: 1.6; /* 行高 */
+            color: #333; /* 字体颜色 */
+
+            background: linear-gradient(to right, rgb(243, 134, 183), rgb(108, 225, 254));
+            linear-gradient:(to right, #F386B7, #6CE1FE);/* Standard syntax */
+             /* 為整個頁面設置背景顏色 */
+        }
+
+        /* 调整标题的样式 */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700; /* 字体加粗 */
+            margin-bottom: 0.5em; /* 下边距 */
+        }
+
+        /* 调整段落的样式 */
+        p {
+            margin-bottom: 1em; /* 下边距 */
+        }
+        /* 可以根据需要调整其他元素的样式 */
+
+        main {
+            min-height: calc(100vh - 70px);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+            margin-top: 10px;
+        }
+
+        form input[type="text"],
+        form input[type="datetime-local"],
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        form textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        form input[type="submit"] {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #4cae4c;
+        }
+
+        /* main */
+
+        body {
+            position: relative;
+            display: flex;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #container-main {
+            position: absolute;
+            /* height-max: 50% !important; */
+            width: 50%;
+            top: 20%;
+            border: 1px solid #000;
+            border-radius: 25px;
+            z-index: 10;
+            padding: 20px;
+        }
+
+        #foot-div {
+            position: relative;
+            top: 1000px;
+            width: 80%;
+        }
+        form input[type="text"],
+        form input[type="datetime-local"],
+        form textarea,
+        form select {
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 鼠标悬停在输入框上时的效果 */
+        form input[type="text"]:hover,
+        form input[type="datetime-local"]:hover,
+        form textarea:hover,
+        form select:hover {
+            border-color: #adb5bd;
+        }
+
+        /* 调整按钮样式 */
+        form input[type="submit"] {
+            background-color: #007bff; /* 主题蓝色 */
+            border-color: #007bff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 鼠标悬停在按钮上时的效果 */
+        form input[type="submit"]:hover {
+            background-color: #0069d9; /* 深一点的蓝色 */
+            border-color: #0062cc;
+        }
+
+        .card {
+            background-color: #f8f9fa; /* 浅灰色背景 */
+            border: 1px solid #e0e0e0; /* 淡灰色边框 */
+            border-radius: 0.5rem; /* 圆角 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* 轻微的阴影 */
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <header
+            class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom"
+    >
+        <div class="col-md-3 mb-2 mb-md-0">
+            <a
+                    href="index.html"
+                    class="d-inline-flex link-body-emphasis text-decoration-none"
+            >
+                <span class="fs-4">做伙</span>
+            </a>
+        </div>
+        
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li>
+                <a th:href="@{/}" class="nav-link px-2 link-secondary">首頁</a>
+            </li>
+            <li>
+                <a th:href="@{/act/joinAct}" class="nav-link px-2 link-secondary"
+                >瀏覽活動</a
+                >
+            </li>
+            <li>
+                <a th:href="@{/act/createAct}" class="nav-link px-2 link-secondary"
+                >舉辦活動</a
+                >
+            </li>
+            <li>
+                <a href="../static/web/rent.html" class="nav-link px-2 link-secondary"
+                >場地租借</a
+                >
+            </li>
+            <li>
+                <a href="../static/web/customer.html" class="nav-link px-2 link-secondary"
+                >FAQs</a
+                >
+            </li>
+            <li>
+                <a href="../static/web/about.html" class="nav-link px-2 link-secondary"
+                >關於我們</a
+                >
+            </li>
+        </ul>
+
+        <div class="col-md-3 text-end">
+            <button type="button" class="btn btn-outline-primary me-2">
+                <a
+                        class="nav-link"
+                        href="#"
+                        data-bs-toggle="modal"
+                        data-bs-target="#loginModal"
+                >登入</a
+                >
+            </button>
+            <button type="button" class="btn btn-primary">
+                <a class="nav-link" href="../static/web/register.html">註冊</a>
+            </button>
+        </div>
+    </header>
+</div>
+
+<main class="container mt-0">
+    <section class="my-5">
+        <h2 class="mb-3 text-center">舉辦活動</h2>
+        <p class="text-center mb-4">歡迎舉辦精彩活動！填寫以下資訊完成舉辦。</p>
+        <div class="card p-4">
+            <form id="actCreatForm" action="/activities" method="post" novalidate>
+                <div class="mb-3">
+                    <label for="actName" class="form-label">活動名稱:</label>
+                    <input type="text" class="form-control" id="actName" name="actName" required/>
+                    <div class="invalid-feedback">
+                        活動名稱不得為空:
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="actUpper" class="form-label">報名人數上限:</label>
+                    <input type="number" class="form-control" id="actUpper" name="actUpper" required/>
+                    <div class="invalid-feedback">
+                        報名人數不得為空:
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="actType" class="form-label">活動類型:</label>
+                    <select id="actType" class="form-select" name="actType" required>
+                        <!-- 動態填充活動類型 -->
+                    </select>
+                </div>
+                <!-- 日期和時間增加響應式 -->
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="regStartTime" class="form-label">活動報名開始時間:</label>
+                        <input type="datetime-local" class="form-control" id="regStartTime" name="regStartTime"
+                               required/>
+                        <div class="invalid-feedback">
+                            活動報名開始時間不得為空:
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="regEndTime" class="form-label">活動報名結束時間:</label>
+                        <input type="datetime-local" class="form-control" id="regEndTime" name="regEndTime" required/>
+                        <div class="invalid-feedback">
+                            活動報名開始時間不得為空:
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="actStartTime" class="form-label">活動開始時間:</label>
+                        <input type="datetime-local" class="form-control" id="actStartTime" name="actStartTime"
+                               required/>
+                        <div class="invalid-feedback">
+                            活動開始時間不得為空:
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="actEndTime" class="form-label">活動結束時間:</label>
+                        <input type="datetime-local" class="form-control" id="actEndTime" name="actEndTime" required/>
+                        <div class="invalid-feedback">
+                            活動結束時間不得為空:
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="actPic" class="form-label">新增活動圖片:</label>
+                    <input type="file" class="form-control" id="actPic" name="actPic"
+                           accept="image/gif, image/jpeg, image/png">
+                    <img id="preview" src="" alt="Image preview" class="img-fluid mt-3"
+                         style="display: none; width: 465px; height: auto;">
+                </div>
+
+                <div class="mb-3">
+                    <label for="actLoc" class="form-label">活動地點:</label>
+                    <input type="text" class="form-control" id="actLoc" name="actLoc" required/>
+                    <div class="invalid-feedback">
+                        活動地點不得為空:
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="actDescr" class="form-label">活動說明:</label>
+                    <textarea class="form-control" id="actDescr" name="actDescr" rows="4" required></textarea>
+                    <div class="invalid-feedback">
+                        活動說明不得為空:
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">創建活動</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+<div class="container" id="foot-div">
+    <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item">
+                <a href="index.html" class="nav-link px-2 text-muted">首頁</a>
+            </li>
+            <li class="nav-item">
+                <a href="../static/web/customer.html" class="nav-link px-2 text-muted"
+                >客服中心</a
+                >
+            </li>
+            <li class="nav-item">
+                <a href="../static/web/about.html" class="nav-link px-2 text-muted">關於我們</a>
+            </li>
+        </ul>
+        <p class="text-center text-muted">© 2023 Company, Inc</p>
+    </footer>
+</div>
+
+</body>
+
+<script>
+
+    $(document).ready(function () {
+        $.ajax({
+            url: "/act/actTypes",
+            type: "GET",
+            dataType: "json",
+            success: function (types) {
+                // 成功接收到執行
+                var select = $('#actType');
+                $.each(types, function (index, type) {
+                    // 將每個type增加<option>元素
+                    select.append($('<option>', {
+                        value: type.actTypeId,
+                        text: type.actTypeName
+                    }));
+                });
+            },
+            error: function (xhr, status, error) {
+                // 處理請求失敗
+                console.error(error);
+            }
+        });
+    });
+
+
+    //預覽圖
+    $("#actPic").change(function () {
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#preview").attr('src', e.target.result).show();
+            };
+            reader.readAsDataURL(this.files[0]);
+        } else {
+            $("#preview").hide(); // 隱藏圖片預覽
+        }
+    });
+
+    function formatDateTime(dateTimeString) {
+        const [date, time] = dateTimeString.split('T');
+        return date + ' ' + time + ':00'; // 假設後端需要秒
+    }
+
+    function validateDateTime(start, end) {
+        var startDate = new Date(start);
+        var endDate = new Date(end);
+        return startDate <= endDate;
+    }
+
+    $('#actCreatForm').submit(function (e) {
+        e.preventDefault(); // 防止表單默認提交功能
+
+        // 獲取並格式化日期時間
+        var regStart = formatDateTime($('#regStartTime').val());
+        var regEnd = formatDateTime($('#regEndTime').val());
+        var actStart = formatDateTime($('#actStartTime').val());
+        var actEnd = formatDateTime($('#actEndTime').val());
+
+        // 假設表單初始狀態有效
+        var isValid = true;
+
+        // 驗證每個輸入的值
+        $('.form-control').each(function () {
+            if (!this.checkValidity()) {
+                $(this).addClass('is-invalid');
+                isValid = false; // 如果有一個無效，將表單狀態設為false
+            }
+        });
+
+        // 驗證報名時間
+        if (!validateDateTime(regStart, regEnd)) {
+            alert('報名開始時間不得晚於報名結束時間。');
+            return; // 阻止表單提交
+        }
+
+        // 驗證活動時間
+        if (!validateDateTime(actStart, actEnd)) {
+            alert('活動開始時間不得晚於活動結束時間。');
+            return; // 阻止表單提交
+        }
+
+        // 驗證活動開始時間不得早於報名結束時間
+        if (!validateDateTime(regEnd, actStart)) {
+            alert('活動開始時間不得早於報名結束時間。');
+            return; // 阻止表單提交
+        }
+
+        // 驗證活動結束時間不得早於報名開始時間
+        if (!validateDateTime(regStart, actEnd)) {
+            alert('活動結束時間不得早於報名開始時間。');
+            return; // 阻止表單提交
+        }
+        if (!isValid) {
+            return;// 若表單無效 阻止提交
+        }
+
+        // 如果驗證通過，繼續表單提交邏輯
+        let formData = new FormData();
+        formData.append("actName", $('#actName').val());
+        formData.append("actUpper", $('#actUpper').val());
+        formData.append("regStartTime", regStart);
+        formData.append("regEndTime", regEnd);
+        formData.append("actStartTime", actStart);
+        formData.append("actEndTime", actEnd);
+        formData.append("actLoc", $('#actLoc').val());
+        formData.append("actDescr", $('#actDescr').val());
+        formData.append("actType", $('#actType').val());
+        // 表單中有新增的屬性這邊也要添加
+
+        let fileInput = $("#actPic")[0];
+        let file = fileInput.files[0];
+
+        if (file) {
+            formData.append("actPic", file);
+        }
+
+        // 發送 AJAX 請求
+        $.ajax({
+            url: '/act/addOrUpdateAct', // 表單的 action 屬性值
+            type: 'POST',
+            data: formData,
+            processData: false, // 不要處理發送的數據
+            contentType: false, // 不要設置Content-Type
+
+            success: function (response) {
+                // 請求成功後執行
+                console.log(response);
+                alert('活動創建成功！');
+                // 可以在這邊添加導向或是其他邏輯
+                location.href = "index.html"
+            },
+            error: function (XHR, Status, error) {
+                // 請求失敗後執行
+                alert('創建活動失敗，請檢查輸入是否正確。');
+            }
+        });
+    });
+
+    <!-- 引入 Bootstrap JavaScript 文件 -->
+
+    src = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity = "sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin = "anonymous"
+</script>
+</html>

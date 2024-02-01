@@ -32,7 +32,7 @@ public class NotifyWebSocket {
 
 	@OnClose
 	public void onClose(Session userSession, CloseReason reason) {
-	    System.out.println("closing websocket");
+//	    System.out.println("closing websocket");
 		Set<Integer> userIds = sessionsMap.keySet();
 		for (Integer userId : userIds) {
 			if (sessionsMap.get(userId).equals(userSession)) {

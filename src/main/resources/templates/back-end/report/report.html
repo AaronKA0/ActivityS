@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>活動檢舉審核</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/後台首頁頁面.css}">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+
+    <style>
+        main {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+
+        /*th標題不換行*/
+        th {
+            white-space: nowrap;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        td {
+            text-align: center;
+            vertical-align: middle;
+            font-size: 16px;
+
+            /*overflow: hidden;*/
+            /*text-overflow: ellipsis;*/
+            /*white-space: nowrap;*/
+        }
+
+        .showPic {
+            white-space: nowrap;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+<header class="header">
+    <h1>【做伙後台管理系統】</h1>
+    <p class="welcome">歡迎您 管理員</p>
+    <nav>
+        <ul>
+            <li><a href="後台登入頁面.html">登出</a></li>
+        </ul>
+    </nav>
+</header>
+
+<aside class="aside">
+    <nav class="nav">
+        <div class="sidenav">
+            <a href="../static/後台首頁頁面.html">首頁</a>
+            <hr>
+            <button class="dropdown-btn">員工管理
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="修改密碼頁面.html">修改密碼</a>
+                <a href="員工資料管理首頁.html">員工資料管理</a>
+            </div>
+            <hr>
+            <button class="dropdown-btn">一般功能管理
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="新增公告.html">公告管理</a>
+                <a href="新增FAQ.html">FQA管理</a>
+            </div>
+            <hr>
+            <button class="dropdown-btn">會員功能管理
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="查詢會員.html">查詢會員</a>
+                <a href="產生會員通知訊息.html">產生通知訊息</a>
+                <a href="#">審核會員檢舉</a>
+            </div>
+            <hr>
+            <button class="dropdown-btn">活動功能管理
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a th:href="@{/membership/report}">審核活動管理</a>
+                <a th:href="@{/membership/commentreport}">審核留言管理</a>
+            </div>
+            <hr>
+            <button class="dropdown-btn">場地功能管理
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="新增場地.html">場地管理</a>
+                <a href="#">場地訂單管理</a>
+                <a href="#">場地狀態管理</a>
+            </div>
+        </div>
+
+    </nav>
+</aside>
+
+<main class="main">
+
+    <div class="w-100">
+        <h1 class="fw-bold">活動檢舉</h1>
+        <div class="d-flex justify-content-between mb-1">
+            <div class="input-group input-group-sm w-25 h-75">
+                <label for="memId">會員ID:</label>
+                <input type="text" class="form-control" id="memId">
+                <button class="selectMemId btn btn-primary btn-sm">查詢</button>
+                <button class="btn btn-danger btn-sm" onclick="refresh()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                        <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
+                        <path fill-rule="evenodd"
+                              d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="input-group input-group-sm w-25 h-75">
+                <label for="memId">員工ID:</label>
+                <input type="text" class="form-control" id="empId">
+                <button class="selectEmpId btn btn-primary btn-sm">查詢</button>
+                <button class="btn btn-danger btn-sm" onclick="refreshEmp()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                        <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
+                        <path fill-rule="evenodd"
+                              d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="d-flex">
+                <div class="btn-group" role="group">
+                    <button class="filterButton btn btn-secondary btn-sm" data-rep-status=null>所有</button>
+                    <button class="filterButton btn btn-warning btn-sm" data-rep-status="1">審核中</button>
+                    <button class="filterButton btn btn-danger btn-sm" data-rep-status="3">未通過</button>
+                    <button class="filterButton btn btn-success btn-sm" data-rep-status="2">已通過</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table id="act_report_table" class="table table-hover table-bordered table-sm shadow-sm">
+            <caption id="count">筆</caption>
+            <thead class="table-secondary">
+            <tr>
+                <th scope="col">編號</th>
+                <th scope="col">活動編號</th>
+                <th scope="col">檢舉者ID</th>
+                <th scope="col">檢舉標題</th>
+                <th scope="col">檢舉原因</th>
+                <th scope="col">檢舉圖片</th>
+                <th scope="col">時間
+                    <select id="time">
+                        <option value="DESC">新到舊</option>
+                        <option value="ASC">舊到新</option>
+                    </select>
+                </th>
+                <th scope="col">審核</th>
+                <th scope="col">狀態</th>
+                <th scope="col">審核者ID</th>
+            </tr>
+            </thead>
+            <tbody id="actReport" class="table-light text-nowrap">
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>OFFENSIVE</td>
+                <td>內容不當言論</td>
+                <td>2023-12-13 10:00:00</td>
+                <td>
+                    <button>審核</button>
+                </td>
+                <td>1</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="fixed-bottom">
+        <div class="container">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link">上一頁</a>
+                    </li>
+                    <li class="page-item">
+                        <!--                <a class="page-link" href="#">1</a>-->
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">下一頁</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</main>
+
+<!--檢舉圖片框-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <img id="pic" src="" alt="檢舉圖片">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 檢舉原因框 -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2">檢舉原因</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span class="repContent">
+
+                </span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+</script>
+
+<script th:src="@{/js/後台首頁頁面.js}"></script>
+
+<script>
+
+    $(function () {
+        loadReports();
+    });
+
+    let repStatus; // 預設值
+    let repTime = "DESC"; // 預設值
+    let pageNumber = 1; // 預設值
+    let size = 5; //顯示筆數預設
+    let memId;
+    let empId;
+
+    //分頁頁數按鈕
+    function loadPage(pageNumber, repTime, repStatus, memId, empId) {
+        loadReports(pageNumber, repTime, repStatus, memId, empId);
+    }
+
+    //依審核狀態篩選
+    $(".filterButton").click(function () {
+        repStatus = $(this).data("repStatus");
+
+        loadReports(pageNumber, repTime, repStatus, memId, empId);
+    });
+
+    //時間排序
+    $("#time").change(function () {
+        repTime = $("#time").val();
+
+        loadReports(pageNumber, repTime, repStatus, memId, empId);
+    });
+
+    //會員ID查詢
+    $(".selectMemId").click(function () {
+        memId = $(".selectMemId").closest("div").find("#memId").val();
+
+        if (!parseInt(memId)) {
+            Toast.fire({
+                icon: 'warning',
+                title: '請輸入數字！'
+            });
+            $(".selectMemId").closest("div").find("#memId").val("");
+            memId = null;
+            return;
+        }
+        //清掉員工ID的input
+        $(".selectEmpId").closest("div").find("#empId").val("");
+
+        //清掉員工ID
+        empId = null;
+        loadReports(pageNumber, repTime, repStatus, memId, empId);
+    });
+
+    //員工ID查詢
+    $(".selectEmpId").click(function () {
+        empId = $(".selectEmpId").closest("div").find("#empId").val();
+
+        if (!parseInt(empId)) {
+            Toast.fire({
+                icon: 'warning',
+                title: '請輸入數字！'
+            });
+            $(".selectEmpId").closest("div").find("#memId").val("");
+            empId = null;
+            return;
+        }
+        //清掉會員ID的input
+        $(".selectMemId").closest("div").find("#memId").val("");
+
+        //清掉會員ID
+        memId = null;
+        loadReports(pageNumber, repTime, repStatus, memId, empId);
+    })
+
+    //清空參數
+    function refresh() {
+        pageNumber = 1;
+        repTime = "DESC";
+        repStatus = null;
+        memId = null;
+        loadReports();
+    }
+
+    //清空參數
+    function refreshEmp() {
+        pageNumber = 1;
+        repTime = "DESC";
+        repStatus = null;
+        memId = null;
+        empId = null;
+        loadReports();
+    }
+
+    //顯示所有活動檢舉
+    function loadReports(pageNumber, repTime, repStatus, memId, empId) {
+
+        let url = "/activityreport";
+
+        if (repStatus !== undefined && repStatus !== null) {
+            url = url + '?repStatus=' + repStatus;
+        }
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {
+                page: pageNumber - 1,
+                sortDirection: repTime,
+                memId: memId,
+                empId: empId
+            },
+            dataType: 'json',
+            success: function (activityReport) {
+                let actReportHTML = "";
+                let pageCount = 0;
+                let report = activityReport.content;
+
+                //做分頁需要的
+                let total = activityReport.totalElements; //總數量
+                let size = activityReport.size; //每頁顯示的數據數量
+                let number = activityReport.number; //第幾頁(0為第一頁)
+                let totalPages = activityReport.totalPages; //總頁數
+                let first = activityReport.first; //當前是第一頁為ture
+                let last = activityReport.last; // 當前是最後一頁為true
+
+                //分頁元件生成
+                nextPage(totalPages, repTime, repStatus, memId, empId);
+
+                $(".number").each(function () {
+                    if ($(this).text() === (number + 1).toString()) {
+                        $(this).addClass("active");
+                    }
+                })
+
+                //判斷上下頁可不可以按
+                if (!first || !last) {
+                    $("#first").removeClass("disabled")
+                    $("#last").removeClass("disabled")
+                }
+                if (first) {
+                    $("#first").addClass("disabled")
+                }
+                if (last) {
+                    $("#last").addClass("disabled")
+                }
+
+                let titleMap = {
+                    "INAPPROPRIATE": "不恰當的內容",
+                    "NOSAFETY": "不安全的",
+                    "MISLEADING": "誤導信息",
+                    "HARASSMENT": "騷擾或欺凌",
+                    "OTHER": "其他"
+                };
+
+                let statusMap = {
+                    "1": "審核中",
+                    "2": "通過",
+                    "3": "未通過"
+                };
+
+                report.forEach(function (actReport) {
+                    let titleChinese = titleMap[actReport.repTitle];
+                    let statusChinese = statusMap[actReport.repStatus];
+
+                    actReportHTML +=
+                        `<tr>
+                        <td><span class="badge rounded-circle bg-dark">${actReport.repId}</span></td>
+                        <td><a class="badge rounded-circle bg-primary text-decoration-none" href="/CHA104G3/activity/${actReport.act.actId}">${actReport.act.actId}</a></td>
+                        <td><a class="badge rounded-circle bg-secondary text-decoration-none" href="">${actReport.memId}</a></td>
+                        <td>${titleChinese}</td>
+                        <td>
+                            <button type="button" class="rounded-pill btn btn-info btn-sm"
+                              data-bs-toggle="modal" data-bs-target="#exampleModal2"
+                              data-repcontent="${actReport.repContent}" onclick="seeRepContent(this)">
+                              查看
+                            </button>
+                        </td>
+                        <td>`;
+
+                    if (actReport.repPic == null) {
+                        actReportHTML += `<button class="showPic rounded-pill btn btn-secondary btn-sm"
+                            data-rep-id="${actReport.repId}" disabled>未提供</button>`;
+                    } else {
+                        actReportHTML += `<button class="showPic rounded-pill btn btn-info btn-sm"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap"
+                            data-rep-id="${actReport.repId}">顯示</button>`;
+                    }
+                    actReportHTML +=
+                        `</td>
+                        <td>${actReport.repTime}</td>
+                        <td class="bg">
+                            <div class="btn-group" role="group">
+                                <button class="reviewBtn btn btn-success btn-sm" value="2" data-rep-id="${actReport.repId}">通過</button>
+                                <button class="reviewBtn btn btn-danger btn-sm" value="3" data-rep-id="${actReport.repId}">未通過</button>
+                            </div>
+                        </td>
+                        <td class="color" id="status-${actReport.repId}">${statusChinese}</td>
+                        <td><span class="badge rounded-circle bg-secondary">${(actReport.empId ? actReport.empId : "無")}</span></td>
+                        </tr>`;
+
+                    pageCount++;
+                });
+
+                $("#count").html(`${pageCount}筆`);
+                $("#actReport").html(actReportHTML);
+
+                $(".color").each(function () {
+                    switch ($(this).text()) {
+                        case "審核中":
+                            $(this).addClass("text-warning");
+                            break;
+                        case "通過":
+                            $(this).addClass("text-success");
+                            $(this).closest("tr").find(".reviewBtn").remove();
+                            break;
+                        case "未通過":
+                            $(this).addClass("text-danger");
+                            $(this).closest("tr").find(".reviewBtn").remove();
+                            break;
+                    }
+                })
+
+            },
+            error: function (xhr, status, error) {
+                Swal.fire(
+                    "有問題",
+                    "question"
+                )
+            }
+        });
+    }
+
+    //將檢舉原因放進modal
+    function seeRepContent(e) {
+        let repContent = $(e).data("repcontent");
+        $(".repContent").text(repContent);
+    }
+
+    //圖片
+    $(document).on("click", ".showPic", function (e) {
+        e.preventDefault();
+        let repId = $(this).data("repId");
+
+        $.ajax({
+            url: "/activityreport/" + repId + "/pic",
+            type: 'GET',
+            xhrFields: {
+                responseType: "blob"
+            },
+            success: function (pic) {
+                let imgUrl = URL.createObjectURL(pic);
+                $("#pic").attr("src", imgUrl);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:" + status + " " + error);
+            }
+        });
+    });
+
+    //更新狀態(審核)
+    $(document).on("click", ".reviewBtn", function () {
+        let statusMap = {
+            "1": "審核中",
+            "2": "通過",
+            "3": "未通過"
+        };
+
+        // $(this).remove();
+
+        let repId = $(this).data("repId");
+
+        let newStatus = {
+            repStatus: $(this).val()
+        };
+
+        if (newStatus.repStatus === "1") {
+            return;
+        }
+        Swal.fire({
+            title: "確定嗎?",
+            width: "300px",
+            showCancelButton: true,
+            confirmButtonText: "確定",
+            cancelButtonText: "取消"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/activityreport/' + repId,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(newStatus),
+                    dataType: 'json',
+                    success: function (updateActivityReport) {
+                        let statusChinese = statusMap[updateActivityReport.repStatus]; // 从statusMap获取新状态的中文描述
+
+                        let status = $("#status-" + repId);
+                        status.text(statusChinese);
+
+                        status.closest("tr").find(".reviewBtn").remove();
+
+                        switch (status.text()) {
+                            case "審核中":
+                                status.removeClass("text-success");
+                                status.removeClass("text-danger");
+                                status.addClass("text-warning");
+                                break;
+                            case "通過":
+                                status.removeClass("text-warning");
+                                status.removeClass("text-danger");
+                                status.addClass("text-success");
+                                break;
+                            case "未通過":
+                                status.removeClass("text-success");
+                                status.removeClass("text-danger");
+                                status.addClass("text-danger");
+                                break;
+                        }
+                        Swal.fire("更新成功")
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire("更新失敗")
+                    }
+                });
+            }
+        });
+    });
+
+    //分頁元件生成
+    function nextPage(totalPages, repTime, repStatus, memId, empId) {
+        let pageHTML = "";
+        for (let i = 0; i < totalPages; i++) {
+            pageHTML += `<li  class="page-item">` +
+                `<a class="number page-link" href="#" onclick="loadPage(${i + 1}, '${repTime}', ${repStatus}, ${memId},${empId}); return false;">${i + 1}</a>` +
+                `</li>`;
+        }
+        $(".pagination").html(pageHTML); //插入頁碼
+        $(".pagination").prepend('<li id="first" class="page-item disabled"><a class="page-link" href="#" onclick="previous()">上一頁</a></li>'); //將上一頁插入
+        $(".pagination").append('<li id="last" class="page-item"><a class="page-link" href="#" onclick="next()">下一頁</a></li>');  //將下一頁插入
+    }
+
+    //下一頁
+    function next() {
+        // loadReports(++pageNumber, repTime, repStatus, memId);
+        loadPage(pageNumber + 1, repTime, repStatus, memId, empId)
+    }
+
+    //上一頁
+    function previous() {
+        loadPage(pageNumber - 1, repTime, repStatus, memId, empId)
+    }
+
+    //Sweetalart2
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000,
+        onOpen: toast => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+</script>
+
+</body>
+
+</html>
