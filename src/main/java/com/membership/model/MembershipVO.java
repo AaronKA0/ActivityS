@@ -256,5 +256,12 @@ public class MembershipVO implements java.io.Serializable {
 				+ ", isPartEna=" + isPartEna + ", isHostEna=" + isHostEna + ", isRentEna=" + isRentEna + ", isMsgEna="
 				+ isMsgEna + ", memCrTime=" + memCrTime + ", memLoginTime=" + memLoginTime + "]";
 	}
+	
+	
+	// +++++++++++ 製作一個會員專屬字串ID+Acc +++++++++++
+	public String toUniString() {
+	    return memId + "-" + memAcc;
+	}
 
+	
 }

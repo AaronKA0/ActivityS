@@ -1,8 +1,9 @@
-package com.notify.controller;
+package com.notify.service;
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,6 +15,8 @@ import com.notify.model.NotifyVO;
 import com.notify.service.NotifyService;
 import com.venorder.model.VenOrderVO;
 import com.venorder.service.VenOrderService;
+
+import redis.clients.jedis.Jedis;
 
 @Component
 public class NotifyScheduler {   
@@ -27,10 +30,17 @@ public class NotifyScheduler {
     @Autowired
     private NotifyService notifySrv;
     
+    @Autowired
+    NotifyNow notifyNow;
+    
     // 場地訂單通知
 //    @Scheduled(cron = "0 0 12 * * ?")
 //    public void getBookingNotify() throws InterruptedException {
-//     
+//        
+//        List<MembershipVO> memVO = memSrv.getAll();
+//        
+//        notifyNow.sendNotifyNow(memVO, "系統通知", "通知成功成功成功");
+//        
 //        Integer memId = null;
 //        Date orderDate = null;
 //        
@@ -55,6 +65,45 @@ public class NotifyScheduler {
 //        }
 //        System.out.println("新增完成");
 //        
+//    }
+    
+    
+    // 抽獎活動
+//    @Scheduled(cron = "0/3 * * * * ?")
+//    public void lottery() throws InterruptedException {
+//        
+//        String title = "一般通知";
+//        String content = ":恭喜您獲得免費使用場地入場卷一張";
+//        
+//        Jedis jedis = null;
+//
+//        try {
+//              jedis = new Jedis("localhost", 6379);
+//              jedis.select(7);
+//          
+//              List<MembershipVO> members = memSrv.getAll();
+//          
+//              for (MembershipVO member : members) {
+//                  String memId = Integer.toString(member.getMemId());
+//                  jedis.sadd("AllMembers", memId);             
+//              }
+//          
+//              List<String> winners = jedis.srandmember("AllMembers", 3);
+//              System.out.println(winners);
+//              
+//              for (String winner : winners) {
+//                  Integer winnerId = Integer.valueOf(winner);
+//                  MembershipVO winnerVO = memSrv.getOneMembership(winnerId);
+//                  NotifyVO notifyVO = new NotifyVO(winnerVO, title, winnerVO.getMemName() + content);
+//                  notifySrv.addNotify(notifyVO);
+//                  jedis.sadd("winnerMembers", winnerVO.getMemName());
+//              }
+//              
+//          } finally {
+//              if(jedis != null)
+//                  jedis.close();
+//          }
+//             
 //    }
     
     

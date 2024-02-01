@@ -14,6 +14,12 @@ a.back {
 	font-weight: bold;
 }
 
+div.has_two {
+    display: flex;
+    justify-content: center;
+    align-items: top !important;
+}
+
 span {
     display: inline-block;
     width: 300px;

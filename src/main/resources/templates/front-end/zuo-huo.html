@@ -15,7 +15,16 @@
 
   <!-- <link rel="stylesheet" href="assets/form.css"> -->
 
-  <link rel="stylesheet" th:href="@{/front-end/zuo-huo/css/notify.css}">
+
+<!-- <link rel="stylesheet" -->
+<!--     href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+<!-- <script -->
+<!--     src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+<!-- <script -->
+<!--     src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+ 
+ 
+  
   <style>
     * {
       margin: 0;
@@ -104,10 +113,13 @@
       text-decoration: none;
       cursor: pointer;
     }
+    
   </style>
+  <link rel="stylesheet" th:href="@{/front-end/zuo-huo/css/notify.css}">
+  <link rel="stylesheet" th:href="@{/front-end/zuo-huo/css/ann.css}">
 </head>
 
-<body>
+<body onload="connect();" onunload="disconnect();">
 
   <div class="container">
     <header
@@ -132,8 +144,8 @@
         <div class="after-logging" th:if="${session.memId ne null}">
             <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px;"></i>
         
-            <!-- -------------------- 通知訊息功能  下拉選單 -------------------- -->
-            <i class="icon bi bi-bell-fill" data-count="123" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 25px;"></i>
+            <!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
+            <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 25px;"></i>
             
             <ul th:if="${session.notifies ne null}" class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="width: 350px;">
                 <li th:if="${session.notifies[0] ne null and session.notifies[0].notifyContent ne ''}">
@@ -148,12 +160,12 @@
                 <li><a style="background-color: lightgreen; color: white; text-align: center;" class="dropdown-item" th:href="@{front_end/notify}">顯示全部</a></li>
                 
             </ul>          
-            <!-- -------------------- 通知訊息功能  下拉選單 -------------------- -->
+            <!-- -------------------- 通知訊息功能 下拉選單 END -------------------- -->
         
             <i class="icon bi bi-person-circle" style="font-size: 40px; margin: 20px;"></i>
             
             <button type="button" class="btn btn-outline-primary me-2">
-                <a class="nav-link" href="#">登出</a>
+                <a class="nav-link" id="SignOut">登出</a>
             </button>
         </div>
         
@@ -172,21 +184,39 @@
 
   <main class="container mt-4">
 
-    <!-- 觸發彈窗的按鈕 -->
-    <button type="button" class="btn btn-outline-warning" onclick="openPopup()">顯示公告</button>
+    <!-- -------------------- 公告區 -------------------- -->
+    <!--   <button type="button" class="btn btn-outline-warning" onclick="openPopup()">顯示公告</button> -->
+    <div style="display: flex; justify-content: center;">
+        <span class="ann_main">最新公告</span>
+    </div>
+    <div class="ann_block">
+       <table class="ann_table">
+            <tbody id="ann_items">
+                <tr id="this_ann" th:each="annVO : ${annListData}">
+                    <td class="ann_time" scope="col" th:text="${#dates.format(annVO.annTime, 'yyyy-MM-dd')}"></td>
+                    <td class="ann_title" scope="col" th:text="${annVO.annName}" onclick="openPopup()"></td>
+                    <td class="ann_content" scope="col" th:text="${annVO.annDescr}" onclick="openPopup()"></td>
+                    <td>
+                        <form method="post" th:action="@{/Zuo-Huo/getOne_For_Display}">
+                            <input type="submit" value="查看">
+                            <input type="hidden" name="annId" th:value="${annVO.annId}">
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+       </table>
+    </div>
 
     <!-- 彈窗內容 -->
-    <div id="popupBox" class="popup">
-      <div class="popup-content">
-        <span class="close" onclick="closePopup()">&times;</span>
-        <p>這裡是公告內容...</p>
-        <p>這裡是公告內容...</p>
-        <p>這裡是公告內容...</p>
-        <p>這裡是公告內容...</p>
-        <p>這裡是公告內容...</p>
-        <p>這裡是公告內容...</p>
-      </div>
-    </div>
+    <div id="popupBox" class="popup" th:if="${getOne_For_Display}">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+                <p th:text="${announcementVO.annName}"></p>
+                <p th:text="${announcementVO.annDescr}"></p>
+        </div>
+    </div> 
+    <!-- -------------------- 公告區 END -------------------- -->
+
 
     <section id="slogan" class="text-center mt-3">
       <h2 class="shadow-lg p-3 mb-5 bg-body rounded">
@@ -504,8 +534,103 @@
     </div>
   </div>
 
-  <script>
-  
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let user = /*[[${session.memId}]]*/'';
+    /*]]>*/
+    /*<![CDATA[*/
+    let notifies = /*[[${session.notifies}]]*/'';
+    /*]]>*/
+</script>
+
+<script>
+
+// $("#popupBox").modal({
+//     show : true
+// });
+var notifycount = 0;
+
+$(document).ready(async function(){
+	
+	async function getUnread(id){
+        await fetch("/front_end/notify/Unread",{
+            method: "POST",
+            body: JSON.stringify({memId: id})
+        }).then(function(response){;
+            return response.json();
+        }).then(function(notifies){  
+        	if(notifies.length){
+        	    notifycount = notifies.length;
+           
+                $('.bi-bell-fill').attr('data-count', `${notifycount}`);
+                 console.log(notifycount);
+                 // 添加 :after 樣式
+                 $('.bi-bell-fill').css('content', 'attr(data-count)');
+        	}
+        }).catch(function(err){
+            console.log(err);
+        }); 
+    }
+    
+    await getUnread(user);
+    
+});    
+    //------------------ Notify webSocket -------------------
+    
+    var MyPoint = `/notify/${user}`;
+    var host = window.location.host;
+    var path = window.location.pathname;
+    var webCtx = path.substring(0, path.indexOf('/', 1));
+    var endPointURL = "ws://" + window.location.host + MyPoint;
+
+    var webSocket;
+
+    function connect() {
+    	if(!user) return;
+        // create a websocket
+        webSocket = new WebSocket(endPointURL);
+
+        webSocket.onmessage = async function(event) {
+
+            let notifyVO = JSON.parse(event.data);
+            notifycount++;
+            console.log("notice title: " + notifyVO.notifyTitle);
+            console.log("notice content: " + notifyVO.notifyContent);
+
+            $('.bi-bell-fill').attr('data-count', `${notifycount}`);
+            console.log(notifycount);
+            // 添加 :after 樣式
+            $('.bi-bell-fill').css('content', 'attr(data-count)');          
+            
+        }
+
+    };
+    
+    
+    //------------------------ 登出 -------------------------
+    document.getElementById("SignOut").addEventListener("click",
+        function() {
+            // 使用 XMLHttpRequest 或 Fetch API 發送登出請求到後端
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/membership/logout", true);
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                	webSocket.close();
+                    // 處理登出成功的回應，這裡將重新導向到登入頁面
+                    window.location.href = "/membership/login"; // 重新導向到登入頁面
+                }
+            };
+
+            xhr.send();
+    });
+    
+    
+    
+    
     // 打開彈窗
     function openPopup() {
       document.getElementById("popupBox").style.display = "block";
@@ -522,7 +647,8 @@
         modal.style.display = "none";
       }
     }
-  </script>
+    
+</script>
 </body>
 
 </html>
