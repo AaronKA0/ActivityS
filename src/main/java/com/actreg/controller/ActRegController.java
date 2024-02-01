@@ -142,4 +142,6 @@ public class ActRegController {
 
         return ResponseEntity.status(HttpStatus.OK).body(memNameAndPic);
     }
+
+
 }

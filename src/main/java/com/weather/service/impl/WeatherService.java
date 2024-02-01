@@ -1,22 +1,38 @@
-package com.weather;
+package com.weather.service.impl;
 
+import com.weather.service.IGoogleMapService;
+import com.weather.service.IWeatherService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
 public class WeatherService implements IWeatherService {
-    private final String apiKey = "CWA-22E2C648-BEAF-4778-A564-C1749104E966";
-    private final String apiUrl = "https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-C0032-001";
 
-    private final RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
+    @Autowired
+    private IGoogleMapService googleMapService;
+    private final String apiKey = "7b3fb20082613d42fef1751fca816659";
 
-    public WeatherService(RestTemplate restTemplate){
-        this.restTemplate = restTemplate;
-    }
-
+    @Override
     public String getWeather(String locationName) {
-        String url = apiUrl + "?Authorization=" + apiKey + "&locationName=" + locationName;
-        return restTemplate.getForObject(url, String.class);
+
+        double[] latLng = googleMapService.getLatLon(locationName);
+
+        if (latLng == null) {
+            return null;
+        }
+
+        String apiUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + latLng[0] + "&lon=" + latLng[1] + "&appid=" + apiKey + "&units=metric&lang=ZH_TW";
+
+        String res = restTemplate.getForObject(apiUrl, String.class);
+
+        if (res != null) {
+            return res;
+        } else {
+            return null;
+        }
     }
 
 }

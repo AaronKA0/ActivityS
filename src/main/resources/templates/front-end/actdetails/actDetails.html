@@ -44,18 +44,18 @@
 
         /* 自定义滚动条的整体样式 */
         #scroll::-webkit-scrollbar {
-            width: 10px; /* 滚动条的宽度 */
+            width: 10px; /* 寬度 */
         }
 
         /* 滚动条轨道的样式 */
         #scroll::-webkit-scrollbar-track {
-            background: #f1f1f1; /* 轨道的背景颜色 */
+            background: #f1f1f1; /* 背景颜色 */
         }
 
         /* 滚动条滑块的样式 */
         #scroll::-webkit-scrollbar-thumb {
-            background: #e8bfbc; /* 滑块的背景颜色 */
-            border-radius: 10px; /* 滑块的圆角 */
+            background: #e8bfbc; /* 背景颜色 */
+            border-radius: 10px; /* 圆角 */
         }
 
         /* 留言頭像跟人名inline */
@@ -129,9 +129,7 @@
         </ul>
 
         <div class="col-md-3 text-end">
-            <button type="button" class="btn btn-outline-primary me-2"><a class="nav-link" href="#"
-                                                                          data-bs-toggle="modal"
-                                                                          data-bs-target="#loginModal">登入</a></button>
+            <button type="button" class="btn btn-outline-primary me-2"><a class="nav-link" href="#">登入</a></button>
             <button type="button" class="btn btn-primary"><a class="nav-link" href="register.html">註冊</a></button>
         </div>
     </header>
@@ -159,10 +157,10 @@
 
                         <div class="row">
                             <div class="col align-self-end">
-                                <button class="actType btn btn-dark btn-sm"
+                                <button class="actType btn btn-dark btn-sm mt-5"
                                         th:text="${act.actTypeName}"
                                         th:data-act-type-id="${act.actTypeId}">
-                                </button><!-- 位置在調整  -->
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -217,10 +215,18 @@
                             <path fill-rule="evenodd"
                                   d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/>
                         </svg>
-                        <span class="fw-bolder">活動地點:</span>
-                        <span id="actLoc" class="fst-italic" th:text="${act.actLoc}">活動場地</span>
+                        <span class="">活動地點:</span>
+                        <span id="actLoc" class="" th:text="${act.actLoc}">中壢</span>
                         <hr>
-                        <p class="fst-italic">
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-clock-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                            </svg>
+                            報名截止日期:
+                            <time th:text="${#temporals.format(act.regEndTime, 'yyyy-MM-dd HH:mm')}"></time>
+                        </p>
+                        <p class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-clock" viewBox="0 0 16 16">
                                 <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
@@ -229,7 +235,7 @@
                             活動開始時間：
                             <time id="startTime" th:text="${actStartTime}">2023-12-01 10:00 AM</time>
                         </p>
-                        <p class="fst-italic">
+                        <p class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-clock-history" viewBox="0 0 16 16">
                                 <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.081-.51l.993.123a8 8 0 0 1-.23 1.155l-.964-.267q.069-.247.12-.501m-.952 2.379q.276-.436.486-.908l.914.405q-.24.54-.555 1.038zm-.964 1.205q.183-.183.35-.378l.758.653a8 8 0 0 1-.401.432z"/>
@@ -239,7 +245,14 @@
                             活動結束時間：
                             <time id="endTime" th:text="${actEndTime}">2023-12-01 4:00 PM</time>
                         </p>
+
                         <div id="map"></div>
+
+                        <div class="card shadow-sm mt-5">
+                            <div class="card-body text-center">
+                                <p id="weather"></p>
+                            </div>
+                        </div>
                     </div>
                 </aside>
 
@@ -280,10 +293,10 @@
 
         <hr class="mt-5 mb-5">
 
-        <div class="container mt-4 bg-white" id="people">
-            <div>
-                <h5 class="fw-bolder">參與者:<span id="addPeople">(0)</span></h5>
-            </div>
+        <span class="fw-bolder fs-5">參與者:</span>
+        <span id="addPeople" class="fw-bolder fs-5">(0)</span>
+        <div class="container bg-white" id="people">
+
             <div id="add" class="row">
 
             </div>
@@ -423,6 +436,24 @@
     </div>
 </div>
 
+<!-- 所有參與者 -->
+<div class="modal fade" id="moreModal" tabindex="-1" aria-labelledby="moreModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="moreModalLabel">參與者列表</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--<div id="fb-root"></div>-->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
@@ -509,6 +540,8 @@
         showFourAct();
         //google map
         showAddressOnMap();
+
+        getWeather();
     });
 
     let newToOldBtn = $("#newToOld");
@@ -1261,41 +1294,72 @@
             success: function (memNameAndPics) {
                 let count = 0;
                 let userHTML = "";
-
-                // let zIndex = 1;
-                // let left = 0;
-
-                memNameAndPics.forEach(function (memNameAndPic) {
-                    userHTML =
-                        `<div class="col-md-2 mb-3">
+                // memNameAndPics.forEach(function (memNameAndPic) {
+                //     userHTML =
+                //         `<div class="col-md-2 mb-3">
+                //             <div class="p-3 shadow-sm bg-white border border-1 rounded text-center">
+                //                 <a class="text-decoration-none" href="/membership/${memNameAndPic.memId}"><img src="data:image/png;base64,${memNameAndPic.memPic}" class="pic img-fluid d-block mx-auto" style="width: 60px; height: auto">
+                //                 </a>
+                //                 <p class="badge bg-primary text-wrap mt-2">${memNameAndPic.memName}</p>
+                //             </div>
+                //         </div>`;
+                //
+                //     count++; //算參加的會員人數
+                //     $("#add").append(userHTML);
+                //
+                // })
+                for (let i = 0; i <= 5; i++) {
+                    let memNameAndPic = memNameAndPics[i];
+                    if (i !== 5) {
+                        userHTML =
+                            `<div class="col-md-2 mb-3 mt-3">
                             <div class="p-3 shadow-sm bg-white border border-1 rounded text-center">
                                 <a class="text-decoration-none" href="/membership/${memNameAndPic.memId}"><img src="data:image/png;base64,${memNameAndPic.memPic}" class="pic img-fluid d-block mx-auto" style="width: 60px; height: auto">
                                 </a>
                                 <p class="badge bg-primary text-wrap mt-2">${memNameAndPic.memName}</p>
                             </div>
                         </div>`;
-
+                    } else {
+                        userHTML =
+                            `<div class="col-md-2 mb-3 mt-3">
+                            <div class="p-3 shadow-sm bg-white border border-1 rounded text-center">
+                                <a class="allPeople text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#moreModal">
+                                     <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="black" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                                      <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1z"/>
+                                    </svg>
+                                </a><br>
+                                <p class="badge bg-primary text-wrap mt-2">查看更多</p>
+                            </div>
+                        </div>`;
+                    }
                     count++; //算參加的會員人數
                     $("#add").append(userHTML);
+                }
 
-                    //疊加圖片
-                    // if (count > 6) {
-                    //     let pic = $(".pic").last();
-                    //
-                    //     pic.addClass("position-absolute");
-                    //     pic.css("z-index", zIndex++);
-                    //     pic.css("left", left + "px")
-                    //     left += 25;
-                    // }
-                })
-
-                // $("#add").html(userHTML);
-                $("#addPeople").text(count);
+                $("#addPeople").text(`(${memNameAndPics.length})`);
             },
             error(xhr, status, error) {
             }
         })
     }
+
+    //顯示所有參與者
+    $(document).on("click", ".allPeople", function () {
+        $.ajax({
+            url: '',
+            type: 'GET',
+            data: '',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function () {
+
+            },
+            error: function () {
+
+            }
+
+        })
+    })
 
     //隨機推薦4個活動
     function showFourAct() {
@@ -1384,13 +1448,11 @@
     });
 
     //以下為google map -------------------------------------------------------------------------------
-    function showAddressOnMap() {
-        let actLoc = $("#actLoc").text();
+    let actLoc = $("#actLoc").text();
 
+    function showAddressOnMap() {
         getCoordinates(actLoc, function (coords) {
             if (coords) {
-                console.log(coords.lat);
-                console.log(coords.lng);
                 initMap(coords.lat, coords.lng);
             } else {
                 $("#map").hide(); //無法定位就隱藏google map
@@ -1437,6 +1499,50 @@
                 lng: lng
             },
             map: map
+        });
+    }
+
+    //以下為天氣預報 -------------------------------------------------------------------------------
+    function getWeather() {
+
+        $.ajax({
+            url: '/weather',
+            type: 'GET',
+            data: {
+                locationName: actLoc
+            },
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (weatherJson) {
+                let weatherHTML = "";
+
+                let description = weatherJson.weather[0].description; //天氣狀況
+                let temp = weatherJson.main.temp; //當前氣溫
+                let feelsLike = weatherJson.main.feels_like; //體感溫度
+                let tempMin = weatherJson.main.temp_min; //最低溫
+                let tempMax = weatherJson.main.temp_max; //最高溫
+                let humidity = weatherJson.main.humidity; //濕度(百分比)
+                let visibility = weatherJson.visibility; //能見度(單位:米)
+                let speed = weatherJson.wind.speed; //風速
+                let icon = weatherJson.weather[0].icon;
+
+                weatherHTML =
+                    `<h5 class="card-title">活動地區當前氣象:</h5>
+                            <p class="card-text">天氣狀況: ${description}
+                                <img src="https://openweathermap.org/img/w/${icon}.png" alt="icon">
+                            </p>
+                            <p class="card-text">當前溫度: ${temp}°C</p>
+                            <p class="card-text">體感溫度: ${feelsLike}°C</p>
+                            <p class="card-text">最低溫度: ${tempMin}°C</p>
+                            <p class="card-text">最高溫度: ${tempMax}°C</p>
+                            <p class="card-text">濕度: ${humidity}%</p>
+                            <p class="card-text">能見度: ${visibility}米</p>
+                            <p class="card-text">風速: ${speed}</p>`;
+
+                $("#weather").html(weatherHTML);
+            },
+            error: function () {
+            }
         });
     }
 

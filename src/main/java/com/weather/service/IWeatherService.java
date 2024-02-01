@@ -1,4 +1,4 @@
-package com.weather;
+package com.weather.service;
 
 public interface IWeatherService {
 
