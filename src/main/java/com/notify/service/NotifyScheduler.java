@@ -14,6 +14,7 @@ import com.membership.service.MembershipService;
 import com.notify.model.NotifyVO;
 import com.notify.service.NotifyService;
 import com.venorder.model.VenOrderVO;
+import com.venorder.service.BookingMail;
 import com.venorder.service.VenOrderService;
 
 import redis.clients.jedis.Jedis;
@@ -34,7 +35,7 @@ public class NotifyScheduler {
     NotifyNow notifyNow;
     
     // 場地訂單通知
-//    @Scheduled(cron = "0 0 12 * * ?")
+//    @Scheduled(cron = "0/3 * * * * ?")
 //    public void getBookingNotify() throws InterruptedException {
 //        
 //        List<MembershipVO> memVO = memSrv.getAll();
