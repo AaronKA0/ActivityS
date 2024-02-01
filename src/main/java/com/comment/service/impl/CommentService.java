@@ -8,6 +8,7 @@ import com.comment.model.CommentVO;
 import com.comment.service.ICommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ public class CommentService implements ICommentService {
     private ICommentDAO commentDAO;
 
     @Autowired
+    @Qualifier("commentRedisTemplate")
     private RedisTemplate<String, CommentVO> redisTemplate;
 
     @Override
