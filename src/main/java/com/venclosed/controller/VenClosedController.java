@@ -40,6 +40,9 @@ public class VenClosedController {
     @Autowired
     VenService venSvc;
 
+    
+  //******************************* 新增單筆 ******************************* //
+    
     @GetMapping("addVenClosedDate")
     public String addVenClosedDate(ModelMap model) {
         VenClosedVO venClosedVO = new VenClosedVO();
@@ -50,14 +53,16 @@ public class VenClosedController {
     @PostMapping("insert")
     public String insert(@Valid VenClosedVO venClosedVO, BindingResult result, ModelMap model) throws IOException {
 
+        // 輸入錯誤處理
+        if (result.hasErrors()) {
+            return "back-end/ven-closed/addVenClosedDate";
+        }
+        
+        // 檢查選擇日期該場地是否已有預訂
         Integer selectedVenId = (venClosedVO.getVenVO()).getVenId();
         
         Date date = venClosedVO.getClosedDate();
         List<VenOrderVO> venOrderVO = venOrderSvc.getByOrderDate(date);
-        
-        if (result.hasErrors()) {
-            return "back-end/ven-closed/addVenClosedDate";
-        }
         
         for (VenOrderVO venOrder : venOrderVO) {
             Integer orderVenId = (venOrder.getVenVO()).getVenId();
@@ -66,6 +71,8 @@ public class VenClosedController {
                 return "back-end/ven-closed/addVenClosedDate";
             }
         }
+        
+        // 確認新增
         venClosedSvc.addVenClosed(venClosedVO);
         
         List<VenClosedVO> list = venClosedSvc.getAll();
@@ -73,6 +80,9 @@ public class VenClosedController {
         model.addAttribute("success", "- (新增成功)");
         return "redirect:/back_end/ven-closed/ven_closed_date";
     }
+    
+    
+  //******************************* 新增全部場地關閉 ******************************* //
     
     @GetMapping("addAllClosed")
     public String addAllClosed(ModelMap model) {
@@ -84,19 +94,22 @@ public class VenClosedController {
     @PostMapping("allClosed")
     public String allClosed(@Valid VenClosedVO venClosedVO, BindingResult result, ModelMap model) throws IOException {
         
+        // 輸入錯誤處理
+        if (result.hasErrors()) {
+            return "back-end/ven-closed/allClosed";
+        }
+        
+        // 檢查選擇日期是否有任何場地已預訂
         Date date = venClosedVO.getClosedDate();
         String reason = venClosedVO.getClosedReason();
         List<VenOrderVO> venOrderVO = venOrderSvc.getByOrderDate(date);
         
-        if (result.hasErrors()) {
-            return "back-end/ven-closed/allClosed";
-        }
-                
         if (!venOrderVO.isEmpty()) {
             model.addAttribute("hasOrder", date + " 已有 " + venOrderVO.size() + " 筆訂單，無法設定");
             return "back-end/ven-closed/allClosed";
         }
         
+        // 確認新增
         List<VenVO> vens = venSvc.getAll();
         
         for(VenVO ven :vens) {
@@ -111,6 +124,8 @@ public class VenClosedController {
     } 
 
     
+  //******************************* 修改 ******************************* //
+    
     @PostMapping("getOne_For_Update")
     public String getOne_For_Update(@RequestParam("closedDateId") String closedDateId, ModelMap model) {
         
@@ -122,11 +137,27 @@ public class VenClosedController {
 
     @PostMapping("update")
     public String update(@Valid VenClosedVO venClosedVO, BindingResult result, ModelMap model) throws IOException {
-
+        
+        // 輸入錯誤處理
         if (result.hasErrors()) {
             return "back-end/ven-closed/updateVenClosed";
         }
+        
+        // 檢查選擇日期該場地是否已有預訂
+        Integer selectedVenId = (venClosedVO.getVenVO()).getVenId();
+        
+        Date date = venClosedVO.getClosedDate();
+        List<VenOrderVO> venOrderVO = venOrderSvc.getByOrderDate(date);
+        
+        for (VenOrderVO venOrder : venOrderVO) {
+            Integer orderVenId = (venOrder.getVenVO()).getVenId();
+            if (selectedVenId == orderVenId) {
+                model.addAttribute("hasOrder", date + " 已有訂單，無法設定");
+                return "back-end/ven-closed/updateVenClosed";
+            }
+        }
 
+        // 確認新增
         venClosedSvc.updateVenClosed(venClosedVO);
 
         model.addAttribute("success", "- (修改成功)");

@@ -8,7 +8,7 @@
 <link rel="stylesheet" th:href="@{/back-end/07/css/listAll.css}">
 <link rel="stylesheet" th:href="@{/back-end/07/css/data_table.css}">
 
-<title>關閉場地管理</title>
+<title>會員通知管理</title>
 
 </head>
 <body>
@@ -77,11 +77,8 @@
 <main class="main">
 <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top">
          <div class="title"> 
-              <div> <h2>場地不開放總覽</h2></div>
-              <div class="function">
-                <div> <h4><a class="navbar-brand" href='addAllClosed'>關閉全部場地</a></h4></div>
-                <div> <h4><a class="navbar-brand" href='addVenClosedDate'>新增資料</a></h4></div>
-              </div>
+              <div> <h2>會員通知總覽</h2></div>
+              <div> <h4><a class="navbar-brand" href='addNotify'>新增通知</a></h4></div>
          </div>
 </nav>
 
@@ -89,46 +86,50 @@
         <thead>
             <tr>
                 <th class="th_title">查看</th>
-                <th class="th_title">編號</th>
-                <th class="th_title">場地編號</th>
-                <th class="th_title">場地名稱</th>
-                <th class="th_title">日期</th>
-                <th class="th_title">不開放原因</th>
+                <th class="th_title">通知時間</th>
+                <th class="th_title">通知編號</th>
+                <th class="th_title">會員帳號</th>
+                <th class="th_title">通知標題</th>
+<!--            <th class="th_title">通知內容</th> -->
+                <th class="th_title">通知狀態</th>
             </tr>
         </thead>
         <tbody>
-            <th:block th:each="venClosedVO : ${venClosedListData}">
-                <tr>
+            <th:block th:each="notifyVO : ${notifyListData}">
+                <tr>       
+                
                     <td>
                        <form method="post" th:action="@{getOne_For_Display}" style="margin-bottom: 0px;">
                             <input class="getOne-button" type="submit" value="查看">
-                            <input type="hidden" name="closedDateId" th:value="${venClosedVO.closedDateId}">
+                            <input type="hidden" name="notifyId" th:value="${notifyVO.notifyId}">
                        </form>
                     </td>
+                                             
+	                <td th:text="${#dates.format(notifyVO.notifyTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${notifyVO.notifyId}"></td>
+	                <td th:text="${notifyVO.memVO.memAcc}"></td>
+	                <td th:text="${notifyVO.notifyTitle}"></td>
+<!-- 	            <td th:text="${notifyVO.notifyContent}"></td> -->
+	                <td th:text="${notifyVO.notifyStatus}"></td>
                     
-	                <td th:text="${venClosedVO.closedDateId}"></td>
-	                <td th:text="${venClosedVO.venVO.venId}"></td>
-	                <td th:text="${venClosedVO.venVO.venName}"></td>
-	                <td th:text="${venClosedVO.closedDate}"></td>
-	                <td th:text="${venClosedVO.closedReason}"></td>
-	                
                 </tr>
             </th:block>
         </tbody>
         <tfoot>
             <tr>
                 <th class="th_title">查看</th>
-                <th class="th_title">編號</th>
-                <th class="th_title">場地編號</th>
-                <th class="th_title">場地名稱</th>
-                <th class="th_title">日期</th>
-                <th class="th_title">不開放原因</th>
+                <th class="th_title">通知時間</th>
+                <th class="th_title">通知編號</th>
+                <th class="th_title">會員帳號</th>
+                <th class="th_title">通知標題</th>
+<!--            <th class="th_title">通知內容</th> -->
+                <th class="th_title">通知狀態</th>
             </tr>
         </tfoot>
     </table>
     
-    
 </main>
+
 
 <script th:src="@{/back-end/07/js/jquery-3.7.0.js}"></script>
 <script th:src="@{/back-end/emp_Index/js/emp_Index.js}"></script>
