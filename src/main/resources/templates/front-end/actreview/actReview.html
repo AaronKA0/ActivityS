@@ -420,7 +420,7 @@
     //修改活動
     function updateAct(e) {
         let actId = $(e).closest("td").data("actId");
-        window.location.href = `/act/updateAct?actId=${actId}`;//舊資料不會自動帶入欄位
+        window.location.href = `/act/updateAct?id=${actId}`;//舊資料不會自動帶入欄位
     }
 
     //審核通過

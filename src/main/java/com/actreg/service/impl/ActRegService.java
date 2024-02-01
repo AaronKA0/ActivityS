@@ -132,6 +132,11 @@ public class ActRegService implements IActRegService {
             case 1:
                 //失敗要通知會員
                 log.info("通知會員報名失敗");
+
+                //call於丘的mem get one
+                //call NotiftyNow 帶memVO, title, 內容
+                //title = 活動通知 內容自訂
+
                 break;
             case 3:
                 //通過要將活動table參加人數增加
@@ -145,11 +150,22 @@ public class ActRegService implements IActRegService {
 
     @Override
     public List<MemNameAndPicDTO> findMemNameAndPic(Integer actId, Integer isActPart) {
-
+        //查參與的會員
         List<Object[]> membersAndPicByPart = actRegRepository.findMembersAndPicAndMemIdByPart(actId, isActPart);
+        //查主辦人
+        List<Object[]> actMembers = actRepository.findMembersAndPicAndMemIdByActId(actId);
 
         List<MemNameAndPicDTO> dtos = new ArrayList<>();
 
+        //活動主辦人
+        for (Object[] obj : actMembers) {
+            MemNameAndPicDTO memNameAndPicDTO = new MemNameAndPicDTO();
+            memNameAndPicDTO.setMemName((String) obj[0]);
+            memNameAndPicDTO.setMemPic((byte[]) obj[1]);
+            memNameAndPicDTO.setMemId((Integer) obj[2]);
+            dtos.add(memNameAndPicDTO);
+        }
+        //參與的會員
         for (Object[] obj : membersAndPicByPart) {
             MemNameAndPicDTO memNameAndPicDTO = new MemNameAndPicDTO();
             memNameAndPicDTO.setMemName((String) obj[0]);
