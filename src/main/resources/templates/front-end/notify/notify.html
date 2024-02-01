@@ -8,6 +8,8 @@
     <!-- 引入 Bootstrap CSS 文件 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <link href="https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css" rel="stylesheet">
     <style>
         main {
             min-height: calc(100vh - 70px);
@@ -29,6 +31,11 @@
           text-underline-offset: 8px;
         }
     </style>
+    
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.js"></script>
+    
 </head>
 
 <body>
@@ -63,16 +70,17 @@
             <h2>通知訊息</h2>
     
             <ul id="city-tab" class="nav nav-tabs">
-			    <li id="city-a" data-notifytitle="全部" class="nav-item"><a class="nav-link active"
-			        aria-current="page" href="#">全部</a></li>
-			    <li id="city-b" data-notifytitle="場地通知" class="nav-item"><a class="nav-link" href="#">場地通知</a></li>
-			    <li id="city-b" data-notifytitle="關注通知" class="nav-item"><a class="nav-link" href="#">關注通知</a></li>
-			    <li id="city-b" data-notifytitle="系統通知" class="nav-item"><a class="nav-link" href="#">系統通知</a></li>
+			    <li id="city-a" data-notifytitle="全部通知" class="nav-item"><a class="nav-link active"
+			        aria-current="page" href="#">全部通知</a></li>
+			    <li id="city-b" data-notifytitle="一般通知" class="nav-item"><a class="nav-link active" href="#">一般通知</a></li>
+			    <li id="city-b" data-notifytitle="活動通知" class="nav-item"><a class="nav-link active" href="#">活動通知</a></li>
+			    <li id="city-b" data-notifytitle="場地通知" class="nav-item"><a class="nav-link active" href="#">場地通知</a></li>
+			    <li id="city-b" data-notifytitle="系統通知" class="nav-item"><a class="nav-link active" href="#">系統通知</a></li>
 			</ul>
 			
             <section id="faq">
-                <div class="container">
-                        <table class="table table-striped table table-hover">
+                <div id="notify-block" class="container">
+                        <table id="notify-table" class="table table-striped table table-hover">
                         
 	                        <thead>
 	                          <tr>
@@ -145,83 +153,199 @@
     </div>
 
 
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+
+
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let user = /*[[${session.memId}]]*/'';
+    /*]]>*/
+    /*<![CDATA[*/
+    let notifies = /*[[${session.notifies}]]*/'';
+    /*]]>*/
+</script>
+
 <script>
 
-// 確保 DOM 內容已加載
+//確保 DOM 內容已加載
 $(document).ready(async function(){
+
+	await readAll(user);
+    await getNotifyByMemId(user);
+    getMemNotify(notifies);
+
+});
     
-	var memId = $("#memId").text();
+    
+	async function readAll(id){
+	    await fetch("/front_end/notify/readAll",{
+	        method: "POST",
+	        body: JSON.stringify({memId: id})
+	    }).then(function(response){;
+	        return response.json();
+	    }).then(function(getAllMemNotifies){  
+	        
+	    }).catch(function(err){
+	        console.log(err);
+	    }); 
+	}   
+	
 	
 	async function getNotifyByMemId(id){
-        await fetch("/front_end/notify/memberNotify",{
-            method: "POST",
-            body: JSON.stringify({memId: id})
-        }).then(function(response){;
-            return response.json();
-        }).then(function(notifies){  
-            // 清除清單內容
-            $("#notify-items").html("");
-            
-            for(let notify of notifies){
-                $("#notify-items").append(
-                    `<tr id="this_notify">
-                    <th>${notify.notifyTitle}</th>
-                    <td>${notify.notifyContent}</td>
-                    <td>${moment(notify.notifyTime).format('YYYY-MM-DD HH:mm:ss')}</td>
-                    </tr>`);
-            }
-            
-        }).catch(function(err){
-            console.log(err);
-        }); 
+	    await fetch("/front_end/notify/memberNotify",{
+	        method: "POST",
+	        body: JSON.stringify({memId: id})
+	    }).then(function(response){;
+	        return response.json();
+	    }).then(function(getAllMemNotifies){  
+	        
+	        notifies = getAllMemNotifies;
+	        
+	    }).catch(function(err){
+	        console.log(err);
+	    }); 
+	}
+	
+	
+	// 印出全部通知
+	function getMemNotify(notes){
+		
+		$('#notify-block').pagination({
+		    dataSource: notes,
+		    pageSize: 5,
+		    showSizeChanger: true,
+		    callback: function(notes, pagination){
+		    	  if(!notes.length) {
+		    		  console.log("123");
+		    	  }else{
+			    	  $("#notify-items").html("");
+			    		  console.log(notes);
+			    	  for(let notify of notes){
+			            $("#notify-items").append(
+			                `<tr id="this_notify">
+			                <th>${notify.notifyTitle}</th>
+			                <td>${notify.notifyContent}</td>
+			                <td>${moment(notify.notifyTime).format('YYYY-MM-DD HH:mm:ss')}</td>
+			                </tr>`);
+			          }
+		    	  }
+		    }
+        });
+    }
+    
+	
+	// 印出全部通知
+	function getAllNotify(){
+		getMemNotify(notifies);
     }
 	
+	// 印出一般通知
+	function getNormalNotify(){
+        let filteredNotifies = notifies.filter(notify => notify.notifyTitle == "一般通知");
+        getMemNotify(filteredNotifies);
+    }
+	
+	// 印出活動通知
+	function getActNotify(){
+        let filteredNotifies = notifies.filter(notify => notify.notifyTitle == "活動通知");
+        getMemNotify(filteredNotifies);
+    }
+	
+	// 印出場地通知
+	function getVenNotify(){
+        let filteredNotifies = notifies.filter(notify => notify.notifyTitle == "場地通知");
+        getMemNotify(filteredNotifies);
+    }
+	
+	// 印出系統通知
+	function getSystemNotify(){
+        let filteredNotifies = notifies.filter(notify => notify.notifyTitle == "系統通知");
+        getMemNotify(filteredNotifies);
+    }
+	
+	
+		$("#city-tab li").on("click", async function(){
+	        let title = $(this).data("notifytitle");
+	        getNotifyByMemId(user);
+	        switch (title) {
+	            case "全部通知":
+	                await getAllNotify();
+	                break;
+	            case "一般通知":
+	                await getNormalNotify();
+	                break;
+	            case "活動通知":
+	                await getActNotify();
+	                break;
+	            case "場地通知":
+	                await getVenNotify();
+	                break;
+	            case "系統通知":
+	                await getSystemNotify();
+	                break;
+	        }
+	        return false;
+		});
+	
+	
+	
+	
+// 	async function getNotifyByMemId(id){
+//         await fetch("/front_end/notify/memberNotify",{
+//             method: "POST",
+//             body: JSON.stringify({memId: id})
+//         }).then(function(response){;
+//             return response.json();
+//         }).then(function(notifies){  
+//             // 清除清單內容
+//             $("#notify-items").html("");
+//            
+//             for(let notify of notifies){
+//                 $("#notify-items").append(
+//                     `<tr id="this_notify">
+//                     <th>${notify.notifyTitle}</th>
+//                     <td>${notify.notifyContent}</td>
+//                     <td>${moment(notify.notifyTime).format('YYYY-MM-DD HH:mm:ss')}</td>
+//                     </tr>`);
+//             }
+//            
+//         }).catch(function(err){
+//             console.log(err);
+//         }); 
+//     }
+//	
+//     await getNotifyByMemId(memId);
 	
     // fetch 是一個非同步函數所以需要使用 await
-    async function getNotifyByTitle(notifyTitle){
-        await fetch("/front_end/notify/notifyTitle",{
-            method: "POST",
-            body: JSON.stringify({notifyTitle: notifyTitle})
-        }).then(function(response){;
-            return response.json();
-        }).then(function(notifies){     
-            // 清除清單內容
-            $("#notify-items").html("");
-            
-            for(let notify of notifies){
-            	if(memId == `${notify.membershipVO.memId}`){
-            	
-            	$("#notify-items").append(
-					`<tr id="this_notify">
-					<th>${notify.notifyTitle}</th>
-					<td>${notify.notifyContent}</td>
-					<td>${moment(notify.notifyTime).format('YYYY-MM-DD HH:mm:ss')}</td>
-					</tr>`);
-            	}
-            }
-        }).catch(function(err){
-            console.log(err);
-        }); 
-    }
+//     async function getNotifyByTitle(notifyTitle){
+//         await fetch("/front_end/notify/notifyTitle",{
+//             method: "POST",
+//             body: JSON.stringify({notifyTitle: notifyTitle})
+//         }).then(function(response){;
+//             return response.json();
+//         }).then(function(notifies){     
+//             // 清除清單內容
+//             $("#notify-items").html("");
+//            
+//             for(let notify of notifies){
+//             	if(memId == `${notify.membershipVO.memId}`){
+//            	
+//             	$("#notify-items").append(
+// 					`<tr id="this_notify">
+// 					<th>${notify.notifyTitle}</th>
+// 					<td>${notify.notifyContent}</td>
+// 					<td>${moment(notify.notifyTime).format('YYYY-MM-DD HH:mm:ss')}</td>
+// 					</tr>`);
+//             	}
+//             }
+//         }).catch(function(err){
+//             console.log(err);
+//         }); 
+//     }
 
-    await getNotifyByMemId(memId);
     
-    $("#city-tab li").on("click", async function(){
-    	let title = $(this).data("notifytitle");
-    	if(title == "全部"){
-    		await getNotifyByMemId(memId);
-    	}else{
-    	    await getNotifyByTitle($(this).data("notifytitle"));
-    	}
-    });
     
-    $("#notify-items").on("click", "tr#this_notify", function(){
-    	console.log(this);
-    });
-    
-});
+
 
 </script>
 

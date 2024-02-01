@@ -482,8 +482,7 @@ $(document).ready(async function(){
             $("#ven-descr").html(`${ven.venDescr}`);
             $("#ven-price").html("");
             $("#ven-price").html(`租金：＄${ven.venPrice} / 天`);
-            
-            
+                       
             $("#ven-star").html("");
             $("#ven-star").html(`${ven.venTotRating}`);
             
@@ -520,12 +519,23 @@ $(document).ready(async function(){
 	
 	// 選擇日期變更事件
     $('#datepicker').change(async function() {
-        var selectedDate = $(this).val();     
-        $(".bookingform").css("display", "none");
-        $("span.orderDate").html("");
-        $("span.orderDate").html(`${selectedDate}`);
-        $("input#orderDate").val(selectedDate);
-        await getOrderVen(selectedDate);
+    	
+        let selectedDate = $(this).val();
+        let compareTime = new Date(selectedDate);
+        
+    	let today = new Date();
+        today.setDate(today.getDate() + 1);
+        
+        if (compareTime > today){
+            $(".bookingform").css("display", "none");
+            $("span.orderDate").html("");
+            $("span.orderDate").html(`${selectedDate}`);
+            $("input#orderDate").val(selectedDate);
+            await getOrderVen(selectedDate);
+        }else {
+        	$(this).val("");
+        	alert("請選擇正確日期");       	
+        }
     });
     
     

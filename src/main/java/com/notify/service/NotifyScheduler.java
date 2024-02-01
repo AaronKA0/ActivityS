@@ -30,10 +30,17 @@ public class NotifyScheduler {
     @Autowired
     private NotifyService notifySrv;
     
+    @Autowired
+    NotifyNow notifyNow;
+    
     // 場地訂單通知
 //    @Scheduled(cron = "0 0 12 * * ?")
 //    public void getBookingNotify() throws InterruptedException {
-//     
+//        
+//        List<MembershipVO> memVO = memSrv.getAll();
+//        
+//        notifyNow.sendNotifyNow(memVO, "系統通知", "通知成功成功成功");
+//        
 //        Integer memId = null;
 //        Date orderDate = null;
 //        

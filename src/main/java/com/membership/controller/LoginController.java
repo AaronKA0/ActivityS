@@ -63,7 +63,7 @@ public class LoginController {
 			System.out.println(b);
 //	        System.out.print("line 65 :" + "memId:" + memId +" "+"memAcc:" + memAcc +" " + "memPwd:" + memPwd);
 			
-			// +++++++++++++++ 將會員個人訊息存入 session +++++++++++++++
+			// +++++++++++++++ 代入會員個人訊息通知 +++++++++++++++
 			List<NotifyVO> notifies = notifySvc.findByMemId(memId);
 			request.getSession().setAttribute("notifies", notifies);
 			// +++++++++++++++ 將會員個人訊息存入 session +++++++++++++++
