@@ -23,4 +23,11 @@ public interface ActRepositorys extends JpaRepository<ActVOs, Integer> {
     @Query(value = "SELECT m.mem_name, m.mem_pic, m.mem_id FROM activity a " +
             "JOIN membership m ON a.mem_id = m.mem_id WHERE a.act_id = :actId", nativeQuery = true)
     List<Object[]> findMembersAndPicAndMemIdByActId(@Param("actId") Integer actId);
+
+
+    //最新4筆活動(扣掉官方)
+    List<ActVOs> findByMemIdNotOrderByActCrTimeDesc(Integer memId, Pageable pageable);
+
+    //官方最新4筆活動
+    List<ActVOs> findByMemIdOrderByActCrTimeDesc(Integer memId, Pageable pageable);
 }

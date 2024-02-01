@@ -650,7 +650,7 @@
                             `<div class="usertext">
                                 <div class="mb-3">
                                     <a class="text-decoration-none" href="/membership/${comment.memId}">
-                                        <img src="data:image/png;base64,${comment.memPic}" class="rounded-circle me-2 img-fluid" alt="" style="max-width: 50px; height: auto;">
+                                        <img class="rounded-circle me-2 img-fluid" alt="" style="max-width: 50px; height: auto;">
                                     </a>
                                     <p class="star badge bg-primary text-wrap align-top" data-mem-id="${comment.memId}">${comment.memName}</p>
                                 </div>
@@ -1498,8 +1498,8 @@
                                         </p>
                                         <p class="descr card-text">簡介:${actList.actDescr}</p>
                                         <hr>
-                                        <small class="card-text">開始時間:${actList.actStartTime}</small><br>
-                                        <small class="card-text">結束時間:${actList.actEndTime}</small>
+                                        <small class="card-text">活動開始時間:${actList.actStartTime}</small><br>
+                                        <small class="card-text">活動結束時間:${actList.actEndTime}</small>
                                         <div class="d-flex justify-content-end">
                                           <button class="btn btn-outline-secondary" data-act-id="${actList.actId}" onclick="seeDetails(this)">詳情</button>
                                         </div>
