@@ -12,6 +12,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
 
     <!-- <link rel="stylesheet" href="assets/form.css"> -->
 
@@ -28,6 +31,7 @@
         * {
             margin: 0;
             padding: 0;
+            font-family: 'Noto Sans TC', sans-serif;
         }
 
         main {
@@ -112,6 +116,19 @@
             text-decoration: none;
             cursor: pointer;
         }
+
+        .useshadow {
+            text-shadow:
+                    1px 1px 3px black,
+                    5px 3px 0 #cccccc;
+        }
+
+        .custom-img-height {
+            height: 200px; /* 举例的固定高度 */
+            object-fit: cover; /* 防止图片变形 */
+            width: 100%; /* 响应式宽度 */
+        }
+
 
     </style>
     <link rel="stylesheet" th:href="@{/front-end/zuo-huo/css/notify.css}">
@@ -222,7 +239,9 @@
 
     <section id="slogan" class="text-center mt-3">
         <h2 class="shadow-lg p-3 mb-5 bg-body rounded">
-            <marquee behavior="alternate">發現、參與、共享，做伙舉辦精彩活動！</marquee>
+            <div class="scene1">
+            <marquee class="useshadow" behavior="alternate">發現、參與、共享，做伙舉辦精彩活動！</marquee>
+            </div>
         </h2>
     </section>
 
@@ -274,8 +293,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 d-flex justify-content-between align-items-center">
-                    <h3>官方活動</h3>
-                    <a href="join.html" class="text-decoration-none">查看所有活動</a>
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="yellow"
+                             class="bi bi-star-fill" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                         </svg>
+                        官方活動
+                    </h3>
+                    <a href="join.html" class="">查看所有活動</a>
                 </div>
             </div>
         </div>
@@ -308,8 +332,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 d-flex justify-content-between align-items-center">
-                    <h3>最新活動</h3>
-                    <a href="join.html" class="text-decoration-none">查看所有活動</a>
+                    <h3 class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="blue" class="bi bi-balloon-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8.48 10.901C11.211 10.227 13 7.837 13 5A5 5 0 0 0 3 5c0 2.837 1.789 5.227 4.52 5.901l-.244.487a.25.25 0 1 0 .448.224l.04-.08c.009.17.024.315.051.45.068.344.208.622.448 1.102l.013.028c.212.422.182.85.05 1.246-.135.402-.366.751-.534 1.003a.25.25 0 0 0 .416.278l.004-.007c.166-.248.431-.646.588-1.115.16-.479.212-1.051-.076-1.629-.258-.515-.365-.732-.419-1.004a2 2 0 0 1-.037-.289l.008.017a.25.25 0 1 0 .448-.224zM4.352 3.356a4 4 0 0 1 3.15-2.325C7.774.997 8 1.224 8 1.5s-.226.496-.498.542c-.95.162-1.749.78-2.173 1.617a.6.6 0 0 1-.52.341c-.346 0-.599-.329-.457-.644"/>
+                        </svg>
+                        最新活動
+                    </h3>
+                        <a href="join.html" class="">查看所有活動</a>
                 </div>
             </div>
         </div>
@@ -339,18 +368,6 @@
     <!-- 間距用 -->
     <div class="my-4"></div>
 
-    <div class="card">
-        <div class="card-body shadow-sm">
-            <h5 class="card-title">加入 做伙</h5>
-            <p class="card-text">
-                我們可以結交新朋友、學習新事物、找到支持，一同跨足未知領域，追求彼此的熱情。會員資格完全免費。</p>
-            <a href="register.html" class="btn btn-danger">加入</a>
-        </div>
-    </div>
-
-    <!-- 間距用 -->
-    <div class="my-5"></div>
-
     <section id="latest3">
         <div class="container">
             <div class="row">
@@ -359,6 +376,15 @@
             </div>
         </div>
     </section>
+
+    <div class="card">
+        <div class="card-body shadow-sm">
+            <h5 class="card-title">加入 做伙</h5>
+            <p class="card-text">
+                我們可以結交新朋友、學習新事物、找到支持，一同跨足未知領域，追求彼此的熱情。會員資格完全免費。</p>
+            <a href="register.html" class="btn btn-danger">加入</a>
+        </div>
+    </div>
 
 </main>
 
@@ -559,10 +585,10 @@
                 actList.forEach(function (act) {
                     newActHTML +=
                         `<div class="col">
-                                <div class="card h-100 shadow-sm">
-                                    <img src="data:image/png;base64,${act.actPic}" class="card-img-top" alt="...">
+                                <div class="card shadow-sm">
+                                    <img src="data:image/png;base64,${act.actPic}" class="card-img-top img-fluid custom-img-height" alt="...">
                                     <div class="card-body">
-                                        <h5 class="card-title">${act.actName}</h5>
+                                        <h5 class="card-title fw-bold">${act.actName}</h5>
                                         <p class="descr card-text">簡介:${act.actDescr}</p>
                                         <p class="card-text">${loc}地點:${act.actLoc}</p>
                                         <hr>
@@ -604,9 +630,9 @@
                     officialActHTML +=
                         `<div class="col">
                                 <div class="card shadow-sm">
-                                    <img src="data:image/png;base64,${act.actPic}" class="card-img-top h-50" alt="...">
+                                    <img src="data:image/png;base64,${act.actPic}" class="card-img-top img-fluid custom-img-height" alt="...">
                                     <div class="card-body">
-                                        <h5 class="card-title">${act.actName}</h5>
+                                        <h5 class="card-title fw-bold">${act.actName}</h5>
                                         <p class="descr card-text">簡介:${act.actDescr}</p>
                                         <p class="card-text">${loc}地點:${act.actLoc}</p>
                                         <hr>
