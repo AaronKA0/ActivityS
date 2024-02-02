@@ -105,8 +105,16 @@ public class ActivityReportController {
 
     @PutMapping("/activityreport/{repId}")
     public ResponseEntity<ActivityReportVO> update(@PathVariable Integer repId,
-                                                   @RequestBody ReportStatus reportStatus) {
+                                                   @RequestBody ReportStatus reportStatus,
+                                                   HttpSession session) {
+        //模擬哪位員工
+        Integer testEmpId = 1;
+        session.setAttribute("empId", testEmpId);
+        Integer empId = (Integer)session.getAttribute("empId");
+        reportStatus.setEmpId(empId);
+
         ActivityReportVO activityReport = activityReportService.update(repId, reportStatus);
+
         return ResponseEntity.status(HttpStatus.OK).body(activityReport);
     }
 

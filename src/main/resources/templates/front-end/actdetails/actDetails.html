@@ -272,7 +272,9 @@
                 </div>
                 <div class="card w-100 p-3 mb-2 bg-white rounded" style="border: none;" id="scroll">
                     <div id="comments" class="card-body">
-
+                        <div>
+                            <p class="text-center fw-bold">尚有留言</p>
+                        </div>
                     </div>
                     <button id="morecomments" type="button" class="btn btn-light" onclick="more()">查看更多</button>
                 </div>
@@ -680,7 +682,7 @@
 
                 $("#comments").html(commentsHTML);
 
-                //判斷官方人員 +Icon
+                //判斷官方人員 +icon
                 $(".star").each(function () {
                     if ($(this).data("memId") === 1) {
                         $(this).html(star + $(this).text());
