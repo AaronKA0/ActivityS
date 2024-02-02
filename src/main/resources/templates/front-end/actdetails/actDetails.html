@@ -272,7 +272,9 @@
                 </div>
                 <div class="card w-100 p-3 mb-2 bg-white rounded" style="border: none;" id="scroll">
                     <div id="comments" class="card-body">
-
+                        <div>
+                            <p class="text-center fw-bold">尚有留言</p>
+                        </div>
                     </div>
                     <button id="morecomments" type="button" class="btn btn-light" onclick="more()">查看更多</button>
                 </div>
@@ -654,7 +656,7 @@
                         commentsHTML +=
                             `<div class="usertext">
                                 <div class="mb-3">
-                                    <a class="text-decoration-none" href="/membership/${comment.memId}">
+                                    <a class="text-decoration-none" href="/member?memId=${comment.memId}">
                                         <img src="data:image/png;base64,${comment.memPic}" class="rounded-circle me-2 img-fluid" alt="" style="max-width: 50px; height: auto;">
                                     </a>
                                     <p class="star badge bg-primary text-wrap align-top" data-mem-id="${comment.memId}">${comment.memName}</p>
@@ -680,7 +682,7 @@
 
                 $("#comments").html(commentsHTML);
 
-                //判斷官方人員 +Icon
+                //判斷官方人員 +icon
                 $(".star").each(function () {
                     if ($(this).data("memId") === 1) {
                         $(this).html(star + $(this).text());
@@ -758,7 +760,7 @@
                 commentsHTML +=
                     `<div class="usertext">
                         <div class="mb-3">
-                            <a class="text-decoration-none" href="/membership/${comments.memId}">
+                            <a class="text-decoration-none" href="/member?memId=${comments.memId}">
                                 <img src="data:image/png;base64,${comments.memPic}" class="rounded-circle me-2 img-fluid" alt="" style="max-width: 50px; height: auto;">
                                 <p class="star badge bg-primary text-wrap align-top" data-mem-id="${comments.memId}">${comments.memName}</p>
                             </a>
@@ -1341,7 +1343,7 @@
                         userHTML +=
                             `<div class="col-md-2 mb-3 mt-3">
                                 <div class="p-3 shadow-sm bg-white border border-1 rounded text-center h-100">
-                                    <a class="text-decoration-none" href="/member/${memNameAndPics[i].memId}"><img src="data:image/png;base64,${memNameAndPics[i].memPic}" class="pic img-fluid d-block mx-auto" style="width: 60px; height: auto">
+                                    <a class="text-decoration-none" href="/member?memId=${memNameAndPics[i].memId}"><img src="data:image/png;base64,${memNameAndPics[i].memPic}" class="pic img-fluid d-block mx-auto" style="width: 60px; height: auto">
                                     </a>
                                     <p class="star badge bg-primary text-wrap mt-2" data-mem-id="${memNameAndPics[i].memId}">
                                     ${memNameAndPics[i].memName}
@@ -1353,7 +1355,7 @@
                         userHTML +=
                             `<div class="col-md-2 mb-3 mt-3">
                                 <div class="p-3 shadow-sm bg-white border border-1 rounded text-center h-100">
-                                    <a class="text-decoration-none" href="/membership/${memNameAndPics[i].memId}"><img src="data:image/png;base64,${memNameAndPics[i].memPic}" class="pic img-fluid d-block mx-auto" style="width: 60px; height: auto">
+                                    <a class="text-decoration-none" href="/member?memId=${memNameAndPics[i].memId}"><img src="data:image/png;base64,${memNameAndPics[i].memPic}" class="pic img-fluid d-block mx-auto" style="width: 60px; height: auto">
                                     </a>
                                     <p class="badge bg-primary text-wrap mt-2">${memNameAndPics[i].memName}</p>
                                 </div>

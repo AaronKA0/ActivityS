@@ -80,7 +80,11 @@ public class ActivityReportService implements IActivityReportService {
 
         if (activityReport != null) {
             activityReport.setRepStatus(reportStatus.getRepStatus());
-            activityReport.getAct().setActStatus(reportStatus.getRepStatus());
+            activityReport.setEmpId(reportStatus.getEmpId());
+
+            if (reportStatus.getRepStatus() == 2) {
+                activityReport.getAct().setActStatus((byte) 1);
+            }
 
             return activityReportReopsitory.save(activityReport);
         } else {
