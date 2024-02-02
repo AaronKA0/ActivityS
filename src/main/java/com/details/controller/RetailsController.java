@@ -43,8 +43,9 @@ public class RetailsController {
         String base64Pic = Base64.getEncoder().encodeToString(act.getMemPic());
         if (base64Pic != null) {
             model.addAttribute("memPic", base64Pic);
+        } else {
+            //不寫錯誤判斷會掛掉 進不到活動詳情頁面
         }
-
         //模擬從session取會員id
         Integer testMemId = 1;
         session.setAttribute("memId", testMemId);
