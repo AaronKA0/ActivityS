@@ -7,9 +7,11 @@ import com.details.act.service.IActServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -43,5 +45,15 @@ public class ActServices implements IActServices {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<ActVOs> getNewActs() {
+        return actRepository.findByMemIdNotOrderByActCrTimeDesc(1, PageRequest.of(0, 4));
+    }
+
+    @Override
+    public List<ActVOs> getOfficialActs() {
+        return actRepository.findByMemIdOrderByActCrTimeDesc(1, PageRequest.of(0, 4));
     }
 }

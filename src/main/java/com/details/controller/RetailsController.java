@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
@@ -20,7 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.List;
 
-//@RestController
 @Controller
 //@RequestMapping("/CHA104G3")
 @Slf4j
@@ -43,11 +41,13 @@ public class RetailsController {
         model.addAttribute("act", act);
 
         String base64Pic = Base64.getEncoder().encodeToString(act.getMemPic());
-        model.addAttribute("memPic", base64Pic);
+        if (base64Pic != null) {
+            model.addAttribute("memPic", base64Pic);
+        }
 
         //模擬從session取會員id
-//        Integer testMemId = 2;
-//        session.setAttribute("memId", testMemId);
+        Integer testMemId = 1;
+        session.setAttribute("memId", testMemId);
 
         //判斷會員有沒有登入過 沒有的話將留言牆輸入框隱藏
         Integer memId = (Integer) session.getAttribute("memId");
