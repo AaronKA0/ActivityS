@@ -24,6 +24,12 @@ div#center {
     align-items: center;
 }
 
+div.has_two {
+    display: flex;
+    justify-content: center;
+    align-items: top !important;
+}
+
 form {
     text-align: left;
 }

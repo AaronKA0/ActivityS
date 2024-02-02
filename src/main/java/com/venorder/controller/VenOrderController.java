@@ -34,6 +34,9 @@ public class VenOrderController {
     @Autowired
     VenService venSvc;
 
+    
+  //******************************* 新增 ******************************* //
+    
     @GetMapping("addVenOrder")
     public String addVenOrder(ModelMap model) {
         VenOrderVO venOrderVO = new VenOrderVO();
@@ -53,9 +56,11 @@ public class VenOrderController {
         List<VenOrderVO> list = venOrderSvc.getAll();
         model.addAttribute("venOrderListData", list);
         model.addAttribute("success", "- (新增成功)");
-        return "redirect:/ven-order/ven_order_page";
+        return "redirect:/back_end/ven-order/ven_order_page";
     }
 
+    
+  //******************************* 修改 ******************************* //
     
     @PostMapping("getOne_For_Update")
     public String getOne_For_Update(@RequestParam("venOrderId") String venOrderId, ModelMap model) {

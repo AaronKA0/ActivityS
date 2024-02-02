@@ -44,6 +44,7 @@ public class RetailsController {
 
         String base64Pic = Base64.getEncoder().encodeToString(act.getMemPic());
         model.addAttribute("memPic", base64Pic);
+        
 
         //模擬從session取會員id
 //        Integer testMemId = 2;

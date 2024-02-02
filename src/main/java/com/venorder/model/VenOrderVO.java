@@ -41,11 +41,7 @@ public class VenOrderVO implements java.io.Serializable {
 	@ManyToOne
     @JoinColumn(name = "mem_id", referencedColumnName = "mem_id")
 	private MembershipVO memVO;
-	
-//	@Column(name = "mem_id")
-//	@NotNull(message="請選擇會員資料")
-//	private Integer memId;
-	
+		
 	@Column(name = "emp_id")
 	private Integer empId;
 	
@@ -55,7 +51,6 @@ public class VenOrderVO implements java.io.Serializable {
 	private Date orderDate;
 	
 	@Column(name = "mem_phone", columnDefinition = "char")
-	@NotEmpty(message="請填寫手機號碼")
 	@Pattern(regexp = "^09[0-9]{8}$", message = "請輸入正確手機號碼(ex：09xxxxxxxx)")
 	private String memPhone;
 	
@@ -133,14 +128,6 @@ public class VenOrderVO implements java.io.Serializable {
     public void setMemVO(MembershipVO memVO) {
         this.memVO = memVO;
     }
-
-//    public Integer getMemId() {
-//		return memId;
-//	}
-//
-//	public void setMemId(Integer memId) {
-//		this.memId = memId;
-//	}
 
     public Integer getEmpId() {
 		return empId;
