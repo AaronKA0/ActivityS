@@ -108,7 +108,11 @@
 <main class="main">
 
     <div class="w-100">
-        <h1 class="fw-bold">活動留言檢舉</h1>
+        <div class="btn-group mb-2" role="group" aria-label="Basic example">
+            <button type="button" class="change btn btn-danger btn-sm">留言檢舉管理</button>
+            <button type="button" class="change btn btn-outline-warning btn-sm">活動檢舉管理</button>
+        </div>
+
         <div class="d-flex justify-content-between mb-1">
             <div class="input-group input-group-sm w-25 h-75">
                 <label for="memId">會員ID:</label>
@@ -366,7 +370,7 @@
                 page: pageNumber - 1,
                 sortDirection: repTime,
                 memId: memId,
-                empId:empId
+                empId: empId
             },
             dataType: 'json',
             success: function (commentReportList) {
@@ -503,7 +507,7 @@
         let actId = $(this).data("actId");
         let newStatus = {
             repStatus: $(this).val(),
-            actId:actId
+            actId: actId
         };
 
         if (newStatus.repStatus === "1") {
@@ -596,6 +600,18 @@
         onOpen: toast => {
             toast.addEventListener('mouseenter', Swal.stopTimer)
             toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    //頁籤切換
+    $(".change").click(function () {
+        switch ($(this).text()) {
+            case "留言檢舉管理":
+                window.location.href = `/membership/commentreport`;
+                break;
+            case "活動檢舉管理":
+                window.location.href = `/membership/report`;
+                break;
         }
     });
 </script>

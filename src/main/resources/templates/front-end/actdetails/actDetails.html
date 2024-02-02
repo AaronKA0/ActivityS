@@ -498,6 +498,10 @@
     const light = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="yellow" class="bi bi-lightbulb-fill" viewBox="0 0 16 16">
                     <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5"/>
                     </svg>`;
+    //愛心icon
+    const heart = `<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="gray" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
+                    </svg>`;
 
     //判斷有沒有登入過 沒有的話為null 用在顯示所有留言那邊
     let user = $(".user").data("user");
@@ -654,7 +658,7 @@
                             `<div class="usertext">
                                 <div class="mb-3">
                                     <a class="text-decoration-none" href="/membership/${comment.memId}">
-                                        <img class="rounded-circle me-2 img-fluid" alt="" style="max-width: 50px; height: auto;">
+                                        <img src="data:image/png;base64,${comment.memPic}" class="rounded-circle me-2 img-fluid" alt="" style="max-width: 50px; height: auto;">
                                     </a>
                                     <p class="star badge bg-primary text-wrap align-top" data-mem-id="${comment.memId}">${comment.memName}</p>
                                 </div>
@@ -663,6 +667,7 @@
                                 <hr style="margin: 0">
                                 <div class="d-flex align-items-center mb-3">
                                     <small class="text-muted">${comment.comTime}</small>
+                                    <div class="ms-2">${heart}</div>
                                         <div class="userfunction ms-auto" data-mem-id="${comment.memId}">
                                             <a href="#" class="login ok badge rounded-pill bg-success" style="text-decoration:none; display: none;"  data-com-id="${comment.comId}">確認</a>
                                             <a href="#" class="login nosee update badge rounded-pill bg-danger" style="text-decoration:none; display: none;"  data-com-id="${comment.comId}">編輯</a>
