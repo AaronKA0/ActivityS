@@ -8,7 +8,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>員工資料 - listOneEmp.html</title>
 
-<script th:src="@{back-end/10/js/jquery-1.11.3.min.js}"></script>
+<script th:src="@{/back-end/10/js/jquery-1.11.3.min.js}"></script>
 <!-- 左側jquery為table分頁用 -->
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <!-- ●●js  for jquery datatables 用 -->
@@ -20,9 +20,9 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet"
 	href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
-<link rel="stylesheet" th:href="@{back-end/10/css/emp_Index.css}">
+<link rel="stylesheet" th:href="@{/back-end/10/css/emp_Index.css}">
 
-<script th:src="@{back-end/10/js/aside.js}"></script>
+<script th:src="@{/back-end/10/js/aside.js}"></script>
 
 <style>
 body {
@@ -73,10 +73,10 @@ p {
 <body onload="showDivsBasedOnDeptno()">
 
 	<!-- header -->
-	<div th:insert="~{/emp_Index :: header-div}"></div>
+	<div th:insert="~{/back-end/emp_Index :: header-div}"></div>
 
 	<!-- aside -->
-	<div th:insert="~{/emp_Index :: aside-div}"></div>
+	<div th:insert="~{/back-end/emp_Index :: aside-div}"></div>
 
 
 
