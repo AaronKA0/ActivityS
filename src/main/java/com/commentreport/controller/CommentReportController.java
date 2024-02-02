@@ -32,6 +32,7 @@ public class CommentReportController {
             @RequestParam(required = false) Integer memId,
             @RequestParam(required = false) Integer empId,
             @RequestParam(required = false) String sortDirection,
+            @RequestParam(required = false) Integer size,
             @PageableDefault(size = 5, sort = "repTime", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         //傳進來是DESC的話替換掉pageable內的Sort
