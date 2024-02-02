@@ -1,0 +1,68 @@
+
+
+/* login.css */
+body, html {
+	height: 100%;
+	margin: 0;
+}
+
+.bg {
+	display: flex;
+	background-color: #fbfaf9; /* 替换为图片背景颜色 */
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh; /* 使用视窗的高度 */
+	background-image: url('../images/Logo10.jpg');
+	background-position: top center; /* 将图片放在顶部居中 */
+	background-repeat: no-repeat;
+	background-size: auto 40%; /* 调整这个百分比来改变图片占用空间的大小 */
+}
+
+#loginForm {
+	/* 增加顶部边距以向下移动表单 */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%; /* 或指定固定宽度，例如 width: 300px; */
+	max-width: 330px; /* 指定最大宽度，保持表单在大屏幕上也不会过宽 */
+	padding: 20px;
+	margin-top: -100px; /* 向上偏移，确保表单在图片下方 */
+	background: rgba(255, 255, 255, 0); /* 可以给表单添加半透明的背景，使文字更易阅读 */
+	border-radius: 5px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0); /* 可选的，为表单添加阴影效果 */
+	margin-top: 5px;
+}
+
+/* 设置输入框的样式 */
+.input-field {
+	border-radius: 25px;
+	border: 1px solid #ddd;
+	padding: 10px;
+	width: 250px;
+	margin-bottom: 5px;
+}
+
+/* 设置按钮的样式 */
+.submit-btn {
+	background-color: #e19fae;
+	border-radius: 25px;
+	border: none;
+	color: white;
+	padding: 10px 20px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	transition-duration: 0.4s;
+	cursor: pointer;
+	color: white;
+}
+
+/* 新添加的登录系统文字样式 */
+.login-header {
+	font-size: 24px; /* 可以根据需要调整大小 */
+	color: #333; /* 字体颜色 */
+	margin-bottom: 5px; /* 与输入框之间的距离 */
+}

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title>後台首頁頁面</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+<!-- 左側jquery為table分頁用 -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<!-- ●●js  for jquery datatables 用 -->
+<script
+	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
+<link rel="stylesheet" th:href="@{/css/emp_Index.css}">
+<script th:src="@{/js/aside.js}"></script>
+
+
+<!-- +++++++++新增++++++++++ -->
+<!-- --------------------------------------------------------------------------------------------------- -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<!-- --------------------------------------------------------------------------------------------------- -->
+<!-- +++++++++新增++++++++++ -->
+
+
+<style type="text/css">
+button {
+	padding: 5px;
+}
+
+form {
+	display: table;
+}
+
+form div {
+	display: table-row;
+}
+
+label, input, span, select {
+	display: table-cell;
+	margin: 2px;
+	text-align: left;
+}
+
+input[type="text"], input[type="password"], select, textarea {
+	width: 200px;
+	margin: 2px;
+}
+
+form div div {
+	display: table-cell;
+}
+
+.center {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+span {
+	display: inline-block;
+	/*  	width: 130px; */
+	text-align: left;
+	font-weight: bold;
+}
+
+div.a {
+	display: inline-block;
+	width: 50%;
+	height: auto;
+	padding: 5px;
+	border: 0px solid blue;
+	background-color: white;
+}
+
+div.b {
+	display: inline-block;
+	width: 45%;
+	height: auto;
+	padding: 5px;
+	background-color: white;
+}
+
+header h1, header p, header span {
+	margin: 0;
+	padding: 0;
+	display: inline;
+	font-weight: normal;
+}
+
+#nav-div {
+	display: flex;
+	position: absolute;
+	bottom: 0.1em;
+	right: 50px
+}
+
+header a {
+	margin: 0 1em 0 5em;
+	color: #35394c;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* 按鈕樣式 */
+.submit-btn {
+	background-color: #e19fae;
+	border-radius: 25px;
+	border: none;
+	color: white;
+	padding: 10px 20px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	transition-duration: 0.4s;
+	cursor: pointer;
+	color: white;
+}
+
+.modal-body .card {
+    margin-bottom: 20px; /* 给卡片底部增加额外的边距 */
+}
+
+.card-body p {
+    margin-bottom: 10px; /* 调整段落之间的距离 */
+}
+
+.modal-title {
+    color: #007bff; /* 修改模态窗标题的颜色 */
+    font-size: 24px; /* 增大标题字体大小 */
+}
+
+.card-text strong {
+    color: #343a40; /* 加深文本标签的颜色，增强对比 */
+}
+
+.card-text{
+	margin-left: 0px !important;
+}
+
+.h1, h1 {
+    font-size:2rem;
+    margin-top: 50px
+}
+</style>
+
+</head>
+
+<body onload="showDivsBasedOnDeptno()">
+
+	<header class="header">
+		<!-- 	<header id="header-container"> -->
+		
+		<h1>【做伙後台管理系統】</h1>
+
+		<div id="nav-div">
+			<p>歡迎您，</p>
+			<span th:text="${empName}">員工名稱</span><span>-</span></span></span><span
+				id="deptNumber" th:text="${deptno}" style="display: none;">部門編號</span>
+			<span th:text="${dname}">部門名稱</span> <a href="/login?logout=true"
+				onclick="logout()">登出</a>
+		</div>
+		
+	</header>
+
+	<!-- aside -->
+	<div th:insert="~{/emp_Index :: aside-div}"></div>
+
+
+	<main class="main">
+
+		<h4>
+			<span>員工查詢:</span>
+		</h4>
+		<!-- 錯誤表列 -->
+		<div class="errorblock" th:utext="${errorMessage}">${errorMessage}</div>
+		<br>
+
+		<ul>
+			<li>
+				<h5>
+					<a href='listAllEmp'>所有員工</a> <br> <br>
+				</h5>
+			</li>
+
+			<li>
+				<form method="post" th:action="@{getOne_For_Display}">
+					輸入員工編號: <input type="text" name="empId" th:value="${param.empId}">
+					<input type="submit" class="submit-btn" value="送出"> (輸入如1~10)
+				</form> <br>
+			</li>
+
+
+
+
+			<li><form method="post" th:action="@{getOne_For_Display}">
+					選擇員工編號: <select name="empId">
+						<option th:each="empVO : ${empListData}" th:value="${empVO.empId}"
+							th:text="${empVO.empId}" />
+					</select> <input type="submit" class="submit-btn" value="送出">
+				</form> <br></li>
+
+
+
+
+			<li><form method="post" th:action="@{getOne_For_Display}">
+					選擇員工姓名: <select name="empId">
+						<option th:each="empVO : ${empListData}" th:value="${empVO.empId}"
+							th:text="${empVO.empName}" />
+					</select> <input type="submit" class="submit-btn" value="送出">
+				</form> <br></li>
+			</ul>
+			<!-- +++++++++新增++++++++++ -->
+			<!-- --------------------------------------------------------------------------------------------------- -->
+			<!-- 旗標getOne_For_Display見EmpnoController.java的第74行 
+			
+			<!--
+			<div class="b" th:if="${getOne_For_Display}">
+				<div class="modal fade" id="basicModal" tabindex="-1" role="dialog"
+					aria-labelledby="basicModal" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+							
+								<h3 class="modal-title" id="myModalLabel">員工資料</h3>
+			</div>
+			-->
+			
+			 <!-- =========================================以下為原listOneEmp.jsp的內容========================================== 
+							<div class="modal-body">
+								<div align="center" th:fragment="listOneEmp-div">
+								
+									<h3>
+										<span>查詢結果 :</span>
+									</h3>
+									<span><img
+										th:src="@{/emp/DBGifReader} + '?empId=' + ${empVO.empId}"
+										width="100px"></span><br />
+									<span>員工編號:</span><span th:text="${empVO.empId}"></span><br />
+									<span>員工狀態:</span><span th:text="${empVO.empStatus == 1 ? '在職' : '離職'}"></span><br />
+									<span>部門:</span><span
+										th:text="${empVO.deptVO.deptno} + '-[' + ${empVO.deptVO.dname} + ']'"></span><br />
+									<span>員工姓名:</span><span th:text="${empVO.empName}"></span><br />
+									<span>Email:</span><span th:text="${empVO.empEmail}"></span><br />
+									<span>電話:</span><span th:text="${empVO.empPhone}"></span><br />
+									<span>生日:</span><span
+										th:text="${#dates.format(empVO.empBirthdate, 'yyyy-MM-dd')}"></span><br />
+									<span>性別:</span><span
+										th:text="${empVO.empGender == 1 ? '男' : '女'}"></span><br /> <span>到職時間:</span><span
+										th:text="${#dates.format(empVO.empCrTime, 'yyyy-MM-dd')}"></span><br />
+									
+								</div>
+							</div>
+								-->
+								<!-- =========================================以上為原listOneEmp.jsp的內容========================================== 
+							
+
+							<div class="modal-footer">
+								<button type="button" class="submit-btn" 
+									data-dismiss="modal">關閉</button>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>-->
+
+
+
+<div class="b" th:if="${getOne_For_Display}">
+    <div class="modal fade" id="basicModal" tabindex="-1" role="dialog"
+        aria-labelledby="basicModal" aria-hidden="true" th:fragment="listOneEmp-div">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="myModalLabel">員工資料</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="card" >
+                        <div class="card-body">
+                            <h5 class="card-title">查詢結果</h5>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img th:src="@{/emp/DBGifReader} + '?empId=' + ${empVO.empId}" class="img-fluid" alt="員工照片">
+                                </div>
+                                <div class="col-md-8">
+                                    <p class="card-text">
+                                        <strong>員工編號:</strong> <span th:text="${empVO.empId}"></span><br>
+                                        <strong>員工狀態:</strong> <span th:text="${empVO.empStatus == 1 ? '在職' : '離職'}"></span><br>
+                                        <strong>部門:</strong> <span th:text="${empVO.deptVO.deptno} + '-[' + ${empVO.deptVO.dname} + ']'"></span><br>
+                                        <strong>員工姓名:</strong> <span th:text="${empVO.empName}"></span><br>
+                                        <strong>Email:</strong> <span th:text="${empVO.empEmail}"></span><br>
+                                        <strong>電話:</strong> <span th:text="${empVO.empPhone}"></span><br>
+                                        <strong>生日:</strong> <span th:text="${#dates.format(empVO.empBirthdate, 'yyyy-MM-dd')}"></span><br>
+                                        <strong>性別:</strong> <span th:text="${empVO.empGender == 1 ? '男' : '女'}"></span><br>
+                                        <strong>到職時間:</strong> <span th:text="${#dates.format(empVO.empCrTime, 'yyyy-MM-dd')}"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="submit-btn" data-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+			<!--  萬用複合查詢-以下欄位-可隨意增減 
+  
+  <li>   
+    <form method="post" th:action="@{listEmps_ByCompositeQuery}">
+        <font color=blue>萬用複合查詢:</font><br>
+        
+        輸入員工編號: 
+        <input type="text" name="empId" value="1"><br>
+        
+        選擇部門: 
+  		<select th:field="*{deptVO.deptno}">
+			<option value="">請選擇</option>
+			<option th:each="deptVO : ${deptListData}" th:value="${deptVO.deptno}" th:text="${deptVO.dname}" />
+		</select><br>
+	    
+        輸入員工姓名: 
+        <input type="text" name="empName" value="李靖"><br>
+       
+        輸入員工性別: 
+        <input type="radio" name="empGender" value="1"> 男性
+		<input type="radio" name="empGender" value="2"> 女性<br>	
+      
+        <input type="submit" value="送出">
+     
+     </form>
+  </li>-->
+
+		
+	</main>
+
+	<script>
+		$("#basicModal").modal({
+			show : true
+		});
+	</script>
+
+	<script>
+		var dropdown = document.getElementsByClassName("dropdown-btn");
+		var i;
+
+		for (i = 0; i < dropdown.length; i++) {
+			dropdown[i].addEventListener("click", function() {
+				this.classList.toggle("active");
+				var dropdownContent = this.nextElementSibling;
+				if (dropdownContent.style.display === "block") {
+					dropdownContent.style.display = "none";
+				} else {
+					dropdownContent.style.display = "block";
+				}
+			});
+		}
+	</script>
+</body>
+</html>

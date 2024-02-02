@@ -330,7 +330,7 @@
 
     $(document).ready(function () {
         $.ajax({
-            url: "/act/actTypes",
+            url: "/type/actTypes",
             type: "GET",
             dataType: "json",
             success: function (types) {
@@ -456,7 +456,7 @@
                 console.log(response);
                 alert('活動創建成功！');
                 // 可以在這邊添加導向或是其他邏輯
-                location.href = "index.html"
+                location.href = "/act/joinAct"
             },
             error: function (XHR, Status, error) {
                 // 請求失敗後執行

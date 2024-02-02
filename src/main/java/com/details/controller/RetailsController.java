@@ -45,6 +45,7 @@ public class RetailsController {
             model.addAttribute("memPic", base64Pic);
         }
 
+
         //模擬從session取會員id
         Integer testMemId = 1;
         session.setAttribute("memId", testMemId);
