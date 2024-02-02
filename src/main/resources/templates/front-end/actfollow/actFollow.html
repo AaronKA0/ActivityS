@@ -25,6 +25,9 @@
         main {
             font-family: 'Noto Sans TC', sans-serif;
         }
+        .footer{
+            font-family: 'Noto Sans TC', sans-serif;
+        }
 
         th {
             white-space: nowrap;
@@ -36,6 +39,11 @@
             text-align: center;
             vertical-align: middle;
             font-size: 16px;
+        }
+
+        .page{
+            position: sticky;
+            bottom: 0;
         }
 
     </style>
@@ -117,9 +125,9 @@
     <main class="main">
         <div>
             <div class="btn-group" role="group" aria-label="Basic example" style="margin-bottom: 30.334px;">
-                <button type="button" class="change btn btn-outline-success">報名管理</button>
-                <button type="button" class="change btn btn-outline-danger">活動管理</button>
-                <button type="button" class="change btn btn-primary">關注管理</button>
+                <button type="button" class="change btn btn-outline-dark">報名管理</button>
+                <button type="button" class="change btn btn-outline-dark">活動管理</button>
+                <button type="button" class="change btn btn-dark">關注管理</button>
             </div>
 <!--            <div class="d-md-flex justify-content-md-end mb-1">-->
 <!--                <div class="btn-group" role="group">-->
@@ -146,7 +154,7 @@
             </table>
         </div>
 
-        <div class="fixed-bottom">
+        <div class="page fixed-bottom">
             <div class="container">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
@@ -163,9 +171,18 @@
                 </nav>
             </div>
         </div>
-
     </main>
+</div>
 
+<div class="footer container">
+    <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="index.html" class="nav-link px-2 text-muted">首頁</a></li>
+            <li class="nav-item"><a href="customer.html" class="nav-link px-2 text-muted">客服中心</a></li>
+            <li class="nav-item"><a href="about.html" class="nav-link px-2 text-muted">關於我們</a></li>
+        </ul>
+        <p class="text-center text-muted">© 2024 Zuo-Huo</p>
+    </footer>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"

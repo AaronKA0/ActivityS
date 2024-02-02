@@ -10,6 +10,9 @@ import com.commentreport.dto.CommentReportStatus;
 import com.commentreport.model.CommentReportVO;
 import com.commentreport.repository.CommentReportRepository;
 import com.commentreport.service.ICommentReportService;
+import com.membership.model.MembershipVO;
+import com.membership.service.MembershipService;
+import com.notify.service.NotifyNow;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -100,12 +105,10 @@ public class CommentReportService implements ICommentReportService {
                     commentReport.get().getComment().setComStatus(Byte.valueOf("1"));
                     break;
                 case 2:
-                    commentReport.get().getComment().setComStatus((byte) 2); //2=不會顯示留言
-
+                    commentReport.get().getComment().setComStatus((byte) 2); //2=檢舉成功 不顯示留言
 //                  檢舉審核成功清掉redis 把舊資料清掉
                     String redisKey = commentService.buildRedisKey(commentReportStatus.getActId());
                     redisTemplate.delete(redisKey);
-
                     break;
                 case 3:
                     commentReport.get().getComment().setComStatus((byte) 1);

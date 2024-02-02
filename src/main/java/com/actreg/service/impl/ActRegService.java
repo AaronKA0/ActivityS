@@ -6,6 +6,9 @@ import com.actreg.dto.*;
 import com.actreg.model.ActRegVO;
 import com.actreg.repository.ActRegRepository;
 import com.actreg.service.IActRegService;
+import com.membership.model.MembershipVO;
+import com.membership.service.MembershipService;
+import com.notify.service.NotifyNow;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +36,12 @@ public class ActRegService implements IActRegService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private MembershipService membershipService;
+
+    @Autowired
+    private NotifyNow notifyNow;
 
     //log紀錄
     private final static Logger log = LoggerFactory.getLogger(ActRegService.class);
@@ -130,19 +139,20 @@ public class ActRegService implements IActRegService {
         //審核報名者
         switch (actRegReviewRequest.getRegStatus()) {
             case 1:
-                //失敗要通知會員
                 log.info("通知會員報名失敗");
-
-                //call於丘的mem get one
-                //call NotiftyNow 帶memVO, title, 內容
-                //title = 活動通知 內容自訂
-
+                MembershipVO oneMembership = membershipService.getOneMembership(actReg.getMemId());
+                List<MembershipVO> list = new ArrayList<>();
+                list.add(oneMembership);
+                notifyNow.sendNotifyNow(list, "活動通知", "活動報名失敗");
                 break;
             case 3:
                 //通過要將活動table參加人數增加
                 actReg.getAct().setActCount(actReg.getAct().getActCount() + actReg.getRegTotal());
                 log.info("通知會員報名成功");
-                //通過通知會員
+                MembershipVO okOneMembership = membershipService.getOneMembership(actReg.getMemId());
+                List<MembershipVO> okList = new ArrayList<>();
+                okList.add(okOneMembership);
+                notifyNow.sendNotifyNow(okList, "活動通知", "活動報名成功！");
                 break;
         }
         return actRegRepository.save(actReg);
