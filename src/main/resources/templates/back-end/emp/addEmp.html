@@ -1,0 +1,345 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>員工資料新增 - addEmp.html</title>
+
+
+
+<script th:src="@{/back-end/10/js/jquery-1.11.3.min.js}"></script>
+
+<!-- 左側jquery為table分頁用 -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+<!-- ●●js  for jquery datatables 用 -->
+<script
+	src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
+
+
+<!--   首頁的css   -->
+<link rel="stylesheet" th:href="@{/back-end/10/css/error.css}">
+<link rel="stylesheet" th:href="@{/back-end/10/css/emp_Index.css}">
+
+<!--   首頁的js   -->
+<script th:src="@{/back-end/10/js/aside.js}"></script>
+
+<!-- Bootstrap導入
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">	
+ -->
+
+</head>
+<style>
+body {
+	font-family: 'Arial', sans-serif;
+	background-color: #f4f4f4;
+	margin: 0;
+	padding-top: 0px;
+}
+
+form {
+	padding: 0.5%;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	max-width: 600px;
+	font-size: 0.9em; /* 減少字體大小 */
+	margin: 5px auto;
+}
+
+.input-field, select, .custom-file-upload {
+	width: 100%;
+	padding: 5px;
+	margin-bottom: 5px; /* 調小元素之間的間距 */
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-sizing: border-box; /* Include padding in total width and height */
+}
+
+label {
+	display: block;
+	margin-bottom: 5px;
+}
+
+.error {
+	color: red;
+	font-size: 0.8em;
+}
+
+button.btn {
+	background-color: #5cb85c;
+	color: white;
+	border: none;
+	padding: 5px 10px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 1em;
+}
+
+button.btn:hover {
+	background-color: #4cae4c;
+}
+
+/* 自定義按鈕樣式 */
+.custom-btn {
+	background-color: #e19fae;
+	border-radius: 100px;
+	border: none;
+	color: white;
+	padding: 7px 12px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 12px;
+	margin: 4px 2px;
+	transition-duration: 0.4s;
+	cursor: pointer;
+	color: white;
+}
+
+.custom-btn:hover {
+	background-color: white;
+	color: black;
+}
+
+.input-field, select, .custom-file-upload, button.btn {
+	border-radius: 20px; /* 增加邊框半徑以產生橢圓形的效果 */
+	padding: 5px; /* 可以根據需要調整內距以改變形狀 */
+	/* 其他樣式保持不變 */
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px; /* 或根據需要調整間距 */
+}
+
+.form-group {
+    flex: 1; /* 使每個表單元素彈性填充空間 */
+    padding: 0 5px; /* 在表單元素之間留出空間 */
+}
+
+/* 確保輸入框和標籤的對齊 */
+.input-field, label {
+    display: block;
+    width: 100%;
+}
+
+
+
+</style>
+<body onload="showDivsBasedOnDeptno()">
+
+	<!-- header -->
+	<div th:insert="~{/back-end/emp_Index :: header-div}"></div>
+
+	<!-- aside -->
+	<div th:insert="~{/back-end/emp_Index :: aside-div}"></div>
+
+
+	<div align="center">
+		<h3>
+			<b>所有欄位皆為必填欄位</b>
+		</h3>
+		<form th:action="@{insert}" method="post" th:object="${empVO}"
+			enctype="multipart/form-data">
+
+		<div class="form-row">
+			<div class="form-group">
+				<label>員工帳號:</label> <input type="text" class="input-field"
+					th:field="*{empAcc}" onclick="hideContent('empAcc.errors');" /><br />
+				<span th:if="${#fields.hasErrors('empAcc')}" th:errors="*{empAcc}"
+					class="error" id="empAcc.errors"></span>
+			</div>
+
+
+			<div class="form-group">
+				<label>員工密碼:</label> <input type="text" class="input-field"
+					th:field="*{empPwd}" onclick="hideContent('empPwd.errors');" /><br />
+				<span th:if="${#fields.hasErrors('empPwd')}" th:errors="*{empPwd}"
+					class="error" id="empPwd.errors"></span>
+			</div>
+		</div>
+		
+		<div class="form-row">
+			<div class="form-group">
+				<label>Email:</label> <input type="email" class="input-field"
+					th:field="*{empEmail}" onclick="hideContent('empEmail.errors');" /><br />
+				<span th:if="${#fields.hasErrors('empEmail')}"
+					th:errors="*{empEmail}" class="error" id="empEmail.errors"></span>
+			</div>
+
+
+
+			<div class="form-group">
+				<label>員工姓名:</label> <input type="text" class="input-field"
+					th:field="*{empName}" onclick="hideContent('empName.errors');" /><br />
+				<span th:if="${#fields.hasErrors('empName')}" th:errors="*{empName}"
+					class="error" id="empName.errors"></span>
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-group">
+				<label>員工電話:</label> <input type="text" class="input-field"
+					th:field="*{empPhone}" onclick="hideContent('empPhone.errors');" /><br />
+				<span th:if="${#fields.hasErrors('empPhone')}"
+					th:errors="*{empPhone}" class="error" id="empPhone.errors"></span>
+			</div>
+
+			<div class="form-group">
+				<label>生日:</label> <input type="date" class="input-field"
+					th:field="*{empBirthdate}"
+					onclick="hideContent('empBirthdate.errors');" /><br /> <span
+					th:if="${#fields.hasErrors('empBirthdate')}"
+					th:errors="*{empBirthdate}" class="error" id="empBirthdate.errors"></span>
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-group">
+				<label>入職日期:</label> <input type="date" class="input-field"
+					th:field="*{empCrTime}" onclick="hideContent('empCrTime.errors');" /><br />
+				<span th:if="${#fields.hasErrors('empCrTime')}"
+					th:errors="*{empCrTime}" class="error" id="empCrTime.errors"></span>
+			</div>
+
+			<div class="form-group">
+				<label>部門:</label> <select th:field="*{deptVO.deptno}">
+					<option th:each="deptVO : ${deptListData}"
+						th:value="${deptVO.deptno}" th:text="${deptVO.dname}" />
+				</select> <span th:if="${#fields.hasErrors('deptVO.deptno')}"
+					th:errors="*{deptVO.deptno}" class="error"
+					id="deptVO.deptno.errors"></span>
+			</div>
+		</div>
+		
+		<div class="form-row">
+			<div class="form-group">
+				<label>性別:</label> <input type="radio" th:field="*{empGender}"
+					value="1" onclick="hideContent('empGender.errors');" /> 男性 <input
+					type="radio" th:field="*{empGender}" value="2"
+					onclick="hideContent('empGender.errors');" /> 女性<br /> <span
+					th:if="${#fields.hasErrors('empGender')}" th:errors="*{empGender}"
+					class="error" id="empGender.errors"></span>
+			</div>
+
+			<div class="form-group">
+				<label>狀態:</label> <input type="radio" th:field="*{empStatus}"
+					value="0" onclick="hideContent('empStatus.errors');" /> 在職 <input
+					type="radio" th:field="*{empStatus}" value="1"
+					onclick="hideContent('empStatus.errors');" /> 離職<br /> <span
+					th:if="${#fields.hasErrors('empStatus')}" th:errors="*{empStatus}"
+					class="error" id="empStatus.errors"></span>
+			</div>
+		</div>
+
+			<div class="form-group">
+				<label>照片:</label> <input type="file" th:field="*{empPic}"
+					onclick="previewImage()" multiple="multiple"
+					onchange="hideContent('empPic.errors');" />
+				<!-- 			<span  th:if="${#fields.hasErrors('empPic')}" th:errors="*{empPic}" class="error" id="empPic.errors"></span> -->
+				<span class="error" th:utext="${errorMessage}" id="empPic.errors">${errorMessage}</span>
+				<!-- 			<h2 id="errorMessage">${errorMessage}</h2>  -->
+				<div id="blob_holder"></div>
+			</div>
+
+
+
+			<div>
+				<div></div>
+				<div>
+					<button type="submit" class="custom-btn" id="submit">送出新增</button>
+				</div>
+				<div></div>
+			</div>
+		</form>
+	</div>
+
+
+	<!-- JavaScript part -->
+	<script type="text/javascript">
+		//清除提示信息
+		function hideContent(d) {
+			document.getElementById(d).style.display = "none";
+		}
+
+		//照片上傳-預覽用
+		var filereader_support = typeof FileReader != 'undefined';
+		if (!filereader_support) {
+			alert("No FileReader support");
+		}
+		acceptedTypes = {
+			'image/png' : true,
+			'image/jpeg' : true,
+			'image/gif' : true
+		};
+		function previewImage() {
+			var empPic1 = document.getElementById("empPic");
+			empPic1.addEventListener("change", function(event) {
+				var files = event.target.files || event.dataTransfer.files;
+				for (var i = 0; i < files.length; i++) {
+					previewfile(files[i])
+				}
+			}, false);
+		}
+		function previewfile(file) {
+			if (filereader_support === true
+					&& acceptedTypes[file.type] === true) {
+				var reader = new FileReader();
+				reader.onload = function(event) {
+					var image = new Image();
+					image.src = event.target.result;
+					image.width = 100;
+					image.height = 75;
+					image.border = 2;
+					if (blob_holder.hasChildNodes()) {
+						blob_holder.removeChild(blob_holder.childNodes[0]);
+					}
+					blob_holder.appendChild(image);
+				};
+				reader.readAsDataURL(file);
+				document.getElementById('submit').disabled = false;
+			} else {
+				blob_holder.innerHTML = "<div  style='text-align: left;'>"
+						+ "● filename: "
+						+ file.name
+						+ "<br>"
+						+ "● ContentTyp: "
+						+ file.type
+						+ "<br>"
+						+ "● size: "
+						+ file.size
+						+ "bytes"
+						+ "<br>"
+						+ "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";
+				document.getElementById('submit').disabled = true;
+			}
+		}
+	</script>
+	<script type="text/javascript">
+		var dropdown = document.getElementsByClassName("dropdown-btn");
+		var i;
+
+		for (i = 0; i < dropdown.length; i++) {
+			dropdown[i].addEventListener("click", function() {
+				this.classList.toggle("active");
+				var dropdownContent = this.nextElementSibling;
+				if (dropdownContent.style.display === "block") {
+					dropdownContent.style.display = "none";
+				} else {
+					dropdownContent.style.display = "block";
+				}
+			});
+		}
+	</script>
+
+
+
+
+
+</body>
+</html>

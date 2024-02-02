@@ -1,20 +1,15 @@
 package com.emp.model;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-//import Hibernate.util.CompositeQuery.HibernateUtil_CompositeQuery_Emp3;
+import com.emp.model.HibernateUtil_CompositeQuery_Emp3;
 
 @Service("empService")
 public class EmpService {
@@ -65,9 +60,9 @@ public class EmpService {
 		return repository.findAll();
 	}
 
-//	public List<EmpVO> getAll(Map<String, String[]> map) {
-//		return HibernateUtil_CompositeQuery_Emp3.getAllC(map, sessionFactory.openSession());
-//	}
+	public List<EmpVO> getAll(Map<String, String[]> map) {
+		return HibernateUtil_CompositeQuery_Emp3.getAllC(map, sessionFactory.openSession());
+	}
 
 	public EmpVO findByEmpAcc(String empAcc) {
 		return repository.findByEmpAcc(empAcc);

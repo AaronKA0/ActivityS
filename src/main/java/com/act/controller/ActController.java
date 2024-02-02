@@ -5,6 +5,7 @@ import com.act.model.ActVO;
 import com.act.service.IActService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +43,7 @@ public class ActController {
         // 返回包含找到的活動的 ResponseEntity，HTTP 狀態碼為 200 OK
     }
 
+    
     // 創建新活動
     // 處理 POST 請求至 "/activities"，用於創建新的活動
     @PostMapping("/act/addOrUpdateAct")
