@@ -429,8 +429,8 @@
                     actReportHTML +=
                         `<tr>
                         <td><span class="badge rounded-circle bg-dark">${actReport.repId}</span></td>
-                        <td><a class="badge rounded-circle bg-primary text-decoration-none" href="/CHA104G3/activity/${actReport.act.actId}">${actReport.act.actId}</a></td>
-                        <td><a class="badge rounded-circle bg-secondary text-decoration-none" href="">${actReport.memId}</a></td>
+                        <td><a class="badge rounded-circle bg-primary text-decoration-none" href="/activity/${actReport.act.actId}">${actReport.act.actId}</a></td>
+                        <td><a class="badge rounded-circle bg-secondary text-decoration-none" href="/member?memId=${actReport.memId}">${actReport.memId}</a></td>
                         <td>${titleChinese}</td>
                         <td>
                             <button type="button" class="rounded-pill btn btn-info btn-sm"

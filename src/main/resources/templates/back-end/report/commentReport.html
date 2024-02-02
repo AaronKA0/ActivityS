@@ -40,6 +40,14 @@
         /*    table-layout: fixed;*/
         /*}*/
 
+        .custom-select-width {
+            width: 10%; /* 或者您可以使用固定宽度，例如 150px */
+        }
+
+        .table-responsive {
+            max-height: 300px; /* 高度 */
+            overflow-y: auto; /* 加scroll */
+        }
 
     </style>
 </head>
@@ -189,6 +197,12 @@
             </tbody>
         </table>
     </div>
+    <select class="showcount custom-select-width form-select form-select-sm mt-5" aria-label=".form-select-sm example">
+        <option value="5">5筆</option>
+        <option value="10">10筆</option>
+        <option value="15">15筆</option>
+        <option value="20">20筆</option>
+    </select>
 
     <div class="fixed-bottom">
         <div class="container">
@@ -271,28 +285,34 @@
     let repStatus; // 狀態預設
     let repTime = "DESC"; // 排序預設
     let pageNumber = 1; // 第幾頁預設(進function會 -1 所以會變0)
-    let size = 5; //
+    let size; //顯示幾筆資料
     let memId;
     let empId;
 
     //第幾頁
-    function loadPage(pageNumber, repTime, repStatus, memId, empId) {
+    function loadPage(pageNumber, repTime, repStatus, memId, empId, size) {
 
-        loadCommentReports(pageNumber, repTime, repStatus, memId, empId);
+        loadCommentReports(pageNumber, repTime, repStatus, memId, empId, size);
     }
+
+    //顯示筆數
+    $(".showcount").change(function () {
+        size = $(".showcount").val();
+        loadCommentReports(pageNumber, repTime, repStatus, memId, empId, size);
+    });
 
     //依審核狀態篩選
     $(".filterButton").on("click", function () {
         repStatus = $(this).data("repStatus");
 
-        loadCommentReports(pageNumber, repTime, repStatus, memId, empId);
+        loadCommentReports(pageNumber, repTime, repStatus, memId, empId, size);
     });
 
     //時間排序
     $("#time").change(function () {
         repTime = $("#time").val();
 
-        loadCommentReports(pageNumber, repTime, repStatus, memId, empId);
+        loadCommentReports(pageNumber, repTime, repStatus, memId, empId, size);
     });
 
     //會員ID查詢
@@ -312,7 +332,7 @@
         $(".selectEmpId").closest("div").find("#empId").val("");
 
         empId = null;
-        loadCommentReports(pageNumber, repTime, repStatus, memId, empId);
+        loadCommentReports(pageNumber, repTime, repStatus, memId, empId, size);
     });
 
     //員工ID查詢
@@ -333,7 +353,7 @@
 
         //清掉會員ID
         memId = null;
-        loadCommentReports(pageNumber, repTime, repStatus, memId, empId);
+        loadCommentReports(pageNumber, repTime, repStatus, memId, empId, size);
     })
 
     //清空參數
@@ -356,7 +376,7 @@
     }
 
     //顯示所有留言檢舉內容
-    function loadCommentReports(pageNumber, repTime, repStatus, memId, empId) {
+    function loadCommentReports(pageNumber, repTime, repStatus, memId, empId, size) {
         let url = "/commentreport";
 
         if (repStatus !== undefined && repStatus !== null) {
@@ -370,7 +390,8 @@
                 page: pageNumber - 1,
                 sortDirection: repTime,
                 memId: memId,
-                empId: empId
+                empId: empId,
+                size: size
             },
             dataType: 'json',
             success: function (commentReportList) {
@@ -380,13 +401,13 @@
 
                 //做分頁需要的
                 let total = commentReportList.totalElements; //總數量
-                let size = commentReportList.size; //每頁顯示的數據數量
+                size = commentReportList.size; //每頁顯示的數據數量
                 let number = commentReportList.number; //第幾頁(0為第一頁)
                 let totalPages = commentReportList.totalPages; //總頁數
                 let first = commentReportList.first; //當前是第一頁為ture
                 let last = commentReportList.last; // 當前是最後一頁為true
-
-                nextPage(totalPages, repTime, repStatus, memId, empId);
+                console.log(size)
+                nextPage(totalPages, repTime, repStatus, memId, empId, size);
 
                 //在哪頁就將哪頁按鈕加顏色
                 $(".number").each(function () {
@@ -428,7 +449,7 @@
                     commentReportHTML +=
                         `<tr>
                             <td><span class="badge rounded-circle bg-dark">${commetreport.repId}</span></td>
-                            <td><a class="badge rounded-circle bg-secondary text-decoration-none" href="">${commetreport.memId}</a></td>
+                            <td><a class="badge rounded-circle bg-secondary text-decoration-none" href="/member?memId=${commetreport.memId}">${commetreport.memId}</a></td>
                             <td>
                             <button type="button" class="rounded-pill btn btn-info btn-sm"
                             data-bs-toggle="modal" data-bs-target="#exampleModal"
@@ -566,12 +587,12 @@
         });
     });
 
-    function nextPage(totalPages, repTime, repStatus, memId, empId) {
+    function nextPage(totalPages, repTime, repStatus, memId, empId, size) {
         let pageHTML = "";
         for (let i = 0; i < totalPages; i++) {
             pageHTML +=
                 `<li  class="page-item">
-                <a class="number page-link" href="#" onclick="loadPage(${i + 1}, '${repTime}', ${repStatus},${memId},${empId}); return false;">${i + 1}</a>
+                <a class="number page-link" href="#" onclick="loadPage(${i + 1}, '${repTime}', ${repStatus},${memId},${empId},${size}); return false;">${i + 1}</a>
                 </li>`;
         }
 
@@ -583,12 +604,12 @@
 
     //下一頁
     function next() {
-        loadCommentReports(pageNumber + 1, repTime, repStatus, memId, empId);
+        loadCommentReports(pageNumber + 1, repTime, repStatus, memId, empId, size);
     }
 
     //上一頁
     function previous() {
-        loadCommentReports(pageNumber - 1, repTime, repStatus, memId, empId);
+        loadCommentReports(pageNumber - 1, repTime, repStatus, memId, empId, size);
     }
 
     //Sweetalart2
