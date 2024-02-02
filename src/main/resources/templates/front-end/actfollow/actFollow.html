@@ -14,13 +14,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link href="https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
 
     <style>
 
         main {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .footer{
             font-family: 'Noto Sans TC', sans-serif;
         }
 
@@ -36,33 +41,45 @@
             font-size: 16px;
         }
 
+        .page{
+            position: sticky;
+            bottom: 0;
+        }
+
     </style>
 </head>
 
 <body>
 
-<div style="width: 200px" class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+<div style="width: 200px" class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
+     aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-body" style="padding: 0px; overflow-x: hidden">
 
         <div class="b-example-divider"></div>
 
         <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style="width: 200px;">
-            <a href="/member" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+            <a href="/member"
+               class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
                 <svg class="bi me-2" width="30" height="24">
-                    <use xlink:href="#bootstrap" /></svg> <span class="fs-5 fw-semibold">會員首頁</span>
+                    <use xlink:href="#bootstrap"/>
+                </svg>
+                <span class="fs-5 fw-semibold">會員首頁</span>
             </a>
             <div class="list-group list-group-flush border-bottom scrollarea">
-                <a th:href="@{/member/chat}" class="list-group-item list-group-item-action py-3 lh-tight" aria-current="true">
+                <a th:href="@{/member/chat}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
                     <div class="d-flex w-100 align-items-center justify-content-between">
                         <strong class="mb-1">聊天</strong>
                     </div>
                 </a>
-                <a th:href="@{/member/chat}" class="list-group-item list-group-item-action py-3 lh-tight" aria-current="true">
+                <a th:href="@{/member/chat}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
                     <div class="d-flex w-100 align-items-center justify-content-between">
                         <strong class="mb-1">通知</strong>
                     </div>
                 </a>
-                <a th:href="@{/member/venOrder}" class="list-group-item list-group-item-action py-3 lh-tight" aria-current="true">
+                <a th:href="@{/member/venOrder}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
                     <div class="d-flex w-100 align-items-center justify-content-between">
                         <strong class="mb-1">場地預訂</strong>
                     </div>
@@ -77,7 +94,8 @@
 
 <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <button class="btn btn-primary fa fa-bars" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"></button>
+        <button class="btn btn-primary fa fa-bars" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"></button>
         <div class="col-md-3 mb-2 mb-md-0">
             <a href="index.html" class="d-inline-flex link-body-emphasis text-decoration-none">
                 <span class="fs-4">做伙</span>
@@ -103,49 +121,69 @@
             </button>
         </div>
     </header>
+
+    <main class="main">
+        <div>
+            <div class="btn-group" role="group" aria-label="Basic example" style="margin-bottom: 30.334px;">
+                <button type="button" class="change btn btn-outline-dark">報名管理</button>
+                <button type="button" class="change btn btn-outline-dark">活動管理</button>
+                <button type="button" class="change btn btn-dark">關注管理</button>
+            </div>
+<!--            <div class="d-md-flex justify-content-md-end mb-1">-->
+<!--                <div class="btn-group" role="group">-->
+<!--                    <button class="filterButton btn btn-secondary btn-sm" data-act-status=""></button>-->
+<!--                    <button class="historyButton btn btn-dark btn-sm" data-act-status="1"></button>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover shadow-sm">
+                <caption id="count">筆</caption>
+                <thead class="thead-inverse table-primary">
+                <tr>
+                    <th>活動編號</th>
+                    <th>活動名稱</th>
+                    <th>活動詳情</th>
+                    <th>關注中</th>
+                </tr>
+                </thead>
+                <tbody id="actreg">
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="page fixed-bottom">
+            <div class="container">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link">上一頁</a>
+                        </li>
+                        <li class="page-item">
+                            <!--                <a class="page-link" href="#">1</a>-->
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">下一頁</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </main>
 </div>
 
-<main class="main">
-    <div>
-        <h1 class="fw-bold">關注活動</h1>
-    </div>
-
-    <div class="table-responsive">
-        <table class="table table-hover shadow-sm">
-            <caption id="count">筆</caption>
-            <thead class="thead-inverse table-primary">
-            <tr>
-                <th>活動編號</th>
-                <th>活動名稱</th>
-                <th>活動詳情</th>
-                <th>關注中</th>
-            </tr>
-            </thead>
-            <tbody id="actreg">
-
-            </tbody>
-        </table>
-    </div>
-
-    <div class="fixed-bottom">
-        <div class="container">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link">上一頁</a>
-                    </li>
-                    <li class="page-item">
-                        <!--                <a class="page-link" href="#">1</a>-->
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">下一頁</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-
-</main>
+<div class="footer container">
+    <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="index.html" class="nav-link px-2 text-muted">首頁</a></li>
+            <li class="nav-item"><a href="customer.html" class="nav-link px-2 text-muted">客服中心</a></li>
+            <li class="nav-item"><a href="about.html" class="nav-link px-2 text-muted">關於我們</a></li>
+        </ul>
+        <p class="text-center text-muted">© 2024 Zuo-Huo</p>
+    </footer>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
@@ -154,7 +192,8 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
 
-<script src="https://cdn.tiny.cloud/1/tus9t8o6mklmhwd5c0iaejn9394stnli5i0j2ic9bb4xurm0/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://cdn.tiny.cloud/1/tus9t8o6mklmhwd5c0iaejn9394stnli5i0j2ic9bb4xurm0/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
 <script src="https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/dealfonso/power-buttons/dist/powerbuttons.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -241,7 +280,7 @@
 
     function view(e) {
         let actId = $(e).data("actId");
-        window.location.href = `/CHA104G3/activity/${actId}`;
+        window.location.href = `/activity/${actId}`;
 
     }
 
@@ -318,6 +357,21 @@
         onOpen: toast => {
             toast.addEventListener('mouseenter', Swal.stopTimer)
             toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    //頁籤切換
+    $(".change").click(function () {
+        switch ($(this).text()) {
+            case "報名管理":
+                window.location.href = `/membership/actregistration`;
+                break;
+            case "活動管理":
+                window.location.href = `/membership/actreview`;
+                break;
+            case "關注管理":
+                window.location.href = `/membership/actfollow`;
+                break;
         }
     });
 </script>

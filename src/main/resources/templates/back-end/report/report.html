@@ -109,7 +109,11 @@
 <main class="main">
 
     <div class="w-100">
-        <h1 class="fw-bold">活動檢舉</h1>
+        <div class="btn-group mb-2" role="group" aria-label="Basic example">
+            <button type="button" class="change btn btn-outline-dark btn-sm">留言檢舉管理</button>
+            <button type="button" class="change btn btn-dark btn-sm">活動檢舉管理</button>
+        </div>
+
         <div class="d-flex justify-content-between mb-1">
             <div class="input-group input-group-sm w-25 h-75">
                 <label for="memId">會員ID:</label>
@@ -618,6 +622,18 @@
         onOpen: toast => {
             toast.addEventListener('mouseenter', Swal.stopTimer)
             toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    //頁籤切換
+    $(".change").click(function () {
+        switch ($(this).text()) {
+            case "留言檢舉管理":
+                window.location.href = `/membership/commentreport`;
+                break;
+            case "活動檢舉管理":
+                window.location.href = `/membership/report`;
+                break;
         }
     });
 

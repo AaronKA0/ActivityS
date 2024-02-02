@@ -46,17 +46,17 @@
             max-height: 400px;
         }
 
-        /* 自定义滚动条的整体样式 */
+        /* scroll整體樣式 */
         #scroll::-webkit-scrollbar {
             width: 10px; /* 寬度 */
         }
 
-        /* 滚动条轨道的样式 */
+        /* scroll樣式 */
         #scroll::-webkit-scrollbar-track {
             background: #f1f1f1; /* 背景颜色 */
         }
 
-        /* 滚动条滑块的样式 */
+        /* scroll滑塊樣式 */
         #scroll::-webkit-scrollbar-thumb {
             background: #e8bfbc; /* 背景颜色 */
             border-radius: 10px; /* 圆角 */
@@ -161,7 +161,7 @@
 
                         <div class="row">
                             <div class="col align-self-end">
-                                <button class="actType btn btn-dark btn-sm mt-5"
+                                <button class="actType btn btn-dark btn-sm mt-5 disabled"
                                         th:text="${act.actTypeName}"
                                         th:data-act-type-id="${act.actTypeId}">
                                 </button>
@@ -350,7 +350,7 @@
             <li class="nav-item"><a href="customer.html" class="nav-link px-2 text-muted">客服中心</a></li>
             <li class="nav-item"><a href="about.html" class="nav-link px-2 text-muted">關於我們</a></li>
         </ul>
-        <p class="text-center text-muted">© 2023 Company, Inc</p>
+        <p class="text-center text-muted">© 2024 Zuo-Huo</p>
     </footer>
 </div>
 
@@ -500,6 +500,7 @@
                     </svg>`;
 
     //判斷有沒有登入過 沒有的話為null 用在顯示所有留言那邊
+    //從RetailsController來 == Session取來的memId
     let user = $(".user").data("user");
     //主辦人ID
     let myActMemId = $("#memId").data("memId")
@@ -654,7 +655,7 @@
                             `<div class="usertext">
                                 <div class="mb-3">
                                     <a class="text-decoration-none" href="/membership/${comment.memId}">
-                                        <img class="rounded-circle me-2 img-fluid" alt="" style="max-width: 50px; height: auto;">
+                                        <img src="data:image/png;base64,${comment.memPic}" class="rounded-circle me-2 img-fluid" alt="" style="max-width: 50px; height: auto;">
                                     </a>
                                     <p class="star badge bg-primary text-wrap align-top" data-mem-id="${comment.memId}">${comment.memName}</p>
                                 </div>
@@ -1340,7 +1341,7 @@
                         userHTML +=
                             `<div class="col-md-2 mb-3 mt-3">
                                 <div class="p-3 shadow-sm bg-white border border-1 rounded text-center h-100">
-                                    <a class="text-decoration-none" href="/membership/${memNameAndPics[i].memId}"><img src="data:image/png;base64,${memNameAndPics[i].memPic}" class="pic img-fluid d-block mx-auto" style="width: 60px; height: auto">
+                                    <a class="text-decoration-none" href="/member/${memNameAndPics[i].memId}"><img src="data:image/png;base64,${memNameAndPics[i].memPic}" class="pic img-fluid d-block mx-auto" style="width: 60px; height: auto">
                                     </a>
                                     <p class="star badge bg-primary text-wrap mt-2" data-mem-id="${memNameAndPics[i].memId}">
                                     ${memNameAndPics[i].memName}
