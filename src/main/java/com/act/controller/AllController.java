@@ -1,12 +1,26 @@
 package com.act.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.dept.model.DeptService;
+import com.emp.model.EmpService;
+import com.emp.model.EmpVO;
 
 @Controller
 public class AllController {
+	
+	@Autowired
+	EmpService empSvc;
+
+	@Autowired
+	DeptService deptSvc;
 	
     @RequestMapping("")
     public String index(){
@@ -28,6 +42,34 @@ public class AllController {
         return "front-end/act/joinAct";
     }
     
+	@GetMapping("/emp_Index")
+	public String emp_Index(Model model) {
+	    return "back-end/emp_Index";
+	}
+		
+	@GetMapping("/emp/select_page")
+	public String select_page(Model model) {
+		
+		return "back-end/emp/select_page";
+	}
+
+	@GetMapping("/emp/listAllEmp")
+	public String listAllEmp(Model model) {
+		return "back-end/emp/listAllEmp";
+	}
+	
+	@GetMapping("/addEmp")
+	public String addEmp(Model model) {
+	    return "back-end/emp/addEmp";
+	}
+	
+	@ModelAttribute("empListData") // for select_page.html 第97 109行用 // for listAllEmp.html 第85行用
+	protected List<EmpVO> referenceListData(Model model) {
+
+		List<EmpVO> list = empSvc.getAll();
+		return list;
+	}
+	
     @RequestMapping("/membership/commentreport") //要改
     public String commentReport() {
      return "back-end/report/commentReport";
@@ -76,11 +118,7 @@ public class AllController {
 	
 	//******************************* 後 台 back-end ******************************* //
 	
-	@GetMapping("/emp_Index")
-	public String emp_Index(Model model) {
-	    return "back-end/emp_Index";
-	}
-		
+
 	
 	// 會員管理
 	@GetMapping("/membership/select_page")

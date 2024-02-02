@@ -9,7 +9,7 @@
 
 
 
-<script th:src="@{back-end/10/js/jquery-1.11.3.min.js}"></script>
+<script th:src="@{/back-end/10/js/jquery-1.11.3.min.js}"></script>
 
 <!-- 左側jquery為table分頁用 -->
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -22,11 +22,11 @@
 
 
 <!--   首頁的css   -->
-<link rel="stylesheet" th:href="@{back-end/10/css/error.css}">
-<link rel="stylesheet" th:href="@{back-end/10/css/emp_Index.css}">
+<link rel="stylesheet" th:href="@{/back-end/10/css/error.css}">
+<link rel="stylesheet" th:href="@{/back-end/10/css/emp_Index.css}">
 
 <!--   首頁的js   -->
-<script th:src="@{back-end/10/js/aside.js}"></script>
+<script th:src="@{/back-end/10/js/aside.js}"></script>
 
 <!-- Bootstrap導入
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">	
@@ -134,10 +134,10 @@ button.btn:hover {
 <body onload="showDivsBasedOnDeptno()">
 
 	<!-- header -->
-	<div th:insert="~{/emp_Index :: header-div}"></div>
+	<div th:insert="~{/back-end/emp_Index :: header-div}"></div>
 
 	<!-- aside -->
-	<div th:insert="~{/emp_Index :: aside-div}"></div>
+	<div th:insert="~{/back-end/emp_Index :: aside-div}"></div>
 
 
 	<div align="center">
