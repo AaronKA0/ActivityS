@@ -6,7 +6,8 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 <!--  <link rel="stylesheet" th:href="@{/css/login.css}" />-->
-
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style type="text/css">
 
 /* login.css */
@@ -34,12 +35,12 @@ body, html {
 	align-items: center;
 	width: 100%;
 	max-width: 330px; /* 指定表單最大寬度 */
-	padding: 20px;
+	padding: 10px;
 	margin-top: -100px; /* 向上偏移，確保表單在圖片下方 */
 	background: rgba(255, 255, 255, 0); /* 表單透明度 */
 	border-radius: 5px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0); /* 表單陰影 */
-	margin-top: 5px;
+	margin-top: 20px;
 }
 
 /* 輸入框樣式 */
@@ -72,18 +73,34 @@ body, html {
 .login-header {
 	font-size: 24px; /* 字體大小 */
 	color: #333; /* 字體顏色 */
-	margin-bottom: 10px; /* 和輸入框的距離 */
-	margin-top: 100px;
+	margin-bottom: -10px; /* 和輸入框的距離 */
+	margin-top:150px;
+}
+
+#activity span {
+    display: inline-block;
+    opacity: 0; /* 開始時不可見 */
+    transform: translateY(-100px); /* 初始位置在頁面上方 */
+}
+
+#activity{
+margin-top:150px;
 }
 </style>
 </head>
 <body>
 
+
 	<div class="bg">
 
 		<!--  <img src='/images/Logo10.jpg'>-->
 
-		<div class="login-header">員工登入系統</div>
+		<div id="activity" style="font-size: 2em; font-weight: bold;">
+			<span class="letter">A</span> <span class="letter">c</span> <span
+				class="letter">t</span> <span class="letter">i</span> <span
+				class="letter">v</span> <span class="letter">i</span> <span
+				class="letter">t</span> <span class="letter">y</span>
+		</div>
 
 		<form id="loginForm" th:action="@{/login}" method="post">
 			<div>
@@ -97,9 +114,9 @@ body, html {
 			<div>
 				<button type="submit" class="submit-btn">登入</button>
 			</div>
-			
+
 		</form>
-		<a href="#" data-toggle="modal" data-target="#forgotPasswordModal">忘記密碼？</a>
+		<a href="#" data-toggle="modal" data-target="#forgotPasswordModal" id="forgot-password">忘記密碼？</a>
 	</div>
 
 
@@ -147,43 +164,49 @@ body, html {
 	</div>
 
 
-<!-- 忘記密碼彈窗 -->
-<div class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="forgotPasswordModalLabel">忘記密碼</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form th:action="@{/forgotPassword}" method="post">
-                	 <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
-          				  <p th:text="${errorMessage}"></p>
-       				 </div>
-               		 <div class="form-group">
-    					<label for="forgot-acc">帳號:</label>
-   						 <input type="text" class="form-control" id="empAcc" name="empAcc" placeholder="請輸入您的帳號" required>
-					</div>
-                    <div class="form-group">
-                        <label for="forgot-email">電子郵件地址:</label>
-                        <input type="email" class="form-control" id="empEmail" name="empEmail" placeholder="請輸入您的電子郵件地址" required>
-                    </div>
-                    <button type="submit" class="btn submit-btn">提交</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+	<!-- 忘記密碼彈窗 -->
+	<div class="modal fade" id="forgotPasswordModal" tabindex="-1"
+		role="dialog" aria-labelledby="forgotPasswordModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="forgotPasswordModalLabel">忘記密碼</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form th:action="@{/forgotPassword}" method="post">
+						<div th:if="${errorMessage}" class="alert alert-danger"
+							role="alert">
+							<p th:text="${errorMessage}"></p>
+						</div>
+						<div class="form-group">
+							<label for="forgot-acc">帳號:</label> <input type="text"
+								class="form-control" id="empAcc" name="empAcc"
+								placeholder="請輸入您的帳號" required>
+						</div>
+						<div class="form-group">
+							<label for="forgot-email">電子郵件地址:</label> <input type="email"
+								class="form-control" id="empEmail" name="empEmail"
+								placeholder="請輸入您的電子郵件地址" required>
+						</div>
+						<button type="submit" class="btn submit-btn">提交</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<script>
-	 $(document).ready(function() {
-	        if ($("#errorModal .modal-body p").text() !== "") {
-	            $('#errorModal').modal('show');
-	        }
-	    });
-	
+		$(document).ready(function() {
+			if ($("#errorModal .modal-body p").text() !== "") {
+				$('#errorModal').modal('show');
+			}
+		});
+
 		window.onload = function() {
 			var url = new URL(window.location.href);
 			var logout = url.searchParams.get("logout");
@@ -198,6 +221,67 @@ body, html {
 			}
 		};
 	</script>
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.10.4/dist/gsap.min.js"></script>
+	<script>
+	
+	  gsap.to("#activity span", {
+	    duration: 1, // 持續時間1秒
+	    y: 0, // 最終位置（相對於起始位置）
+	    opacity: 1, // 最終透明度
+	    stagger: 0.3, // 每個元素之間的延遲時間
+	    ease: "bounce.out", // 緩動效果
+	    from: {y: -200, opacity: 0}, // 開始位置和透明度
+	    color: function() { return `hsl(${Math.random() * 360}, 100%, 50%)`; }, // 隨機顏色
+	    fontSize: '+=10px' // 字體放大
+	  });
+	
+	</script>
+	
+<script>
+$(document).ready(function() {
+  // 鼠标悬停时的动画效果
+  $("#forgot-password").hover(
+    function() {
+      // 鼠标进入时
+      gsap.to(this, {
+        duration: 0.5, // 动画持续时间为0.5秒
+        rotationY: 360, // Y轴旋转360度
+        color: "#e19fae", // 文本颜色变化
+        ease: "power1.inOut", // 动画缓动函数
+        scale: 1.2 // 放大到1.2倍大小
+      });
+    },
+    function() {
+      // 鼠标离开时
+      gsap.to(this, {
+        duration: 0.5, // 动画持续时间为0.5秒
+        rotationY: 0, // Y轴旋转回0度
+        color: "#000", // 文本颜色变回原色
+        ease: "power1.inOut", // 动画缓动函数
+        scale: 1 // 大小恢复正常
+      });
+    }
+  );
+});
+</script>
+
+<script>
+$(document).ready(function() {
+  // 监听模态框的显示事件
+  $('#forgotPasswordModal').on('show.bs.modal', function (e) {
+    // 先设置模态框的初始状态：透明度为0，缩放为50%
+    gsap.set('#forgotPasswordModal', {opacity: 0, scale: 0.5});
+
+    // 使用GSAP创建动画：淡入和放大
+    gsap.to('#forgotPasswordModal', {
+      opacity: 1, // 最终透明度为1
+      scale: 1, // 最终缩放为100%
+      duration: 0.5, // 动画持续时间0.5秒
+      ease: "elastic.out(1, 0.3)" // 使用弹性缓动效果
+    });
+  });
+});
+</script>
 
 
 	<!-- jQuery 库 -->
