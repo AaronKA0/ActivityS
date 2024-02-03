@@ -126,6 +126,12 @@ div.star_block>span.star.-off {
 
 <body>
 
+	<form method="post" style="display:none" id="venForm" th:action="@{addVenOrder}">
+		<input id="selectVen" type="number" th:name="venId" /> <input
+			type="submit" />
+	</form>
+	
+
 	<div style="width: 200px" class="offcanvas offcanvas-start"
 		tabindex="-1" id="offcanvasExample"
 		aria-labelledby="offcanvasExampleLabel">
@@ -584,7 +590,7 @@ function displayVens(){
 	        		
 	        		if(ven){
 	        			$(`#ven-row-${i}`).append(`<div class="col col-3" style="margin-top:50px">
-	        					<div class="card ven-card text-center">
+	        					<div class="card ven-card text-center" data-venid="${ven.venId}">
 	        					<img src="${ven.venPic? 'data:image/png;base64,' + venPic: '/front-end/01/images/notfind.jpg'}"
 	        						class="card-img-top ven-img" id="venPic${ven.venId}" alt="...">
 	        					<div class="card-body">
@@ -757,6 +763,15 @@ $("#s-clear").on("click", async function(){
 $("#search").on("click", async function(){
 	await loadVens();
 });
+
+
+$(document).on("click", ".ven-card", function(){
+	let venId = $(this).attr("data-venid");
+	$("#selectVen").val(venId);
+	$("#venForm").submit();
+});
+
+
 </script>
 
 </body>

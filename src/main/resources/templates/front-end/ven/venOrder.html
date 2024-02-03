@@ -163,6 +163,12 @@ div.star_block>span.star.-off {
 
 <body>
 
+	<form method="post" style="display:none" id="venForm" th:action="@{/front_end/venue/addVenOrder}">
+		<input id="selectVen" type="number" th:name="venId" /> <input
+			type="submit" />
+	</form>
+	
+
 	<div style="width: 200px" class="offcanvas offcanvas-start"
 		tabindex="-1" id="offcanvasExample"
 		aria-labelledby="offcanvasExampleLabel">
@@ -436,12 +442,12 @@ function displayOrders(){
 	        			let dateString = orderDate == dayBeforeYes.toLocaleDateString()? "前天": orderDate == yesterday.toLocaleDateString()? "昨天": orderDate == today.toLocaleDateString()? "今天": orderDate == tomorrow.toLocaleDateString()? "明天": orderDate == dayAfterTom.toLocaleDateString()? "後天": orderDate;	        			
 	        			
 	        			$(`#order-row-${i}`).append(`<div id="order${order.venOrderId}" class="col col-3" style="margin-top:50px">
-	        					<div class="card order-card text-center ${isUpcoming? 'upcoming': ''} ${isPast? 'past': ''}" data-bs-toggle="tooltip" data-bs-placement="top" title="${order.actDescr}">
+	        					<div class="card order-card text-center ${isUpcoming? 'upcoming': ''} ${isPast? 'past': ''}" data-bs-toggle="tooltip" data-bs-placement="top" title="${order.actDescr}" data-venid="${ven.venId}">
 	        					<img src="${ven.venPic? 'data:image/png;base64,' + ven.venPic: '/front-end/01/images/notfind.jpg'}"
 	        						class="card-img-top ven-img venPic${ven.venId}" alt="...">
 	        					<div class="card-body ${isUpcoming? 'upcoming': ''} ${isPast? 'past': ''}">
 	        						<h5 class="card-title order-date">${dateString}</h5>
-	        						<h5 class="card-title ven-name"><a href="#">${ven.venName}</a></h5>
+	        						<h5 class="card-title ven-name"><a class="ven-link" href="#" data-venid="${ven.venId}">${ven.venName}</a></h5>
 	        						<h5 class="card-title ven-loc">${ven.venCity} ${ven.venDistrict}</h5>
 	        						<h5 class="card-title order-count">預約人數: ${order.userCount}</h5>
 	        						<h5 class="card-title order-fee">預訂金額: $${order.venResFee}</h5>
@@ -586,6 +592,14 @@ $(document).on("click", ".button0", async function(){
 	if(!$(this).find(".confirmCancelOrder").length) return false;	
 	let orderId = $(this).find(".confirmCancelOrder").attr("data-order");	
 	await updateOrderStatus(orderId, 2);
+});
+
+
+$(document).on("click", ".ven-link", function(){
+	let venId = $(this).attr("data-venid");
+	$("#selectVen").val(venId);
+	$("#venForm").submit();
+	return false;
 });
 </script>
 
