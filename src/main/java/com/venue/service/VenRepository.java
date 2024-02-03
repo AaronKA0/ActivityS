@@ -27,4 +27,5 @@ public interface VenRepository extends JpaRepository<VenVO, Integer> {
 	                + "ORDER BY v.ven_id", nativeQuery = true)
     List<VenVO> pickByOrderDate(Date orderDate);
 
+
 }

@@ -47,7 +47,7 @@ public class VenOrderVO implements java.io.Serializable {
 	
 	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Taipei")
 	@Column(name = "order_date")
-    @Future(message="日期必須是在今日(不含)之後")
+//    @Future(message="日期必須是在今日(不含)之後")
 	private Date orderDate;
 	
 	@Column(name = "mem_phone", columnDefinition = "char")
@@ -79,7 +79,10 @@ public class VenOrderVO implements java.io.Serializable {
 	@Column(name = "mem_credit_num", columnDefinition = "char")
 	private String memCreditNum;
 	
-	@Column(name = "order_status", insertable = false, updatable = false)
+//	@Column(name = "order_status", insertable = false, updatable = false)
+//	private Byte orderStatus;
+	
+	@Column(name = "order_status", insertable = false)
 	private Byte orderStatus;
 	
 	@Column(name = "ven_rent_status", insertable = false, updatable = false)
@@ -286,7 +289,19 @@ public class VenOrderVO implements java.io.Serializable {
         VenOrderVO other = (VenOrderVO) obj;
         return Objects.equals(venOrderId, other.venOrderId);
     }
+
+
+	@Override
+	public String toString() {
+		return "VenOrderVO [venOrderId=" + venOrderId + ", empId=" + empId + ", orderDate=" + orderDate + ", memPhone="
+				+ memPhone + ", actDescr=" + actDescr + ", userCount=" + userCount + ", memTaxid=" + memTaxid
+				+ ", orderTime=" + orderTime + ", orderPayType=" + orderPayType + ", memTransferNum=" + memTransferNum
+				+ ", memCreditNum=" + memCreditNum + ", orderStatus=" + orderStatus + ", venRentStatus=" + venRentStatus
+				+ ", venRating=" + venRating + ", venCom=" + venCom + ", venComStatus=" + venComStatus + ", venComTime="
+				+ venComTime + ", venResFee=" + venResFee + "]";
+	}
 	
+    
 	
 	
 }

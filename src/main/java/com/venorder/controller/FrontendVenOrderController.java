@@ -75,6 +75,7 @@ public class FrontendVenOrderController {
         return venOrderSvc.getVenCom(venVO);
     }
     
+
 //    @RequestMapping("getMemInfo")
 //    public @ResponseBody MembershipVO findMemInfo(@RequestBody String json) {
 //        
@@ -90,6 +91,7 @@ public class FrontendVenOrderController {
 //        return memSvc.getMemInfo(memVO.getMemId());
 //    }
 //    
+
     
 
     @GetMapping("addVenOrder")
