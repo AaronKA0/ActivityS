@@ -26,8 +26,6 @@
 
 
 
-
-
 <style type="text/css">
 button {
 	padding: 5px;
@@ -114,31 +112,20 @@ div#display {
 	<br>
 	<div class="a">
 	
+	<br><br><br>
 	
 		<ul>
 
 			<li>
 				<form method="post" th:action="@{getOne_For_Display}">
-					輸入會員編號: <input type="text" name="memId" th:value="${param.memId}">
-					<input type="submit" value="送出"> (輸入如1)
+					輸入會員編號(查看單一個人資料):<input type="text" name="memId" th:value="${param.memId}">
+					<input type="submit" value="送出">
 				</form> <br>
 			</li>
 
 
-
-
 			<li><form method="post" th:action="@{getOne_For_Display}">
-					選擇會員編號: <select name="memId">
-						<option th:each="membershipVO : ${membershipListData}"
-							th:value="${membershipVO.memId}" th:text="${membershipVO.memId}" />
-					</select> <input type="submit" value="送出">
-				</form> <br></li>
-
-
-
-
-			<li><form method="post" th:action="@{getOne_For_Display}">
-					選擇會員編號: <select name="memId">
+					選擇會員編號(查看單一個人資料):<select name="memId">
 						<option th:each="membershipVO : ${membershipListData}"
 							th:value="${membershipVO.memId}" th:text="${membershipVO.memId}" />
 					</select> <input type="submit" value="送出">
@@ -146,12 +133,28 @@ div#display {
 
 
 			<li><form method="post" th:action="@{getOne_For_Status}">
-					輸入會員編號(權限狀態修改): <select name="memId">
+				    選擇會員編號(單一個人權限狀態修改):<select name="memId">
 						<option th:each="membershipVO : ${membershipListData}"
 							th:value="${membershipVO.memId}" th:text="${membershipVO.memId}" />
 					</select> <input type="submit" value="送出">
 				</form> <br></li>
-
+				
+				
+			
+			<li><form method="post" th:action="@{getOne_For_Update}">
+					選擇會員編號(個人資料修改):<select name="memId">
+						<option th:each="membershipVO : ${membershipListData}"
+							th:value="${membershipVO.memId}" th:text="${membershipVO.memId}" />
+					</select> <input type="submit" value="送出">
+				</form> <br></li>	
+				
+				
+				
+<!-- 				<form method="post" th:action="@{/membership/getOne_For_Update}" -->
+<!-- 								style="margin-bottom: 0px;"> -->
+<!-- 								<input type="submit" value="修改"> <input type="hidden" -->
+<!-- 									name="memId" th:value="${membershipVO.memId}"> -->
+<!-- 							</form> -->
 		</ul>
 
 		<h4>
@@ -160,15 +163,19 @@ div#display {
 
 		<ul>
 			<li><h5>
-					<a href='listAllMembership'>查詢全部會員(後台)</a> all Memberships.
+					<a href='listAllMembership'>查詢全部會員(後台)</a>
 				</h5></li>
 
 			<li><h5>
-					<a href='addMembership'>會員註冊(前台)</a> a new Membership.
+					<a href='addMembership'>會員註冊(前台)</a>
+				</h5></li>
+			
+			<li><h5>
+					<a href='update_membership_input'>會員個人資料修改(前台)</a>
 				</h5></li>
 
-
 		</ul>
+		
 	</div>
 
 

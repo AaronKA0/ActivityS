@@ -30,9 +30,12 @@
         <div id="center" align="center">
         
             <span class="title">編號:</span><span th:text="${notifyVO.notifyId}"></span><br/>
-            <span class="title">會員帳號:</span><span th:text="${notifyVO.memVO.memAcc}"></span><br/>
+            <span class="title">會員帳號:</span><span th:text="${notifyVO.memVO.memId+' / '+notifyVO.memVO.memName}"></span><br/>
             <span class="title">通知標題:</span><span th:text="${notifyVO.notifyTitle}"></span><br/>
-            <span class="title">通知狀態:</span><span th:text="${notifyVO.notifyStatus}"></span><br/>
+            <span class="title">通知狀態:</span>
+                <span th:if="${notifyVO.notifyStatus == 1}" th:text="未讀"></span>
+                <span th:if="${notifyVO.notifyStatus == 2}" th:text="已讀"></span>
+            <br/>
             <span class="title">通知時間:</span><span th:text="${#dates.format(notifyVO.notifyTime, 'yyyy-MM-dd HH:mm:ss')}"></span><br/>
         
             <div class="text_block">
@@ -43,7 +46,7 @@
         </div>
         
         
-        <div>
+        <div th:if="${notifyVO.notifyStatus == 1}">
             <form method="post" th:action="@{getOne_For_Update}">
                 <input type="hidden" name="notifyId" th:value="${notifyVO.notifyId}">
                 <button class="submit_button" type="submit" style="padding: 5px;">修改資料</button>

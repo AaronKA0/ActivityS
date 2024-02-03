@@ -1,0 +1,2645 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>場地管理</title>
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!-- ●●js  for jquery datatables 用 -->
+<script
+	src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<!-- ●●js  for jquery datatables 用 -->
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/1.13.7/css/dataTables.jqueryui.min.css" />
+<!-- ●●css for jquery datatables 用 -->
+
+
+<!-- ●● jquery datatables 設定 -->
+
+<script src="//cdn.datatables.net/plug-ins/1.13.7/sorting/novalue.js"></script>
+
+<script src="//cdn.datatables.net/plug-ins/1.13.7/sorting/absolute.js"></script>
+
+<script
+	src="https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/fixedheader/3.4.0/css/fixedHeader.dataTables.min.css">
+
+<link
+	href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+	rel="stylesheet" />
+<script
+	src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+	integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<!-- Popperjs -->
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+	integrity="sha256-BRqBN7dYgABqtY9Hd4ynE+1slnEw+roEPFzQ7TRRfcg="
+	crossorigin="anonymous"></script>
+<!-- Tempus Dominus JavaScript -->
+<script
+	src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.9.4/dist/js/tempus-dominus.min.js"
+	crossorigin="anonymous"></script>
+
+<!-- Tempus Dominus Styles -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.9.4/dist/css/tempus-dominus.min.css"
+	crossorigin="anonymous">
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
+
+
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.10.0/dist/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.10.0/dist/css/bootstrap-datepicker3.min.css">
+
+
+<style type="text/css">
+body {
+	margin: 2rem 12rem 2rem 12rem;
+}
+
+.modal-dialog {
+	margin: 50px;
+}
+
+.modal-content {
+	width: 1200px;
+}
+
+.form-control {
+	width: 200px;
+}
+
+.select2-container--open {
+	z-index: 9999999;
+}
+
+.radio {
+	width: 100px;
+	height: 30px;
+}
+
+#preview {
+	/* 	border: 1px solid lightgray; */
+	display: inline-block;
+	max-width: 100px;
+	position: relative;
+}
+
+#preview img.preview_img {
+	width: 100%;
+}
+
+/* ===== 重要性的星號 ===== */
+div.star_block {
+	display: inline-block;
+}
+
+div.star_block>span.star {
+	cursor: pointer;
+	display: inline-block;
+	margin-right: 3px;
+}
+
+div.star_block>span.star.-on {
+	color: yellow;
+}
+
+div.star_block>span.star.-off {
+	color: white;
+}
+
+.dataTables_filter {
+	display: none;
+}
+
+body {
+	margin-right: 100px;
+}
+
+thead tr:first-child {
+	position: sticky;
+	z-index: 12;
+	top: 0;
+}
+</style>
+</head>
+
+
+
+<body>
+
+	<div class="accordion" id="accordionExample" style="margin-top:20px; margin-bottom:20px">
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingOne">
+				<button class="accordion-button text-center" type="button"
+					data-bs-toggle="collapse" data-bs-target="#collapseOne"
+					aria-expanded="true" aria-controls="collapseOne">
+					<div style="width:100%; font-size:24px" class="text-center"><b>搜尋場地</b></div>
+				</button>
+			</h2>
+			<div id="collapseOne" class="accordion-collapse collapse"
+				aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+				<div class="accordion-body">
+					<form>
+
+						<div class="accordion" id="accordionBasic">
+							<div class="accordion-item">
+								<h2 class="accordion-header" id="headingBasic">
+									<button class="accordion-button" type="button"
+										data-bs-toggle="collapse" data-bs-target="#collapseBasic"
+										aria-expanded="true" aria-controls="collapseBasic">
+										<div style="width:100%" class="text-center"><b>基本搜尋</b></div>
+									</button>
+								</h2>
+								<div id="collapseBasic" class="accordion-collapse collapse"
+									aria-labelledby="headingBasic" data-bs-parent="#accordionBasic">
+									<div class="accordion-body">
+										<div class="row g-3 text-center" style="margin-bottom: 20px">
+											<div class="col">
+												<label for="s-name" style="margin-right: 20px">名稱</label> <input
+													style="display: inline-block" class="form-control"
+													id="s-name" type="text">
+											</div>
+											<div class="col">
+												<label for="s-type"
+													style="margin-right: 27px; margin-left: 7px">類別</label> <select
+													class="form-select" id="s-type">
+													<option selected value="全類別">全類別</option>
+												</select>
+											</div>
+										</div>
+										<div class="row g-3 text-center">
+											<div class="col">
+												<label for="s-city"
+													style="margin-right: 27px; margin-left: 23px">市</label> <select
+													class="form-select" id="s-city">
+													<option selected value="全市">全市</option>
+												</select>
+											</div>
+											<div class="col">
+												<label for="s-district"
+													style="margin-right: 27px; margin-left: 23px">區</label> <select
+													class="form-select" id="s-district">
+													<option selected value="全區">全區</option>
+												</select>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="accordion" id="accordionAdvanced">
+							<div class="accordion-item">
+								<h2 class="accordion-header" id="headingAdvanced">
+									<button class="accordion-button" type="button"
+										data-bs-toggle="collapse" data-bs-target="#collapseAdvanced"
+										aria-expanded="true" aria-controls="collapseAdvanced">
+										<div style="width:100%" class="text-center"><b>進階搜尋</b></div>
+									</button>
+								</h2>
+								<div id="collapseAdvanced" class="accordion-collapse collapse"
+									aria-labelledby="headingAdvanced"
+									data-bs-parent="#accordionAdvanced">
+									<div class="accordion-body">
+
+
+										<div class="row g-3 text-center" style="margin-bottom: 20px">
+											<div class="col">
+												<label for="s-lprice" style="margin-right: 20px">最低租金</label>
+												<input step="1" type="number" inputmode="numeric"
+													oninput="this.value = this.value.replace(/\D+/g, '')"
+													style="display: inline-block" class="form-control lower"
+													id="s-lprice">
+											</div>
+											<div class="col">
+												<label for="s-hprice" style="margin-right: 20px">最高租金</label>
+												<input step="1" type="number" inputmode="numeric"
+													oninput="this.value = this.value.replace(/\D+/g, '')"
+													style="display: inline-block" class="form-control upper"
+													id="s-hprice">
+											</div>
+										</div>
+										<div class="row g-3 text-center" style="margin-bottom: 20px">
+											<div class="col">
+												<label for="s-lrating" style="margin-right: 20px">最低評分</label>
+												<input step="1" min="1" max="5" type="number"
+													inputmode="numeric"
+													oninput="this.value = this.value.replace(/\D+/g, '')"
+													style="display: inline-block" class="form-control lower"
+													id="s-lrating">
+											</div>
+											<div class="col">
+												<label for="s-hrating" style="margin-right: 20px">最高評分</label>
+												<input step="1" min="1" max="5" type="number"
+													inputmode="numeric"
+													oninput="this.value = this.value.replace(/\D+/g, '')"
+													style="display: inline-block" class="form-control upper"
+													id="s-hrating">
+											</div>
+										</div>
+										<div class="row g-3 text-center" style="margin-bottom: 20px">
+											<div class="col">
+												<label for="s-lcount" style="margin-right: 20px">最低評分人數</label>
+												<input step="1" type="number" inputmode="numeric"
+													oninput="this.value = this.value.replace(/\D+/g, '')"
+													style="display: inline-block" class="form-control lower"
+													id="s-lcount">
+											</div>
+											<div class="col">
+												<label for="s-hcount" style="margin-right: 20px">最高評分人數</label>
+												<input step="1" type="number" inputmode="numeric"
+													oninput="this.value = this.value.replace(/\D+/g, '')"
+													style="display: inline-block" class="form-control upper"
+													id="s-hcount">
+											</div>
+										</div>
+
+
+										<div class="date row g-3 text-center" id="s-update-div"
+											style="margin-bottom: 20px">
+											<div class="col">
+												<div class="input-group log-event" id="s-up-target"
+													data-td-target-input="nearest"
+													data-td-target-toggle="nearest"
+													style="margin-left: 20px; width: 75%">
+													<label for="s-update"
+														style="margin-right: 24px; margin-left: 23px">最早上架日期</label>
+													<input readonly id="s-update" type="text"
+														class="s-date date form-control"
+														data-td-target="#s-up-target"> <label
+														for="s-update"><span style="height: 100%"
+														class="input-group-text" data-td-target="#s-up-target">
+															<i class="fas fa-calendar"></i>
+													</span></label>
+												</div>
+
+											</div>
+											<div class="col">
+												<div class="input-group log-event" id="e-up-target"
+													data-td-target-input="nearest"
+													data-td-target-toggle="nearest"
+													style="margin-left: 20px; width: 75%">
+													<label for="e-update"
+														style="margin-right: 24px; margin-left: 23px">最晚上架日期</label>
+													<input readonly id="e-update" type="text"
+														class="e-date date form-control"
+														data-td-target="#e-up-target"> <label
+														for="e-update"><span style="height: 100%"
+														class="input-group-text" data-td-target="#e-up-target">
+															<i class="fas fa-calendar"></i>
+													</span></label>
+												</div>
+											</div>
+										</div>
+
+
+										<div class="date row g-3 text-center" id="s-downdate-div">
+											<div class="col">
+												<div class="input-group log-event" id="s-down-target"
+													data-td-target-input="nearest"
+													data-td-target-toggle="nearest"
+													style="margin-left: 20px; width: 75%">
+													<label for="s-downdate"
+														style="margin-right: 24px; margin-left: 23px">最早下架日期
+													</label> <input readonly id="s-downdate" type="text"
+														class="s-date date form-control"
+														data-td-target="#s-down-target"> <label
+														for="s-downdate"><span style="height: 100%"
+														class="input-group-text" data-td-target="#s-down-target">
+															<i class="fas fa-calendar"></i>
+													</span></label>
+												</div>
+
+											</div>
+											<div class="col">
+												<div class="input-group log-event" id="e-down-target"
+													data-td-target-input="nearest"
+													data-td-target-toggle="nearest"
+													style="margin-left: 20px; width: 75%">
+													<label for="e-downdate"
+														style="margin-right: 24px; margin-left: 23px">最晚下架日期</label>
+													<input readonly id="e-downdate" type="text"
+														class="e-date date form-control"
+														data-td-target="#e-down-target"> <label
+														for="e-downdate"><span style="height: 100%"
+														class="input-group-text" data-td-target="#e-down-target">
+															<i class="fas fa-calendar"></i>
+													</span></label>
+												</div>
+											</div>
+										</div>
+
+
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<div style="margin-top: 30px" class="text-center">
+							<span style="margin-right: 20px"><button
+									class="btn btn-secondary" id="s-clear" type="reset">清除</button></span><span><button
+									class="btn btn-primary" id="search" type="button">搜尋</button></span>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<ul class="nav nav-tabs">
+		<li id="all-ven" class="nav-item"><a class="nav-link active"
+			aria-current="page" href="#">所有場地</a></li>
+		<li id="up-ven" class="nav-item"><a class="nav-link" href="#">上架場地</a></li>
+		<li id="down-ven" class="nav-item"><a class="nav-link" href="#">下架場地</a></li>
+		<li id="type-tab" class="nav-item"><a class="nav-link" href="#">場地類別</a></li>
+	</ul>
+
+
+	<div style="margin-top:20px; margin-bottom:20px">
+		<!-- Button trigger insert modal -->
+		<button id="insert" type="button" class="btn btn-success"
+			data-bs-toggle="modal" data-bs-target="#staticBackdrop">新增場地</button>
+
+
+		<button style="display: none" id="up-btn" type="button"
+			class="btn btn-warning" data-bs-toggle="modal"
+			data-bs-target="#uptime-modal">上架場地</button>
+
+		<button style="display: none" id="down-btn" type="button"
+			class="btn btn-danger" data-bs-toggle="modal"
+			data-bs-target="#downtime-modal">下架場地</button>
+
+		<button id="refresh" class="btn btn-primary float-end">
+			<i class="fa fa-refresh" aria-hidden="true"></i>
+		</button>
+
+		<button style="display: none" id="i-type-btn" type="button"
+			class="btn btn-success" data-bs-toggle="modal"
+			data-bs-target="#i-type-modal">新增場地類別</button>
+
+
+	</div>
+
+
+	<div style="display: none" id="ventypes-div">
+		<table id="ventypes" class="display" style="width: 100%">
+			<thead>
+				<tr style="background-color: #CCCCFF">
+					<th>編號</th>
+					<th>名稱</th>
+					<th>簡介</th>
+					<th></th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+
+
+
+	<!-- VenType Insert Modal -->
+	<div class="modal fade" id="i-type-modal" data-bs-backdrop="static"
+		data-bs-keyboard="false" aria-labelledby="i-type-Label"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 style="width: 100%" class="modal-title text-center"
+						id="i-type-Label">新增場地類別</h5>
+					<button type="button" id="i-type-btn-close" class="btn-close"
+						data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+
+					<div align="center">
+						<form id="i-type-form" class="row g-3 needs-validation" novalidate>
+							<div class="col-md-5">
+								<label for="name" class="form-label">場地類別</label> <input
+									maxlength="10" type="text" class="i-type-check form-control"
+									id="i-type-name" required>
+								<div data-show="false" id="i-type-repeated-name"
+									class="invalid-feedback">場地類別重複</div>
+								<div class="required invalid-feedback">必填</div>
+							</div>
+
+							<div class="col-md-7" style="margin-bottom: 20px">
+								<label for="i-type-description" class="form-label">類別簡介</label>
+								<textArea style="width: 500px; height: 100px"
+									class="i-type-check form-control" id="i-type-description"
+									required></textArea>
+								<div class="required invalid-feedback">必填</div>
+							</div>
+							<div class="col-12">
+								<button id="i-type-clear" class="btn btn-secondary" type="reset">清除</button>
+								<button id="i-type-submit" disabled class="btn btn-primary"
+									type="submit">新增場地類別</button>
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- Update venType Modal -->
+	<div class="modal fade" id="u-type-modal" data-bs-backdrop="static"
+		data-bs-keyboard="false" aria-labelledby="u-type-Label"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 style="width: 100%" class="modal-title text-center"
+						id="u-type-Label">修改場地類別</h5>
+					<button type="button" id="u-type-btn-close" class="btn-close"
+						data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div align="center">
+						<form id="u-type-form" class="row g-3 needs-validation" novalidate>
+							<div class="col-md-5">
+								<label for="u-type-name" class="form-label">場地類別</label> <input
+									maxlength="10" type="text" class="u-type-check form-control"
+									id="u-type-name" required>
+								<div data-show="false" id="u-type-repeated-name"
+									class="invalid-feedback">場地類別重複</div>
+								<div class="required invalid-feedback">必填</div>
+							</div>
+
+							<div class="col-md-7" style="margin-bottom: 20px">
+								<label for="u-type-description" class="form-label">類別簡介</label>
+								<textArea style="width: 500px; height: 100px"
+									class="u-type-check form-control" id="u-type-description"
+									required></textArea>
+								<div class="required invalid-feedback">必填</div>
+							</div>
+							<div class="col-12">
+								<button id="u-type-clear" class="btn btn-secondary" type="reset">清除修改</button>
+								<button id="u-type-submit" class="btn btn-primary" type="submit">修改場地類別</button>
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div id="vens-div">
+		<table id="vens" class="display" style="width: 100%; display: none">
+			<thead>
+				<tr style="background-color: #CCCCFF">
+					<th class="check-block"><input id="check-all"
+						class="check-all check form-check-input" type="checkbox"></th>
+					<th>編號</th>
+					<th>名稱</th>
+					<th>類別</th>
+					<th>市</th>
+					<th>區</th>
+					<th>租金</th>
+					<th>狀態</th>
+					<th>上架時間</th>
+					<th>下架時間</th>
+					<th>評分</th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+
+
+	<!-- Insert Modal -->
+	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+		data-bs-keyboard="false" aria-labelledby="staticBackdropLabel"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 style="width: 100%" class="modal-title text-center"
+						id="staticBackdropLabel">新增場地</h5>
+					<button type="button" id="i-ven-btn-close" class="btn-close"
+						data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+
+					<div align="center">
+						<form id="insert-form" class="row g-3 needs-validation" novalidate>
+							<div class="col-md-3">
+								<label for="name" class="form-label">場地名稱</label> <input
+									maxlength="10" type="text" class="insert-check form-control"
+									id="name" required>
+								<div data-show="false" id="repeated-name"
+									class="invalid-feedback">場地名稱重複</div>
+								<div class="required invalid-feedback">必填</div>
+							</div>
+							<div class="col-md-3">
+								<label for="venCity" class="form-label">場地市</label>
+								<div>
+									<select style="width: 100px" class="form-select" id="venCity">
+									</select>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<label for="venDistrict" class="form-label">場地區</label>
+								<div>
+									<select style="width: 100px" class="form-select"
+										id="venDistrict">
+									</select>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<label for="location" class="form-label">場地地點</label> <input
+									maxlength="30" type="text" class="insert-check form-control"
+									id="location" required>
+								<div class="required invalid-feedback">必填</div>
+							</div>
+							<div class="col-md-4">
+								<label for="venType" class="form-label">場地類別</label>
+								<div>
+									<select style="width: 100px" class="form-select" id="venType"
+										required>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-outline">
+									<label for="price" class="form-label">場地租金</label>
+									<div class="input-group">
+										<span style="margin-top: 6px; margin-right: 5px">$</span> <input
+											value="0" step="1" type="number" inputmode="numeric"
+											oninput="this.value = this.value.replace(/\D+/g, '')"
+											id="price" class="form-control form-icon-trailing" required />
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<label for="description" class="form-label">場地說明</label>
+								<textArea style="width: 500px; height: 100px"
+									class="insert-check form-control" id="description" required></textArea>
+								<div class="required invalid-feedback">必填</div>
+							</div>
+
+							<div class="col-md-4">
+								<span class="form-check radio"> <input value="2"
+									class="form-check-input" type="radio" name="status"
+									id="statusUp" checked> <label class="form-check-label"
+									for="statusUp"> 上架 </label>
+								</span> <span class="form-check radio"> <input value="1"
+									class="form-check-input" type="radio" name="status"
+									id="statusDown"> <label class="form-check-label"
+									for="statusDown">下架</label>
+								</span>
+							</div>
+
+							<div class='col-md-4'>
+								<div class="form-group">
+									<label for="uptime" class="form-label">上架時間</label>
+									<div style="width: 300px" class="input-group log-event"
+										id="datetimepicker1" data-td-target-input="nearest"
+										data-td-target-toggle="nearest">
+										<input disabled readonly id="uptime" type="text"
+											class="form-control" data-td-target="#datetimepicker1" /> <span
+											class="input-group-text" data-td-target="#datetimepicker1"
+											data-td-toggle="datetimepicker"> <i
+											class="fas fa-calendar"></i>
+										</span>
+									</div>
+									<div class="time-validation invalid-feedback">請重選時間</div>
+								</div>
+							</div>
+
+							<div class='col-md-4'>
+								<div class="form-group">
+									<label for="downtime" class="form-label">下架時間</label>
+									<div style="width: 300px" class="input-group log-event"
+										id="datetimepicker2" data-td-target-input="nearest"
+										data-td-target-toggle="nearest">
+										<input readonly id="downtime" type="text" class="form-control"
+											data-td-target="#datetimepicker2" /> <span
+											class="input-group-text" data-td-target="#datetimepicker2"
+											data-td-toggle="datetimepicker"> <i
+											class="fas fa-calendar"></i>
+										</span>
+									</div>
+									<div class="time-validation invalid-feedback">請重選時間</div>
+								</div>
+							</div>
+
+							<div style="margin-top: 50px" class="col-12">
+								<input class="align-top" type="file" id="p_file" name="venPic"
+									accept="image/*"> <span id="preview"> <img
+									style="width: 250px" id="oldPic" src="/back-end/01/images/notfind.jpg"
+									class="preview_img"></img> <img style="width: 250px"
+									id="newPic" class="preview_img"></img>
+								</span>
+							</div>
+
+							<div style="margin-top: 30px" class="col-12">
+								<button id="clear" class="btn btn-secondary" type="reset">清除</button>
+								<button id="submit" disabled class="btn btn-primary"
+									type="submit">新增場地</button>
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Update Modal -->
+	<div class="modal fade" id="u-modal" data-bs-backdrop="static"
+		data-bs-keyboard="false" aria-labelledby="staticBackdropLabel"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 style="width: 100%" class="modal-title text-center"
+						id="u-modalLabel">修改場地</h5>
+					<button type="button" id="u-ven-btn-close" class="btn-close"
+						data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div align="center">
+						<form id="u-form" class="row g-3 needs-validation" novalidate>
+							<div class="col-md-3">
+								<label for="u-name" class="form-label">場地名稱</label> <input
+									maxlength="10" type="text" class="u-check form-control"
+									id="u-name" required>
+								<div data-show="false" id="u-repeated-name"
+									class="invalid-feedback">場地名稱重複</div>
+								<div class="required invalid-feedback">必填</div>
+							</div>
+							<div class="col-md-3">
+								<label for="u-city" class="form-label">場地市</label>
+								<div>
+									<select style="width: 100px" class="form-select" id="u-city">
+									</select>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<label for="u-district" class="form-label">場地區</label>
+								<div>
+									<select style="width: 100px" class="form-select"
+										id="u-district">
+									</select>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<label for="u-location" class="form-label">場地地點</label> <input
+									maxlength="30" type="text" class="u-check form-control"
+									id="u-location" required>
+								<div class="required invalid-feedback">必填</div>
+							</div>
+							<div class="col-md-4">
+								<label for="u-type" class="form-label">場地類別</label>
+								<div>
+									<select style="width: 100px" class="form-select" id="u-type"
+										required>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-outline">
+									<label for="u-price" class="form-label">場地租金</label>
+									<div class="input-group">
+										<span style="margin-top: 6px; margin-right: 5px">$</span> <input
+											value="0" step="1" type="number" inputmode="numeric"
+											oninput="this.value = this.value.replace(/\D+/g, '')"
+											id="u-price" class="form-control form-icon-trailing" required />
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<label for="u-description" class="form-label">場地說明</label>
+								<textArea style="width: 500px; height: 100px"
+									class="u-check form-control" id="u-description" required></textArea>
+								<div class="required invalid-feedback">必填</div>
+							</div>
+
+							<div style="margin-top: 50px" class="col-12">
+								<input style="margin-bottom: 10px" class="align-top" type="file"
+									id="u-file" name="u-pic" accept="image/*"> <span
+									id="u-preview"> <img style="max-height: 200px"
+									id="u-oldPic" src="back-end/01/images/notfind.jpg" class="preview_img"></img>
+									<img style="max-height: 200px" id="u-newPic"
+									class="preview_img"></img>
+								</span>
+							</div>
+
+							<div class="col-12">
+								<button id="u-clear" class="btn btn-secondary" type="reset">清除修改</button>
+								<button id="u-submit" class="btn btn-primary" type="submit">修改場地</button>
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- Uptime Modal -->
+	<div class="modal fade" id="uptime-modal" data-bs-backdrop="static"
+		data-bs-keyboard="false" tabindex="-1"
+		aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header text-center">
+					<h5 style="width: 100%" class="modal-title"
+						id="staticBackdropLabel">上架場地</h5>
+					<button type="button" id="uptime-btn-close" class="btn-close"
+						data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<form id="uptime-form">
+					<div class="modal-body text-center">
+						<div class="form-group">
+
+							<div>以下是被選取上架的場地</div>
+							<div class="text-center"
+								style="overflow-y: auto; max-height: 300px; margin-bottom: 20px; margin-top:20px">
+
+								<ul id="up-list" class="list-group"
+									style="display: inline-block; width: 50%; list-style-position: inside"></ul>
+							</div>
+							<div style="margin-bottom: 20px">
+								<label for="u-uptime" class="form-label">上架時間</label>
+								<div style="margin-left: 290px; width: 50%"
+									class="input-group log-event" id="datetimepicker3"
+									data-td-target-input="nearest" data-td-target-toggle="nearest">
+									<input readonly id="u-uptime" type="text" class="form-control"
+										data-td-target="#datetimepicker3" /> <label for="u-uptime"><span
+										class="input-group-text" data-td-target="#datetimepicker3"
+										data-td-toggle="datetimepicker" style="height: 100%"> <i
+											class="fas fa-calendar"></i>
+									</span></label>
+								</div>
+							</div>
+							<div class="time-validation invalid-feedback">請重選上架時間</div>
+						</div>
+						<div>
+							<button id="up-submit" class="btn btn-primary" type="submit">上架場地</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Downtime Modal -->
+	<div class="modal fade" id="downtime-modal" data-bs-backdrop="static"
+		data-bs-keyboard="false" tabindex="-1"
+		aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header text-center">
+					<h5 style="width: 100%" class="modal-title"
+						id="staticBackdropLabel">下架場地</h5>
+					<button type="button" id="downtime-btn-close" class="btn-close"
+						data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<form id="downtime-form">
+					<div class="modal-body text-center">
+						<div class="form-group">
+
+							<div>以下是被選取下架的場地</div>
+							<div class="text-center"
+								style="overflow-y: auto; max-height: 300px; margin-bottom: 20px; margin-top:20px">
+
+								<ul id="down-list" class="list-group"
+									style="display: inline-block; width: 50%; list-style-position: inside"></ul>
+							</div>
+							<div style="margin-bottom: 20px">
+								<label for="u-downtime" class="form-label">下架時間</label>
+								<div style="margin-left: 290px; width: 50%"
+									class="input-group log-event" id="datetimepicker4"
+									data-td-target-input="nearest" data-td-target-toggle="nearest">
+									<input readonly id="u-downtime" type="text"
+										class="form-control" data-td-target="#datetimepicker4" /> <label
+										for="u-downtime"><span class="input-group-text"
+										data-td-target="#datetimepicker4"
+										data-td-toggle="datetimepicker" style="height: 100%"> <i
+											class="fas fa-calendar"></i>
+									</span></label>
+								</div>
+							</div>
+							<div class="time-validation invalid-feedback">請重選下架時間</div>
+						</div>
+						<div style="margin-bottom: 20px">
+							<div class="form-check">
+								<span style="color: red">*</span> <input type="checkbox"
+									id="down-check"> <label for="down-check"><b
+									style="color: red">警告： 場地下架時會取消該場地的所有預約</b></label>
+							</div>
+						</div>
+						<div>
+							<button disabled id="down-submit" class="btn btn-primary"
+								type="submit">下架場地</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<!-- View Modal -->
+	<div class="modal fade" id="view-modal" data-bs-backdrop="static"
+		data-bs-keyboard="false" tabindex="-1"
+		aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header text-center">
+					<h5 style="width: 100%" class="modal-title"
+						id="staticBackdropLabel">查看場地</h5>
+					<button type="button" id="view-btn-close" class="btn-close"
+						data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body text-center" style="margin-bottom: 20px">
+					<dl class="row">
+						<dt class="col-sm-4 text-center">場地名稱</dt>
+						<dd class="col-sm-8 text-start">
+							<span id="view-name"></span>
+						</dd>
+						<dt class="col-sm-4 text-center">場地類別</dt>
+						<dd class="col-sm-8 text-start">
+							<span id="view-type"></span>
+						</dd>
+						<dt class="col-sm-4 text-center">場地地點</dt>
+						<dd class="col-sm-8 text-start">
+							<p id="view-location"></p>
+						</dd>
+						<dt class="col-sm-4 text-center">場地說明</dt>
+						<dd class="col-sm-8 text-start">
+							<p id="view-description"></p>
+						</dd>
+					</dl>
+					<img style="max-height: 300px" id="view-image" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+<!-- ven warning button -->
+<button id="ven-warning-btn" style="display:none" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#venWarningModal">
+  Launch static backdrop modal
+</button>
+
+<!-- ven warning modal -->
+<div class="modal fade" id="venWarningModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 style="width:100%" class="modal-title" id="warningModalLabel">無法下架有被預訂的場地</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+       <div class="text-center">以下是有被預訂的場地</div>
+							<div class="text-center"
+								style="overflow-y: auto; max-height: 300px; margin-bottom: 20px; margin-top:20px">
+
+								<ul id="invalid-down-list" class="list-group"
+									style="display: inline-block; width: 50%; list-style-position: inside"></ul>
+							</div>
+      </div>
+      <div class="modal-footer">
+     	 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+	<!-- global variables and functions -->
+	<script>
+let table;
+let typeTable;
+let fileByteArray = [];
+
+let cities = ["臺北市", "桃園市", "臺中市"];
+let taoyuan = ["桃園區", "中壢區", "八德區", "平鎮區", "大溪區", "楊梅區", "龜山區", "蘆竹區", "大園區", "觀音區", "新屋區", "龍潭區", "復興區"];
+let taipei = ["北投區", "士林區", "中山區", "內湖區", "大同區", "松山區", "萬華區", "中正區", "大安區", "信義區", "南港區", "文山區"];
+let taichung = ["中區", "北區", "西區", "東區", "南區", "北屯區", "西屯區", "南屯區"];
+
+async function reload(){
+	
+	setTimeout(() => {
+		table.ajax.reload();
+		typeTable.ajax.reload();
+				
+		if($("#all-ven a").hasClass("active")){
+			table.order( [ 2, 'asc' ] ).draw();
+		} else if($("#up-ven a").hasClass("active")){
+			table.order( [ 9, 'asc' ], [ 2, 'asc' ] ).draw();
+		} else{
+			table.order( [ 8, 'asc' ], [ 2, 'asc' ] ).draw();
+		}
+		
+		typeTable.order([1, 'asc']).draw();
+		$(".btn-close").click();
+	}, 0);
+	
+	await loadVenType();
+}
+
+let sorter = function(data) {
+    return data.sort(function (a, b) {
+    	if(b.text == "全類別") return 1;
+        if (a.text.toLowerCase() > b.text.toLowerCase()) {
+            return 1;
+        }
+        if (a.text.toLowerCase() < b.text.toLowerCase()) {
+            return -1;
+        }
+        return 0;
+    });
+}
+
+async function loadVenType(){
+	await fetch("/ventype/all").then(function(response){
+		return response.json();
+	}).then(function(result){
+
+		let data = $.map(result, function (item) {
+	    	return {
+	        	text: item.venTypeName,
+	        	id: item.venTypeId
+	    	};
+		});
+	    
+	    $("#s-type").empty().trigger('change');
+	    let option = new Option("全類別", "全類別", true, true);
+	    $("#s-type").append(option).trigger('change');
+		$('#s-type').select2({sorter:sorter, data: data, width: '50%', multiple: true, allowClear: true, placeholder: "請選場地類別"});
+		$("#s-type > option").prop("selected", false);
+		$("#s-type").val('').trigger('change'); 
+	});
+}
+
+
+
+</script>
+
+
+	<!-- venue type data table initialization and configuration -->
+	<script>
+
+$(document).ready(function() {
+	
+function loadTypeTable() {
+
+    typeTable = $('#ventypes').DataTable({
+        "language": {
+            "lengthMenu": "每頁顯示 _MENU_ 筆資料",
+            "zeroRecords": "沒有資料",
+            "info": "顯示第 _PAGE_ 頁，共 _PAGES_ 頁 (顯示 _TOTAL_ 筆資料，從 _MAX_ 筆資料中過濾)",
+            "infoEmpty": "",
+            "infoFiltered": "",
+            "paginate": {
+                "next": "下一頁",
+                "previous": "上一頁"
+              }
+        },
+        order: [
+            [1, 'asc']
+        ],
+//         fixedHeader: true,
+        "lengthMenu": [ [5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "所有"] ],
+        "bLengthChange": true,
+        "iDisplayLength": 5,
+        ajax: {
+            "url": "/ventype/all",
+            "dataSrc": ""
+        },
+        columns: [{
+            data: 'venTypeId'
+        }, {
+            data: 'venTypeName'
+        }, {
+            data: 'venTypeDescr'
+        }, {
+            defaultContent: '<div class="text-center"><input data-bs-toggle="modal" data-bs-target="#u-type-modal" type="button" class="edit-type" value="修改"/></div>'
+        }],
+        "columnDefs": [{
+            "targets": '_all',
+            "defaultContent": ""
+        }, {
+            targets: [0],
+            visible: false,
+//             searchable: false
+        }, 
+        {orderable: false, targets: [-1]}
+       ]
+    });
+}
+
+loadTypeTable();
+
+$("#refresh").on("click", async function(){
+	await reload();
+});
+});
+
+</script>
+
+
+	<!-- insert	ven types -->
+	<script>
+
+$(document).ready(function() {
+	
+	$('#i-type-modal').on('show.bs.modal', async function (e) {});
+	
+
+$("#i-type-name, #i-type-description").on("input",(function(){
+	if($(this).val().trim()){
+		$(this).siblings(".required").hide();
+	}
+}));
+
+$("#i-type-name").on("input",(async function(){
+	
+	if($(this).val().trim()){
+		$(this).siblings(".required").hide();
+	}
+	
+	await verifyName();
+	
+}));
+
+async function verifyName(){
+	let inputName = $("#i-type-name").val();
+	
+	return await fetch("/ventype/getByName",{
+		method: "POST",
+		body: JSON.stringify({venTypeName: inputName})
+	}).then(function(response){;
+		return response.json();
+	}).then(function(result){
+		if(result != null){	
+			$("#i-type-repeated-name").show();
+			$("#i-type-repeated-name").data("show", true);
+			return false;
+		} else{
+			$("#i-type-repeated-name").hide();	
+			$("#i-type-repeated-name").data("show", false);
+			return true;
+		}	
+	}).catch(function(err){
+		$("#i-type-repeated-name").hide();	
+		$("#i-type-repeated-name").data("show", false);
+		return true;
+	});	
+}
+	
+	$(".i-type-check").on("blur", function(){
+		if(!$(this).val().trim()){
+			$(this).siblings(".required").show();
+		}
+		
+		let valid = true;
+		
+		$(".i-type-check").each(function(index) {
+			if(!$(this).val().trim()){
+				valid = false;
+				return false;
+			}
+		});
+		
+		        
+		if(valid && !$("#i-type-repeated-name").data("show")){
+			$("#i-type-submit").prop("disabled", false);
+		} else{
+			$("#i-type-submit").prop("disabled", true);
+		}
+	});
+	
+
+	$("#i-type-form").on("submit", async function(e){
+
+		e.preventDefault();
+		
+		if(!await verifyName()) return false;
+
+		let venType = {
+				venTypeName: $("#i-type-name").val(),
+				venTypeDescr: $("#i-type-description").val()
+		};
+		
+		let jsonString = JSON.stringify(venType);
+		
+		$.ajax({ 
+		    url:"/ventype/insert",
+		    type:"POST", 
+		    contentType: "application/json",
+		    data: jsonString, //Stringified Json Object
+		    async: true,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
+		    cache: false,    //This will force requested pages not to be cached by the browser  
+		     processData:false, //To avoid making query String instead of JSON
+		     success: async function(resposeJsonObject){
+// 		    	 alert("success");
+		    	 await reload();
+// 		    	 $(".btn-close").click();
+		    }
+		});
+	});
+	
+	function clear(){
+   		$('#i-type-form').get(0).reset();  		
+		$("#i-type-submit").prop("disabled", true);
+   	 	$(".invalid-feedback").hide();
+	}
+
+	$("#i-type-btn-close, #i-type-clear").on("click", function(){   
+		clear();
+	});
+		
+});		
+
+
+</script>
+
+
+	<!-- update	ven types -->
+	<script>
+
+$(document).ready(function() {
+	
+	let venTypeName;
+	let venTypeId;
+	
+
+	$('#u-type-modal').on('show.bs.modal', async function (e) {			
+		venTypeName = "";
+		$("#u-type-submit").prop("disabled", false);		
+	});
+	
+
+$("#u-type-name, #u-type-description").on("input",(function(){
+	if($(this).val().trim()){
+		$(this).siblings(".required").hide();
+	}
+}));
+
+$("#u-type-name").on("input",(async function(){
+	
+	if($(this).val().trim()){
+		$(this).siblings(".required").hide();
+	}
+	
+	await verifyName();
+	
+}));
+
+async function verifyName(){
+	let inputName = $("#u-type-name").val();
+	
+	return await fetch("/ventype/getByName",{
+		method: "POST",
+		body: JSON.stringify({venTypeName: inputName})
+	}).then(function(response){;
+		return response.json();
+	}).then(function(result){
+		if(result != null && venTypeName != result.venTypeName){	
+			$("#u-type-repeated-name").show();
+			$("#u-type-repeated-name").data("show", true);
+			return false;
+		} else{
+			$("#u-type-repeated-name").hide();	
+			$("#u-type-repeated-name").data("show", false);
+			return true;
+		}	
+	}).catch(function(err){
+		$("#u-type-repeated-name").hide();	
+		$("#u-type-repeated-name").data("show", false);
+		return true;
+	});	
+}	
+	
+	$(".u-type-check").on("blur", function(){
+		if(!$(this).val().trim()){
+			$(this).siblings(".required").show();
+		}
+		
+		let valid = true;
+		
+		$(".u-type-check").each(function(index) {
+			if(!$(this).val().trim()){
+				valid = false;
+				return false;
+			}
+		});
+		
+		        
+		if(valid && !$("#u-type-repeated-name").data("show")){
+			$("#u-type-submit").prop("disabled", false);
+		} else{
+			$("#u-type-submit").prop("disabled", true);
+		}
+	});
+	
+
+	$("#u-type-form").on("submit", async function(e){
+
+		e.preventDefault();
+		
+		if(!await verifyName()) return false;
+
+		let venType = {
+				venTypeId: venTypeId,
+				venTypeName: $("#u-type-name").val(),
+				venTypeDescr: $("#u-type-description").val(),
+		};
+		
+		let jsonString = JSON.stringify(venType);
+		
+		$.ajax({ 
+		    url:"/ventype/update",
+		    type:"POST", 
+		    contentType: "application/json",
+		    data: jsonString, //Stringified Json Object
+		    async: true,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
+		    cache: false,    //This will force requested pages not to be cached by the browser  
+		     processData:false, //To avoid making query String instead of JSON
+		     success: async function(responseJsonObject){
+// 		    	 alert("success");
+		    	 await reload();
+// 		    	 $(".btn-close").click();
+		    }
+		});
+	});
+	
+	async function clear(){
+   		
+		await loadUpdateVenType();
+			
+		$("#u-type-submit").prop("disabled", false);
+   	 	$(".invalid-feedback").hide();
+	}
+
+	$("#u-type-btn-close, #u-type-clear").on("click", async function(){   
+		await clear();
+	});	   	
+	
+	$(document).on("click", ".edit-type", async function(){
+		venTypeName = $(this).closest("tr").find("td").eq(0).text();
+		await loadUpdateVenType();
+
+	});
+	
+	async function loadUpdateVenType(){
+
+		await fetch("/ventype/getByName",{
+			method: "POST",
+			body: JSON.stringify({venTypeName: venTypeName})
+		}).then(function(response){
+			return response.json();
+		}).then(function(result){
+			if(result != null){					
+				venTypeId = result.venTypeId;	
+				$("#u-type-name").val(result.venTypeName);
+				$("#u-type-description").val(result.venTypeDescr);
+				
+			} else{
+				
+			}	
+		}).catch(function(err){
+			console.log(err);
+		});	
+	}	
+		
+});		
+
+
+</script>
+
+
+	<!-- view record -->
+	<script>
+$(document).ready(function() {
+		
+
+$(document).on("click", ".view", function(){
+
+	let venName = $('#all-ven a').hasClass('active')? $(this).closest("tr").find("td").eq(0).text(): $(this).closest("tr").find("td").eq(1).text();
+	fetch("/ven/getByName",{
+		method: "POST",
+		body: JSON.stringify({venName: venName})
+	}).then(function(response){
+		return response.json();
+	}).then(function(result){
+		if(result != null){	
+			$("#view-name").text(result.venName);
+			$("#view-type").text(result.venType.venTypeName);
+			$("#view-location").text(result.venLoc);
+			$("#view-description").text(result.venDescr);
+			$("#view-image").attr("src",result.venPic? "data:image/png;base64," + result.venPic: "/back-end/01/images/notfind.jpg");
+		} else{
+			
+		}	
+	}).catch(function(err){
+		console.log(err);
+	});	
+});
+});
+
+</script>
+
+
+	<!-- update downtime -->
+	<script>
+$(document).ready(function() {
+	
+	let venNames = [];
+	let reservedVenNames = [];
+	let allReservedVenNames = [];
+	
+	const updateDown = new tempusDominus.TempusDominus(document.getElementById('u-downtime'),
+			  {
+			    restrictions: {
+			      minDate: new Date()
+			    }
+			  }
+			)
+	
+	updateDown.dates.formatInput = date => moment(date).format('YYYY-MM-DD HH:mm');
+	
+
+	$("#down-check").on("change", function(){
+		$("#down-submit").prop("disabled", !$(this).is(":checked"));
+	});
+	
+	$('#downtime-modal').on('show.bs.modal', function (e) {
+		
+		if($(".check:checked").length <= 0 || $(".check:checked").length == 1 && $(".check:checked").first().hasClass("check-all")) {
+			return false;
+		}
+		
+   		$('#downtime-form').get(0).reset();		
+   		updateDown.updateOptions({ restrictions: { minDate: new Date() } });
+		updateDown.dates.setValue(tempusDominus.DateTime.convert(new Date()));
+		
+		$("#down-submit").prop("disabled", true);
+		
+		$("#down-list").empty();
+		
+		venNames = [];
+		
+		$(".check:checked").each(function(index) {
+			if(!$(this).hasClass("check-all")){
+				venNames.push($(this).closest("tr").find("td").eq(1).text());				
+			}
+		});
+		
+		venNames.sort();
+		
+		for(let venName of venNames){
+			$("#down-list").append(`<li class="text-center list-group-item ">${venName}</li>`);
+		}	
+		
+	});
+		
+	
+	$("#u-downtime").on("change", function(){
+		$(".time-validation").hide();
+		$("#down-submit").prop("disabled", false);
+	});
+	
+
+	$("#downtime-form").on("submit", async function(e){
+		e.preventDefault();
+		
+		allReservedVenNames = await fetch("/venOrder/active", {
+				method: "GET",
+			}).then(function(response){
+				return response.json();
+			}).then(function(result){
+				return result.filter(ord => ord.orderStatus != 1).map(ord => ord.venVO.venName);
+			});
+		
+		reservedVenNames = [];
+		$(".check:checked").each(function(index) {
+			let venName = $(this).closest("tr").find("td").eq(1).text();
+			if(!$(this).hasClass("check-all") && allReservedVenNames.includes(venName)){
+				reservedVenNames.push(venName);				
+			}
+		});
+		
+		if(reservedVenNames.length){
+			$("#ven-warning-btn").click();
+// 			$("#downtime-btn-close").click();
+			$(".check").prop("checked", false);
+			return false;
+		}
+		
+		$(".check").prop("checked", false);
+		
+		let coeff = 1000 * 60 * 1;
+		let date = new Date();
+		let curDate = new Date(Math.floor(date.getTime() / coeff) * coeff);
+		
+		if(!$("#u-downtime").val() || curDate > new Date($("#u-downtime").val()+":00")){
+			$("#u-downtime").closest(".form-group").find(".time-validation").show();
+			return false;
+		}
+		
+		let jsonString = JSON.stringify({venNames:venNames, type:"下架", time:$("#u-downtime").val()+":00"});
+		
+		$.ajax({ 
+		    url:"/ven/updateTime",
+		    type:"POST", 
+		    contentType: "application/json",
+		    data: jsonString, //Stringified Json Object
+		    async: true,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
+		    cache: false,    //This will force requested pages not to be cached by the browser  
+		     processData:false, //To avoid making query String instead of JSON
+		     success: async function(resposeJsonObject){
+// 		    	 alert("下架");
+		    	 await reload();
+		    }
+		});
+	});
+	
+	
+	$('#venWarningModal').on('show.bs.modal', function (e) {
+		
+		$("#invalid-down-list").empty();
+			
+		reservedVenNames.sort();
+		
+		for(let venName of reservedVenNames){
+			$("#invalid-down-list").append(`<li class="text-center list-group-item ">${venName}</li>`);
+		}	
+		
+		reservedVenNames = [];
+		
+	});
+	
+});
+</script>
+
+
+	<!-- update uptime -->
+	<script>
+$(document).ready(function() {
+	
+	let venNames = [];
+	
+	const updateUp = new tempusDominus.TempusDominus(document.getElementById('u-uptime'),
+			  {
+			    restrictions: {
+			      minDate: new Date()
+			    }
+			  }
+			)
+	
+	updateUp.dates.formatInput = date => moment(date).format('YYYY-MM-DD HH:mm');
+	
+	$('#uptime-modal').on('show.bs.modal', function (e) {
+		
+		if($(".check:checked").length <= 0 || $(".check:checked").length == 1 && $(".check:checked").first().hasClass("check-all")) {
+			return false;
+		}
+		
+   		$('#uptime-form').get(0).reset(); 	
+   		updateUp.updateOptions({ restrictions: { minDate: new Date() } });
+		updateUp.dates.setValue(tempusDominus.DateTime.convert(new Date()));
+
+		
+		$("#up-list").empty();
+		
+		venNames = [];
+		
+		$(".check:checked").each(function(index) {
+			if(!$(this).hasClass("check-all")){
+				venNames.push($(this).closest("tr").find("td").eq(1).text());				
+			}
+		});
+		
+		venNames.sort();
+		
+		for(let venName of venNames){
+			$("#up-list").append(`<li class="text-center list-group-item ">${venName}</li>`);
+		}
+		
+	});
+		
+	
+	$("#u-uptime").on("change", function(){
+		$(".time-validation").hide();
+		$("#up-submit").prop("disabled", false);
+	});
+	
+
+	$("#uptime-form").on("submit", function(e){
+
+		e.preventDefault();
+		
+		let coeff = 1000 * 60 * 1;
+		let date = new Date();
+		let curDate = new Date(Math.floor(date.getTime() / coeff) * coeff);
+		
+		if(!$("#u-uptime").val() || curDate > new Date($("#u-uptime").val()+":00")){
+			$("#u-uptime").closest(".form-group").find(".time-validation").show();
+			return false;
+		}			
+
+		let jsonString = JSON.stringify({venNames:venNames, type:"上架", time:$("#u-uptime").val()+":00"});
+		
+		$.ajax({ 
+		    url:"/ven/updateTime",
+		    type:"POST", 
+		    contentType: "application/json",
+		    data: jsonString, //Stringified Json Object
+		    async: true,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
+		    cache: false,    //This will force requested pages not to be cached by the browser  
+		     processData:false, //To avoid making query String instead of JSON
+		     success: async function(resposeJsonObject){
+// 		    	 alert("success");
+		    	 await reload();
+// 		    	 $(".btn-close").click();
+		    }
+		});
+	});
+	
+});
+</script>
+
+
+
+	<!-- checkbox -->
+	<script>
+$(document).ready(function() {
+	
+	$(document).on("click", ".check-block", function(){
+		let checkbox = $(this).find(".check");
+		if(checkbox.hasClass("check-all")){
+			if(checkbox.is(":checked")){
+				$(".check").prop("checked", true);
+			} else{
+				$(".check").prop("checked", false);
+			}
+		} else{
+			if($(".check:checked").length === $(".check").length - 1){
+				$("#check-all").prop("checked", !$("#check-all").prop("checked"));		
+			}
+		}
+	});
+
+});
+</script>
+
+
+
+	<!-- searching, tabs, checkbox -->
+	<script>	
+	
+$(document).ready(async function() {
+	
+	
+	$('#s-type').on("select2:select", function (e) { 
+        var data = e.params.data.text;
+
+        if(data=='全類別'){
+        	$("#s-type > option").prop("selected", false);
+         $("#s-type > option").filter(function(index ) {
+        	    return $(this).text() != "全類別";
+         }).prop("selected","selected");
+         $("#s-type").trigger("change");
+        }
+   });
+
+	await loadVenType();
+	
+    let option = new Option("全區", "全區", true, true);
+		
+	$('#s-city').select2({data: cities, width: '50%'});
+
+
+	$('#s-district').select2({width: '50%'});
+	
+
+	$('#s-city').on('select2:select', function (e) {
+
+	    let data = e.params.data;
+	    
+	    $("#s-district").empty();
+	    
+        $("#s-district").append(option).trigger('change');
+
+	    if(data.id == "臺北市"){
+	    	$("#s-district").select2({
+	    		data: taipei, width: '50%'
+	    	});
+	    } else if(data.id == "桃園市"){
+	    	$("#s-district").select2({
+	    		data: taoyuan, width: '50%'
+	    	});
+	    } else if(data.id == "臺中市"){
+	    	$("#s-district").select2({
+	    		data: taichung, width: '50%'
+	    	});
+	    }
+	});
+	
+
+	
+	$(".lower").on("change", function(){
+	    let upper = $(this).closest("div.row").find(".upper");      
+	    upper.attr("min", $(this).val());
+	    if(parseInt(upper.val()) < parseInt($(this).val())){
+		    upper.val($(this).val());
+	    }
+	});
+	
+	$(".upper").on("change", function(){
+	    let lower = $(this).closest("div.row").find(".lower");
+	    if(parseInt(lower.val()) > parseInt($(this).val())){
+	    	$(this).val(lower.val());
+	    }
+	});
+
+	
+	$(".s-date").datepicker({
+        autoclose: true,
+    todayHighlight: true,
+    toggleActive: true,
+    format: 'yyyy-mm-dd',
+}).on('changeDate', function(selected){
+  updateDate($(this).closest('div.date').find('.e-date'), selected);
+});
+	
+	$(".e-date").datepicker({
+        autoclose: true,
+    todayHighlight: true,
+    toggleActive: true,
+    format: 'yyyy-mm-dd',
+}).on('changeDate', function(selected){});
+
+
+function updateDate(inputs, selected){
+   var minDate = new Date(selected.date.valueOf());
+   let date = $(inputs[0]).datepicker('getDate');
+   $(inputs[0]).datepicker('setStartDate', minDate);
+   if(date && $(inputs[0]).datepicker('getDate') < minDate){
+	   $(inputs[0]).datepicker('setDate', minDate);
+   }
+}	
+	
+	
+let isSearch = false;	
+	
+	
+	DataTable.ext.search.push(function (settings, data, dataIndex) {
+		
+		if(!isSearch) return true;
+		
+		let name = data[2];
+		let type = data[3];
+		let city = data[4];
+		let district = data[5];
+		let price = parseInt(data[6]);
+		let rating = parseFloat(data[10]);
+		let count = parseInt(data[11]);
+		let uptime = data[8]? new Date(moment(new Date(data[8])).format("YYYY-MM-DD")): null;
+		let downtime = data[9]? new Date(moment(new Date(data[9])).format("YYYY-MM-DD")): null;
+		
+		let upCond = !uptime && $("#s-update").val() || !uptime && $("#e-update").val();
+		let downCond = !downtime && $("#s-downdate").val() || !downtime && $("#e-downdate").val();
+		
+	    if(upCond || downCond) return false;
+	    
+	    if (!name.toLowerCase().includes($("#s-name").val().toLowerCase())) {
+	        return false;
+	    }	
+	    
+	    let types = [];
+	    
+	    $("#s-type option:selected").each(function( index ){
+	    	types.push($(this).text().toLowerCase());
+	    });
+	    
+	    if (types.length && !types.includes(type.toLowerCase())) {
+	        return false;
+	    }
+	   
+	    if($('#s-city').select2('data')[0].text !== "全市"){	    	
+	    	if (city.toLowerCase() !== $('#s-city').select2('data')[0].text.toLowerCase()) {
+	        	return false;
+	    	}
+	    }
+	 
+	    if($('#s-district').select2('data')[0].text !== "全區"){
+	    	if (district.toLowerCase() !== $('#s-district').select2('data')[0].text.toLowerCase()) {
+	        	return false;
+	    	}
+	    }
+	    else{
+	    	if($('#s-city').select2('data')[0].text === "臺北"){
+	    		if (!taipei.includes(district.toLowerCase())) {
+	        		return false;
+	    		}
+	    	}
+	    
+	    	if($('#s-city').select2('data')[0].text === "桃園"){
+	    		if (!taoyuan.includes(district.toLowerCase())) {
+	        		return false;
+	    		}
+	    	}
+	    
+	   		if($('#s-city').select2('data')[0].text === "臺中"){
+	    		if (!taichung.includes(district.toLowerCase())) {
+	        		return false;
+	    		}
+	    	}
+	    }	    
+	    	    
+	    if(price < parseInt($("#s-lprice").val()) || price > parseInt($("#s-hprice").val())){
+	    	return false;
+	    }
+	    
+	    if(rating < parseInt($("#s-lrating").val()) || rating > parseInt($("#s-hrating").val())){
+	    	return false;
+	    }
+	    
+	    if(count < parseInt($("#s-lcount").val()) || count > parseInt($("#s-hcount").val())){
+	    	return false;
+	    }
+	 	
+	    if(uptime){
+	    	if($("#s-update").val() && uptime < new Date($("#s-update").val()) || $("#e-update").val() && uptime > new Date($("#e-update").val())){
+	    		return false;
+	    	}
+	    }
+
+	    if(downtime){
+	    	if($("#s-downdate").val() && downtime < new Date($("#s-downdate").val()) || $("#e-downdate").val() && downtime > new Date($("#e-downdate").val())){
+	    		return false;
+	    	}
+	    }
+	    
+	    return true;
+	});
+	
+	
+	
+	$("#search").on("click", function(){
+		isSearch = true;
+		table.draw();
+	});
+	
+	
+	$("#s-clear").on("click", async function(){
+		$(".e-date").datepicker('setStartDate', null);
+		$(".e-date").datepicker('setDate', null);
+		$("#s-hprice").attr("min", 0);
+		$("#s-hrating").attr("min", 1);
+		
+		$('#s-city').val('全市').trigger('change');
+	    $("#s-district").empty();	    
+        $("#s-district").append(option).trigger('change');
+		
+        await loadVenType(); 
+        
+        isSearch = false;
+		table.draw();
+	});
+	
+		
+	$(".nav-item").on("click", function(){
+		$(".nav-item .nav-link").removeClass("active");
+		$(this).find(".nav-link").addClass("active");
+		$(".check").prop("checked", false);
+		isSearch = false;
+		return false;
+	});
+	
+	$("#all-ven").on("click", function(){
+		$('#s-clear').prop("disabled", false);
+		$('#search').prop("disabled", false);
+		table.column("0").visible(false);
+		table.column("7").visible(true);	
+		table.column("8").visible(true);
+		table.column("9").visible(true);
+		table.search('').columns().search('').draw();
+		table.order( [ 2, 'asc' ] ).draw();
+		$(".st-check").attr('checked', false);
+		$("#down-btn").hide();
+		$("#up-btn").hide();
+		$("#insert").show();
+		$("#i-type-btn").hide();
+		$("#ventypes-div").hide();
+		$("#vens-div").show();
+
+	});
+
+	$("#up-ven").on("click", function(){
+		$('#s-clear').prop("disabled", false);
+		$('#search').prop("disabled", false);
+		table.column("0").visible(true);
+		table.column("7").visible(false);	
+		table.column("8").visible(false);
+		table.column("9").visible(true);
+	    table.search('').columns().search('').draw();
+	    table.column(7).search("上架").draw();
+		table.order( [ 9, 'asc' ], [ 2, 'asc' ] ).draw();
+		$(".st-check").attr('checked', false);
+		$("#down-btn").show();
+		$("#up-btn").hide();
+		$("#insert").show();
+		$("#i-type-btn").hide();
+		$("#ventypes-div").hide();
+		$("#vens-div").show();
+	});
+
+	$("#down-ven").on("click", function(){
+		$('#s-clear').prop("disabled", false);
+		$('#search').prop("disabled", false);
+		table.column("0").visible(true);
+		table.column("7").visible(false);	
+		table.column("8").visible(true);
+		table.column("9").visible(false);
+		table.search('').columns().search('').draw();
+	    table.column(7).search('下架').draw();
+		table.order( [ 8, 'asc' ], [ 2, 'asc' ] ).draw();
+		$(".st-check").attr('checked', false);
+		$("#up-btn").show();
+		$("#down-btn").hide();
+		$("#insert").show();
+		$("#i-type-btn").hide();
+		$("#ventypes-div").hide();
+		$("#vens-div").show();
+
+	});
+	
+	$("#type-tab").on("click", function(){
+		$('#s-clear').prop("disabled", true);
+		$('#search').prop("disabled", true);
+		typeTable.order([ 1, 'asc' ]).draw();
+		$("#up-btn").hide();
+		$("#down-btn").hide();
+		$("#insert").hide();
+		$("#i-type-btn").show();
+		$("#vens-div").hide();
+		$("#ventypes-div").show();
+	});
+	
+});
+	
+</script>
+
+
+	<!-- venue data table initialization and configuration -->
+	<script>
+
+$(document).ready(function() {
+let nullBottomType = $.fn.dataTable.absoluteOrder( [
+    { value: '', position: 'bottom' }
+  ] );
+	
+function loadVenTable() {
+
+    table = $('#vens').DataTable({
+        initComplete: function () {
+            let api = this.api();
+            
+            $('#vens').show();
+            api.columns.adjust();
+          },
+        "language": {
+            "lengthMenu": "每頁顯示 _MENU_ 筆資料",
+            "zeroRecords": "沒有資料",
+            "info": "顯示第 _PAGE_ 頁，共 _PAGES_ 頁 (顯示 _TOTAL_ 筆資料，從 _MAX_ 筆資料中過濾)",
+            "infoEmpty": "",
+            "infoFiltered": "",
+            "paginate": {
+                "next": "下一頁",
+                "previous": "上一頁"
+              }
+        },
+        order: [
+            [2, 'asc']
+        ],
+//         fixedHeader: true,
+        "lengthMenu": [ [5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "所有"] ],
+        "bLengthChange": true,
+        "iDisplayLength": 5,
+        ajax: {
+            "url": "/ven/all",
+            "dataSrc": ""
+        },
+        columns: [{
+            defaultContent: '<input class="check-block check form-check-input" type="checkbox" value="">'
+        }, {
+            data: 'venId'
+        }, {
+            data: 'venName'
+        }, {
+            data: 'venType.venTypeName'
+        }, {
+            data: 'venCity'
+        }, {
+            data: 'venDistrict'
+        }, {
+            data: 'venPrice'
+        }, {
+            data: 'venStatus',
+            "render": function(data, type, row, meta) {
+                return data === 1 ? '下架' : '上架';
+            }
+        }, {
+            data: 'venUptime'
+        }, {
+            data: 'venDowntime',
+        }, {
+            data: 'venRating',
+            "type": "num",
+            "render": function(data, type, row, meta) {
+                if (type !== "display") {
+                    return data;
+                } else {
+                    return `<div class="star_block"><span class="star ${row.venTotRating/row.venRateCount >= 0.25? '-on': ''}"><i class="fa fa-star ${row.venTotRating/row.venRateCount >= 0.25 && row.venTotRating/row.venRateCount < 0.75? 'fa-star-half-o': ''}"></i></span>
+            <span class="star ${row.venTotRating/row.venRateCount >= 1.25? '-on': ''}"><i class="fa fa-star ${row.venTotRating/row.venRateCount >= 1.25 && row.venTotRating/row.venRateCount < 1.75? 'fa-star-half-o': ''}"></i></span>
+            <span class="star ${row.venTotRating/row.venRateCount >= 2.25? '-on': ''}"><i class="fa fa-star ${row.venTotRating/row.venRateCount >= 2.25 && row.venTotRating/row.venRateCount < 2.75? 'fa-star-half-o': ''}"></i></span>
+            <span class="star ${row.venTotRating/row.venRateCount >= 3.25? '-on': ''}"><i class="fa fa-star ${row.venTotRating/row.venRateCount >= 3.25 && row.venTotRating/row.venRateCount < 3.75? 'fa-star-half-o': ''}"></i></span>
+            <span class="star ${row.venTotRating/row.venRateCount >= 4.25? '-on': ''}"><i class="fa fa-star ${row.venTotRating/row.venRateCount >= 4.25 && row.venTotRating/row.venRateCount < 4.75? 'fa-star-half-o': ''}"></i></span>
+            </div>
+            <div>${row.venRateCount == 0? "無評分": Math.round((row.venTotRating/row.venRateCount)*100)/100} (${row.venRateCount})</div>`;
+                }
+            }
+        }, {
+            data: 'venRateCount'
+        }, {
+            data: 'venTotRating'
+        }, {
+            data: 'venModTime'
+        }, {
+            defaultContent: '<input data-bs-toggle="modal" data-bs-target="#view-modal" type="button" class="view" value="查看"/><input data-bs-toggle="modal" data-bs-target="#u-modal" type="button" class="edit-ven" value="修改"/>'
+        }],
+        "columnDefs": [{
+            "targets": '_all',
+            "defaultContent": ""
+        }, {
+            targets: [0,1,11,12,13],
+            visible: false,
+//             searchable: false
+        }, 
+        {orderable: false, targets: [0, -1]},
+        {type: nullBottomType, "targets": '_all' }
+       ]
+    });
+}
+
+loadVenTable();
+
+table.on('page.dt length.dt draw', function () {
+	$(".check").prop("checked", false);
+});
+
+$("#refresh").on("click", async function(){
+	await reload();
+});
+});
+
+</script>
+
+
+	<!-- insert	 -->
+	<script>
+
+$(document).ready(function() {
+	
+	$('#venCity').select2({data: cities, dropdownParent: $("#staticBackdrop")});
+
+	$('#venDistrict').select2({data: taipei, dropdownParent: $("#staticBackdrop")});
+	
+
+	$('#venCity').on('select2:select', function (e) {
+	    let data = e.params.data;
+	    
+	    $("#venDistrict").select2().empty();
+
+	    if(data.id == "臺北市"){
+	    	$("#venDistrict").select2({
+	    		data: taipei, dropdownParent: $("#staticBackdrop")
+	    	});
+	    } else if(data.id == "桃園市"){
+	    	$("#venDistrict").select2({
+	    		data: taoyuan, dropdownParent: $("#staticBackdrop")
+	    	});
+	    } else{
+	    	$("#venDistrict").select2({
+	    		data: taichung, dropdownParent: $("#staticBackdrop")
+	    	});
+	    }
+	});
+	
+	
+	const uptime = new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'),
+			  {
+			    restrictions: {
+			      minDate: new Date()
+			    }
+			  }
+			)
+	
+	const downtime = new tempusDominus.TempusDominus(document.getElementById('datetimepicker2'),
+			  {
+			    restrictions: {
+			      minDate: new Date()
+			    }
+			  }
+			)
+	
+	uptime.dates.formatInput = date => moment(date).format('YYYY-MM-DD HH:mm');
+	downtime.dates.formatInput = date => moment(date).format('YYYY-MM-DD HH:mm');
+	
+	
+	$('#staticBackdrop').on('show.bs.modal', async function (e) {
+		
+		fileByteArray = [];
+		
+		uptime.updateOptions({ restrictions: { minDate: new Date() } });
+		uptime.dates.clear();
+		
+	   	downtime.updateOptions({ restrictions: { minDate: new Date() } });
+		downtime.dates.clear();
+		
+		await fetch("/ventype/all").then(function(response){
+			return response.json();
+		}).then(function(result){
+
+			let data = $.map(result, function (item) {
+		    	return {
+		        	text: item.venTypeName,
+		        	id: item.venTypeId
+		    	};
+			});
+		    
+		    $("#venType").empty().trigger('change');
+			
+			$('#venType').select2({sorter: sorter, data: data, dropdownParent: $("#staticBackdrop"), tags: true});
+		    				
+		});
+
+	});
+	
+	
+	$('input[name="status"]').on("change", function(){
+		$("#uptime").prop("disabled", !$("#uptime").prop("disabled"));
+		$("#downtime").prop("disabled", !$("#downtime").prop("disabled"));
+		
+		if($('input[name="status"]:checked').val() == "2"){
+		 	$("#uptime").val("");
+		} else{
+			$("#downtime").val("");
+		}
+	});
+	
+
+
+$("#location, #description").on("input",(function(){
+	if($(this).val().trim()){
+		$(this).siblings(".required").hide();
+	}
+}));
+
+$("#name").on("input",(async function(){
+	
+	if($(this).val().trim()){
+		$(this).siblings(".required").hide();
+	}
+				
+	await verifyName();
+	
+}));
+
+async function verifyName(){
+	let inputName = $("#name").val();
+	return await fetch("/ven/getByName",{
+		method: "POST",
+		body: JSON.stringify({venName: inputName})
+	}).then(function(response){;
+		return response.json();
+	}).then(function(result){
+		if(result != null){	
+			$("#repeated-name").show();
+			$("#repeated-name").data("show", true);
+			return false;
+		} else{
+			$("#repeated-name").hide();	
+			$("#repeated-name").data("show", false);
+			return true;
+		}	
+	}).catch(function(err){
+		$("#repeated-name").hide();	
+		$("#repeated-name").data("show", false);
+		return true;
+	});	
+}
+
+$("#price").on("blur", function(){
+	if($(this).val()=="") $(this).val(0);
+});
+
+	
+	$(".insert-check").on("blur", function(){
+		if(!$(this).val().trim()){
+			$(this).siblings(".required").show();
+		}
+		
+		let valid = true;
+		
+		$(".insert-check").each(function(index) {
+			if(!$(this).val().trim()){
+				valid = false;
+				return false;
+			}
+		});
+		
+		        
+		if(valid && !$("#repeated-name").data("show")){
+			$("#submit").prop("disabled", false);
+		} else{
+			$("#submit").prop("disabled", true);
+		}
+	});
+	
+	
+	$("#uptime, #downtime").on("change", function(){
+		$(".time-validation").hide();
+	});
+	
+
+	$("#insert-form").on("submit", async function(e){
+
+		e.preventDefault();
+		
+		if(!await verifyName()) return false;
+		
+		let coeff = 1000 * 60 * 1;
+		let date = new Date();
+		let curDate = new Date(Math.floor(date.getTime() / coeff) * coeff);		
+		
+		if(curDate >= new Date($("#uptime").val()+":00") && curDate >= new Date($("#downtime").val()+":00") && ($("#uptime").val() || $("#downtime").val())){
+			if($("#uptime").val()){
+				$("#uptime").closest(".form-group").find(".time-validation").show();
+			}else{
+				$("#downtime").closest(".form-group").find(".time-validation").show();
+			}
+			return false;
+		}
+
+		let ven = {
+				venName: $("#name").val(),
+				venType: {venTypeName: $('#venType').select2('data')[0].text, venTypeId: isNaN($('#venType').select2('data')[0].id)? null: $('#venType').select2('data')[0].id},
+				venCity: $('#venCity').select2('data')[0].text,
+				venDistrict: $('#venDistrict').select2('data')[0].text,
+				venLoc: $("#location").val(),
+				venDescr: $("#description").val(),
+				venPic: fileByteArray.length? fileByteArray: null,
+				venPrice: $("#price").val(),
+				venStatus: $('input[name="status"]:checked').val(),
+				venUptime: $("#uptime").val()? $("#uptime").val()+":00": "",
+				venDowntime: $("#downtime").val()? $("#downtime").val()+":00": ""
+		};
+		
+// 		console.log(ven);
+		
+		let jsonString = JSON.stringify(ven);
+		
+		$.ajax({ 
+		    url:"/ven/insert",
+		    type:"POST", 
+		    contentType: "application/json",
+		    data: jsonString, //Stringified Json Object
+		    async: true,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
+		    cache: false,    //This will force requested pages not to be cached by the browser  
+		     processData:false, //To avoid making query String instead of JSON
+		     success: async function(resposeJsonObject){
+// 		    	 alert("success");
+		    	 await reload();
+// 		    	 $(".btn-close").click();
+		    }
+		});
+	});
+	
+	function clear(){
+   		$('#insert-form').get(0).reset();
+   		
+		$("#submit").prop("disabled", true);
+   		
+   	 	$('#venType').val("1");
+   	 	$('#venType').trigger('change');
+   	 	$('#venCity').val("臺北市");
+   	 	$('#venCity').trigger('change');
+    	$("#venDistrict").select2({
+    		data: taipei, dropdownParent: $("#staticBackdrop")
+    	});
+   	 	$('#venDistrict').val("北投區");
+   	 	$('#venDistrict').trigger('change');
+		$("#uptime").prop("disabled", true);
+		$("#downtime").prop("disabled", false);
+   	 	$("#newPic").hide();
+   	 	$("#oldPic").show();
+   	 	$(".invalid-feedback").hide();
+	}
+
+	$("#i-ven-btn-close, #clear").on("click", function(){   
+		clear();
+	});
+	
+	
+	let p_file = document.getElementById("p_file");
+	let preview = document.getElementById("preview");
+	let oldPic = document.getElementById("oldPic");
+	let newPic = document.getElementById("newPic");
+
+	function readFile(file) {
+	    let reader = new FileReader();
+	    reader.readAsDataURL(file);
+
+	    reader.addEventListener("load", function() {
+			newPic.src = reader.result;
+	    });
+	}
+
+	function processFile(file) {
+	    let reader = new FileReader();
+	    reader.readAsArrayBuffer(file);
+	    reader.onloadend = function (evt) {
+	        if (evt.target.readyState == FileReader.DONE) {
+	           let arrayBuffer = evt.target.result,
+	               array = new Uint8Array(arrayBuffer);
+	           for (let i = 0; i < array.length; i++) {
+	               fileByteArray.push(array[i]);
+	            }
+	           }
+	        }
+	}
+	    
+
+
+	p_file.addEventListener("change", function() {
+		fileByteArray = [];
+	    let file = this.files[0];
+	    if (this.files.length > 0) {
+	        readFile(file);
+	        processFile(file);
+	        oldPic.style.display = "none";
+	        newPic.style.display = "block";
+	    } else {
+	        newPic.style.display = "none";
+	        oldPic.style.display = "block";
+	    }
+	});
+	
+		
+});		
+
+
+</script>
+
+
+
+
+
+	<!-- update	 -->
+	<script>
+
+$(document).ready(function() {
+	
+	let venName;
+	let venPic;
+	let venId;
+	
+	$('#u-city').select2({data: cities, dropdownParent: $("#u-modal")});
+
+	$('#u-district').select2({data: taipei, dropdownParent: $("#u-modal")});
+	
+
+	$('#u-city').on('select2:select', function (e) {
+	    let data = e.params.data;
+	    
+	    $("#u-district").select2().empty();
+
+	    if(data.id == "臺北市"){
+	    	$("#u-district").select2({
+	    		data: taipei, dropdownParent: $("#u-modal")
+	    	});
+	    } else if(data.id == "桃園市"){
+	    	$("#u-district").select2({
+	    		data: taoyuan, dropdownParent: $("#u-modal")
+	    	});
+	    } else{
+	    	$("#u-district").select2({
+	    		data: taichung, dropdownParent: $("#u-modal")
+	    	});
+	    }
+	});
+	
+	
+	$('#u-modal').on('show.bs.modal', async function (e) {
+			
+		fileByteArray = [];
+		
+		venName = "";
+		
+		venPic = null;
+		
+		$("#u-submit").prop("disabled", false);
+		
+		await fetch("/ventype/all").then(function(response){
+			return response.json();
+		}).then(function(result){
+
+			let data = $.map(result, function (item) {
+		    	return {
+		        	text: item.venTypeName,
+		        	id: item.venTypeId
+		    	};
+			});
+		    
+		    $("#u-type").empty().trigger('change');
+			
+			$('#u-type').select2({sorter:sorter, data: data, dropdownParent: $("#u-modal"), tags: true});
+		    				
+		});
+
+	});
+	
+
+$("#u-location, #u-description").on("input",(function(){
+	if($(this).val().trim()){
+		$(this).siblings(".required").hide();
+	}
+}));
+
+$("#u-name").on("input",(async function(){
+	
+	if($(this).val().trim()){
+		$(this).siblings(".required").hide();
+	}
+	
+	await verifyName();
+	
+}));
+
+async function verifyName(){
+	let inputName = $("#u-name").val();
+	
+	return await fetch("/ven/getByName",{
+		method: "POST",
+		body: JSON.stringify({venName: inputName})
+	}).then(function(response){;
+		return response.json();
+	}).then(function(result){
+		if(result != null && venName != result.venName){	
+			$("#u-repeated-name").show();
+			$("#u-repeated-name").data("show", true);
+			return false;
+		} else{
+			$("#u-repeated-name").hide();	
+			$("#u-repeated-name").data("show", false);
+			return true;
+		}	
+	}).catch(function(err){
+		$("#u-repeated-name").hide();	
+		$("#u-repeated-name").data("show", false);
+		return true;
+	});	
+}
+
+$("#u-price").on("blur", function(){
+	if($(this).val()=="") $(this).val(0);
+});
+	
+	$(".u-check").on("blur", function(){
+		if(!$(this).val().trim()){
+			$(this).siblings(".required").show();
+		}
+		
+		let valid = true;
+		
+		$(".u-check").each(function(index) {
+			if(!$(this).val().trim()){
+				valid = false;
+				return false;
+			}
+		});
+		
+		        
+		if(valid && !$("#u-repeated-name").data("show")){
+			$("#u-submit").prop("disabled", false);
+		} else{
+			$("#u-submit").prop("disabled", true);
+		}
+	});
+	
+
+	$("#u-form").on("submit", async function(e){
+
+		e.preventDefault();
+		
+		if(!await verifyName()) return false;
+
+		let ven = {
+				venId: venId,
+				venName: $("#u-name").val(),
+				venType: {venTypeName: $('#u-type').select2('data')[0].text, venTypeId: isNaN($('#u-type').select2('data')[0].id)? null: $('#u-type').select2('data')[0].id},
+				venCity: $('#u-city').select2('data')[0].text,
+				venDistrict: $('#u-district').select2('data')[0].text,
+				venLoc: $("#u-location").val(),
+				venDescr: $("#u-description").val(),
+				venPic: fileByteArray.length? fileByteArray: venPic,
+				venPrice: $("#u-price").val()
+		};
+		
+// 		console.log(ven);
+		
+		let jsonString = JSON.stringify(ven);
+		
+		$.ajax({ 
+		    url:"/ven/update",
+		    type:"POST", 
+		    contentType: "application/json",
+		    data: jsonString, //Stringified Json Object
+		    async: true,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
+		    cache: false,    //This will force requested pages not to be cached by the browser  
+		     processData:false, //To avoid making query String instead of JSON
+		     success: async function(resposeJsonObject){
+// 		    	 alert("success");
+		    	 await reload();
+// 		    	 $(".btn-close").click();
+		    }
+		});
+	});
+	
+	async function clear(){
+   		
+		await loadUpdateVen();
+		
+		fileByteArray = [];
+		
+		$("#u-submit").prop("disabled", false);
+   		$("#u-file").val('');
+   	 	$("#u-newPic").hide();
+   	 	$("#u-oldPic").show();
+   	 	$(".invalid-feedback").hide();
+	}
+
+	$("#u-ven-btn-close, #u-clear").on("click", async function(){   
+		await clear();
+	});
+	
+	
+	let p_file = document.getElementById("u-file");
+	let preview = document.getElementById("u-preview");
+	let oldPic = document.getElementById("u-oldPic");
+	let newPic = document.getElementById("u-newPic");
+
+	function readFile(file) {
+	    let reader = new FileReader();
+	    reader.readAsDataURL(file);
+
+	    reader.addEventListener("load", function() {
+			newPic.src = reader.result;
+	    });
+	}
+
+	function processFile(file) {
+	    let reader = new FileReader();
+	    reader.readAsArrayBuffer(file);
+	    reader.onloadend = function (evt) {
+	        if (evt.target.readyState == FileReader.DONE) {
+	           let arrayBuffer = evt.target.result,
+	              array = new Uint8Array(arrayBuffer);
+	           for (let i = 0; i < array.length; i++) {
+	               fileByteArray.push(array[i]);
+	            }
+	           }
+	        }
+	}
+	    
+	p_file.addEventListener("change", function() {
+		fileByteArray = [];
+	    let file = this.files[0];
+	    if (this.files.length > 0) {
+	        readFile(file);
+	        processFile(file);
+	        oldPic.style.display = "none";
+	        newPic.style.display = "inline-block";
+	    } else {
+	        newPic.style.display = "none";
+	        oldPic.style.display = "inline-block";
+	    }
+	});
+	
+	
+	$(document).on("click", ".edit-ven", async function(){
+		venName = $('#all-ven a').hasClass('active')? $(this).closest("tr").find("td").eq(0).text(): $(this).closest("tr").find("td").eq(1).text();
+		await loadUpdateVen();
+
+	});
+	
+	async function loadUpdateVen(){
+
+		await fetch("/ven/getByName",{
+			method: "POST",
+			body: JSON.stringify({venName: venName})
+		}).then(function(response){
+			return response.json();
+		}).then(function(result){
+			if(result != null){	
+				
+				venPic = result.venPic;
+				venId = result.venId;
+				
+				$("#u-name").val(result.venName);
+
+				let type = $("#u-type").find("option:contains('"+result.venType.venTypeName+"')").val();
+				$("#u-type").val(type).trigger('change');
+				
+				let city = $("#u-city").find("option:contains('"+result.venCity+"')").val();
+				$("#u-city").val(city).trigger('change');
+										
+			    $("#u-district").select2().empty();
+
+			    if(result.venCity == "臺北市"){
+			    	$("#u-district").select2({
+			    		data: taipei, dropdownParent: $("#u-modal")
+			    	});
+			    } else if(result.venCity == "桃園市"){
+			    	$("#u-district").select2({
+			    		data: taoyuan, dropdownParent: $("#u-modal")
+			    	});
+			    } else{
+			    	$("#u-district").select2({
+			    		data: taichung, dropdownParent: $("#u-modal")
+			    	});
+			    }
+
+			    let district = $("#u-district").find("option:contains('"+result.venDistrict+"')").val();			    
+				$("#u-district").val(district).trigger('change');
+				
+				$("#u-location").val(result.venLoc);
+				$("#u-description").val(result.venDescr);
+				$("#u-price").val(result.venPrice);
+				$("#u-oldPic").attr("src",result.venPic? "data:image/png;base64," + result.venPic: "/back-end/01/images/notfind.jpg");
+			} else{
+				
+			}	
+		}).catch(function(err){
+			console.log(err);
+		});	
+	}
+	
+	
+		
+});		
+
+
+</script>
+
+
+</body>
+</html>

@@ -1,22 +1,14 @@
 package com.ventype.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
-
-import com.venue.model.VenVO;
 
 @Entity
 @Table(name = "venue_type")
@@ -32,17 +24,17 @@ public class VenTypeVO implements Serializable {
 	@Column(name = "ven_type_name")
 	private String venTypeName;
 	
-//	@Column(name = "ven_type_descr")
-//	private String venTypeDescr;
+	@Column(name = "ven_type_descr")
+	private String venTypeDescr;
 
+	public String getVenTypeDescr() {
+		return venTypeDescr;
+	}
 
-//	public String getVenTypeDescr() {
-//		return venTypeDescr;
-//	}
-//
-//	public void setVenTypeDescr(String venTypeDescr) {
-//		this.venTypeDescr = venTypeDescr;
-//	}
+	public void setVenTypeDescr(String venTypeDescr) {
+		this.venTypeDescr = venTypeDescr;
+	}
+
 
 	public Integer getVenTypeId() {
 		return venTypeId;

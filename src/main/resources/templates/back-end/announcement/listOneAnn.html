@@ -30,7 +30,7 @@
         <div id="center" align="center">
         
             <span class="title">公告編號:</span><span th:text="${announcementVO.annId}"></span><br/>
-            <span class="title">編輯人員:</span><span th:text="${announcementVO.empId}"></span><br/>
+            <span class="title">編輯人員:</span><span th:text="${announcementVO.empVO.empId+' / '+announcementVO.empVO.empName}"></span><br/>
             <span class="title">公告時間:</span><span th:text="${#dates.format(announcementVO.annTime, 'yyyy-MM-dd HH:mm:ss')}"></span><br/>      
             <span class="title">公告標題:</span><span th:text="${announcementVO.annName}"></span><br/>
             <div class="text_block">

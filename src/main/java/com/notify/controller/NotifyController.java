@@ -8,15 +8,19 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.membership.model.MembershipVO;
+import com.membership.service.MembershipService;
 import com.notify.model.NotifyVO;
 import com.notify.service.NotifyService;
 import com.notify.service.NotifyWebSocket;
@@ -28,6 +32,9 @@ public class NotifyController {
 
     @Autowired
     NotifyService notifySvc;
+    
+    @Autowired
+    MembershipService membershipSvc;
 
     @GetMapping("addNotify")
     public String addNotify(ModelMap model) {
@@ -76,6 +83,13 @@ public class NotifyController {
         return "back-end/notify/listOneNotify";
     }
 
+    
+    @ModelAttribute("membershipListData")
+    protected List<MembershipVO> referenceListData1(Model model) {
+        
+        List<MembershipVO> list = membershipSvc.getAll();
+        return list;
+    }
     
     // 去除BindingResult中某個欄位的FieldError紀錄
     public BindingResult removeFieldError(NotifyVO notifyVO, BindingResult result, String removedFieldname) {

@@ -12,6 +12,7 @@
   <link rel="stylesheet" 
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" th:href="@{/front-end/07/css/booking.css}">
   
   <style>
@@ -71,13 +72,13 @@
 
   <main class="container mt-4">
     <div style="display: block; text-align: center;">
-      <input type="date" id="datepicker" class="form-select" aria-label="Default select example" style="width: 450px; display: inline-block">
-      
-      <select id="venuepicker" class="form-select" aria-label="Default select example" style="width: 450px; display: inline-block; margin-left: 50px;">
+      <select id="venuepicker" class="form-select" aria-label="Default select example" style="width: 450px; display: inline-block;">
         <option value="" selected>請選擇場地</option>
         <!-- 嵌入所有場地資料庫 -->
         
       </select>
+      
+      <input type="text" id="datepicker" class="form-select" aria-label="Default select example" value="請選擇日期" style="width: 450px; display: inline-block; margin-left: 50px;">
     </div>
     
     <!-- --------------------- 場地詳情內容 --------------------- -->
@@ -138,7 +139,7 @@
     <div class="bookingform">
     <h1 class="form-title">預訂申請資料</h1>
     <h6 style="text-align: end; color: lightgrey;"><b>*為必填資料</b></h6>
-    <form th:action="@{insert}" method="post" th:object="${venOrderVO}" enctype="multipart/form-data">
+    <form th:action="@{insert}" method="post" th:object="${venOrderVO}">
       
       <div class="main-user-info">
         <div class="user-input-box">
@@ -160,28 +161,31 @@
 
         <div class="user-input-box">
           <label for="memPhone">手機號碼<span class="star">*</span></label>
-          <input type="text" th:field="*{memPhone}" id="memPhone" onclick="hideContent('memPhone.errors');"/><br/>
-          <span  th:if="${#fields.hasErrors('memPhone')}" th:errors="*{memPhone}" class="error" id="memPhone.errors"></span>
+          <input type="text" th:field="*{memPhone}" id="memPhone" /><br/>
+<!--           <span  th:if="${#fields.hasErrors('memPhone')}" th:errors="*{memPhone}" class="error" id="memPhone.errors"></span> -->
         </div>
 
         <div class="user-input-box">
           <label for="userCount">預估人數<span class="star">*</span></label>
-          <input type="text" th:field="*{userCount}" onclick="hideContent('userCount.errors');"/><br/>
-          <span  th:if="${#fields.hasErrors('userCount')}" th:errors="*{userCount}" class="error" id="userCount.errors"></span>
+          <input id="userCount" type="text" th:field="*{userCount}" required/><br/>
+          <span class="error" id="userCount_errors"></span>
+<!--           <span  th:if="${#fields.hasErrors('userCount')}" th:errors="*{userCount}" class="error" id="userCount_errors"></span> -->
         </div>
         
         <div class="user-input-box">
           <label for="memTaxid">統一編號</label>
-          <input type="text" th:field="*{memTaxid}" onclick="hideContent('memTaxid.errors');"/><br/>
-          <span  th:if="${#fields.hasErrors('memTaxid')}" th:errors="*{memTaxid}" class="error" id="memTaxid.errors"></span>
+          <input id="taxid" type="text" th:field="*{memTaxid}" /><br/>
+          <span class="error" id="taxid_error"></span>
+<!--           <span  th:if="${#fields.hasErrors('memTaxid')}" th:errors="*{memTaxid}" class="error" id="memTaxid.errors"></span> -->
         </div>
 
       </div>
 
       <div class="user-input-box" style="width: 100%">
         <label>活動內容概述<span class="star">*</span></label>
-        <textarea class="actDescr_text" th:field="*{actDescr}" onclick="hideContent('actDescr.errors');" /></textarea><br/>
-        <span  th:if="${#fields.hasErrors('actDescr')}" th:errors="*{actDescr}" class="error" id="actDescr.errors"></span>
+        <textarea id="actDescr" class="actDescr_text" th:field="*{actDescr}" required/></textarea><br/>
+        <span class="error" id="actDescr_errors"></span>
+<!--         <span  th:if="${#fields.hasErrors('actDescr')}" th:errors="*{actDescr}" class="error" id="actDescr.errors"></span> -->
       </div>
 
       <div class="paytype-venue">
@@ -194,9 +198,9 @@
       
       <div class="pay-type-box">
         <div class="pay-type-category">
-          <input type="radio" name="pay-type" id="credit" value="1" th:field="*{orderPayType}" onclick="hideContent('orderPayType.errors');">
+          <input type="radio" name="pay-type" id="credit" value="1" th:field="*{orderPayType}">
           <label for="credit">信用卡</label>
-          <input type="radio" name="pay-type" id="transfer" value="2" th:field="*{orderPayType}" onclick="hideContent('orderPayType.errors');">
+          <input type="radio" name="pay-type" id="transfer" value="2" th:field="*{orderPayType}">
           <label for="transfer">線上轉帳</label>
         </div>
         
@@ -205,9 +209,8 @@
           <input id="halfprice" type="hidden" th:field="*{venResFee}" value="" readonly/><br/>
         </div>
       </div>
-      <span  th:if="${#fields.hasErrors('orderPayType')}" th:errors="*{orderPayType}" class="error" id="orderPayType.errors"></span>
-      <span  th:if="${#fields.hasErrors('memCreditNum')}" th:errors="*{memCreditNum}" class="error" id="memCreditNum.errors"></span>
       
+      <span class="error" id="account_number_error"></span>
       
       <!-- -------------------- 傳帳帳號 -------------------- -->
       <div class="transfer-number" style="display:none;">
@@ -219,27 +222,28 @@
        
       <!-- -------------------- 信用卡 -------------------- -->
       
-      <div class="container-card" style="display:none;">
+      <div class="container-card" style="display:block;">
         <div class="credit">
             <div class="intern">
                 <img class="approximation" src="/front-end/07/images/aprox.png" alt="aproximation">
                 <img class="chip" src="/front-end/07/images/chip.png" alt="chip">
                 <div class="card-number">
                     <label>Account Number</label>
-                    <input class="number-vl" th:field="*{memCreditNum}" placeholder="1234123412341234" />
+                    <input id="account_number" class="number-vl" th:field="*{memCreditNum}" placeholder="1234123412341234" />
                 </div>
+                    
                 <div class="card-holder">
                     <label>Holder</label>
-                    <input class="number-vl" placeholder="Aaron" />
+                    <input id="Holder" class="number-vl" placeholder="Aaron" />
                 </div>
                 <div class="card-infos">
                     <div class="exp">
                         <label>valid-thru</label>
-                        <input class="number-v2" placeholder="08/28" />
+                        <input id="valid-thru" class="number-v2" placeholder="08/28" />
                     </div>
                     <div class="cvv">
                         <label>CVV</label>
-                        <input class="number-v2" placeholder="123"/>
+                        <input id="CVV" class="number-v2" placeholder="123"/>
                     </div>
                 </div>
                 
@@ -312,14 +316,407 @@
 <!-- 載入 Font Awesome -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
 
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let user = /*[[${session.memId}]]*/'';
+    /*]]>*/
+</script>
+
+
 <script>
 
-function hideContent(d) {
-    document.getElementById(d).style.display = "none";
+$(document).ready(async function(){
+	await getAll();
+	if(user && user !== ""){
+		   await getMemInfo(user);
+		   $("#credit").prop('checked', true);
+	}
+	
+});
+
+
+
+var ordereddate;
+var closeddates;
+var dates = [];
+
+// 取得所有場地資訊
+async function getAll(){
+    await fetch("/front_end/venue/all", {
+        method: "GET",
+        }).then(function(response){;
+            return response.json();
+        }).then(function(vens){     
+            if(vens.length > 0){
+            	// 顯示第一筆場地資訊
+                getVen(vens[0].venName);
+//                 getVenCom(vens[0].venId);
+                
+                $("#ven-user").html("");   
+                $("#ven-user").append(`<option value="" selected>請選擇場地</option>`);
+                for(let ven of vens){
+                    $(".form-select").append(`<option value="${ven.venName}">${ven.venName}</option>`);                       
+                }
+            } else {
+            	$("#venuepicker").html("");  
+                $("#venuepicker").append(`<option value="" selected>無場地可租用</option>`);
+                $("#venue-rental").empty();
+                $("#venue-rental").append(`<div style="width: 100%; height: 100px; display: flex; justify-content: center; align-items: center; text-align: center; background-color: lightgray; font-size: 30px; font-weight: bold; border-radius: 5px;">
+                		                   無場地可租用</div>`);
+            }
+        }).catch(function(err){
+            console.log(err);
+        }); 
 }
 
-function getPrice() {
 
+// 取得會員資訊
+async function getMemInfo(id){
+    await fetch("/front_end/venue/getMemInfo", {
+        method: "POST",
+        body: JSON.stringify({memId: id})
+        }).then(function(response){;
+            return response.json();
+        }).then(function(mem){ 
+            $("span.memName").html("");
+            $("span.memName").html(`${mem.memName}`);
+            $("span.memEmail").html("");
+            $("span.memEmail").html(`${mem.memEmail}`);
+            $("#memPhone").val(`${mem.memPhone}`);
+        }).catch(function(err){
+            console.log(err);
+        }); 
+}
+
+
+// 傳入日期取得可預訂單場地資訊
+async function getOrderVen(date){
+    await fetch("/front_end/venue/orderVen", {
+        method: "POST",
+        body: JSON.stringify({orderDate: date})
+        }).then(function(response){;
+            return response.json();
+        }).then(function(vens){    
+        	if(!vens || vens.length === 0){
+                $("#venuepicker").html("");  
+                $("#venuepicker").prop("disabled", true);
+                $("#venuepicker").append(`<option value="" selected>無場地可租用</option>`);
+                $("#venue-rental").empty();
+                $("#venue-rental").append(`<div style="width: 100%; height: 100px; display: flex; justify-content: center; align-items: center; text-align: center; background-color: lightgray; font-size: 30px; font-weight: bold; border-radius: 5px;">
+                                           無場地可租用</div>`);
+            } else {
+	            // 顯示第一筆場地資訊
+	            getVen(vens[0].venName);
+	            getVenCom(vens[0].venId);
+	            
+	            $(".form-select").empty();   
+	            $(".form-select").append(`<option value="" selected>請選擇場地</option>`);
+	            for(let ven of vens){
+	                $(".form-select").append(`<option value="${ven.venName}">${ven.venName}</option>`);                       
+	            }
+            }
+        }).catch(function(err){
+            console.log(err);
+        }); 
+}
+
+
+// 依場地名稱取得單一場地詳情資訊
+async function getVen(name){
+    await fetch("/front_end/venue/venType",{
+        method: "POST",
+        body: JSON.stringify({venName: name})
+    }).then(function(response){;
+        return response.json();
+    }).then(function(ven){     
+        // 清除清單內容
+        $("#ven-name").html("");
+        $("#ven-name").html(`${ven.venName}`);
+        $("#ven-photo").attr("src", "");
+        $("#ven-photo").attr("src", `data:image/jpeg;base64,${ven.venPic}`);
+        $("#ven-location").html("");
+        $("#ven-location").html(`地點：${ven.venLoc}`);
+        $("#ven-descr").html("");
+        $("#ven-descr").html(`${ven.venDescr}`);
+        $("#ven-price").html("");
+        $("#ven-price").html(`租金：＄${ven.venPrice} / 天`);
+                   
+        $("#ven-star").html("");
+        $("#ven-star").html(`${ven.venTotRating}`);
+        
+        let starcount = ven.venTotRating;
+        $(".star_block span").each(function(){
+            $(this).empty();
+            $(this).removeClass("-on");
+            if (starcount >= 1){
+                $(this).addClass("-on");
+                $(this).append(`<i class="fas fa-star"></i>`);
+            } else if(starcount > 0){ 
+                $(this).addClass("-on");
+                $(this).append(`<i class="fa-solid fa-star-half"></i>`);
+            } else {
+                $(this).append(`<i class="fas fa-star"></i>`);
+            }
+            starcount--;
+            
+        });
+        getVenCom(ven.venId);
+        
+        let halfprice = parseFloat(ven.venPrice/2);
+        $(".venResFee").html("");
+        $(".venResFee").html(`＄${halfprice}`);
+        $("#halfprice").val(halfprice);
+        $("input#venueId").val(ven.venId);
+
+    }).catch(function(err){
+        console.log(err);
+    }); 
+}
+
+
+// 查詢場地使用評論
+async function getVenCom(id){
+    await fetch("/front_end/venue/getVenCom", {
+        method: "POST",
+        body: JSON.stringify({venId: id})
+        }).then(function(response){;
+            return response.json();
+        }).then(function(vens){    
+        	
+        	// 存入orderDate
+        	ordereddate = vens;
+        	
+            $("#ven-experience").empty();  
+            for(let ven of vens){
+                if(ven.venCom != null && ven.venComStatus != 2){
+                $("#ven-experience").append(`
+                        <thead id="comment">
+                           <tr>
+                            <th id="ven-user" style="width: 20%;">${ven.memVO.memName}</th>
+                            <th id="ven-rating" style="width: 20%;">
+                              <div id=${ven.venOrderId} class="com_star">
+                                <span class="star" data-star="1"></span>
+                                <span class="star" data-star="2"></span>
+                                <span class="star" data-star="3"></span>
+                                <span class="star" data-star="4"></span>
+                                <span class="star" data-star="5"></span>
+                              </div>
+                            </th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                            <td id="ven-com" style="padding-left: 20px;" colspan="2">${ven.venCom}</td>
+                           </tr>
+                        </tbody>`);
+                
+                let starcount = ven.venRating;
+                let selector = "#" + ven.venOrderId + " span";
+                $(selector).each(function(){
+                    $(this).empty();
+                    $(this).removeClass("-on");
+                    if (starcount >= 1){
+                        $(this).addClass("-on");
+                        $(this).append(`<i class="fas fa-star"></i>`);
+                    } else if(starcount > 0){ 
+                        $(this).addClass("-on");
+                        $(this).append(`<i class="fa-solid fa-star-half"></i>`);
+                    } else {
+                        $(this).append(`<i class="fas fa-star"></i>`);
+                    }
+                    starcount--;
+                
+                });
+            }
+            }
+            
+        }).catch(function(err){
+            console.log(err);
+        }); 
+}
+
+async function getClosedbyVen(name){
+    await fetch("/front_end/ven-closed/getClosedbyVen",{
+        method: "POST",
+        body: JSON.stringify({venName: name})
+    }).then(function(response){;
+        return response.json();
+    }).then(function(closed){
+    	closeddates = closed;
+    }).catch(function(err){
+        console.log(err);
+    });
+}
+
+  
+
+//選擇日期變更事件
+$('#datepicker').change(async function() {
+    
+    let selectedDate = $(this).val();
+    let compareTime = new Date(selectedDate);
+    
+    let today = new Date();
+    today.setDate(today.getDate() + 1);
+    
+    if (compareTime > today){
+        $(".bookingform").css("display", "none");
+        $("span.orderDate").html("");
+        let month = selectedDate.substring(0,2);
+        let day = selectedDate.substring(3,5);
+        let year = selectedDate.substring(6,10);
+        let cday = year + "-" + month + "-" + day;
+        $("span.orderDate").html(`${cday}`);
+        $("input#orderDate").val(cday);
+//         await getOrderVen(selectedDate);
+    }else {
+        $(this).val("");
+        alert("請選擇正確日期");           
+    }
+});
+
+
+// 選擇場地變更事件
+$('#venuepicker').change(async function() {
+    var selectedVen = $(this).val();     
+    dates=[];
+    $('#datepicker').datepicker('destroy');
+    $(".bookingform").css("display", "none");
+    $("span.venId").html("");
+    $("span.venId").html(`${selectedVen}`);
+    await getVen(selectedVen);
+    await getClosedbyVen(selectedVen);
+    for(let date of ordereddate){
+        dates.push(date.orderDate);
+    }
+    for(let date of closeddates){
+    	dates.push(date.closedDate);
+    }
+//     console.log(dates);
+    
+    initDatePicker();
+	
+});
+
+
+// 變更場地可預訂的日期
+function DisableDates(date) {
+    var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+    return [dates.indexOf(string) == -1];
+}
+
+function initDatePicker(){
+    $("#datepicker").datepicker({
+        beforeShowDay: DisableDates,
+    });
+}
+
+
+// 選擇信用卡
+$("#credit").on("click", function(){
+    $(".transfer-number").css("display", "none");
+    $(".container-card").css("display", "block");
+});
+// 選擇轉帳
+$("#transfer").on("click", function(){
+    $(".container-card").css("display", "none");
+    $(".transfer-number").css("display", "block");
+});
+
+// 點擊立即預訂
+$("#bookingnow").on("click", function(){
+	if(!user) {
+	    alert("請登入會員");  
+	    return;
+	}else{
+		$("input#memId").val(user);
+	}
+	let date = $("#datepicker").val();
+	let venpicked = $("#venuepicker").val();
+	
+	if(date !== "" && venpicked !== ""){
+	    $(".bookingform").css("display", "block");
+	    // 將頁面滾動到預定表單
+	    var formBottom = $(".bookingform").offset().top;
+	    $("html, body").animate({ scrollTop: formBottom }, "fast"); 
+	}else{
+	    alert("請選擇日期和場地");  
+	}
+  
+});	
+
+
+
+$(document).ready(function() {
+	
+	$("#userCount").focus(function(){
+		$("#userCount_errors").hide();
+	});
+	
+    $(".bookingform").submit(function() {
+    	
+        var userCountValue = $("#userCount").val();
+        
+        if ((/^\d{2}$/.test(userCountValue.trim()))) {
+            $("#userCount_errors").hide();
+            return true;
+        }else{
+            $("#userCount_errors").text("請填入正確人數").show();
+            return false;
+        } 
+    });
+});
+  
+
+
+    
+$(document).ready(function() {
+	
+	$("#taxid").focus(function(){
+	    $("#taxid_error").hide();
+	});
+	
+    $(".bookingform").submit(function() {
+        
+    	var taxidValue = $("#taxid").val();
+        
+    	if ((/^\d{8}$/.test(taxidValue.trim())) || taxidValue.trim() == "") {
+            $("#taxid_error").hide();
+            return true;
+        } else {
+            $("#taxid_error").text("統一編號輸入錯誤").show();
+            return false;
+        }
+    });
+});
+  
+  
+
+$(document).ready(function() {
+	
+	$("#account_number").focus(function(){
+	    $("#account_number_error").hide();
+	});
+	
+    $(".bookingform").submit(function() {
+        
+    	var accountNumberValue = $("#account_number").val();
+        
+    	if ((/^\d{16}$/.test(accountNumberValue.trim()))) {
+    		$("#account_number_error").hide();
+            return true;
+        } else {
+            $("#account_number_error").text("信用卡帳戶號碼輸入錯誤").show();
+            return false;
+        }
+    });
+});
+
+	
+// form表單顯示訂金
+function getPrice() {
    pick = $("#venid").val();
    if (pick == 0){
        document.getElementById('viewPrice').innerHTML = "";
@@ -331,271 +728,69 @@ function getPrice() {
    }
    
 }
-   
-$(document).ready(async function(){
+
+
+
+
+
+// 	var id = $("#sessionId").val();
+// 	$("#memId").val(id);
 	
-	var id = $("#sessionId").val();
-	$("#memId").val(id);
-	
-	// 取得所有場地資訊
-	async function getAll(){
-        await fetch("/front_end/venue/all", {
-            method: "GET",
-            }).then(function(response){;
-                return response.json();
-            }).then(function(vens){     
-            	
-            	// 顯示第一筆場地資訊
-            	getVen(vens[0].venName);
-            	getVenCom(vens[0].venId);
-            	
-            	$("#ven-user").html("");   
-            	$("#ven-user").append(`<option value="" selected>請選擇場地</option>`);
-                for(let ven of vens){
-                	$(".form-select").append(`<option value="${ven.venName}">${ven.venName}</option>`);                       
-                }
-            }).catch(function(err){
-                console.log(err);
-            }); 
-	}
-	await getAll();
-	
-	// 取得所有場地資訊
-    async function getMemInfo(id){
-        await fetch("/front_end/venue/getMemInfo", {
-            method: "POST",
-            body: JSON.stringify({memId: id})
-            }).then(function(response){;
-                return response.json();
-            }).then(function(mem){ 
-//             	console.log(mem);
-            	$("span.memName").html("");
-            	$("span.memName").html(`${mem.memName}`);
-            	$("span.memEmail").html("");
-            	$("span.memEmail").html(`${mem.memEmail}`);
-            	$("#memPhone").val(`${mem.memPhone}`);
-            }).catch(function(err){
-                console.log(err);
-            }); 
-    }
-	
-    await getMemInfo(id);
-	
-	
-	async function getVenCom(id){
-        await fetch("/front_end/venue/getVenCom", {
-            method: "POST",
-            body: JSON.stringify({venId: id})
-            }).then(function(response){;
-                return response.json();
-            }).then(function(vens){    
-                $("#ven-experience").empty();  
-                for(let ven of vens){
-                	if(ven.venCom != null){
-                    $("#ven-experience").append(`
-                    		<thead id="comment">
-                    		   <tr>
-                    		    <th id="ven-user" style="width: 20%;">${ven.memVO.memName}</th>
-                    		    <th id="ven-rating" style="width: 20%;">
-                    		      <div id=${ven.venOrderId} class="com_star">
-                    		        <span class="star" data-star="1"></span>
-                                    <span class="star" data-star="2"></span>
-                                    <span class="star" data-star="3"></span>
-                                    <span class="star" data-star="4"></span>
-                                    <span class="star" data-star="5"></span>
-                                  </div>
-                    		    </th>
-                    		   </tr>
-                    		</thead>
-                    	    <tbody>
-                    	       <tr>
-                    	        <td id="ven-com" style="padding-left: 20px;" colspan="2">${ven.venCom}</td>
-                               </tr>
-                            </tbody>`);
-                    
-                    let starcount = ven.venRating;
-                    let selector = "#" + ven.venOrderId + " span";
-                    $(selector).each(function(){
-                        $(this).empty();
-                        $(this).removeClass("-on");
-                        if (starcount >= 1){
-                            $(this).addClass("-on");
-                            $(this).append(`<i class="fas fa-star"></i>`);
-                        } else if(starcount > 0){ 
-                            $(this).addClass("-on");
-                            $(this).append(`<i class="fa-solid fa-star-half"></i>`);
-                        } else {
-                            $(this).append(`<i class="fas fa-star"></i>`);
-                        }
-                        starcount--;
-                    
-                    });
-                }
-                }
-                
-            }).catch(function(err){
-                console.log(err);
-            }); 
-    }
-	
-	
-	// 取得可預訂單場地資訊
-	async function getOrderVen(date){
-        await fetch("/front_end/venue/orderVen", {
-            method: "POST",
-            body: JSON.stringify({orderDate: date})
-            }).then(function(response){;
-                return response.json();
-            }).then(function(vens){    
-            	
-            	// 顯示第一筆場地資訊
-            	getVen(vens[0].venName);
-            	getVenCom(vens[0].venId);
-            	
-                $(".form-select").empty();   
-                $(".form-select").append(`<option value="" selected>請選擇場地</option>`);
-                for(let ven of vens){
-                    $(".form-select").append(`<option value="${ven.venName}">${ven.venName}</option>`);                       
-                }
-                
-            }).catch(function(err){
-                console.log(err);
-            }); 
-    }
-	
-	// 取得單一場地詳情資訊
-    async function getVen(name){
-        await fetch("/front_end/venue/venType",{
-            method: "POST",
-            body: JSON.stringify({venName: name})
-        }).then(function(response){;
-            return response.json();
-        }).then(function(ven){     
-            // 清除清單內容
-            $("#ven-name").html("");
-            $("#ven-name").html(`${ven.venName}`);
-            $("#ven-photo").attr("src", "");
-            $("#ven-photo").attr("src", `data:image/jpeg;base64,${ven.venPic}`);
-            $("#ven-location").html("");
-            $("#ven-location").html(`地點：${ven.venLoc}`);
-            $("#ven-descr").html("");
-            $("#ven-descr").html(`${ven.venDescr}`);
-            $("#ven-price").html("");
-            $("#ven-price").html(`租金：＄${ven.venPrice} / 天`);
+// 	// 取得單一場地詳情資訊
+//     async function getVen(name){
+//         await fetch("/front_end/venue/venType",{
+//             method: "POST",
+//             body: JSON.stringify({venName: name})
+//         }).then(function(response){;
+//             return response.json();
+//         }).then(function(ven){     
+//             // 清除清單內容
+//             $("#ven-name").html("");
+//             $("#ven-name").html(`${ven.venName}`);
+//             $("#ven-photo").attr("src", "");
+//             $("#ven-photo").attr("src", `data:image/jpeg;base64,${ven.venPic}`);
+//             $("#ven-location").html("");
+//             $("#ven-location").html(`地點：${ven.venLoc}`);
+//             $("#ven-descr").html("");
+//             $("#ven-descr").html(`${ven.venDescr}`);
+//             $("#ven-price").html("");
+//             $("#ven-price").html(`租金：＄${ven.venPrice} / 天`);
                        
-            $("#ven-star").html("");
-            $("#ven-star").html(`${ven.venTotRating}`);
+//             $("#ven-star").html("");
+//             $("#ven-star").html(`${ven.venTotRating}`);
             
-            let starcount = ven.venTotRating;
-            $(".star_block span").each(function(){
-            	$(this).empty();
-            	$(this).removeClass("-on");
-                if (starcount >= 1){
-                	$(this).addClass("-on");
-                	$(this).append(`<i class="fas fa-star"></i>`);
-                } else if(starcount > 0){ 
-                    $(this).addClass("-on");
-                    $(this).append(`<i class="fa-solid fa-star-half"></i>`);
-                } else {
-                	$(this).append(`<i class="fas fa-star"></i>`);
-                }
-                starcount--;
+//             let starcount = ven.venTotRating;
+//             $(".star_block span").each(function(){
+//             	$(this).empty();
+//             	$(this).removeClass("-on");
+//                 if (starcount >= 1){
+//                 	$(this).addClass("-on");
+//                 	$(this).append(`<i class="fas fa-star"></i>`);
+//                 } else if(starcount > 0){ 
+//                     $(this).addClass("-on");
+//                     $(this).append(`<i class="fa-solid fa-star-half"></i>`);
+//                 } else {
+//                 	$(this).append(`<i class="fas fa-star"></i>`);
+//                 }
+//                 starcount--;
                 
-            });
+//             });
             
-            getVenCom(ven.venId);
+//             getVenCom(ven.venId);
             
-            let halfprice = parseFloat(ven.venPrice/2);
-            $(".venResFee").html("");
-            $(".venResFee").html(`＄${halfprice}`);
-            $("#halfprice").val(halfprice);
-            $("input#venueId").val(ven.venId);
+//             let halfprice = parseFloat(ven.venPrice/2);
+//             $(".venResFee").html("");
+//             $(".venResFee").html(`＄${halfprice}`);
+//             $("#halfprice").val(halfprice);
+//             $("input#venueId").val(ven.venId);
 
-        }).catch(function(err){
-            console.log(err);
-        }); 
-    }
+//         }).catch(function(err){
+//             console.log(err);
+//         }); 
+//     }
 
 	
-	// 選擇日期變更事件
-    $('#datepicker').change(async function() {
-    	
-        let selectedDate = $(this).val();
-        let compareTime = new Date(selectedDate);
-        
-    	let today = new Date();
-        today.setDate(today.getDate() + 1);
-        
-        if (compareTime > today){
-            $(".bookingform").css("display", "none");
-            $("span.orderDate").html("");
-            $("span.orderDate").html(`${selectedDate}`);
-            $("input#orderDate").val(selectedDate);
-            await getOrderVen(selectedDate);
-        }else {
-        	$(this).val("");
-        	alert("請選擇正確日期");       	
-        }
-    });
-    
-    
-    // 選擇場地變更事件
-    $('.form-select').change(async function() {
-        var selectedVen = $(this).val();     
-        $(".bookingform").css("display", "none");
-        $("span.venId").html("");
-        $("span.venId").html(`${selectedVen}`);
-        await getVen(selectedVen);
-    });
-    
-});
-  // 選擇信用卡
-  $("#credit").on("click", function(){
-	  $(".transfer-number").css("display", "none");
-	  $(".container-card").css("display", "block");
-  });
-  // 選擇轉帳
-  $("#transfer").on("click", function(){
-	  $(".container-card").css("display", "none");
-	  $(".transfer-number").css("display", "block");
-  });
 
-  // 點擊立即預訂
-  $("#bookingnow").on("click", function(){
-	  let date = $("#datepicker").val();
-	  let venpicked = $("#venuepicker").val();
-	  
-	  if(date !== "" && venpicked !== ""){
-		  
-		  $(".bookingform").css("display", "block");
-          // 將頁面滾動到預定表單
-          var formBottom = $(".bookingform").offset().top;
-          $("html, body").animate({ scrollTop: formBottom }, "fast"); 
-	  }else{
-		  alert("請選擇日期和場地");  
-	  }
-	  
-  });
-
-
-// 打開彈窗
-function openPopup() {
-  document.getElementById("popupBox").style.display = "block";
-}
-
-// 關閉彈窗
-function closePopup() {
-  document.getElementById("popupBox").style.display = "none";
-}
-//按背景關閉彈窗
-window.onclick = function (event) {
-  var modal = document.getElementById("popupBox");
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
-
-    
   </script>
 </body>
 

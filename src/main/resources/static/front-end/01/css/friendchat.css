@@ -1,0 +1,301 @@
+
+body {
+	font-family: helvetica;
+	/*   display: flex ; */
+	/*   flex-direction: column; */
+	/*   align-items: center; */
+}
+
+.chat {
+	height: 400px;
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+}
+
+.messages {
+	padding: 10px 20px;
+	margin-top: 30px;
+	display: flex;
+	flex-direction: column;
+}
+
+.message {
+	border-radius: 20px;
+	border-collapse: collapse;	
+	padding: 8px 15px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	display: inline-block;
+}
+
+.friend {
+	align-items: flex-start;
+}
+
+.friend .message {
+	margin-right: 25%;
+	background-color: #eee;
+	position: relative;
+}
+
+/* .friend .message:before { */
+/* 	content: ""; */
+/* 	position: absolute; */
+/* 	z-index: 0; */
+/* 	bottom: 0; */
+/* 	left: -7px; */
+/* 	height: 20px; */
+/* 	width: 20px; */
+/* 	background: #eee; */
+/* 	border-bottom-right-radius: 15px; */
+/* } */
+
+/* .friend .message:after { */
+/* 	content: ""; */
+/* 	position: absolute; */
+/* 	z-index: 1; */
+/* 	bottom: 0; */
+/* 	left: -10px; */
+/* 	width: 10px; */
+/* 	height: 20px; */
+/* 	background: white; */
+/* 	border-bottom-right-radius: 10px; */
+/* } */
+.self {
+	align-items: flex-end;
+}
+
+.self .message {
+	color: white;
+	margin-left: 25%;
+	background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%);
+	background-attachment: fixed;
+	position: relative;
+}
+
+/* .self .message:before { */
+/* 	content: ""; */
+/* 	position: absolute; */
+/* 	z-index: 0; */
+/* 	bottom: 0; */
+/* 	right: -8px; */
+/* 	height: 20px; */
+/* 	width: 20px; */
+/* 	background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%); */
+/* 	background-attachment: fixed; */
+/* 	border-bottom-left-radius: 15px; */
+/* } */
+
+/* .self .message:after { */
+/* 	content: ""; */
+/* 	position: absolute; */
+/* 	z-index: 1; */
+/* 	bottom: 0; */
+/* 	right: -10px; */
+/* 	width: 10px; */
+/* 	height: 20px; */
+/* 	background: white; */
+/* 	border-bottom-left-radius: 10px; */
+/* } */
+.friend:has(+.self) .message:before {
+	content: "";
+	position: absolute;
+	z-index: 0;
+	bottom: 0;
+	left: -7px;
+	height: 20px;
+	width: 20px;
+	background: #eee;
+	border-bottom-right-radius: 15px;
+}
+
+.friend:has(+.self) .message:after {
+	content: "";
+	position: absolute;
+	z-index: 1;
+	bottom: 0;
+	left: -10px;
+	width: 10px;
+	height: 20px;
+	background: white;
+	border-bottom-right-radius: 10px;
+}
+
+.self:has(+.friend) .message:before {
+	content: "";
+	position: absolute;
+	z-index: 0;
+	bottom: 0;
+	right: -8px;
+	height: 20px;
+	width: 20px;
+	background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%);
+	background-attachment: fixed;
+	border-bottom-left-radius: 15px;
+}
+
+.self:has(+.friend) .message:after {
+	content: "";
+	position: absolute;
+	z-index: 1;
+	bottom: 0;
+	right: -10px;
+	width: 10px;
+	height: 20px;
+	background: white;
+	border-bottom-left-radius: 10px;
+}
+
+#contacts-div {
+	/* 	width: 500px; */
+	/* 	border: solid 1px #EEE; */
+	border: solid 1px black;
+	border-collapse: collapse;
+	padding: 0px;
+}
+
+#contacts-display {
+	height: 398px;
+	padding: 0px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+#contacts-welcome-div {
+	height: 50px;
+	padding-top: 10px;
+	border: solid black 1px;
+	border-collapse: collapse;
+}
+
+#chat-div {
+	/* 	width: 500px; */
+	height: 502px;
+	/* 	border: solid 1px #EEE; */
+	border: solid 1px black;
+	border-collapse: collapse;
+	padding: 0px;
+}
+
+.contact {
+	padding: 10px;
+	border: solid black 1px;
+	border-collapse: collapse;
+}
+
+.contact.selected {
+	background-color: #D3D3D3;
+}
+
+.contact:hover {
+	background-color: #D3D3D3;
+	cursor: pointer;
+}
+
+.contact img {
+	border-radius: 50%;
+	max-width: 80px;
+	margin-left: 10px;
+	border-collapse: collapse;
+}
+
+.contact .new {
+	visibility: hidden;
+	margin-top: 0px;
+	margin-left: 20px;
+	height: 15px;
+	width: 15px;
+	background-color: blue;
+	border-radius: 50%;
+	border-collapse: collapse;
+	margin-top: 0px;
+}
+
+.contact-time {
+	height: 20px;
+	margin-top: 30px !important;
+}
+
+.contact.row {
+	padding: 0px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+#contacts-search {
+	height: 50px;
+	width: 90%;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+#contacts-search-btn {
+	height: 45px;
+	width: 10%;
+	border: none;
+	background-color: white;
+}
+
+#input-message{
+	padding-left: 50px;
+	padding-right: 50px;	
+}
+
+#chat-friend {
+	height: 50px;
+	width: 100%;
+	background-color: yellow;
+	z-index: 10;
+	padding: 10px;
+	display: none;
+	border: solid black 1px;
+	border-collapse: collapse;
+}
+
+#contacts-search-div {
+	border: solid black 1px;
+	border-collapse: collapse;
+}
+
+.new, .contact-name, .contact-img, .contact-time, .contact-info {
+	padding: 0px !important;
+}
+
+.messages .status {
+	display: inline-block;
+}
+
+.retrieved-div {
+	text-align: center;
+}
+
+.retrieved {
+	border-radius: 20px;
+	border-collapse: collapse;	
+	padding: 8px 15px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	display: inline-block;
+	background-color: #eee;
+}
+
+#add-contacts:hover {
+	cursor: pointer;
+}
+
+::-webkit-scrollbar {
+	width: 9px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: rgba(155, 155, 155, 0.5);
+	border-radius: 20px;
+	border-collapse: collapse;
+	border: transparent;
+}
