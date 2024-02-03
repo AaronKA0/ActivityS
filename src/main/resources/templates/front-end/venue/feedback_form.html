@@ -9,21 +9,22 @@
     <link rel="stylesheet" th:href="@{/front-end/07/css/feedback_form.css}">
   
 </head>
+
 <body>
 
     <div class="wrapper">
         <h3>場地使用滿意度</h3>
-<!--    <form id="feedback_form" th:action="@{feedback}" method="post" th:object="${venOrderVO}"> -->
+   <form id="feedback_form" th:action="@{feedback}" method="post" th:object="${venOrderVO}">
             <div class="rating">
-<!--            <input id="venRating" th:field="*{venRating}" type="hidden" name="rating" value=""> -->
+            <input id="venRating" th:field="*{venRating}" type="hidden" name="rating" value="">
                 <i id="star" class='bx bx-star star' style="--i: 0;" data-star="1"></i>
                 <i id="star" class='bx bx-star star' style="--i: 1;" data-star="2"></i>
                 <i id="star" class='bx bx-star star' style="--i: 2;" data-star="3"></i>
                 <i id="star" class='bx bx-star star' style="--i: 3;" data-star="4"></i>
                 <i id="star" class='bx bx-star star' style="--i: 4;" data-star="5"></i>
             </div>
-            <span id="rating_error"></span>
-<!--             <textarea id="vencom" th:field="*{venCom}" name="opinion" cols="30" rows="5" placeholder="您的回饋..."></textarea> -->
+            <span id="rating_error" style="color: red; font-weight: bold"></span>
+            <textarea id="vencom" th:field="*{venCom}" name="opinion" cols="30" rows="5" placeholder="您的回饋..."></textarea>
             <div class="btn-group">
                 <button type="submit" class="btn submit">確認</button>
                 <button class="btn cancel">清除</button>
@@ -41,6 +42,7 @@ $(document).ready(function() {
     
     $("div.rating").on("click", "i#star", function(){
     	let star_data = parseInt($(this).attr("data-star"));
+    	console.log(star_data);
     	$("input#venRating").val("");
     	$("input#venRating").val(star_data);
     	$("#rating_error").hide();

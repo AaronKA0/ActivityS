@@ -95,14 +95,13 @@ public class FrontendVenOrderController {
 
 
     @PostMapping("addVenOrder")
-    public String addVenOrder(ModelMap model, @ModelAttribute VenVO ven, HttpServletRequest request) {
+    public String addVenOrder(ModelMap model, @ModelAttribute VenVO ven) {
 
         VenOrderVO venOrderVO = new VenOrderVO();
         VenVO venVO = venSvc.getOneVen(ven.getVenId());
 
         model.addAttribute("venOrderVO", venOrderVO);
-        request.setAttribute("venVO", venVO);
-        
+        model.addAttribute("venVO", venVO);
         return "front-end/venue/venType";
     }
 
