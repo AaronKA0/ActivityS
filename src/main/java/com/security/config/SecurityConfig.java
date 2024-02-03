@@ -32,7 +32,7 @@ public class SecurityConfig {
 						// 指定某些請求路徑不需要驗證，這裡將/login對所有用戶開放
 
 						.antMatchers("/back_end/01/**","/back_end/07/**","/back_end/10/**","/back_end/16/**", "/back-end/emp_Index/**", "/front-end/01/**", "/front-end/07/**", "/front-end/16/**", "/front-end/zuo-huo/**").permitAll()
-						.antMatchers("/**","/Zuo-Huo/**","/front_end/notify/**","/front_end/venue/**","/act/**","/type/**").permitAll()
+						.antMatchers("/**","/Zuo-Huo/**","/front_end/notify/**","/front_end/venue/**","/act/**","/type/**","/notify/**","/front_end/**").permitAll()
 						.antMatchers("/login","/membership/**","/faq/**","/memberreport/**","/postreport/**", "/back_end/announcement/**", "/back_end/notify/**", "/back_end/ven-order/**", "/back_end/ven-closed/**","/forgotPassword","/act/**","/type/**","/membership/**","/faq/**","/memberreport/**","/postreport/**","/","/Zuo-Huo","/activity/**","/back_end/**","/mem/**","/member/**","/mem/**","/venOrder/**","/ven/**","/FriendWS/**").permitAll()
 						.antMatchers("/activity/**","/actreg/**","/actregs/**","/activityreport/**","/comments/**", "/comment/**", "/commentreport/**", "/back_end/ven-order/**", "/acts/**","/weather/*").permitAll()
 						

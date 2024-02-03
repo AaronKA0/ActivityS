@@ -12,9 +12,11 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
+import com.membership.model.MembershipVO;
 import com.notify.model.NotifyVO;
 
 @ServerEndpoint(value = "/notify/{userId}")
@@ -22,17 +24,18 @@ import com.notify.model.NotifyVO;
 public class NotifyWebSocket {
 	private static Map<Integer, Session> sessionsMap = new ConcurrentHashMap<>();
 	private static Gson gson = new Gson();
+	
 
 	@OnOpen
-	public void onOpen(@PathParam("userId") Integer userId, Session userSession) throws IOException {
+	public static void onOpen(@PathParam("userId") Integer userId, Session userSession) throws IOException {
 		/* save the new user in the map */
 		System.out.println("userId: " + userId);
 		sessionsMap.put(userId, userSession);
 	}
 
 	@OnClose
-	public void onClose(Session userSession, CloseReason reason) {
-//	    System.out.println("closing websocket");
+	public static void onClose(Session userSession, CloseReason reason) {
+	    System.out.println("closing websocket");
 		Set<Integer> userIds = sessionsMap.keySet();
 		for (Integer userId : userIds) {
 			if (sessionsMap.get(userId).equals(userSession)) {
@@ -43,7 +46,7 @@ public class NotifyWebSocket {
 	}
 	
 	
-	public void sendNotification(NotifyVO notifyVO) {
+	public static void sendNotification(NotifyVO notifyVO) {
 		System.out.println("sending notification");
 		Session session = sessionsMap.get(notifyVO.getMemVO().getMemId());
 		if(session != null) {
@@ -52,4 +55,6 @@ public class NotifyWebSocket {
 			System.out.println("live notification sent");
 		}
 	}
+	
+	
 }
