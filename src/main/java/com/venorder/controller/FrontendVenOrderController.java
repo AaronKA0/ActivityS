@@ -1,6 +1,8 @@
 package com.venorder.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,21 +77,23 @@ public class FrontendVenOrderController {
         return venOrderSvc.getVenCom(venVO);
     }
     
-//    @RequestMapping("getMemInfo")
-//    public @ResponseBody MembershipVO findMemInfo(@RequestBody String json) {
-//        
-//        MembershipVO memVO = null;
-//       
-//        try {
-//            memVO = new ObjectMapper().readValue(json, MembershipVO.class);
-//        } catch (JsonMappingException e) {
-//            e.printStackTrace();
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
-//        return memSvc.getMemInfo(memVO.getMemId());
-//    }
-//    
+
+    @RequestMapping("getMemInfo")
+    public @ResponseBody MembershipVO findMemInfo(@RequestBody String json) {
+        
+        MembershipVO memVO = null;
+       
+        try {
+            memVO = new ObjectMapper().readValue(json, MembershipVO.class);
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return memSvc.getOneMembership(memVO.getMemId());
+    }
+    
+
     
 
     @GetMapping("addVenOrder")
@@ -107,7 +111,7 @@ public class FrontendVenOrderController {
         }
         
         venOrderSvc.addVenOrder(venOrderVO);
-        
+
         List<VenOrderVO> list = venOrderSvc.getAll();
         model.addAttribute("venOrderListData", list);
         model.addAttribute("success", "- (新增成功)");
@@ -140,15 +144,44 @@ public class FrontendVenOrderController {
     }
 
     
+    @PostMapping("feedback")
+    public String feedback(@Valid VenOrderVO venOrderVO, ModelMap model) {
+        
+        venOrderVO.setVenComTime(Timestamp.valueOf(LocalDateTime.now()));
+        venOrderSvc.updateVenOrder(venOrderVO);
+
+        List<VenOrderVO> venOrders = venOrderSvc.getVenCom(venOrderVO.getVenVO());
+        
+        double venTotRating = 0;
+        double rating = 0;
+        int ratingSize = 0;
+        
+        // 累加場地評分算出平均
+        for(VenOrderVO order : venOrders) {
+            if(order.getVenRating() != 0) {
+                rating = rating + order.getVenRating();
+                ratingSize++;
+            }
+        }
+        venTotRating = rating / ratingSize;
+        
+        venOrderVO.getVenVO().setVenTotRating(venTotRating);
+        
+        model.addAttribute("venOrderVO", venOrderVO);
+        return "redirect:/Zuo-Huo";
+    }
+    
+    
+    
     @ModelAttribute("memListData")
     protected List<MembershipVO> memListData(Model model) {        
         List<MembershipVO> list = memSvc.getAll();
         return list;
     } 
     
-    @ModelAttribute("venListData")
+    @ModelAttribute("venOnListData")
     protected List<VenVO> venListData(Model model) {        
-        List<VenVO> list = venSvc.getAll();
+        List<VenVO> list = venSvc.getVenueOn();
         return list;
     } 
     

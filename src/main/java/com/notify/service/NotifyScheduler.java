@@ -2,6 +2,7 @@ package com.notify.service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,6 +15,7 @@ import com.membership.service.MembershipService;
 import com.notify.model.NotifyVO;
 import com.notify.service.NotifyService;
 import com.venorder.model.VenOrderVO;
+import com.venorder.service.BookingMail;
 import com.venorder.service.VenOrderService;
 
 import redis.clients.jedis.Jedis;
@@ -34,12 +36,18 @@ public class NotifyScheduler {
     NotifyNow notifyNow;
     
     // 場地訂單通知
-//    @Scheduled(cron = "0 0 12 * * ?")
+//    @Scheduled(cron = "0/3 * * * * ?")
 //    public void getBookingNotify() throws InterruptedException {
 //        
 //        List<MembershipVO> memVO = memSrv.getAll();
 //        
-//        notifyNow.sendNotifyNow(memVO, "系統通知", "通知成功成功成功");
+//        Set<MembershipVO> memVOset = new HashSet<>();
+//        
+//        for(MembershipVO mem : memVO) {
+//            memVOset.add(mem);
+//        }
+//        
+//        notifyNow.sendNotifyNow(memVOset, "系統通知", "通知成功成功成功");
 //        
 //        Integer memId = null;
 //        Date orderDate = null;

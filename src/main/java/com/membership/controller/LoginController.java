@@ -62,6 +62,7 @@ public class LoginController {
 
 			request.getSession().setAttribute("memAcc", memAcc);
 			request.getSession().setAttribute("memId", memId); // 將會員編號存入 session
+
 			request.getSession().setAttribute("memName", memName); // 將會員姓名存入 session
 			request.getSession().setAttribute("IsAccEna", IsAccEna); // 將會員帳戶狀態存入 session
 
@@ -74,6 +75,7 @@ public class LoginController {
 			System.out.println(c);
 //	        System.out.print("line 65 :" + "memId:" + memId +" "+"memAcc:" + memAcc +" " + "memPwd:" + memPwd);
 
+
 //			// +++++++++++++++ 將會員個人訊息存入 session +++++++++++++++
 //			List<NotifyVO> notifies = notifySvc.findByMemId(memId);
 //			request.getSession().setAttribute("notifies", notifies);
@@ -82,7 +84,10 @@ public class LoginController {
 			// 每次登入就更新一次登入時間
 			membershipSvc.updateMemLoginTime(memAcc);
 
-			return "redirect:/Zuo-Huo";
+
+//			return "redirect:/Zuo-Huo";
+			return "redirect:/member";
+
 
 		} else {
 

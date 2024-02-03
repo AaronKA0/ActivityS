@@ -78,35 +78,22 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top">
          <div class="title"> 
               <div> <h2>場地訂單</h2></div>
-              <div> <h4><a class="navbar-brand" href='addVenOrder'>新增訂單</a></h4></div>
+<!--               <div> <h4><a class="navbar-brand" href='addVenOrder'>新增訂單</a></h4></div> -->
          </div>
 </nav>
 
-<table style="display: block;" id="example" class="display">
+<table style="table-layout: automatic;" id="example" class="display">
         <thead>
             <tr>
                 <th class="th_title">查看</th>
-<!--            <th class="th_title">修改</th> -->
-                <th class="th_title">訂單編號</th>
-				<th class="th_title">場地</th>
-				<th class="th_title">會員帳號</th>
-				<th class="th_title">負責員工</th>
-				<th class="th_title">預約日期</th>
-				<th class="th_title">手機號碼</th>
-<!-- 		    <th class="th_title">活動概述</th> -->
-<!-- 			<th class="th_title">預估人數</th> -->
-<!-- 			<th class="th_title">公司統編</th> -->
-<!-- 			<th class="th_title">訂單成立時間</th> -->
-				<th class="th_title">付款方式</th>
-<!-- 			<th class="th_title">會員轉帳帳號</th> -->
-<!-- 			<th class="th_title">信用卡卡號</th> -->
-				<th class="th_title">訂單狀態</th>
-				<th class="th_title">租借狀態</th>
-<!-- 			<th class="th_title">使用評分</th> -->
-<!-- 			<th class="th_title">使用評論</th> -->
-<!-- 			<th class="th_title">評論狀態</th> -->
-<!-- 			<th class="th_title">評論時間</th> -->
-				<th class="th_title">場地訂金</th>
+                <th class="th_title">租借狀態</th>
+                <th class="th_title">訂單狀態</th>
+                <th class="th_title">成立時間</th>
+                <th class="th_title">場地</th>
+                <th class="th_title">預約日期</th>
+                <th class="th_title">會員帳號</th>
+                <th class="th_title">手機號碼</th>
+                <th class="th_title">場地訂金</th>
             </tr>
         </thead>
         <tbody>
@@ -120,32 +107,58 @@
                        </form>
                     </td>
                     
-<!--                <td> -->
-<!--                   <form method="post" th:action="@{getOne_For_Update}" style="margin-bottom: 0px;"> -->
-<!--                        <input style="color: red; font-weight: bold;" type="submit" value="修改"> -->
-<!--                        <input type="hidden" name="venOrderId" th:value="${venOrderVO.venOrderId}"> -->
-<!--                   </form> -->
-<!--                </td> -->
                          
-	                <td th:text="${venOrderVO.venOrderId}"></td>
+	                <td th:if="${venOrderVO.orderStatus == 1 and venOrderVO.venRentStatus == 1}">
+	                   <form method="post" th:action="@{checkIn}" style="margin-bottom: 0px;">
+                            <input class="rentStatus-button" type="submit" value="Check in" style="width: 80px;">
+                            <input type="hidden" name="venOrderId" th:value="${venOrderVO.venOrderId}">
+                       </form>
+	                </td>
+	                <td th:if="${venOrderVO.orderStatus == 1 and venOrderVO.venRentStatus == 2}">
+	                   <form method="post" th:action="@{checkOut}" style="margin-bottom: 0px;">
+                            <input class="rentStatus-button" type="submit" value="Check out" style="width: 80px;">
+                            <input type="hidden" name="venOrderId" th:value="${venOrderVO.venOrderId}">
+                       </form>
+	                </td>
+	                <td th:if="${venOrderVO.orderStatus == 1 and venOrderVO.venRentStatus == 3}">
+                       <form method="post" style="margin-bottom: 0px;">
+                            <input class="rentStatus-button" type="submit" value="Done" style="width: 80px; pointer-events: none; background-color: WhiteSmoke; color: gray; border: none;">
+                       </form>
+                    </td>
+	                <td th:if="${venOrderVO.orderStatus != 1}">
+	                   <form method="post" style="margin-bottom: 0px;">
+                            <input class="rentStatus-button" type="submit" value="Cancel" style="width: 80px; pointer-events: none; background-color: WhiteSmoke; color: gray; border: none;">
+                       </form>
+	                </td>
+	                
+	                <td th:if="${venOrderVO.orderStatus == 1}">
+	                   <form method="post" style="margin-bottom: 0px;">
+                            <input class="orderStatus-button" type="submit" value="已付款" style="width: 80px; pointer-events: none; background-color: WhiteSmoke; color: gray; border: none;">
+                       </form>
+	                </td>
+	                <td th:if="${venOrderVO.orderStatus == 2}">
+	                   <form method="post" th:action="@{cancelCheck}" style="margin-bottom: 0px;">
+                            <input class="orderStatus-button" type="submit" value="已取消" style="width: 80px;">
+                            <input type="hidden" name="venOrderId" th:value="${venOrderVO.venOrderId}">
+                       </form>
+	                </td>
+	                <td th:if="${venOrderVO.orderStatus == 3}">
+	                   <form method="post" th:action="@{refundCheck}" style="margin-bottom: 0px;">
+                            <input class="orderStatus-button" type="submit" value="待退款" style="width: 80px;">
+                            <input type="hidden" name="venOrderId" th:value="${venOrderVO.venOrderId}">
+                       </form>
+	                </td>
+	                <td th:if="${venOrderVO.orderStatus == 4}">
+	                   <form method="post" style="margin-bottom: 0px;">
+                            <input class="orderStatus-button" type="submit" value="已退款" style="width: 80px; pointer-events: none; background-color: WhiteSmoke; color: gray; border: none;">
+                       </form>
+	                </td>
+	                
+	                <td th:text="${#dates.format(venOrderVO.orderTime, 'yyyy-MM-dd')}"></td>
 	                <td th:text="${venOrderVO.venVO.venName}"></td>
-	                <td th:text="${venOrderVO.memVO.memName}"></td>
-	                <td th:text="${venOrderVO.empId}"></td>
 	                <td th:text="${venOrderVO.orderDate}"></td>
+	                <td th:text="${venOrderVO.memVO.memId+' / '+venOrderVO.memVO.memName}"></td>
 	                <td th:text="${venOrderVO.memPhone}"></td>
-<!-- 	            <td th:text="${venOrderVO.actDescr}"></td> -->
-<!-- 	            <td th:text="${venOrderVO.userCount}"></td> -->
-<!-- 	            <td th:text="${venOrderVO.memTaxid}"></td> -->
-<!-- 	            <td th:text="${venOrderVO.orderTime}"></td> -->
-	                <td th:text="${venOrderVO.orderPayType}"></td>
-<!-- 	            <td th:text="${venOrderVO.memTransferNum}"></td> -->
-<!-- 	            <td th:text="${venOrderVO.memCreditNum}"></td> -->
-	                <td th:text="${venOrderVO.orderStatus}"></td>
-	                <td th:text="${venOrderVO.venRentStatus}"></td>
-<!-- 	            <td th:text="${venOrderVO.venRating}"></td> -->
-<!-- 	            <td th:text="${venOrderVO.venCom}"></td> -->
-<!-- 	            <td th:text="${venOrderVO.venComStatus}"></td> -->
-<!-- 	            <td th:text="${venOrderVO.venComTime}"></td> -->
 	                <td th:text="${venOrderVO.venResFee}"></td>
 	                
                 </tr>
@@ -154,26 +167,13 @@
         <tfoot>
             <tr>
                 <th class="th_title">查看</th>
-<!--            <th class="th_title">修改</th> -->
-                <th class="th_title">訂單編號</th>
-                <th class="th_title">場地</th>
-                <th class="th_title">會員帳號</th>
-                <th class="th_title">負責員工</th>
-                <th class="th_title">預約日期</th>
-                <th class="th_title">手機號碼</th>
-<!--            <th class="th_title">活動概述</th> -->
-<!--            <th class="th_title">預估人數</th> -->
-<!--            <th class="th_title">公司統編</th> -->
-<!--            <th class="th_title">訂單成立時間</th> -->
-                <th class="th_title">付款方式</th>
-<!--            <th class="th_title">會員轉帳帳號</th> -->
-<!--            <th class="th_title">信用卡卡號</th> -->
-                <th class="th_title">訂單狀態</th>
                 <th class="th_title">租借狀態</th>
-<!--            <th class="th_title">使用評分</th> -->
-<!--            <th class="th_title">使用評論</th> -->
-<!--            <th class="th_title">評論狀態</th> -->
-<!--            <th class="th_title">評論時間</th> -->
+                <th class="th_title">訂單狀態</th>
+                <th class="th_title">成立時間</th>
+                <th class="th_title">場地</th>
+                <th class="th_title">預約日期</th>
+                <th class="th_title">會員帳號</th>
+                <th class="th_title">手機號碼</th>
                 <th class="th_title">場地訂金</th>
             </tr>
         </tfoot>

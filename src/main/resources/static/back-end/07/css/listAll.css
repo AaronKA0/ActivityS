@@ -9,7 +9,6 @@ div.title {
 
 div.function {
 	display: flex; 
-
 }
 
 a.navbar-brand {
@@ -30,7 +29,17 @@ table.display {
 }
 
 input.getOne-button {
+    color: black; 
+    font-weight: bold;
+}
+
+input.rentStatus-button {
     color: blue; 
+    font-weight: bold;
+}
+
+input.orderStatus-button {
+    color: red; 
     font-weight: bold;
 }
 

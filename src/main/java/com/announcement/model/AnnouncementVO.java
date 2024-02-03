@@ -25,9 +25,9 @@ public class AnnouncementVO implements java.io.Serializable {
 	@Column(name = "ann_id", insertable = false , updatable = false)
 	private Integer annId;
 	
-	@Column(name = "emp_id")
-	@NotNull(message="請選擇編號")
-	private Integer empId;
+	@ManyToOne
+    @JoinColumn(name = "emp_id", referencedColumnName = "emp_id")
+    private EmpVO empVO;
 	
 	@Column(name = "ann_name")
 	@NotEmpty(message="請填公告標題")
@@ -50,7 +50,6 @@ public class AnnouncementVO implements java.io.Serializable {
             Timestamp annTime) {
         super();
         this.annId = annId;
-        this.empId = empId;
         this.annName = annName;
         this.annDescr = annDescr;
         this.annTime = annTime;
@@ -65,12 +64,12 @@ public class AnnouncementVO implements java.io.Serializable {
 		this.annId = annId;
 	}
 
-    public Integer getEmpId() {
-        return empId;
+    public EmpVO getEmpVO() {
+        return empVO;
     }
 
-    public void setEmpId(Integer empId) {
-        this.empId = empId;
+    public void setEmpVO(EmpVO empVO) {
+        this.empVO = empVO;
     }
 
     public String getAnnName() {
@@ -98,11 +97,6 @@ public class AnnouncementVO implements java.io.Serializable {
 	}
 
 
-    @Override
-    public String toString() {
-        return "AnnouncementVO [annId=" + annId + ", empId=" + empId + ", annName=" + annName + ", annDescr=" + annDescr
-                + ", annTime=" + annTime + "]";
-    }
 	
 	
 }

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.venclosed.model.VenClosedVO;
+import com.venorder.model.VenOrderVO;
+import com.venue.model.VenVO;
 import com.venue.service.VenService;
 
 @Service("VenClosedService")
@@ -38,5 +40,12 @@ public class VenClosedService{
 	public List<VenClosedVO> getAll(){
 		return repository.findAll();
 	}
+	
+	
+	// getClosedbyVen 利用場地取得不開放的物件
+    public List<VenClosedVO> getClosedbyVen(VenVO venVO) {
+        List<VenClosedVO> closedVOs = repository.getClosedbyVen(venVO.getVenId());
+        return closedVOs; 
+    }
 	
 }

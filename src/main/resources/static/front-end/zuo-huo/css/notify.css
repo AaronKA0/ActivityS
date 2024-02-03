@@ -1,4 +1,4 @@
-.bi-bell-fill[data-count]:after{
+.bi-bell-fill[data-count]:after {
   position:relative;
   right:20%;
   content: attr(data-count);
@@ -11,4 +11,15 @@
   text-align:center;
   min-width:2em;
   font-weight:bold;
+}
+
+ul#notify_ul {
+    width: 400px;
+    overflow-x: scroll;
+}
+
+a#display_all {
+	background-color: lightgreen; 
+	color: white; 
+	text-align: center;
 }

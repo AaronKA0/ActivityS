@@ -216,10 +216,9 @@ $(document).ready(async function(){
 		    showSizeChanger: true,
 		    callback: function(notes, pagination){
 		    	  if(!notes.length) {
-		    		  console.log("123");
+		    		  $("#notify-items").html("");
 		    	  }else{
 			    	  $("#notify-items").html("");
-			    		  console.log(notes);
 			    	  for(let notify of notes){
 			            $("#notify-items").append(
 			                `<tr id="this_notify">

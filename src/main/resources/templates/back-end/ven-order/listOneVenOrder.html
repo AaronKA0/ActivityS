@@ -29,33 +29,48 @@
 
         <div id="center" align="center">
         
+            <span class="title">訂單編號:</span><span th:text="${venOrderVO.venOrderId}"></span>
+            <span class="title">場地:</span><span th:text="${venOrderVO.venVO.venName}"></span><br/>
+            <span class="title">預訂會員:</span><span th:text="${venOrderVO.memVO.memId+' / '+venOrderVO.memVO.memName}"></span>
+<!--             <span class="title">負責員工:</span><span th:text="${venOrderVO.empVO.empId+' / '+venOrderVO.empVO.empName}"></span><br/> -->
+            <span class="title">預約日期:</span><span th:text="${venOrderVO.orderDate}"></span>
+            <span class="title">手機號碼:</span><span th:text="${venOrderVO.memPhone}"></span><br/>
+            <span class="title">預估人數:</span><span th:text="${venOrderVO.userCount}"></span>
+            <span class="title">公司統編:</span><span th:text="${venOrderVO.memTaxid}"></span><br/>
+            <span class="title">訂單成立時間:</span><span th:text="${#dates.format(venOrderVO.orderTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+            <span class="title">付款方式:</span>
+                <span th:if="${venOrderVO.orderPayType == 1}" th:text="信用卡"></span>
+                <span th:if="${venOrderVO.orderPayType == 2}" th:text="轉帳"></span>
+            <br/>
+            <span class="title">會員轉帳帳號:</span><span th:text="${venOrderVO.memTransferNum}"></span>
+            <span class="title">信用卡卡號:</span><span th:text="${venOrderVO.memCreditNum}"></span><br/>
+            <span class="title">訂單狀態:</span>
+                <span th:if="${venOrderVO.orderStatus == 1}" th:text="已付款"></span>
+                <span th:if="${venOrderVO.orderStatus == 2}" th:text="已取消"></span>
+                <span th:if="${venOrderVO.orderStatus == 3}" th:text="已退款"></span>
+            <span class="title">租借狀態:</span>
+                <span th:if="${venOrderVO.venRentStatus == 1}" th:text="CheckIn"></span>
+                <span th:if="${venOrderVO.venRentStatus == 2}" th:text="CheckOut"></span>
+                <span th:if="${venOrderVO.venRentStatus == 3}" th:text="Done"></span>
+            <br/>
+            <span class="title">場地滿意度:</span><span th:text="${venOrderVO.venRating}"></span>
+            <span class="title">評論狀態:</span>
+                <span th:if="${venOrderVO.venComStatus == 1}" th:text="可顯示評論"></span>
+                <span th:if="${venOrderVO.venComStatus == 2}" th:text="不允許顯示評論"></span>
+            <br/>
+            <span class="title">場地訂金:</span><span th:text="${venOrderVO.venResFee}"></span>
+            <span class="title">評論時間:</span><span th:text="${#dates.format(venOrderVO.venComTime, 'yyyy-MM-dd HH:mm:ss')}"></span><br/>
             <div class="has_two">
-                <span class="title">訂單編號:</span><span th:text="${venOrderVO.venOrderId}"></span>
-                
                 <div class="text_block">
                     <span class="title">活動概述:</span>
-                    <textarea th:text="${venOrderVO.actDescr}" readonly></textarea><br/>
+                    <textarea th:text="${venOrderVO.actDescr}" readonly></textarea>
+                </div>
+                
+                <div class="text_block">
+                    <span class="title">使用評論:</span>
+                    <textarea th:text="${venOrderVO.venCom}" readonly></textarea><br/>
                 </div>
             </div>
-            
-            <span class="title">場地:</span><span th:text="${venOrderVO.venVO.venName}"></span>
-            <span class="title">會員帳號:</span><span th:text="${venOrderVO.memVO.memName}"></span><br/>
-            <span class="title">負責員工:</span><span th:text="${venOrderVO.empId}"></span>
-            <span class="title">預約日期:</span><span th:text="${venOrderVO.orderDate}"></span><br/>
-            <span class="title">手機號碼:</span><span th:text="${venOrderVO.memPhone}"></span>
-            <span class="title">預估人數:</span><span th:text="${venOrderVO.userCount}"></span><br/>
-            <span class="title">公司統編:</span><span th:text="${venOrderVO.memTaxid}"></span>
-            <span class="title">訂單成立時間:</span><span th:text="${venOrderVO.orderTime}"></span><br/>
-            <span class="title">付款方式:</span><span th:text="${venOrderVO.orderPayType}"></span>
-            <span class="title">會員轉帳帳號:</span><span th:text="${venOrderVO.memTransferNum}"></span><br/>
-            <span class="title">信用卡卡號:</span><span th:text="${venOrderVO.memCreditNum}"></span>
-            <span class="title">訂單狀態:</span><span th:text="${venOrderVO.orderStatus}"></span><br/>
-            <span class="title">租借狀態:</span><span th:text="${venOrderVO.venRentStatus}"></span>
-            <span class="title">場地滿意度:</span><span th:text="${venOrderVO.venRating}"></span><br/>
-            <span class="title">使用評論:</span><span th:text="${venOrderVO.venCom}"></span>
-            <span class="title">評論狀態:</span><span th:text="${venOrderVO.venComStatus}"></span><br/>
-            <span class="title">評論時間:</span><span th:text="${venOrderVO.venComTime}"></span>
-            <span class="title">場地訂金:</span><span th:text="${venOrderVO.venResFee}"></span><br/>
                   
         </div>
         

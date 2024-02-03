@@ -21,9 +21,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class ActRegService implements IActRegService {
@@ -141,7 +143,7 @@ public class ActRegService implements IActRegService {
             case 1:
                 log.info("通知會員報名失敗");
                 MembershipVO oneMembership = membershipService.getOneMembership(actReg.getMemId());
-                List<MembershipVO> list = new ArrayList<>();
+                Set<MembershipVO> list = new HashSet<>();
                 list.add(oneMembership);
                 notifyNow.sendNotifyNow(list, "活動通知", "活動報名失敗");
                 break;
@@ -150,7 +152,7 @@ public class ActRegService implements IActRegService {
                 actReg.getAct().setActCount(actReg.getAct().getActCount() + actReg.getRegTotal());
                 log.info("通知會員報名成功");
                 MembershipVO okOneMembership = membershipService.getOneMembership(actReg.getMemId());
-                List<MembershipVO> okList = new ArrayList<>();
+                Set<MembershipVO> okList = new HashSet<>();
                 okList.add(okOneMembership);
                 notifyNow.sendNotifyNow(okList, "活動通知", "活動報名成功！");
                 break;

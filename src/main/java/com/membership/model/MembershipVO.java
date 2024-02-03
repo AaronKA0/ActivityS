@@ -2,6 +2,7 @@ package com.membership.model;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.sql.Date;
 
 import javax.persistence.Column;
@@ -247,7 +248,25 @@ public class MembershipVO implements java.io.Serializable {
 		this.memLoginTime = memLoginTime;
 	}
 
+	
 	@Override
+    public int hashCode() {
+        return Objects.hash(memId);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        MembershipVO other = (MembershipVO) obj;
+        return Objects.equals(memId, other.memId);
+    }
+
+    @Override
 	public String toString() {
 		return "MembershipVO [memId=" + memId + ", memAcc=" + memAcc + ", memEmail=" + memEmail + ", memPwd=" + memPwd
 				+ ", memName=" + memName + ", memGender=" + memGender + ", memBirthdate=" + memBirthdate

@@ -37,13 +37,17 @@
             
             <div>
                 <span class="title">會員帳號:</span>
-                <input class="immutable" type="text" th:field="*{memVO.memAcc}" readonly/>
+                <input class="immutable" th:value="${notifyVO.memVO.memId+' / '+notifyVO.memVO.memName}" readonly/>
+                <input type="hidden" class="immutable" th:field="*{memVO.memId}" readonly/>
             </div>
             
             <div>
                 <span class="title">通知標題:</span>
-                <input type="text" th:field="*{notifyTitle}" onclick="hideContent('notifyTitle.errors');" placeholder="請輸入標題名稱"/><br/>
-                <span th:if="${#fields.hasErrors('notifyTitle')}" th:errors="*{notifyTitle}" class="error" id="notifyTitle.errors"></span>
+                <select th:field="*{notifyTitle}">
+                    <option th:value="一般通知" th:text="一般通知" />
+                    <option th:value="活動通知" th:text="活動通知" />
+                    <option th:value="場地通知" th:text="場地通知" />
+                </select>
             </div>
             
             <div class="text_block">
@@ -51,6 +55,8 @@
                 <textarea class="annDescr_text" th:field="*{notifyContent}" onclick="hideContent('notifyContent.errors');" /></textarea><br/>
             </div>
                 <span th:if="${#fields.hasErrors('notifyContent')}" th:errors="*{notifyContent}" class="error" id="notifyContent.errors"></span>
+            
+            <input type="hidden" th:field="*{notifyStatus}" th:value="1" readonly/>
             
             <div class="submit_button">
                 <button type="submit">確認修改</button>

@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>會員</title>
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+	integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+<script
+	src="https://cdn.tiny.cloud/1/tus9t8o6mklmhwd5c0iaejn9394stnli5i0j2ic9bb4xurm0/tinymce/6/tinymce.min.js"
+	referrerpolicy="origin"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/@tinymce/tinymce-jquery@2/dist/tinymce-jquery.min.js"></script>
+
+
+<script
+	src="
+https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.js
+"></script>
+<link
+	href="
+https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
+"
+	rel="stylesheet">
+
+<script
+	src="https://cdn.jsdelivr.net/gh/dealfonso/power-buttons/dist/powerbuttons.min.js"></script>
+
+</head>
+
+<style>
+/* main { */
+/* 	min-height: calc(100vh - 70px); */
+/* } */
+
+/* .profile-section { */
+/* 	background-color: #f8f9fa; */
+/* 	padding: 30px; */
+/* 	border-radius: 10px; */
+/* 	margin-bottom: 30px; */
+/* } */
+
+/* .profile-image { */
+/* 	width: 150px; */
+/* 	height: 150px; */
+/* 	object-fit: cover; */
+/* 	border-radius: 50%; */
+/* 	margin-bottom: 20px; */
+/* } */
+
+/* .profile-details { */
+/* 	font-size: 1.2rem; */
+/* 	margin-bottom: 20px; */
+/* } */
+
+/* .function-list { */
+/* 	list-style: none; */
+/* 	padding: 0; */
+/* 	margin-top: 20px; */
+/* } */
+
+/* .function-list-item { */
+/* 	margin-bottom: 10px; */
+/* } */
+.post, .post-title, .post-content {
+	display: inline-block;
+}
+
+.post {
+	border: solid black 1px;
+	width: 800px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.post-title {
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+.post-title h3 {
+	font-weight: bold;
+}
+
+#add-post-title {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	width: 750px;
+}
+
+#post-sort:hover {
+	cursor: pointer;
+}
+
+.status-li:hover {
+	cursor: pointer;
+}
+
+#add-post:hover {
+	cursor: pointer;
+}
+
+.paginationjs .paginationjs-pages {
+	display: inline-block;
+	float: none;
+}
+
+.paginationjs {
+	text-align: center;
+	display: block;
+}
+
+.visit-mem:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+</style>
+
+<body>
+
+	<form style="display:none" id="visitMemForm" th:action="@{/member}">
+		<input id="visitMem" type="number" th:name="memId" /> <input
+			type="submit" />
+	</form>
+
+	<form style="display:none" id="visitChatForm" th:action="@{/member/chat}">
+		<input id="visitChat" type="number" th:name="memId" /> <input
+			type="submit" />
+	</form>
+
+
+	<div class="container">
+		<header
+			class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+
+			<button class="btn btn-primary fa fa-bars" type="button"
+				data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+				aria-controls="offcanvasExample"></button>
+			<div class="col-md-3 mb-2 mb-md-0">
+				<a href="index.html"
+					class="d-inline-flex link-body-emphasis text-decoration-none">
+					<span class="fs-4">做伙</span>
+				</a>
+			</div>
+
+			<ul
+				class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+				<li><a href="index.html" class="nav-link px-2 link-secondary">首頁</a></li>
+				<li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+				<li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
+				<li><a href="/ven/browse" class="nav-link px-2 link-secondary">場地租借</a></li>
+				<li><a href="customer.html"
+					class="nav-link px-2 link-secondary">FAQs</a></li>
+				<li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
+			</ul>
+
+			<div class="col-md-3 text-end">
+				<button type="button" class="btn btn-outline-primary me-2">
+					<a class="nav-link" href="#" data-bs-toggle="modal"
+						data-bs-target="#loginModal">登入</a>
+				</button>
+				<button type="button" class="btn btn-primary">
+					<a class="nav-link" href="register.html">註冊</a>
+				</button>
+			</div>
+		</header>
+	</div>
+
+	<div style="width: 200px" class="offcanvas offcanvas-start"
+		tabindex="-1" id="offcanvasExample"
+		aria-labelledby="offcanvasExampleLabel">
+		<div class="offcanvas-body" style="padding: 0px; overflow-x: hidden">
+
+			<div class="b-example-divider"></div>
+
+			<div
+				class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white"
+				style="width: 200px;">
+				<a href="/member"
+					class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+					<svg class="bi me-2" width="30" height="24">
+						<use xlink:href="#bootstrap" /></svg> <span class="fs-5 fw-semibold">會員首頁</span>
+				</a>
+				<div class="list-group list-group-flush border-bottom scrollarea">
+					<a th:href="@{/member/chat}"
+						class="list-group-item list-group-item-action py-3 lh-tight"
+						aria-current="true">
+						<div
+							class="d-flex w-100 align-items-center justify-content-between">
+							<strong class="mb-1">聊天</strong>
+						</div>
+					</a> <a th:href="@{/member/notification}"
+						class="list-group-item list-group-item-action py-3 lh-tight"
+						aria-current="true">
+						<div
+							class="d-flex w-100 align-items-center justify-content-between">
+							<strong class="mb-1">通知</strong>
+						</div>
+					</a>
+					<a th:href="@{/member/venOrder}"
+						class="list-group-item list-group-item-action py-3 lh-tight"
+						aria-current="true">
+						<div
+							class="d-flex w-100 align-items-center justify-content-between">
+							<strong class="mb-1">場地預訂</strong>
+						</div>
+					</a>
+				</div>
+			</div>
+
+			<div class="b-example-divider"></div>
+
+		</div>
+	</div>
+
+
+	<div style="width: 1000px; margin-left: 150px; margin-top: 20px"
+		class="row">
+		<div class="col-3" style="height: 250px">
+			<img id="mem-img"
+				style="max-width: 200px; border-radius: 50%">
+		</div>
+		<div class="col-3" style="height: 250px">
+			<div class="text-start" style="margin-top: 20px">
+				<h2 style="margin-left: 0px" id="mem-name"></h2>
+				<h5 style="margin-left: 0px" id="mem-num-friend"></h5>
+				<h5 id="mem-relation"></h5>
+				<div class="curMember" style="margin-top: 10px; display:none">
+					<button id="mem-edit" style="font-size: 20px; color: green; ; display:none">
+						更新<i class="fa fa-edit"></i>
+					</button>
+				</div>
+				<div class="visitor" style="margin-top: 10px">
+					<button class="visit-relation-btn" id="visit-unfriend"
+						style="display: none; font-size: 20px; color: red">
+						解除好友<i class="fa fa-close"></i>
+					</button>
+					<button class="visit-relation-btn" id="visit-add-friend"
+						style="display: none; font-size: 20px; color: green">
+						加好友<i class="fas fa-user-friends"> </i>
+					</button>
+					<button class="visit-relation-btn" id="visit-unsend-request"
+						style="display: none; font-size: 20px; color: red">
+						取消請求<i class="fa fa-close"> </i>
+					</button>
+					<button class="visit-relation-btn" id="visit-block-member"
+						style="display: none; font-size: 20px; color: red">
+						封鎖<i class="fa fa-ban"></i>
+					</button>
+					<button class="visit-relation-btn" id="visit-unblock-member"
+						style="display: none; font-size: 20px; color: red">
+						解除封鎖<i class="fa fa-unlock"></i>
+					</button>
+				</div>
+				<div class="visitor" style="margin-top: 10px">
+					<button id="visit-chat-btn" style="font-size: 20px; color: blue; display:none">
+						聊天<i class="fa fa-comments-o"></i>
+					</button>
+
+					<button style="font-size: 20px; color: red">
+						檢舉<i class="fa fa-file"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-6 text-start" style="height: 250px">
+			<h3
+				style="margin-left: 0px; margin-bottom: 20px; padding-left: 150px">
+				<b>自我介紹</b>
+			</h3>
+			<div style="font-size: 14px; height: 200px; overflow-y: auto"
+				id="mem-intro"></div>
+		</div>
+	</div>
+
+
+	<ul  id="member-tabs" style="width: 1000px; margin-left: 150px; margin-top: 30px; display:none"
+		class="nav nav-tabs">
+		<li id="friend-tab" class="nav-item"><a style="width: 100px"
+			class="nav-link active" aria-current="page" href="#">好友</a></li>
+		<li id="post-tab" class="nav-item"><a style="width: 100px"
+			class="nav-link" href="#">貼文</a></li>
+		<li id="request-tab" class="curMember nav-item"><a
+			style="width: 100px" class="nav-link" href="#">好友請求</a></li>
+		<li id="block-tab" class="curMember nav-item"><a
+			style="width: 100px" class="nav-link" href="#">封鎖會員</a></li>
+	</ul>
+
+
+	<!-- add post modal -->
+	<div class="modal fade" id="add-post-modal" data-bs-backdrop="static"
+		data-bs-keyboard="false" tabindex="-1"
+		aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg text-center">
+			<div style="width: 800px" class="modal-content text-center">
+				<div class="modal-header text-center">
+					<div style="display: inline-block; width: 100%">
+						<h5 class="modal-title" id="staticBackdropLabel">新增貼文</h5>
+					</div>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body text-center">
+
+					<div class="add-post-div" style="text-align: center">
+						<form class="tinymce needs-validation">
+							<input placeholder="貼文標題" id="add-post-title" maxlength="10"
+								type="text" class="form-control add-input" required>
+							<div id="invalid-title" data-valid="false"
+								class="add-validation required invalid-feedback">必填</div>
+							<textarea class="post form-control add-input" required></textarea>
+							<div id="invalid-content" data-valid="false"
+								class="add-validation required invalid-feedback">必填</div>
+							<div style="margin-top: 20px" class="text-center">
+								<input class="form-check-input" type="checkbox" value=""
+									id="add-post-status"> <label style="margin-left: 10px"
+									class="form-check-label" for="add-post-status">設為私人貼文</label>
+							</div>
+						</form>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button id="add-discard-btn" style="display: none" type="button"
+						class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button id="add-clear-btn" type="reset" class="btn btn-secondary">清除</button>
+					<button disabled id="add-save-btn" type="button"
+						class="btn btn-primary">儲存</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div
+		style="display: none; width: 1000px; margin-left: 150px; border: solid black 1px"
+		id="posts" class="tab">
+		<div style="background-color: yellow" class="text-center"
+			id="posts-title">
+			<i id="add-post" data-bs-target="#add-post-modal"
+				data-bs-toggle="modal" style="font-size: 30px; color: green"
+				class="curMember fa fa-plus-circle" aria-hidden="true"></i>
+			<h2
+				style="display: inline-block; margin-left: 20px; margin-right: 20px">貼文</h2>
+			<i id="post-sort" data-order="desc" class="fa-solid fa-sort"></i>
+		</div>
+		<div style="width: 1000px; height: 500px; overflow-y: auto" id="posts-body" class="text-center"></div>
+	</div>
+
+
+
+	<div style="width: 1000px; margin-left: 150px; border: solid black 1px; display:none"
+		id="friends" class="tab">
+		<div style="background-color: yellow" class="text-center"
+			id="friends-title">
+			<h2
+				style="display: inline-block; margin-top: 10px; margin-left: 20px; margin-right: 20px">好友</h2>
+			<input type="text" id="friend-search" placeholder="搜尋好友">
+			<button id="clear-friend-search">清除</button>
+		</div>
+		<div style="width: 1000px; height: 500px; overflow-y: auto" id="friends-body" class="text-center"></div>
+	</div>
+
+	<div
+		style="display: none; width: 1000px; margin-left: 150px; border: solid black 1px"
+		id="friend-requests" class="tab">
+		<div style="background-color: yellow" class="text-center"
+			id="friend-requests-title">
+			<h2
+				style="display: inline-block; margin-left: 20px; margin-right: 20px">好友請求</h2>
+		</div>
+		<div style="width: 1000px; height: 500px; overflow-y: auto" id="friend-requests-body"
+			class="text-center"></div>
+	</div>
+
+	<div
+		style="display: none; width: 1000px; margin-left: 150px; border: solid black 1px"
+		id="blocks" class="tab">
+		<div style="background-color: yellow" class="text-center"
+			id="blocks-title">
+			<h2
+				style="display: inline-block; margin-left: 20px; margin-right: 20px">封鎖會員</h2>
+		</div>
+		<div style="width: 1000px; height: 500px; overflow-y: auto" id="blocks-body" class="text-center"></div>
+	</div>
+
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/	
+	
+		let members = [];
+		let filteredMembers = [];
+		let isSearch;
+		let memId;
+		let visitId;
+		let memRelation;
+		
+		let status = /*[[${status}]]*/'';
+
+		status = status ?? "visit";
+
+		
+		if (status == "visit"){
+			memId = /*[[${rMemId}]]*/'';
+			visitId = /*[[${session.memId}]]*/'';
+		}
+		else {
+			memId = /*[[${session.memId}]]*/'';
+		} 
+		
+		let member;
+		let posts;
+		let isEdit;
+		let curPost;
+		
+		let publicPost = `<li class="status-li" style="list-style-type: none"><i class="fas fa-users dropdown-item" aria-hidden="true"><span style="margin-left:20px">公開貼文</span></i></li>`;
+		let privatePost = `<li class="status-li" style="list-style-type: none"><i class="fa fa-user-secret dropdown-item" aria-hidden="true"><span style="margin-left:20px">私人貼文</span></i></li>`;
+		let deletePost = `<li class="status-li" style="list-style-type: none"><i class="fa fa-trash dropdown-item" aria-hidden="true"><span style="margin-left:20px">刪除貼文</span></i></li>`;
+		
+		let requests;
+		let blocks;
+		let friends;
+		
+		let isBlocked = false;
+		
+// 		memId = 16;
+// 		visitId = 19;
+		
+		if(!visitId){
+			$(".visitor").hide();
+			$(".curMember").show();
+		} else{
+			$(".curMember").hide();
+		}
+		
+		/*]]>*/
+	</script>
+
+	<script>
+	$(document).ready(async function(){
+// 		await sendFriendRequest();
+// 		await blockMember();
+
+		if(visitId){
+			await displayRelation();
+			await displayBlock();
+		} else{
+			$("#mem-edit").show();
+			$("#member-tabs").show();
+			$("#friends").show();
+		}
+
+		
+		member = await loadMember();
+		posts = await loadPosts();
+		await displayFriends();
+		await displayRequests();
+		await displayBlocks();		
+	});
+	
+	</script>
+
+	<!-- 	member page -->
+	<script>
+	async function getMemRelation(){
+		let relation = {memIdA: visitId, memIdB: memId};
+		return await fetch("/member/getRelationStatus", {
+			method: "POST",
+			body: JSON.stringify(relation)
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+			return relation.status;
+		});
+	}
+	
+	async function displayBlock(){
+		console.log(memId + " : " + visitId);
+		let relation = {memIdA: memId, memIdB: visitId};
+		let status = await fetch("/member/getRelationStatus", {
+			method: "POST",
+			body: JSON.stringify(relation)
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+			return relation.status;
+		});
+		if(status == 3){		
+			isBlocked = true;
+			$(".visit-relation-btn").hide();
+			$("#visit-block-member").show();
+			$("#visit-chat-btn").hide();
+			$("#mem-relation").text(`您被${$("#mem-name").text()}封鎖`);
+		} else{
+			$("#member-tabs").show();
+			$("#friends").show();
+		}
+	}
+	
+	async function displayRelation(){
+		memRelation = await getMemRelation();
+// 		alert("memRelation: " + memRelation);
+		if(memRelation == 0){
+			$(".visit-relation-btn").hide();
+			$("#visit-add-friend").show();
+			$("#visit-block-member").show();
+			$("#mem-relation").text("");
+			$("#visit-chat-btn").show();
+		} else if(memRelation == 1){
+			$(".visit-relation-btn").hide();
+			$("#visit-unsend-request").show();
+			$("#mem-relation").text("已發送好友請求");
+			$("#visit-chat-btn").show();
+		} else if(memRelation == 2){
+			$(".visit-relation-btn").hide();
+			$("#visit-unfriend").show();
+			$("#mem-relation").text("已是好友");
+			$("#visit-chat-btn").show();
+		} else if(memRelation == 3){
+			$(".visit-relation-btn").hide();
+			$("#visit-unblock-member").show();
+			$("#mem-relation").text("已封鎖");
+			$("#visit-chat-btn").show();
+		}
+		if(isBlocked){
+			$("#visit-add-friend").hide();
+			$("#visit-chat-btn").hide();
+		}
+	}
+	
+	$(document).on("click", ".visit-mem", function(){
+		$("#visitMem").val($(this).attr("data-id"));
+		$("#visitMemForm").submit();
+	});
+	
+	$("#visit-chat-btn").on("click", function(){
+		$("#visitChat").val(memId);
+		$("#visitChatForm").submit();
+	});
+	
+	$("#visit-unfriend").on("click", async function(){
+		let memRelation = {memIdA: visitId, memIdB: memId};
+		
+		await fetch("/member/unfriend", {
+			method: "POST",
+			body: JSON.stringify(memRelation)
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+			return relation;
+		});
+		
+		await displayRelation();
+		await displayFriends();
+	});
+	
+	$("#visit-add-friend").on("click", async function(){		
+		await sendFriendRequest();
+		await displayRelation();
+	});
+	
+	$("#visit-unsend-request").on("click", async function(){	
+		let memRelation = {memIdA: visitId, memIdB: memId};
+		await fetch("/member/unsendRequest", {
+			method: "POST",
+			body: JSON.stringify(memRelation)
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+			return relation;
+		});
+		await displayRelation();
+	});
+	
+	$("#visit-block-member").on("click", async function(){	
+		await blockMember();
+		await displayRelation();
+	});
+	
+	$("#visit-unblock-member").on("click", async function(){
+		let memRelation = {memIdA: visitId, memIdB: memId};
+		await fetch("/member/unblock", {
+			method: "POST",
+			body: JSON.stringify(memRelation)
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+			return relation;
+		});
+		await displayRelation();
+	});
+	
+	</script>
+
+
+	<!-- 	nav item tabs -->
+	<script>
+	$(".nav-item").on("click", function(){
+		$(".nav-item .nav-link").removeClass("active");
+		$(this).find(".nav-link").addClass("active");
+		$("#friend-search").val("");
+		return false;
+	});
+	
+	$("#friend-tab").on("click", async function(){
+		await displayFriends();
+		$(".tab").hide();
+		$("#friends").show();
+	});
+	
+	$("#post-tab").on("click", function(){
+		$(".tab").hide();
+		$("#posts").show();
+	});
+	
+	$("#request-tab").on("click", async function(){
+		await displayRequests();
+		$(".tab").hide();
+		$("#friend-requests").show();
+	});
+	
+	$("#block-tab").on("click", async function(){
+		await displayBlocks();
+		$(".tab").hide();
+		$("#blocks").show();
+	});
+	
+	
+	$(document).on("click", ".mem-chat-btn", function(){
+		let rMemId = $(this).attr("data-id");
+		$("#visitChat").val(rMemId);
+		$("#visitChatForm").submit();
+	});
+	
+	
+	</script>
+
+
+	<!-- 	friend requests -->
+	<script>
+	
+	async function sendFriendRequest(){
+		let memRelation = {memIdA: visitId, memIdB: memId};
+		return await fetch("/member/sendFriendRequest", {
+			method: "POST",
+			body: JSON.stringify(memRelation)
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+			return relation;
+		});
+	}
+	
+	async function getFriendRequests(){
+		return await fetch("/member/getFriendRequests", {
+			method: "POST",
+			body: JSON.stringify({memId: memId})
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+			return relation;
+		});
+	}
+	
+	async function displayRequests(){
+		requests = await getFriendRequests();
+		await getFriends();
+    	
+    	if(!requests.length){
+    		$("#friend-requests-body").html("");
+    		$("#friend-requests-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>暫無請求</h3></div>`);
+    		return;
+    	}
+    	
+		$('#friend-requests').pagination({
+		    dataSource: requests,
+		    pageSize: 5,
+		    callback: async function(requests, pagination) {
+		    	$("#friend-requests-body").html("");
+// 		    	if(!requests.length){
+// 		    		$("#friend-requests-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>暫無請求</h3></div>`);
+// 		    	}
+		        for (request of requests) {
+					await fetch("/member/getById", {
+						method: "POST",
+						body: JSON.stringify({memId: request.memIdA})
+					}).then(function(response){
+						return response.json();
+					}).then(function(mem){
+												
+				let html = `<div style="width:500px; margin-top: 100px; margin-bottom: 50px; margin-left:250px"
+				class="row text-center mem-div" data-id="${mem.memId}">
+				<div class="col-4" style="height: 150px">
+					<img class="request-mem-img" src="data:img/png;base64,${mem.memPic}"
+						style="max-width: 150px; border-radius: 50%">
+				</div>
+				<div class="col-4" style="height: 150px">
+					<div class="text-center" style="margin-top: 50px">
+						<h3 class="visit-mem request-mem-name" data-id="${mem.memId}">${mem.memUsername}</h3>			
+					</div>
+				</div>
+				<div class="col-4" style="height: 150px">
+					<div style="margin-top:20px">
+						<div class="text-center">
+							<button class="accept-request-btn" data-id="${mem.memId}" style="font-size: 24px; color: green">接受請求</button>
+						</div>
+						<div style="margin-top:20px" class="text-center">
+							<button data-id="${mem.memId}" class="mem-chat-btn" style="font-size: 24px; color: blue">聊天</button>
+						</div>
+					</div>
+				</div>	
+			</div>`;
+												
+						$("#friend-requests-body").append(html);
+						
+					});
+		        }
+		    }
+		});
+	}
+	
+	
+	$(document).on("click", ".accept-request-btn", async function(){
+		let friendId = $(this).attr("data-id");
+		let memRelation = {memIdA: memId, memIdB: friendId};
+		await fetch("/member/acceptFriendRequest", {
+			method: "POST",
+			body: JSON.stringify(memRelation)
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+
+		});
+		
+		await displayRequests();
+	});
+
+	
+	
+	</script>
+
+
+	<!-- 	block members -->
+	<script>
+	
+
+
+	async function blockMember(){
+		let memRelation = {memIdA: visitId, memIdB: memId};
+		return await fetch("/member/blockMember", {
+			method: "POST",
+			body: JSON.stringify(memRelation)
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+			return relation;
+		});
+	}
+	
+	async function getBlockedMembers(){
+		return await fetch("/member/getBlockedMembers", {
+			method: "POST",
+			body: JSON.stringify({memId: memId})
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+			return relation;
+		});
+	}
+	
+	async function displayBlocks(){
+		blocks = await getBlockedMembers();
+		
+    	if(!blocks.length){
+    		$("#blocks-body").html("");
+    		$("#blocks-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>無封鎖會員</h3></div>`);
+    		return;
+    	}
+    	
+		$('#blocks').pagination({
+		    dataSource: blocks,
+		    pageSize: 5,
+		    callback: async function(blocks, pagination) {
+		    	$("#blocks-body").html("");
+// 		    	if(!blocks.length){
+// 		    		$("#blocks-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>無封鎖會員</h3></div>`);
+// 		    	}
+		        for (block of blocks) {
+					await fetch("/member/getById", {
+						method: "POST",
+						body: JSON.stringify({memId: block.memIdB})
+					}).then(function(response){
+						return response.json();
+					}).then(function(mem){
+												
+				let html = `<div style="width:500px; margin-top: 100px; margin-bottom: 50px; margin-left:250px"
+				class="row text-center mem-div" data-id="${mem.memId}">
+				<div class="col-4" style="height: 150px">
+					<img class="block-mem-img" src="data:img/png;base64,${mem.memPic}"
+						style="max-width: 150px; border-radius: 50%">
+				</div>
+				<div class="col-4" style="height: 150px; margin-top: 50px">
+					<div class="text-center">
+						<h3 class="visit-mem block-mem-name" data-id="${mem.memId}">${mem.memUsername}</h3>
+					</div>
+				</div>				
+				<div class="col-4" style="height: 150px; margin-top: 20px">
+					<div class="text-center">
+						<div>
+							<button id="unblock${mem.memId}" class="unblock-btn" data-id="${mem.memId}" data-userName="${mem.memUsername}" style="font-size: 24px; color: red">解除封鎖</button>
+						</div>
+						<div style="margin-top: 20px">
+							<button class="mem-chat-btn" data-id="${mem.memId}" style="font-size: 24px; color: blue">聊天</button>
+						</div>
+					</div>
+				</div>	
+			</div>`;
+												
+						$("#blocks-body").append(html);
+						
+				        let options = {
+				        		title: null,
+				        	    confirm: `解除對${mem.memUsername}的封鎖？`,
+				        	    buttonConfirm: `<span class="confirmUnblock" id="confirmUnblock${mem.memId}" data-id="${mem.memId}">確認</span>`,	        	 
+				        	    buttonCancel: "取消",
+				        	    header: null    	    
+				        	};
+				        	let unblockBtn = document.getElementById(`unblock${mem.memId}`);
+				        	window.powerButtons('confirm', unblockBtn, options);
+						
+					});
+		        }
+		    }
+		});
+	}
+	
+	
+	$(document).on("click", ".button0", async function(){
+		if(!$(this).find(".confirmUnblock").length) return false;
+		
+		let unblockId = $(this).find(".confirmUnblock").attr("data-id");
+		
+		blocks = blocks.filter(block => block.memIdB != unblockId);
+
+		let memRelation = {memIdA: memId, memIdB: unblockId};
+		
+		await fetch("/member/unblock", {
+			method: "POST",
+			body: JSON.stringify(memRelation)
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+			return relation;
+		});
+		
+		await displayBlocks();
+	});
+
+	
+
+	
+	
+	</script>
+
+
+	<!-- 	friends -->
+	<script>
+	
+	$("#friend-search").on("input", async function(){
+		let input = $(this).val().toLowerCase();
+		isSearch = true;
+		filteredMembers = members.filter(member => member.memUsername.toLowerCase().startsWith(input));
+		await displayFriends();
+		// 		$(".friend-div").each(function(){
+// 			if($(this).find(".unfriend-mem-name").text().toLowerCase().startsWith(input)){
+// 				$(this).show();
+// 			} else{
+// 				$(this).hide();
+// 			}
+// 		});
+	});
+	
+	$("#clear-friend-search").on("click", async function(){
+		$("#friend-search").val("");
+		await displayFriends();
+// 		$(".friend-div").show();
+	});
+	
+	async function getFriends(){
+		return await fetch("/member/getFriends", {
+			method: "POST",
+			body: JSON.stringify({memId: memId})
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+			$("#mem-num-friend").text(`${relation.length} 好友`);
+			return relation;
+		});
+	}
+	
+	async function displayFriends(){
+		friends = await getFriends();
+		
+		if(isSearch){
+	    	if(!filteredMembers.length){
+	    		$("#friends-body").html("");
+	    		$("#friends-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>無搜尋到的好友</h3></div>`);
+	    		return;
+	    	}
+		} else{
+	    	if(!friends.length){
+	    		$("#friends-body").html("");
+	    		$("#friends-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>暫無好友</h3></div>`);
+	    		return;
+	    	}
+		}
+
+		$('#friends').pagination({
+		    dataSource: friends,
+		    pageSize: 10,
+		    callback: async function(friends, pagination) {
+		    	$("#friends-body").html("");
+
+		    	if(isSearch){
+
+// 			    	if(!filteredMembers.length){
+// 			    		$("#friends-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>無搜尋到的好友</h3></div>`);
+// 			    	}
+			        for (mem of filteredMembers) {		        	
+													
+					let html = `<div style="width:500px; margin-top: 100px; margin-bottom: 50px; margin-left:250px"
+					class="row text-center mem-div friend-div" data-id="${mem.memId}" data-userName="${mem.memUsername}">
+					<div class="col-4" style="height: 150px">
+						<img class="friend-mem-img" src="data:img/png;base64,${mem.memPic}"
+							style="max-width: 150px; border-radius: 50%">
+					</div>
+					<div class="col-4" style="height: 150px">
+						<div style="margin-top:20px" class="text-center">
+							<h3 class="visit-mem unfriend-mem-name" data-id="${mem.memId}">${mem.memUsername}</h3>				
+						</div>
+					</div>	
+					<div class="col-4" style="height: 150px">
+						<div style="margin-top:20px" class="text-center">
+							<div><button id="unfriend${mem.memId}" class="curMember block-btn" data-id="${mem.memId}" style="font-size: 24px; color: red; display:${visitId? 'none': ''}">解除好友</button></div>
+							<div style="margin-top:20px"><button class="curMember mem-chat-btn" data-id="${mem.memId}" style="font-size: 24px; color: blue; display:${visitId? 'none': ''}">聊天</button></div>											
+						</div>
+					</div>	
+				</div>`;
+													
+							$("#friends-body").append(html);
+							
+					        let options = {
+					        		title: null,
+					        	    confirm: `解除與${mem.memUsername}的好友關係？`,
+					        	    buttonConfirm: `<span class="confirmUnfriend" id="confirmUnfriend${mem.memId}" data-id="${mem.memId}">確認</span>`,	        	 
+					        	    buttonCancel: "取消",
+					        	    header: null    	    
+					        	};
+					        	let unfriendBtn = document.getElementById(`unfriend${mem.memId}`);
+					        	window.powerButtons('confirm', unfriendBtn, options);							
+			        }
+		    	}
+		    	else{
+// 			    	if(!friends.length){
+// 			    		$("#friends-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>暫無好友</h3></div>`);
+// 			    	}
+		    	members = [];
+		        for (friend of friends) {		        	
+					await fetch("/member/getById", {
+						method: "POST",
+						body: JSON.stringify({memId: friend.memIdB})
+					}).then(function(response){
+						return response.json();
+					}).then(function(mem){
+						members.push(mem);
+												
+				let html = `<div style="width:500px; margin-top: 100px; margin-bottom: 50px; margin-left:250px"
+				class="row text-center mem-div friend-div" data-id="${mem.memId}" data-userName="${mem.memUsername}">
+				<div class="col-4" style="height: 150px">
+					<img class="friend-mem-img" src="data:img/png;base64,${mem.memPic}"
+						style="max-width: 150px; border-radius: 50%">
+				</div>
+				<div class="col-4" style="height: 150px">
+					<div style="margin-top:20px" class="text-center">
+						<h3 class="visit-mem unfriend-mem-name" data-id="${mem.memId}">${mem.memUsername}</h3>				
+					</div>
+				</div>	
+				<div class="col-4" style="height: 150px">
+					<div style="margin-top:20px" class="text-center">
+						<div><button id="unfriend${mem.memId}" class="curMember block-btn" data-id="${mem.memId}" style="font-size: 24px; color: red; display:${visitId? 'none': ''}">解除好友</button></div>
+						<div style="margin-top:20px"><button class="curMember mem-chat-btn" data-id="${mem.memId}" style="font-size: 24px; color: blue; display:${visitId? 'none': ''}">聊天</button></div>											
+					</div>
+				</div>	
+			</div>`;
+												
+						$("#friends-body").append(html);
+						
+				        let options = {
+				        		title: null,
+				        	    confirm: `解除與${mem.memUsername}的好友關係？`,
+				        	    buttonConfirm: `<span class="confirmUnfriend" id="confirmUnfriend${mem.memId}" data-id="${mem.memId}">確認</span>`,	        	 
+				        	    buttonCancel: "取消",
+				        	    header: null    	    
+				        	};
+				        	let unfriendBtn = document.getElementById(`unfriend${mem.memId}`);
+				        	window.powerButtons('confirm', unfriendBtn, options);
+						
+					});
+		        }
+		    }
+		    	isSearch = false;
+		    }
+		});
+	}
+	
+	
+	$(document).on("click", ".button0", async function(){
+		if(!$(this).find(".confirmUnfriend").length) return false;
+		
+		let unfriendId = $(this).find(".confirmUnfriend").attr("data-id");
+		
+		friends = friends.filter(friend => friend.memIdB != unfriendId);
+		
+		let memRelation = {memIdA: memId, memIdB: unfriendId};
+		
+		await fetch("/member/unfriend", {
+			method: "POST",
+			body: JSON.stringify(memRelation)
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+			return relation;
+		});
+		
+		await displayFriends();
+	});
+
+	
+
+	
+	
+	</script>
+
+
+
+	<!-- load member and posts -->
+	<script>
+		async function loadMember(){
+			return await fetch("/member/getById", {
+				method: "POST",
+				body: JSON.stringify({memId: memId})
+			}).then(function(response){
+				return response.json();
+			}).then(function(mem){
+				console.log(mem);
+				$("#mem-img").attr("src",mem.memPic? "data:image/png;base64," + mem.memPic: "/front-end/01/images/notfind.jpg");
+				$("#mem-name").text(mem.memUsername);
+				$("#mem-intro").text(mem.memIntro);
+				if(!$("#mem-intro").text()){
+					$("#mem-intro").append(`<div style="margin-left: 125px; margin-top:50px; margin-bottom:50px"><h3>暫無自我介紹</h3></div>`);
+		    	}
+				return mem;
+			});
+		}	
+			
+		async function loadPosts(){
+			return await fetch("/member/getPosts", {
+				method: "POST",
+				body: JSON.stringify({memId: memId})
+			}).then(function(response){
+				return response.json();
+			}).then(function(posts){
+				posts.sort((a, b) => b.postTime.localeCompare(a.postTime));
+				displayPosts(posts);
+				return posts;
+			});
+		}		
+	
+	
+	function displayPosts(posts){
+		if(visitId){
+			posts = posts.filter(post => post.postStatus != 2);
+		}
+    	if(!posts.length){
+    		$("#posts-body").html("");
+    		$("#posts-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>暫無貼文</h3></div>`);
+    		return;
+    	}
+		$('#posts').pagination({
+		    dataSource: posts,
+		    pageSize: 3,
+// 		    showSizeChanger: true,
+// 		    sizeChangerOptions: [2, 5, 10, 20, 50, 100],
+		    callback: function(posts, pagination) {
+		    	$("#posts-body").html("");
+		    	
+// 		    	if(!posts.length){
+// 		    		$("#posts-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>暫無貼文</h3></div>`);
+// 		    		return;
+// 		    	}
+		    	
+		        for (post of posts) {
+		        let html = `<div class="post" data-id="${post.postId}"><div class="row"><div class="post-time col-6 text-start"></div><div style="display:${visitId? '': 'none'}" data-id="${post.postId}" class="post-report-btn col-6 text-end"><button style="font-size: 20px; color: red">檢舉<i class="fa fa-file"></i></button></div><div style="display:${visitId? 'none': ''}" class="post-status col-6 text-end">${post.postStatus}</div></div><div class="post-title" style="width: 750px"><h3 class="text-center">${post.postTitle}</h3></div><div style="width: 750px" class="post-content text-center">${post.postContent}</div><div class="row"><div class="col-6 text-start"><button style="display:${visitId? 'none': ''}" data-bs-target="#add-post-modal" data-bs-toggle="modal" class="edit-post-btn" data-post="${post.postId}"><i class="fa fa-edit"></i></button></div><div class="col-6 text-end"><button style="display:${visitId? 'none': ''}" class="delete-post-btn" id="deletePost${post.postId}"><i class="fa fa-trash" aria-hidden="true"></button></div></div></div>`;
+		        $("#posts-body").append(html);
+		        displayTime(post.postId, post.postTime);
+		        displayStatus(post.postId, post.postStatus);
+		        
+		        let options = {
+		        		title: null,
+		        	    confirm: `刪除這篇貼文？`,
+		        	    buttonConfirm: `<span class="confirmDeletePost" id="confirmDelete${post.postId}" data-post="${post.postId}">確認</span>`,	        	 
+		        	    buttonCancel: "取消",
+		        	    header: null    	    
+		        	};
+		        	let deleteBtn = document.getElementById(`deletePost${post.postId}`);
+		        	window.powerButtons('confirm', deleteBtn, options);
+	        	
+		        }
+		    }
+		});
+		}
+	
+	$(document).on("click", ".button0", async function(){
+		if(!$(this).find(".confirmDeletePost").length) return false;
+		
+		let postId = $(this).find(".confirmDeletePost").attr("data-post");
+		
+		let updatedPost = posts.filter(post => post.postId == postId)[0];
+		updatedPost.postStatus = 3; 
+		posts = posts.filter(post => post.postId != postId);
+		
+		displayPosts(posts);
+
+		await fetch("/member/editPost", {
+			method: "POST",
+			body: JSON.stringify(updatedPost)
+		}).then(function(response){
+			return response.json();
+		}).then(function(post){
+			return post;
+		});
+	});
+	
+	</script>
+
+
+	<!-- Edit Posts -->
+	<script>
+$(document).on("click", ".edit-post-btn", function() {
+	isEdit = true;
+	$("#add-post-modal .modal-title").text("修改貼文");
+	let postId = $(this).attr("data-post");
+	$("#add-post-modal").find("textarea.post").html("");
+    openEditor($("#add-post-modal"), true, postId);
+});
+
+</script>
+
+	<!-- Add posts -->
+	<script>
+
+
+        function openEditor(div, edit, postId = null) {
+            div.find("textarea.post").tinymce({
+            	branding: false,
+                height: 500,
+                width: 750,
+                menubar: true,
+                plugins: [
+                    'advlist', 'autolink', 'lists', 'link', 'charmap', 'preview',
+                    'anchor', 'searchreplace', 'visualblocks', 'fullscreen',
+                    'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+                ],
+                toolbar: 'undo redo | blocks | bold italic backcolor forecolor| ' +
+                    'alignleft aligncenter alignright alignjustify | ' +
+                    'bullist numlist outdent indent | removeformat | code | help',
+                setup: function(editor) {
+                    editor.on('init', function(e) {
+                    	if(edit){
+                    		
+                    		let post = posts.filter(post => post.postId == postId)[0];
+                    		curPost = post;
+                    		$("#add-post-title").val(post.postTitle);
+                    		$("#add-save-btn").prop("disabled", false);
+                    		tinymce.activeEditor.setContent(post.postContent);	
+                    		$("#add-post-status").prop("checked", post.postStatus == 2);
+                    		$(".add-validation").attr("data-valid", true);
+                    	}
+                    });
+                    
+                    editor.on("focus", function(){
+                    	$("#add-save-btn").prop("disabled", true);
+                    });
+                    
+                    editor.on('blur', function (e) {
+                    	if(tinymce.activeEditor.getContent({ format: "text" }).trim()){
+                    		$("#invalid-content").hide();
+                    		$("#invalid-content").attr("data-valid", "true");
+                    		if(!$(`.add-validation[data-valid='false']`).length){
+                        		$("#add-save-btn").attr("disabled", false);
+                    		}
+                    	} else{
+                    		$("#invalid-content").show();
+                    		$("#invalid-content").attr("data-valid", "false");
+                        	$("#add-save-btn").attr("disabled", true);
+                    	}
+                      });
+                }
+            });
+        }
+        
+        function displayNewPost(post) {
+        	posts.push(post);
+        	posts.sort((a, b) => b.postTime.localeCompare(a.postTime));
+        	displayPosts(posts);
+        	$("#post-sort").attr("data-order", "desc");
+        }
+
+
+        $("#add-save-btn").on("click", async function() {
+			// save to redis and get post including post id, datetime using fetch
+			
+			let newPost = {memId: memId, postTitle: $("#add-post-title").val(), postContent: tinymce.activeEditor.getContent(), postStatus: $("#add-post-status").is(':checked')? "2": "1"};
+
+			if(!isEdit){
+			newPost = await fetch("/member/addPost", {
+				method: "POST",
+				body: JSON.stringify(newPost)
+			}).then(function(response){
+				return response.json();
+			}).then(function(post){
+				return post;
+			});
+
+            displayNewPost(newPost);
+			} else{	
+				curPost.postTitle = $("#add-post-title").val();
+				curPost.postContent = tinymce.activeEditor.getContent();
+				curPost.postStatus = $("#add-post-status").is(':checked')? "2": "1";				
+				posts.some(function(post){
+					if(post.postId == curPost.postId){
+						post.postTitle = curPost.postTitle;
+						post.postContent = curPost.postContent;
+						post.postStatus = curPost.postStatus; 
+						return true;
+					}
+				});
+				
+				await fetch("/member/editPost", {
+					method: "POST",
+					body: JSON.stringify(curPost)
+				}).then(function(response){
+					return response.json();
+				}).then(function(post){
+					return post;
+				});				
+			}
+			
+			displayPosts(posts);
+            $("#add-discard-btn").click();
+            
+        });
+
+        $("#add-post").on("click", function() {
+        	isEdit = false;
+        	$("#add-post-modal .modal-title").text("新增貼文");
+        	$("#add-post-modal").find("textarea.post").html("");
+            openEditor($("#add-post-modal"), false);
+        });
+        
+        $("#add-post-title").on("focus", function(){
+        	$("#add-save-btn").prop("disabled", true);
+        });
+        
+        
+        $("#add-post-title").on('blur', function (e) {
+        	if($(this).val().trim()){
+        		$("#invalid-title").hide();
+        		$("#invalid-title").attr("data-valid", "true");
+        		if(!$(`.add-validation[data-valid='false']`).length){
+            		$("#add-save-btn").attr("disabled", false);
+        		}
+        	} else{
+        		$("#invalid-title").show();
+        		$("#invalid-title").attr("data-valid", "false");
+            	$("#add-save-btn").attr("disabled", true);
+        	}
+          });
+        	
+ 
+    </script>
+
+
+
+
+
+	<script>
+function displayTime(id, datetime){
+	if(!datetime) return;
+
+	var today = new Date().toISOString().substring(0, 10);
+	let date = datetime.substring(0,10);
+	let time = datetime.substring(11,16);
+	let hour = parseInt(time.substring(0,2), 10);
+	if(hour < 12){
+		if(hour == 0) time = 12 + time.substring(2);
+		time = "上午 " + time; 
+	} else{
+		hour = hour % 12;
+		if(hour == 0) hour = 12;
+		time = "下午 " + hour + time.substring(2); 
+	}
+	$(`.post[data-id='${id}']`).find(".post-time").html("");
+	if(date >= today){
+		$(`.post[data-id='${id}']`).find(".post-time").text(time);
+	} else{
+		$(`.post[data-id='${id}']`).find(".post-time").text(date);
+	}
+}
+
+function displayStatus(id, status){
+	
+	let html = `<div class="dropdown">
+		  <button class="status-btn ${status == 1? 'fas fa-users': 'fa fa-user-secret'} btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton${id}" data-bs-toggle="dropdown" aria-expanded="false">
+	   
+	  </button>
+	  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton${id}">
+	  </ul>
+	</div>`;
+	$(`.post[data-id='${id}']`).find(".post-status").html(html);
+	if(status == 1){
+		$(`.post[data-id='${id}']`).find(".dropdown-menu").append(privatePost);
+	} else{
+		$(`.post[data-id='${id}']`).find(".dropdown-menu").append(publicPost);
+	}
+// 	$(`.post[data-id='${id}']`).find(".dropdown-menu").append(deletePost);
+}
+
+$(document).on("click", "li.status-li", async function(){
+	let postId = $(this).closest(".post").attr("data-id");
+	let status;
+	if($(this).find(".dropdown-item").hasClass("fa-users")){	
+		status = 1;
+		$(this).closest(".dropdown").find(".status-btn").removeClass("fa fa-user-secret");
+		$(this).closest(".dropdown").find(".status-btn").addClass("fas fa-users");
+		let dropdownMenu = $(this).closest(".dropdown-menu");
+		dropdownMenu.html(privatePost);
+// 		dropdownMenu.append(deletePost);
+	} else if($(this).find(".dropdown-item").hasClass("fa-user-secret")){
+		status = 2;
+		$(this).closest(".dropdown").find(".status-btn").removeClass("fas fa-users");
+		$(this).closest(".dropdown").find(".status-btn").addClass("fa fa-user-secret");
+		let dropdownMenu = $(this).closest(".dropdown-menu");
+		dropdownMenu.html(publicPost);
+// 		dropdownMenu.append(deletePost);
+	} 
+		
+	let updatedPost;
+	posts.some(function(post){
+		if(post.postId == postId){
+			post.postStatus = status; 
+			updatedPost = post;
+			return true;
+		}
+	});
+	
+	await fetch("/member/editPost", {
+		method: "POST",
+		body: JSON.stringify(updatedPost)
+	}).then(function(response){
+		return response.json();
+	}).then(function(post){
+		return post;
+	});
+	
+})
+
+
+$(document).on("click", "#post-sort", function(){
+	if($(this).attr("data-order") == "asc"){
+		posts.sort((a, b) => b.postTime.localeCompare(a.postTime));
+		displayPosts(posts);
+		$(this).attr("data-order", "desc");
+	} else{
+		posts.sort((a, b) => a.postTime.localeCompare(b.postTime));
+		displayPosts(posts);
+		$(this).attr("data-order", "asc");
+	}
+});
+
+$("#add-clear-btn").on("click", function(){
+	clearAddPost();
+});
+
+function clearAddPost(){
+
+	$("#add-post-title").val("");
+	$("#add-post-status").prop('checked', false);
+	tinymce.activeEditor.setContent("");
+	$("#invalid-title").hide();
+	$("#invalid-title").attr("data-valid", "false");
+	$("#invalid-content").hide();
+	$("#invalid-content").attr("data-valid", "false");
+	$("#add-save-btn").attr("disabled", true);
+	
+	if(isEdit){
+		$("#add-save-btn").attr("disabled", false);
+		$("#add-post-title").val(curPost.postTitle);
+		$("#add-post-status").prop('checked', curPost.postStatus == 2);
+		tinymce.activeEditor.setContent(curPost.postContent);
+	} 
+	
+}
+
+$("#add-post-modal").on("hidden.bs.modal", function () {
+	isEdit = false;
+	clearAddPost();
+    tinymce.activeEditor.destroy();
+});
+
+</script>
+
+
+
+
+
+
+<!-- 	<!-- 新增貼文檢舉按鈕 --> -->
+<!-- 	<button type="button" class="btn btn-primary" id="openInsertModalBtn">新增貼文檢舉</button> -->
+
+
+
+<!-- 	<!-- 彈窗 --> -->
+<!-- 	<div class="modal fade" id="insertModal" tabindex="-1" role="dialog" -->
+<!-- 		aria-labelledby="insertModalLabel" aria-hidden="true"> -->
+<!-- 		<div class="modal-dialog" role="document"> -->
+<!-- 			<div class="modal-content"> -->
+
+<!-- 				<div class="modal-header"> -->
+<!-- 					<h3 class="modal-title" id="myModalLabel">貼文檢舉</h3> -->
+<!-- 				</div> -->
+
+<!-- 				<div class="modal-body"> -->
+
+<!-- 					<form id="yourFormId" th:action="@{insert}" method="post" -->
+<!-- 						th:object="${postReportVO}" enctype="multipart/form-data"> -->
+
+<!-- 										<div> -->
+<!-- 											<label>員工編號:<font color="red"><b>*</b></font></label> <input -->
+<!-- 												id="empId" type="text" th:field="*{empId}" value="2" -->
+<!-- 												onclick="hideContent('empId.errors');" /><br /> <span -->
+<!-- 												th:if="${#fields.hasErrors('empId')}" th:errors="*{empId}" -->
+<!-- 												class="error" id="empId.errors"></span> -->
+<!-- 										</div> -->
+<!-- 										<br> -->
+
+<!-- 						<div> -->
+<!-- 							<label>個人貼文編號<font color="red"><b>*</b></font></label> <input -->
+<!-- 								id="postId" type="text" th:field="*{postId}" /><br /> <span -->
+<!-- 								class="error" id="postId-error"></span><br> -->
+<!-- 						</div> -->
+
+<!-- 						<div> -->
+<!-- 							<label>會員編號<font color="red"><b>*</b></font></label> <input -->
+<!-- 								id="memId" type="text" th:field="*{memId}" /><br /> <span -->
+<!-- 								class="error" id="memId-error"></span><br> -->
+<!-- 						</div> -->
+
+
+<!-- 						<div> -->
+<!-- 							<label>檢舉標題<font color="red"><b>*</b></font></label> <input -->
+<!-- 								id="repTitle" type="text" th:field="*{repTitle}" /><br /> <span -->
+<!-- 								class="error" id="repTitle-error"></span><br> -->
+<!-- 						</div> -->
+
+<!-- 						<div> -->
+<!-- 							<label>檢舉內容<font color="red"><b>*</b></font></label> -->
+<!-- 							<textarea id="repContent" th:field="*{repContent}" rows="4" -->
+<!-- 								cols="50" style="resize: both;"></textarea> -->
+<!-- 							<br /> <span class="error" id="repContent-error"></span><br> -->
+<!-- 						</div> -->
+
+
+
+<!-- 						<div> -->
+<!-- 							<label>檢舉圖片</label><input type="file" id="registerRepPic" -->
+<!-- 								th:field="*{repPic}" onclick="previewImage()" -->
+<!-- 								multiple="multiple" /> <span class="error" -->
+<!-- 								th:utext="${errorMessage}" id="repPic.errors"></span> <br> -->
+<!-- 							<span class="error-message" id="repPic-error"></span><br> -->
+<!-- 							<div id="blob_holder"></div> -->
+<!-- 						</div> -->
+<!-- 						<br> -->
+
+<!-- 						<div> -->
+
+<!-- 							<div> -->
+<!-- 								<button type="submit" id="submit" class="btn btn-secondary">送出新增</button> -->
+<!-- 							</div> -->
+
+<!-- 						</div> -->
+<!-- 					</form> -->
+<!-- 				</div> -->
+
+<!-- 				<br> -->
+
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+
+
+<!-- 	<script> -->
+// 		// 使用 jQuery 確保 DOM 已加載
+// 		$(document).ready(function() {
+// 			// 觸發按鈕點擊事件，顯示彈窗
+// 			$("#openInsertModalBtn").click(function() {
+// 				$("#insertModal").modal("show");
+// 			});
+
+// 			// 在送出新增按鈕點擊時，可以執行相應的 JavaScript 或 jQuery 代碼
+// 			$("#submitInsert").click(function() {
+// 				// 在這裡添加你想要的邏輯，例如驗證表單等
+// 				console.log("Submit Insert Button Clicked!");
+// 			});
+// 		});
+<!-- 	</script> -->
+
+
+
+
+
+
+
+</body>
+</html>
