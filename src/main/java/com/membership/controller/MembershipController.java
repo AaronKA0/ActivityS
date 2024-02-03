@@ -1,9 +1,8 @@
 package com.membership.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,12 +33,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.membership.service.MembershipService;
+import com.membership.service.RedisService;
 import com.membership.model.MembershipVO;
-
 
 @Controller
 @RequestMapping("/membership")
@@ -47,89 +44,94 @@ public class MembershipController {
 
 	@Autowired
 	MembershipService membershipSvc;
-	
-	
+
+	@Autowired
+	RedisService redisSvc;
+
+	Gson gson = new Gson(); // gson
+
 	@GetMapping("addMembership")
 	public String addMembership(ModelMap model) {
 		MembershipVO membershipVO = new MembershipVO();
 		model.addAttribute("membershipVO", membershipVO);
 		return "front-end/membership/addMembership";
 	}
-	
+
 	@GetMapping("login")
 	public String login(ModelMap model) {
 		MembershipVO membershipVO = new MembershipVO();
 		model.addAttribute("membershipVO", membershipVO);
 		return "front-end/membership/login";
 	}
-	
+
 	@GetMapping("forgetpassword")
 	public String forgetpassword(ModelMap model) {
 		MembershipVO membershipVO = new MembershipVO();
 		model.addAttribute("membershipVO", membershipVO);
 		return "front-end/membership/forgetpassword";
-		
 	}
-	
+
 	@GetMapping("updatepassword")
 	public String updatepassword(ModelMap model) {
 		MembershipVO membershipVO = new MembershipVO();
 		model.addAttribute("membershipVO", membershipVO);
 		return "front-end/membership/updatepassword";
-		
+
 	}
 
-	
-	
+	@GetMapping("update_membership_input")
+	public String update_membership_input(ModelMap model) {
+		MembershipVO membershipVO = new MembershipVO();
+		model.addAttribute("membershipVO", membershipVO);
+		return "front-end/membership/update_membership_input";
+
+	}
+
 //	    --------------------檢查帳號重複-------------------
 	@PostMapping("checkMemAcc")
 	public @ResponseBody MembershipVO checkMemAcc(@RequestBody String json) {
 
-		
 //		====================帳號重複驗證======================
-		ObjectMapper mapper = new ObjectMapper();
-		TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {
-		};
-		Map<String, Object> data = new HashMap<String, Object>();
-		try {
-			data = mapper.readValue(json, typeRef);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
+//		ObjectMapper mapper = new ObjectMapper();
+//		TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {
+//		};
+//		Map<String, Object> data = new HashMap<String, Object>();
+//		try {
+//			data = mapper.readValue(json, typeRef);
+//		} catch (JsonProcessingException e) {
+//			e.printStackTrace();
+//		}     															// 以上json也是相同的結果，可以參考
 
-		String memAcc = (String) data.get("memAcc");
-
-		return membershipSvc.findByMemAcc(memAcc);
-
+		MembershipVO member = gson.fromJson(json, MembershipVO.class); // 把json字串轉換成我需要的類別 字串--->物件
+																		// 若MembershipVO物件傳換成json，可以使用tojson 物件--->字串
+		return membershipSvc.findByMemAcc(member.getMemAcc()); // 從VO去取得我的(memAcc)
 	}
 //	   ===================================================
-	
 
 //	    --------------------檢查信箱重複-------------------
 	@PostMapping("checkMemEmail")
 	public @ResponseBody MembershipVO checkMemEmail(@RequestBody String json) {
 
 //		====================信箱重複驗證======================
-		ObjectMapper mapper = new ObjectMapper();
-		TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {
-		};
-		Map<String, Object> data = new HashMap<String, Object>();
-		try {
-			data = mapper.readValue(json, typeRef);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
+//		ObjectMapper mapper = new ObjectMapper();
+//		TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {
+//		};
+//		Map<String, Object> data = new HashMap<String, Object>();
+//		try {
+//			data = mapper.readValue(json, typeRef);
+//		} catch (JsonProcessingException e) {
+//			e.printStackTrace();
+//		}
+//
+//		String memEmail = (String) data.get("memEmail");
 
-		String memEmail = (String) data.get("memEmail");
+		MembershipVO member = gson.fromJson(json, MembershipVO.class);
 
-		return membershipSvc.findByMemEmail(memEmail);
+		return membershipSvc.findByMemEmail(member.getMemEmail()); // 將memberVO轉成json字串
 
 	}
 //	   ===================================================
 
-	
-	
-	
 //    --------------------insert-------------------
 	@PostMapping("insert")
 	public String insert(@Valid MembershipVO membershipVO, BindingResult result, ModelMap model,
@@ -151,13 +153,10 @@ public class MembershipController {
 //		if (result.hasErrors() || parts[0].isEmpty()) {
 //			return "back-end/signup/addSignUp";  //若無修改需要保留原本圖片所以註解起來
 //		}
-		
+
 //	    ------------------MD5加密-------------------
 		String hashedPassword = DigestUtils.md5DigestAsHex(membershipVO.getMemPwd().getBytes());
 		membershipVO.setMemPwd(hashedPassword);
-		
-		
-		
 
 		/*************************** 2.開始新增資料 *****************************************/
 		// EmpService empSvc = new EmpService();
@@ -169,10 +168,7 @@ public class MembershipController {
 //		return "redirect:/membership/listAllMembership"; // 新增成功後重導至IndexController_inSpringBoot.java的第50行@GetMapping("/emp/listAllEmp")
 		return "redirect:/membership/logging";
 	}
-	
-	
-	
-	
+
 //  ----------------getOne_For_Update-----------------
 	@PostMapping("getOne_For_Update")
 	public String getOne_For_Update(@RequestParam("memId") String memId, ModelMap model) {
@@ -187,11 +183,7 @@ public class MembershipController {
 		return "front-end/membership/update_membership_input"; // 查詢完成後轉交update_emp_input.html
 //		return "back-end/membership/select_page";
 	}
-	
-	
-	
-	
-	
+
 //  ----------------getOne_For_Status(查會員單一帳戶權限的狀態)-----------------
 	@PostMapping("getOne_For_Status")
 	public String status_For_Update(@RequestParam("memId") String memId, ModelMap model) {
@@ -203,20 +195,15 @@ public class MembershipController {
 		System.out.println("membershipVO" + membershipVO);
 		List<MembershipVO> list = membershipSvc.getAll();
 		model.addAttribute("membershipListData", list); // for select_page.html 第97 109行用
-		
 
 		/*************************** 3.查詢完成,準備轉交(Send the Success view) **************/
 		model.addAttribute("membershipVO", membershipVO);
 		model.addAttribute("getOne_For_Status", "true"); // 旗標getOne_For_Display見select_page.html的第126行 -->
 //		return "back-end/membership/update_membership_input"; // 查詢完成後轉交update_emp_input.html
 //		return "back-end/membership/select_page";
-		return "back-end/membership/listAllMembership";  
+		return "back-end/membership/listAllMembership";
 	}
-		
-	
-	
-	
-	
+
 ////  ----------------update_Status(修改單一會員權限狀態)-----------------
 //	@PostMapping("update_Status")
 //	public String update_Status(@Valid MembershipVO membershipVO,ModelMap model){
@@ -233,13 +220,7 @@ public class MembershipController {
 //		model.addAttribute("membershipVO", membershipVO);
 //		return "back-end/membership/listAllMembership"; // 修改成功後轉交listOneEmp.html
 //	}
-		
-	
-	
-	
-	
-	
-	
+
 //	@PostMapping("update_Status")
 //	public String update_Status(@RequestParam("memId") int memId,
 //	                             @RequestParam("isAccEna") Byte isAccEna,@RequestParam("isPartEna") Byte isPartEna,
@@ -270,49 +251,81 @@ public class MembershipController {
 //	    return "back-end/membership/listAllMembership";
 ////	    return "back-end/membership/select_page";
 //	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//  ----------------update_Status(修改單一會員權限狀態)-----------------	
+
+	// ----------------update_Status(修改單一會員權限狀態)-----------------
 	@PostMapping("update_Status")
-	public String update_Status(@Valid MembershipVO membershipVO,ModelMap model) {
+	public String update_Status(@Valid MembershipVO membershipVO, ModelMap model) {
 
-	    /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
-	    //System.out.println("line 246: memId=" + memId + ", status=" + isAccEna + "+" + isPartEna  + "+" + isHostEna + "+" + isRentEna + "+" +isMsgEna);
+		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+		// System.out.println("line 246: memId=" + memId + ", status=" + isAccEna + "+"
+		// + isPartEna + "+" + isHostEna + "+" + isRentEna + "+" +isMsgEna);
 
-	    /*************************** 2.開始修改資料 *****************************************/
-	    
-	    MembershipVO membership = membershipSvc.getOneMembership(membershipVO.getMemId()); //getOne直接去查單一會員的id
-	    membership.setIsAccEna(membershipVO.getIsAccEna());
-	    membership.setIsPartEna(membershipVO.getIsPartEna());
-	    membership.setIsHostEna(membershipVO.getIsHostEna());
-	    membership.setIsRentEna(membershipVO.getIsRentEna());
-	    membership.setIsMsgEna(membershipVO.getIsMsgEna());
-	   
+		/*************************** 2.開始修改資料 *****************************************/
 
-	    // MembershipService membershipSvc = new MembershipService();
-	    membershipSvc.updateMembership(membership);  // 資料庫更新單筆資料
+//	    ----------------------------------------------------------
 
-	    /*************************** 3.修改完成,準備轉交(Send the Success view) **************/
-	    model.addAttribute("membershipVO", membership);
+		MembershipVO membership = membershipSvc.getOneMembership(membershipVO.getMemId()); // getOne直接去查單一會員的id
+		// 從 Redis get值
+		String redisValue = redisSvc.getFromRedis2(membership.getMemAcc());
+
+		// 檢查值是否不為 null
+		if (redisValue != null) {
+			// 使用 Byte.valueOf 將字符串轉換為 Byte
+			membership.setIsAccEna(Byte.valueOf(redisValue));
+
+		} else {
+			// 處理當 Redis 值為 null 的情況
+			// 將其狀態設為 1(停用)：
+			membership.setIsAccEna((byte) 1);
+
+		}
+
+		// 如果 Redis 中沒有值，設置 Redis 鍵的值為 "1" 並執行 Redis 的封鎖時間
+		LocalDateTime unlockTime = LocalDateTime.now().plusSeconds(30);
+		redisSvc.saveToRedis2(membership.getMemAcc(), "1", unlockTime);
+		System.out.println("Redis Value: " + redisSvc.getFromRedis2(membership.getMemAcc()));
+
+		// 如果狀態由 2(啟用) 變更為 1(停用)，表示帳號被封鎖，發送郵件通知
+		if (membershipVO.getIsAccEna() == 1 && membership.getIsAccEna() == 2) {
+			// 獲取會員信箱
+			String memberEmail = membershipSvc.getMemberEmailById(membershipVO.getMemId());
+
+			// 檢查信箱是否存在
+			if (memberEmail != null && !memberEmail.isEmpty()) {
+				// 發送信件
+				membershipSvc.sendAccountBlockedEmail(memberEmail);
+			} else {
+				System.out.println("無法取得會員信箱");
+			}
+		}
+
+		// membership.setIsAccEna(membershipVO.getIsAccEna());
+		membership.setIsPartEna(membershipVO.getIsPartEna());
+		membership.setIsHostEna(membershipVO.getIsHostEna());
+		membership.setIsRentEna(membershipVO.getIsRentEna());
+		membership.setIsMsgEna(membershipVO.getIsMsgEna());
+		membership.setBlockStartTime(membershipVO.getBlockStartTime());
+
+		// 檢查 isAccEna 是否設為 1，並相應地更新 MySQL 值
+		if (membership.getIsAccEna() == 1) {
+			// 同時更新 MySQL 中的值
+			membershipSvc.updateMembership(membership);
+		}
+
+//	   ----------------------------------------------------------	    
+
+		// MembershipService membershipSvc = new MembershipService();
+		membershipSvc.updateMembership(membership); // 資料庫更新單筆資料
+
+		/*************************** 3.修改完成,準備轉交(Send the Success view) **************/
+		model.addAttribute("membershipVO", membership);
 //	    System.out.println(membership);
-	    List<MembershipVO> list = membershipSvc.getAll();
+		List<MembershipVO> list = membershipSvc.getAll();
 		model.addAttribute("membershipListData", list);
-	    
-	    return "back-end/membership/listAllMembership";
+
+		return "back-end/membership/listAllMembership";
 	}
-	
-	
-	
 
-
-	
 //  -------------------update----------------------
 	@PostMapping("update")
 	public String update(@Valid MembershipVO membershipVO, BindingResult result, ModelMap model,
@@ -335,16 +348,14 @@ public class MembershipController {
 		if (result.hasErrors()) {
 			return "front-end/membership/update_membership_input";
 		}
-		
-		
+
 //		 ------------------MD5加密-------------------
 		String hashedPassword = DigestUtils.md5DigestAsHex(membershipVO.getMemPwd().getBytes());
 		membershipVO.setMemPwd(hashedPassword);
-		
-		
+
 		/*************************** 2.開始修改資料 *****************************************/
 		// MembershipService membershipSvc = new MembershipService();
-		
+
 		membershipSvc.updateMembership(membershipVO);
 
 		/*************************** 3.修改完成,準備轉交(Send the Success view) **************/
@@ -353,12 +364,7 @@ public class MembershipController {
 		model.addAttribute("membershipVO", membershipVO);
 		return "front-end/membership/listOneMembership"; // 修改成功後轉交listOneEmp.html
 	}
-	
-	
-	
-	
-	
-	
+
 //  -------------------delete----------------------
 	@PostMapping("delete")
 	public String delete(@RequestParam("memId") String memId, ModelMap model) {
@@ -373,9 +379,6 @@ public class MembershipController {
 		return "back-end/membership/listAllMembership"; // 刪除完成後轉交listAllEmp.html
 	}
 
-	
-	
-	
 //  ------------getOne_For_Display-----------------	
 	@PostMapping("getOne_For_Display")
 	public String getOne_For_Display(/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
@@ -404,14 +407,12 @@ public class MembershipController {
 
 //		return "back-end/signup/listOneSignUp";  // 查詢完成後轉交listOneEmp.html
 //		return "back-end/membership/select_page"; // 查詢完成後轉交select_page.html由其第128行insert
-		return "back-end/membership/listAllMembership";  							 			  // listOneEmp.html內的th:fragment="listOneEmp-div
+		return "back-end/membership/listAllMembership"; // listOneEmp.html內的th:fragment="listOneEmp-div
 	}
 
-	
-	
-	
 //  -------------------------------------------------	
-	private BindingResult removeFieldError(@Valid MembershipVO membershipVO, BindingResult result, String removedFieldname) {
+	private BindingResult removeFieldError(@Valid MembershipVO membershipVO, BindingResult result,
+			String removedFieldname) {
 		List<FieldError> errorsListToKeep = result.getFieldErrors().stream()
 				.filter(fieldname -> !fieldname.getField().equals(removedFieldname)).collect(Collectors.toList());
 		result = new BeanPropertyBindingResult(membershipVO, "membershipVO");
@@ -421,8 +422,6 @@ public class MembershipController {
 		return result;
 	}
 
-	
-	
 //  --------------------------------------------------	
 	@ExceptionHandler(value = { ConstraintViolationException.class })
 	// @ResponseStatus(value = HttpStatus.BAD_REQUEST)

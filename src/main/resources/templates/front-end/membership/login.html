@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>會員註冊</title>
+<title>會員登入</title>
 
-<!-- <head th:insert="~{/back-end/signup/included-fragment}"></head> -->
 
+<!-- 前台畫面header的引入文件-->
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap">
 
@@ -17,6 +17,7 @@
 	rel="stylesheet"
 	integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
 	crossorigin="anonymous">
+<!-- 前台畫面header的引入文件-->
 
 <style>
 main {
@@ -31,6 +32,11 @@ main {
 /*調整框框長度用*/
 .form-group {
 	margin-bottom: 20px;
+}
+
+span.fs-4{
+	font-size: 36px;
+	font-weight: bold;
 }
 
 .controls-float .form-control {
@@ -169,7 +175,7 @@ button#SignOut:hover {
 			<div class="col-md-3 mb-2 mb-md-0">
 				<a href='select_page'
 					class="d-inline-flex link-body-emphasis text-decoration-none">
-					<span class="fs-4">做伙</span>
+					<span class="fs-4"><img alt="ZuoHuo" src="/front-end/16/images/ZuoHuo4.jpg" width="160px" ></span>
 				</a>
 			</div>
 
@@ -186,12 +192,11 @@ button#SignOut:hover {
 			</ul>
 
 			<div class="col-md-3 text-end">
-				<button type="button" class="btn btn-outline-primary me-2">
-					<a class="nav-link" href="#" data-bs-toggle="modal"
-						data-bs-target="#loginModal">登入</a>
+				<button type="button" class="btn btn-primary">
+					<a class="nav-link" href='login'>登入</a>
 				</button>
 				<button type="button" class="btn btn-primary">
-					<a class="nav-link" href="register.html">註冊</a>
+					<a class="nav-link" href='addMembership'>註冊</a>
 				</button>
 			</div>
 		</header>
@@ -251,8 +256,9 @@ button#SignOut:hover {
 					<br>
 					<button type="submit" id="submit">會員登入</button>
 				</div>
-				<h6 th:text="${session.memId}"></h6>
-				<h6 th:text="${session.memName}"></h6>
+				<h7 th:text="${session.memId}"></h7>
+				<h7 th:text="${session.memName}"></h7>
+				<h7 th:text="${session.IsAccEna}"></h7>
 				<!--要取session 需要session.memId-->
 			</form>
 		</div>
@@ -276,50 +282,48 @@ button#SignOut:hover {
 	</div>
 
 	<!-- 登入選項的Modal 彈窗 -->
-	<div class="modal fade" id="loginModal" tabindex="-1"
-		aria-labelledby="loginModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="loginModalLabel">會員登入</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<!-- 在這裡加入登入表單的 HTML 代碼 -->
-					<form>
-						<!-- 登入表單的輸入欄位 -->
-						<div class="mb-3">
-							<label for="username" class="form-label">帳號：</label> <input
-								type="text" class="form-control" id="username" name="username"
-								placeholder="輸入您的帳號" required>
-						</div>
-						<div class="mb-3">
-							<label for="password" class="form-label">密碼：</label>
-							<div class="input-group">
-								<input type="password" class="form-control" id="password"
-									name="password" placeholder="輸入您的密碼" required>
-								<!-- 在密碼輸入框右上方新增"忘記密碼"的連結 -->
-								<a href="#" class="input-group-text" id="forgotPasswordLink">忘記密碼</a>
-							</div>
-						</div>
-						<!-- 登入按鈕 -->
-						<button type="submit" class="btn btn-primary">登入</button>
-					</form>
+	<!-- 	<div class="modal fade" id="loginModal" tabindex="-1" -->
+	<!-- 		aria-labelledby="loginModalLabel" aria-hidden="true"> -->
+	<!-- 		<div class="modal-dialog"> -->
+	<!-- 			<div class="modal-content"> -->
+	<!-- 				<div class="modal-header"> -->
+	<!-- 					<h5 class="modal-title" id="loginModalLabel">會員登入</h5> -->
+	<!-- 					<button type="button" class="btn-close" data-bs-dismiss="modal" -->
+	<!-- 						aria-label="Close"></button> -->
+	<!-- 				</div> -->
+	<!-- 				<div class="modal-body"> -->
+	<!-- 					在這裡加入登入表單的 HTML 代碼 -->
+	<!-- 					<form> -->
+	<!-- 						登入表單的輸入欄位 -->
+	<!-- 						<div class="mb-3"> -->
+	<!-- 							<label for="username" class="form-label">帳號：</label> <input -->
+	<!-- 								type="text" class="form-control" id="username" name="username" -->
+	<!-- 								placeholder="輸入您的帳號" required> -->
+	<!-- 						</div> -->
+	<!-- 						<div class="mb-3"> -->
+	<!-- 							<label for="password" class="form-label">密碼：</label> -->
+	<!-- 							<div class="input-group"> -->
+	<!-- 								<input type="password" class="form-control" id="password" -->
+	<!-- 									name="password" placeholder="輸入您的密碼" required> -->
+	<!-- 								在密碼輸入框右上方新增"忘記密碼"的連結 -->
+	<!-- 								<a href="#" class="input-group-text" id="forgotPasswordLink">忘記密碼</a> -->
+	<!-- 							</div> -->
+	<!-- 						</div> -->
+	<!-- 						登入按鈕 -->
+	<!-- 						<button type="submit" class="btn btn-primary">登入</button> -->
+	<!-- 					</form> -->
 
-				</div>
-			</div>
-		</div>
-	</div>
+	<!-- 				</div> -->
+	<!-- 			</div> -->
+	<!-- 		</div> -->
+	<!-- 	</div> -->
 
 	<!-- ----------------------------引入文件--------------------------------- -->
-
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<!-- ----------------------------引入文件--------------------------------- -->
 
 
 	<script>
-		// --------------------- 回傳錯誤帳號密碼的判斷------------------------
-
 		// --------------------- 以下為memAcc帳號的判斷------------------------
 
 		$(document).ready(function() {
@@ -375,22 +379,24 @@ button#SignOut:hover {
 		});
 
 		// ------------------------登出-------------------------
-
+		
 		document.getElementById("SignOut").addEventListener("click",
 				function() {
 					// 使用 XMLHttpRequest 或 Fetch API 發送登出請求到後端
 					var xhr = new XMLHttpRequest();
-					xhr.open("GET", "/membership/logout", true);
+					xhr.open("GET", "/membership/logout", true);            //這行設置了請求的類型（GET）、URL（"/membership/logout"）和是否使用異步（true，表示異步執行）。
 
-					xhr.onreadystatechange = function() {
-						if (xhr.readyState == 4 && xhr.status == 200) {
+					xhr.onreadystatechange = function() {                   //當請求的狀態發生變化時（例如，完成了請求或發生了錯誤），這個函數將被觸發。
+						if (xhr.readyState == 4 && xhr.status == 200) {     //是否已經完成（readyState == 4）並且是否成功（status == 200）。如果是，表示登出請求成功。
 							// 處理登出成功的回應，這裡將重新導向到登入頁面
-							window.location.href = "/membership/login"; // 重新導向到登入頁面
-						}
+							window.location.href = "/membership/login";     //重新導向到登入頁面
+						} 
 					};
 
 					xhr.send();
 				});
+		
+		
 	</script>
 
 

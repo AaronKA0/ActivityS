@@ -62,6 +62,27 @@
 		</dependency>
 		
 		
+		<!-- rachel -->
+		<!-- ++redis -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+
+		<!-- ++mail -->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.6.2</version> <!-- 請確保使用最新的版本 -->
+		</dependency>
+		
+		<!-- ++spring-boot mail -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		<!-- rachel -->
+		
 		
 		<dependency><!-- ＠用途說明2: Add typical dependencies for a web application -->
 			<groupId>org.springframework.boot</groupId>

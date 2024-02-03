@@ -1,13 +1,14 @@
 package com.membership.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import com.membership.model.MembershipVO;
-import com.venue.model.VenVO;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,9 @@ public class MembershipService {
 
 	@Autowired
 	MembershipRepository repository;
+
+	@Autowired
+	MailService MailSvc;
 
 	public void addMembership(MembershipVO membershipVO) {
 		repository.save(membershipVO);
@@ -56,7 +60,7 @@ public class MembershipService {
 	public boolean login(String memAcc, String memPwd) {
 		MembershipVO membership = repository.findByMemAcc1(memAcc);
 
-//	    ------------------MD5加密-------------------
+//	-----------------------MD5加密--------------------
 		String hashedPassword = DigestUtils.md5DigestAsHex(memPwd.getBytes());
 
 //		System.out.println("MemPwd" + MemPwd);
@@ -100,15 +104,14 @@ public class MembershipService {
 
 		MembershipVO membershipVO = repository.findByMemAcc(memAcc);
 		if (membershipVO != null) {
-			
+
 			// 使用新密碼更新會員的密碼
 			membershipVO.setMemPwd(newPassword);
 
-			// 將更新後的會員信息保存回數據
+			// 將更新後的會員信息保存回資料庫
 			repository.save(membershipVO);
 		} else {
 			// memAcc 不存在，可能需要採取相應的錯誤處理
-			// 例如，拋出一個自定義的異常或者記錄錯誤信息
 		}
 
 	}
@@ -121,13 +124,59 @@ public class MembershipService {
 		String memName = membership.getMemName();
 
 		return memName;
-	}	
-	
-	
-	
-	// +++++++++++++++ 從MembershipVO中獲取會員基本資料 +++++++++++++++
-	public MembershipVO getMemInfo(Integer memId){
-        return repository.getMemInfo(memId);
-    }
-	// +++++++++++++++ 從MembershipVO中獲取會員基本資料 +++++++++++++++
+	}
+
+//	-----------------會員每次登入時更新上線時間------------------
+	public void updateMemLoginTime(String memAcc) {
+		MembershipVO membership = repository.findByMemAcc(memAcc);
+
+		if (membership != null) {
+			// 更新登入時間
+			membership.setMemLoginTime(Timestamp.valueOf(LocalDateTime.now()));
+			repository.save(membership);
+		}
+	}
+
+//  --------------取的會員的帳戶狀態(啟用2/停用1)-----------------
+	public int getIsAccEna(String memAcc) {
+		MembershipVO membership = repository.getIsAccEna(memAcc);
+
+		int IsAccEna = membership.getIsAccEna();
+
+		return IsAccEna;
+	}
+
+//  ----------------------取得會員編號-------------------------
+	public String getMemberEmailById(String memId) {
+		// 從memId 從資料庫取得會員的信箱
+		MembershipVO membership = repository.findByMemEmail(memId);
+
+		if (memId != null) {
+			return membership.getMemEmail(); // 取得會員信箱
+		} else {
+			return null;
+		}
+	}
+
+//  ------------------新增發送封鎖通知郵件的方法--------------------
+	public void sendAccountBlockedEmail(String to) {
+		MailSvc.sendAccountBlockedEmail(to, to);
+	}
+
+//  ------------------------取會員信箱-------------------------
+	public String getMemberEmailById(Integer memId) {
+
+		MembershipVO membership = repository.getMemEmail(memId);
+
+		// 檢查 MembershipVO 是否不為空
+		if (membership != null) {
+			// 返回會員信箱
+			return membership.getMemEmail();
+		} else {
+			throw new RuntimeException("找不到 ID 為 " + memId + " 的會員");
+		}
+	}
+
+
+
 }
