@@ -30,7 +30,7 @@ public class SecurityConfig {
 				// 配置請求授權的規則
 				.authorizeRequests(authz -> authz
 						// 指定某些請求路徑不需要驗證，這裡將/login對所有用戶開放
-						.antMatchers("/front_end/**","/back_end/**","/123","/front-end/**","/","/login", "/back-end/emp_Index/**", "/back-end/16/**", "/back-end/07/**", "/back-end/10/**","/forgotPassword","/act/**","/acts/**","/type/**","/membership/**","/faq/**","/memberreport/**","/postreport/**","/","/Zuo-Huo","/activity/**","/back_end/**").permitAll()
+						.antMatchers("/notify/**","/front_end/**","/back_end/**","/123","/front-end/**","/","/login", "/back-end/emp_Index/**", "/back-end/16/**", "/back-end/07/**", "/back-end/10/**","/forgotPassword","/act/**","/acts/**","/type/**","/membership/**","/faq/**","/memberreport/**","/postreport/**","/","/Zuo-Huo","/activity/**","/back_end/**").permitAll()
 						// 除了上述指定的路徑外，其他所有請求都需要被認證
 						.anyRequest().authenticated())
 				// 配置表單登入

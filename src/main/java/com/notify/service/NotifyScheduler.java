@@ -39,13 +39,11 @@ public class NotifyScheduler {
 //    @Scheduled(cron = "0/3 * * * * ?")
 //    public void getBookingNotify() throws InterruptedException {
 //        
-//        List<MembershipVO> memVO = memSrv.getAll();
+//        MembershipVO memVO = memSrv.getOneMembership(16);
 //        
 //        Set<MembershipVO> memVOset = new HashSet<>();
 //        
-//        for(MembershipVO mem : memVO) {
-//            memVOset.add(mem);
-//        }
+//        memVOset.add(memVO);
 //        
 //        notifyNow.sendNotifyNow(memVOset, "系統通知", "通知成功成功成功");
 //        
