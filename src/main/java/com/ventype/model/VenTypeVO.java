@@ -27,7 +27,6 @@ public class VenTypeVO implements Serializable {
 	@Column(name = "ven_type_descr")
 	private String venTypeDescr;
 
-
 	public String getVenTypeDescr() {
 		return venTypeDescr;
 	}
@@ -35,6 +34,7 @@ public class VenTypeVO implements Serializable {
 	public void setVenTypeDescr(String venTypeDescr) {
 		this.venTypeDescr = venTypeDescr;
 	}
+
 
 	public Integer getVenTypeId() {
 		return venTypeId;

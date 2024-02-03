@@ -2,93 +2,139 @@
 <html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="utf-8">
-  <title>做伙後台管理系統</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <link rel="stylesheet" th:href="@{/back-end/css/emp_Index.css}">
+<meta charset="utf-8">
+<title>後台首頁頁面</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" th:href="@{/back-end/10/css/emp_Index.css}">
 
-    <style>
-        main.main {
-           text-align: center;
-        }
-        img.logo {
-            height: 360px;
-            width: 540px;
-        }
-        
-    </style>
+<style>
+main.main {
+	text-align: center;
+}
+
+img.logo {
+	height: 360px;
+	width: 540px;
+}
+</style>
 
 </head>
 
-<body>
-  <header class="header">
-    <h1>【做伙後台管理系統】</h1>
-    <p class="welcome">歡迎您 管理員</p>
-    <nav>
-      <ul>
-        <li><a href="後台登入頁面.html">登出</a></li>
-      </ul>
-    </nav>
-  </header>
+<body onload="showDivsBasedOnDeptno()">
 
-  <aside class="aside">
-    <nav class="nav">
-      <div class="sidenav">
-        <a th:href="@{/emp_Index}">首頁</a>
-        <hr>
-        <button class="dropdown-btn">員工管理
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
-          <a href="修改密碼頁面.html">修改密碼</a>
-          <a href="員工資料管理首頁.html">員工資料管理</a>
-        </div>
-        <hr>
-        <button class="dropdown-btn">一般功能管理
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
-          <a href="新增公告.html">公告管理</a>
-          <a href="新增FAQ.html">FQA管理</a>
-        </div>
-        <hr>
-        <button class="dropdown-btn">會員功能管理
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
-          <a href="查詢會員.html">查詢會員</a>
-          <a href="產生會員通知訊息.html">產生通知訊息</a>
-          <a href="#">審核會員檢舉</a>
-        </div>
-        <hr>
-        <button class="dropdown-btn">活動功能管理
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
-          <a href="#">審核活動管理</a>
-          <a href="#">審核留言管理</a>
-        </div>
-        <hr>
-        <button class="dropdown-btn">場地功能管理
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
-          <a href="新增場地.html">場地管理</a>
-          <a th:href="@{/back_end/ven-order/ven_order_page}">場地訂單管理</a>
-          <a th:href="@{/back_end/ven-closed/listAllVenClosed}">場地狀態管理</a>
-        </div>
-      </div>
+<!-- 基準 -->
 
-    </nav>
-  </aside>
+<div th:fragment="header-div">
 
-  <main class="main">
+	<header class="header">
+		<h1>【做伙後台管理系統】</h1>
+		
+		<p>歡迎您，
+		<span th:text="${empName}">員工名稱</span> -
+        <span id="deptNumber" th:text="${deptno}" style="display: none;">部門編號</span>
+		<span th:text="${dname}">部門名稱</span>
+		</p>
+		<nav>
+			<ul>
+				<li><a href="/login?logout=true" onclick="logout()">登出</a></li>
+			</ul>
+		</nav>
+	</header>
+	
+</div>
 
-        <img class="logo" src='/back-end/images/logo10.jpg' />
-  
-  </main>
+<div th:fragment="aside-div">
 
-  <script th:src="@{/back-end/js/emp_Index.js}"></script>
+	<aside class="aside">
+		<nav class="nav">
+			<div class="sidenav">
+				<a th:href="@{/back-end/emp_Index}">首頁</a>
+				<hr>
+				
+				<div id="superEmp" style="display: none;">
+				<button class="dropdown-btn">
+					員工管理 <i class="fa fa-caret-down"></i>
+				</button>
+				<div class="dropdown-container">
+					<a th:href="@{/emp/select_page}">查詢員工</a> 
+					<a th:href="@{/emp/addEmp}">新增員工</a> 
+					<a th:href="@{/emp/listAllEmp}">員工資料管理</a>
+				</div>
+				<hr>
+				</div>
+				
+				
+				<div id="emp" style="display: none;">
+				<button class="dropdown-btn">
+					一般功能管理 <i class="fa fa-caret-down"></i>
+				</button>
+				<div class="dropdown-container">
+					<a href="新增公告.html">公告管理</a> <a href="新增FAQ.html">FQA管理</a>
+				</div>
+				<hr>
+				</div>
+				
+				
+				<div id="mem" style="display: none;">
+				<button class="dropdown-btn">
+					會員功能管理 <i class="fa fa-caret-down"></i>
+				</button>
+				<div class="dropdown-container">
+					<a href="查詢會員.html">查詢會員</a> <a href="產生會員通知訊息.html">產生通知訊息</a> <a
+						href="#">審核會員檢舉</a>
+				</div>
+				<hr>
+				</div>
+				
+				
+				<div id="act" style="display: none;">
+				<button class="dropdown-btn">
+					活動功能管理 <i class="fa fa-caret-down"></i>
+				</button>
+				<div class="dropdown-container">
+					<a href="#">審核活動管理</a> <a href="#">審核留言管理</a>
+				</div>
+				<hr>
+				</div>
+				
+				
+				<div id="ven" style="display: none;">
+				<button class="dropdown-btn">
+					場地功能管理 <i class="fa fa-caret-down"></i>
+				</button>
+				<div class="dropdown-container">
+					<a href="新增場地.html">場地管理</a> <a
+						th:href="@{/back_end/ven-order/ven_order_page}">場地訂單管理</a> <a
+						th:href="@{/back_end/ven-closed/listAllVenClosed}">場地狀態管理</a>
+				</div>
+				</div>
+			</div>
+
+		</nav>
+	</aside>
+</div>
+
+	<main class="main">
+
+		<img class="logo" src='/back-end/10/images/Logo10.jpg' />
+
+	</main>
+
+    <script th:src="@{/back-end/10/js/aside.js}"></script>
+	<script type="text/javascript">
+
+	
+	function logout() {
+
+		  // 清空瀏覽器歷史紀錄
+		  window.history.replaceState({}, document.title, "/logout");
+		  
+		  // 強制跳轉登出
+		  window.location = "/login?logout=true"; 
+
+		}
+	</script>
 </body>
 
 </html>

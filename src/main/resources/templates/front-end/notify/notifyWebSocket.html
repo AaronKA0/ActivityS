@@ -44,10 +44,11 @@
 			webSocket = new WebSocket(endPointURL);
 
 			webSocket.onmessage = async function(event) {
-				alert("notification received");
+
 				let notifyVO = JSON.parse(event.data);
-				console.log("notice title: " + notifyVO.notifyTitle);
-				console.log("notice content: " + notifyVO.notifyContent);
+// 				console.log("notice title: " + notifyVO.notifyTitle);
+// 				console.log("notice content: " + notifyVO.notifyContent);
+
 			}
 
 		};

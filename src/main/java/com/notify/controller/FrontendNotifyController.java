@@ -15,19 +15,36 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.membership.model.MembershipVO;
 import com.notify.model.NotifyVO;
 import com.notify.service.NotifyService;
 
 
 @Controller
-@RequestMapping("/front_end")
+@RequestMapping("/front_end/notify")
 public class FrontendNotifyController {
 
     @Autowired
     NotifyService notifySvc;
+    
+    
+    @RequestMapping("memberNotify")
+    public @ResponseBody List<NotifyVO> findByMemId(@RequestBody String json) {
+        
+        MembershipVO memVO = null;
+        try {
+            memVO = new ObjectMapper().readValue(json, MembershipVO.class);
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return notifySvc.findByMemId(memVO.getMemId());
+    } 
 
-    @RequestMapping("notify")
-    public @ResponseBody List<NotifyVO> findByCity(@RequestBody String json) {
+    
+    @RequestMapping("notifyTitle")
+    public @ResponseBody List<NotifyVO> findByTitle(@RequestBody String json) {
         
         NotifyVO notify = null;
         
@@ -40,6 +57,39 @@ public class FrontendNotifyController {
         }
         return notifySvc.findByTitle(notify.getNotifyTitle());
     }
+    
+    
+    @RequestMapping("Unread")
+    public @ResponseBody List<NotifyVO> findUnread(@RequestBody String json) {
+        
+        MembershipVO memVO = null;
+        
+        try {
+            memVO = new ObjectMapper().readValue(json, MembershipVO.class);
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        
+        return notifySvc.findUnread(memVO.getMemId());
+    }
+    
+    @RequestMapping("readAll")
+    public @ResponseBody List<NotifyVO> readAll(@RequestBody String json) {
+        
+        MembershipVO memVO = null;
+        
+        try {
+            memVO = new ObjectMapper().readValue(json, MembershipVO.class);
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }      
+        return notifySvc.readAll(memVO.getMemId());
+    }
+    
     
     @RequestMapping("all")
     public @ResponseBody List<NotifyVO> getAll(){

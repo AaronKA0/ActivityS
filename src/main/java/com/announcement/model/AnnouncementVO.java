@@ -7,9 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import com.emp.model.EmpVO;
+import com.venue.model.VenVO;
 
 @Entity
 @Table(name = "announcement")
@@ -35,7 +40,24 @@ public class AnnouncementVO implements java.io.Serializable {
 	@Column(name = "ann_time", insertable = false, updatable = false)
 	private Timestamp annTime;
 
-	public Integer getAnnId() {
+	
+	public AnnouncementVO() {
+        super();
+    }
+
+    public AnnouncementVO(Integer annId, @NotNull(message = "請選擇編號") Integer empId,
+            @NotEmpty(message = "請填公告標題") String annName, @NotEmpty(message = "請填公告內容") String annDescr,
+            Timestamp annTime) {
+        super();
+        this.annId = annId;
+        this.empId = empId;
+        this.annName = annName;
+        this.annDescr = annDescr;
+        this.annTime = annTime;
+    }
+
+	
+    public Integer getAnnId() {
 		return annId;
 	}
 
@@ -43,15 +65,15 @@ public class AnnouncementVO implements java.io.Serializable {
 		this.annId = annId;
 	}
 
-	public Integer getEmpId() {
-		return empId;
-	}
+    public Integer getEmpId() {
+        return empId;
+    }
 
-	public void setEmpId(Integer empId) {
-		this.empId = empId;
-	}
+    public void setEmpId(Integer empId) {
+        this.empId = empId;
+    }
 
-	public String getAnnName() {
+    public String getAnnName() {
 		return annName;
 	}
 
@@ -74,4 +96,13 @@ public class AnnouncementVO implements java.io.Serializable {
 	public void setAnnTime(Timestamp annTime) {
 		this.annTime = annTime;
 	}
+
+
+    @Override
+    public String toString() {
+        return "AnnouncementVO [annId=" + annId + ", empId=" + empId + ", annName=" + annName + ", annDescr=" + annDescr
+                + ", annTime=" + annTime + "]";
+    }
+	
+	
 }

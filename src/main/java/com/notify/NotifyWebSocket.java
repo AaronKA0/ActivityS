@@ -45,7 +45,7 @@ public class NotifyWebSocket {
 	
 	public static void sendNotification(NotifyVO notifyVO) {
 		System.out.println("sending notification");
-		Session session = sessionsMap.get(notifyVO.getMemId());
+		Session session = sessionsMap.get(notifyVO.getMemVO().getMemId());
 		if(session != null) {
 			String notifyString = gson.toJson(notifyVO);
 			session.getAsyncRemote().sendText(notifyString);

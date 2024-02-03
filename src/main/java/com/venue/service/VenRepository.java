@@ -26,6 +26,6 @@ public interface VenRepository extends JpaRepository<VenVO, Integer> {
 	                    + "(SELECT c.ven_id FROM venue_closed_date c WHERE c.closed_date =:orderDate)"
 	                + "ORDER BY v.ven_id", nativeQuery = true)
     List<VenVO> pickByOrderDate(Date orderDate);
-	
+
 
 }

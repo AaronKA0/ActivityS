@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>會員通知訊息</title>
+
+<link rel="stylesheet" th:href="@{/back-end/07/css/listOne.css}">
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+         <div align="center"> <h2>會員通知訊息</h2></div>
+         
+         <div class="nav-content">
+              
+              <div>
+                  <a class="back" th:href="@{/back_end/notify/notify_page}">
+                      <<<<<< 回查詢頁</a>
+              </div>
+              
+         </div>
+</nav>
+
+    <div align="center">
+
+        <div id="center" align="center">
+        
+            <span class="title">編號:</span><span th:text="${notifyVO.notifyId}"></span><br/>
+            <span class="title">會員帳號:</span><span th:text="${notifyVO.memVO.memAcc}"></span><br/>
+            <span class="title">通知標題:</span><span th:text="${notifyVO.notifyTitle}"></span><br/>
+            <span class="title">通知狀態:</span><span th:text="${notifyVO.notifyStatus}"></span><br/>
+            <span class="title">通知時間:</span><span th:text="${#dates.format(notifyVO.notifyTime, 'yyyy-MM-dd HH:mm:ss')}"></span><br/>
+        
+            <div class="text_block">
+                <span class="title">通知內容:</span>
+                <textarea class="texthighter" th:text="${notifyVO.notifyContent}" readonly></textarea>
+            </div>
+            
+        </div>
+        
+        
+        <div>
+            <form method="post" th:action="@{getOne_For_Update}">
+                <input type="hidden" name="notifyId" th:value="${notifyVO.notifyId}">
+                <button class="submit_button" type="submit" style="padding: 5px;">修改資料</button>
+            </form>
+        </div>
+
+    </div>
+
+</body>
+</html>

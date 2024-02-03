@@ -1,6 +1,7 @@
 package com.membership.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,13 +13,21 @@ import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.membership.model.MembershipVO;
 import com.membership.service.MailService;
 import com.membership.service.MembershipService;
 
 import com.membership.service.RedisService;
+import com.notify.model.NotifyVO;
+import com.notify.service.NotifyService;
 
 @Controller
 @RequestMapping("/membership")
@@ -32,6 +41,9 @@ public class LoginController {
 
 	@Autowired
 	RedisService redisSvc;
+	
+	@Autowired
+	NotifyService notifySvc;
 
 	// ---------------------------登入---------------------------
 	@PostMapping("login")
@@ -51,7 +63,15 @@ public class LoginController {
 			System.out.println(a);
 			System.out.println(b);
 //	        System.out.print("line 65 :" + "memId:" + memId +" "+"memAcc:" + memAcc +" " + "memPwd:" + memPwd);
-			return "redirect:/member";
+
+			
+			// +++++++++++++++ 代入會員個人訊息通知 +++++++++++++++
+			List<NotifyVO> notifies = notifySvc.findByMemId(memId);
+			request.getSession().setAttribute("notifies", notifies);
+			// +++++++++++++++ 將會員個人訊息存入 session +++++++++++++++
+			
+			return "redirect:/Zuo-Huo";
+
 
 		} else {
 			// 登入失敗

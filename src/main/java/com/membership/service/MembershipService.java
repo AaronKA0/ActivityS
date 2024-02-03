@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import com.membership.model.MembershipVO;
+import com.venue.model.VenVO;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -120,5 +122,12 @@ public class MembershipService {
 
 		return memName;
 	}	
-
+	
+	
+	
+	// +++++++++++++++ 從MembershipVO中獲取會員基本資料 +++++++++++++++
+	public MembershipVO getMemInfo(Integer memId){
+        return repository.getMemInfo(memId);
+    }
+	// +++++++++++++++ 從MembershipVO中獲取會員基本資料 +++++++++++++++
 }

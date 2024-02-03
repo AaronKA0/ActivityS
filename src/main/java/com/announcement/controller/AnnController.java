@@ -1,6 +1,8 @@
 package com.announcement.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,13 +21,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.announcement.model.AnnouncementVO;
 import com.announcement.service.AnnouncementService;
+import com.notify.service.NotifyRedisService;
 
 @Controller
-@RequestMapping("/announcement")
+@RequestMapping("/back_end/announcement")
 public class AnnController {
 
     @Autowired
-    AnnouncementService annSvc;  
+    AnnouncementService annSvc; 
+    
+    @Autowired
+    NotifyRedisService NotifyRedisSvc;  
     
     
     @GetMapping("addAnn")
@@ -38,19 +44,22 @@ public class AnnController {
     @PostMapping("insert")
     public String insert(@Valid AnnouncementVO announcementVO, BindingResult result, ModelMap model
                                                                         ) throws IOException {
-
-        /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+        // 輸入錯誤處理
         if (result.hasErrors()) {
             return "back-end/announcement/addAnn";
         }
-        /*************************** 2.開始新增資料 *****************************************/
-//      EmpService empSvc = new EmpService();
+        
+        // 確認新增公告
         annSvc.addAnnouncement(announcementVO);
-        /*************************** 3.新增完成,準備轉交(Send the Success view) **************/
+        
+        // 新增會員訊息至 Redis
+//        NotifyRedisSvc.addNotifyToRedis(announcementVO, 1800L);
+        
+        
         List<AnnouncementVO> list = annSvc.getAll();
         model.addAttribute("annListData", list);
         model.addAttribute("success", "- (新增成功)");
-        return "redirect:/announcement/listAllAnn";   // 新增成功後重導至IndexController_inSpringBoot.java的第50行@GetMapping("/emp/listAllEmp")
+        return "redirect:/back_end/announcement/ann_page";  
     }
     
     
@@ -78,6 +87,7 @@ public class AnnController {
         }
         /*************************** 2.開始修改資料 *****************************************/
 //      EmpService empSvc = new EmpService();
+        announcementVO.setAnnTime(Timestamp.valueOf(LocalDateTime.now()));
         annSvc.updateAnnouncement(announcementVO);
 
         /*************************** 3.修改完成,準備轉交(Send the Success view) **************/

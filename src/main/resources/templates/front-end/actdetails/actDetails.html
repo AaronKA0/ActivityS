@@ -1,0 +1,1660 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <META http-equiv="Cache-Control" content="no-store">
+    <META http-equiv="Pragma" content="no-cache">
+    <META http-equiv="Expires" content="0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>活動詳情</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+
+        main {
+            min-height: calc(100vh - 70px);
+
+        }
+
+        /* Set the size of the div element that contains the map */
+        #map {
+            height: 300px;
+            /* The height is 400 pixels */
+            width: 300px;
+            /* The width is the width of the web page */
+        }
+
+        .join {
+            position: sticky;
+            bottom: 0;
+        }
+
+        /* 留言捲軸 */
+        #scroll {
+            overflow-y: scroll;
+            max-height: 400px;
+        }
+
+        /* scroll整體樣式 */
+        #scroll::-webkit-scrollbar {
+            width: 10px; /* 寬度 */
+        }
+
+        /* scroll樣式 */
+        #scroll::-webkit-scrollbar-track {
+            background: #f1f1f1; /* 背景颜色 */
+        }
+
+        /* scroll滑塊樣式 */
+        #scroll::-webkit-scrollbar-thumb {
+            background: #e8bfbc; /* 背景颜色 */
+            border-radius: 10px; /* 圆角 */
+        }
+
+        /* 留言頭像跟人名inline */
+        .list-group {
+            display: inline;
+        }
+
+
+        .category-icon {
+            font-size: 2rem;
+            /* Example size */
+        }
+
+        .category-card {
+            border: none;
+            transition: transform 0.3s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 關掉bootstarp input點擊邊框變藍色的效果 */
+        #comment:focus {
+            border-color: #ced4da;
+            box-shadow: none;
+        }
+
+        /*編輯留言要用的 標籤切換*/
+        .none {
+            display: none;
+        }
+
+        .userinput {
+            border: none;
+            width: 100%;
+
+        }
+
+        /*關閉input外框*/
+        .userinput:focus {
+            outline: none;
+        }
+
+        .card.no-border {
+            border: none;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <header
+            class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <div class="col-md-3 mb-2 mb-md-0">
+            <a href="index.html" class="d-inline-flex link-body-emphasis text-decoration-none">
+                <span class="fs-4">做伙</span>
+            </a>
+        </div>
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="index.html" class="nav-link px-2 link-secondary">首頁</a></li>
+            <li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+            <li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
+            <li><a href="rent.html" class="nav-link px-2 link-secondary">場地租借</a></li>
+            <li><a href="customer.html" class="nav-link px-2 link-secondary">FAQs</a></li>
+            <li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
+        </ul>
+
+        <div class="col-md-3 text-end">
+            <button type="button" class="btn btn-outline-primary me-2"><a class="nav-link" href="#">登入</a></button>
+            <button type="button" class="btn btn-primary"><a class="nav-link" href="register.html">註冊</a></button>
+        </div>
+    </header>
+</div>
+
+<div class="container" style="background-color: #f8f9fa">
+    <div class="text-bark text-center py-4">
+        <div class="shadow-sm p-3 mb-5 bg-body rounded">
+            <h1 class="fw-bold" id="activityName" th:text="${act.actName}">活動名稱</h1>
+        </div>
+    </div>
+
+    <main class="my-4">
+        <div class="row">
+            <div class="col-md-8">
+                <section class="h-100 p-3 mb-5 rounded">
+                    <div class="w-auto h-100">
+                        <div class="bg-white">
+                            <img th:src="@{/activity/images/{actId}(actId=${act.actId})}" src=""
+                                 class="w-100 img-fluid"
+                                 alt="活動照片">
+                        </div>
+                        <h2 class="fw-bolder">活動內容:</h2>
+                        <span id="actDescr" class="fw-normal" th:text="${act.actDescr}">活動內容</span>
+
+                        <div class="row">
+                            <div class="col align-self-end">
+                                <button class="actType btn btn-dark btn-sm mt-5 disabled"
+                                        th:text="${act.actTypeName}"
+                                        th:data-act-type-id="${act.actTypeId}">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-4" id="right-div">
+                <aside>
+                    <div class="p-3 mb-5 bg-white rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
+                             class="bi bi-fire" viewBox="0 0 16 16">
+                            <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"/>
+                        </svg>
+                        <span>關注此活動的人數:<span id="actFollowCount" th:text="${act.actFollowCount}">1</span></span>
+                        <div style="margin: 10px">
+                            <p style="margin: 0;">
+                                人數上限:
+                                <span id="actUpper" th:text="${act.actUpper}">1</span>
+                            </p>
+                            <p>目前參與人數:
+                                <span id="actCount" th:text="${act.actCount}">1</span>
+                            </p>
+                            <p>活動狀態:
+                                <span id="actStatus" th:data-act-status="${act.actStatus}"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-3 mb-5 bg-white rounded">
+                        <h2 class="fw-bolder">活動訊息:</h2>
+                        <p class="fw-bolder">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue"
+                                 class="bi bi-person-circle" viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                <path fill-rule="evenodd"
+                                      d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                            </svg>
+                            主辦人:
+                        </p>
+                        <div>
+                            <a class="text-decoration-none" th:href="@{/membership/{memId}(memId=${memId})}">
+                                <img th:src="'data:image/png;base64,' + ${memPic}" class="img-fluid"
+                                     style="width: 60px; height: auto;">
+                            </a>
+                            <p id="memId" class="badge bg-primary text-wrap" th:data-mem-id="${act.memId}"
+                               th:text="${act.memName}">張三</p>
+                        </div>
+                        <hr>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="brown"
+                             class="bi bi-pin-map" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8z"/>
+                            <path fill-rule="evenodd"
+                                  d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/>
+                        </svg>
+                        <span class="">活動地點:</span>
+                        <span id="actLoc" class="" th:text="${act.actLoc}">中壢</span>
+                        <hr>
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-clock-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                            </svg>
+                            報名截止日期:
+                            <time th:text="${#temporals.format(act.regEndTime, 'yyyy-MM-dd HH:mm')}"></time>
+                        </p>
+                        <p class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-clock" viewBox="0 0 16 16">
+                                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+                            </svg>
+                            活動開始時間：
+                            <time id="startTime" th:text="${actStartTime}">2023-12-01 10:00 AM</time>
+                        </p>
+                        <p class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-clock-history" viewBox="0 0 16 16">
+                                <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.081-.51l.993.123a8 8 0 0 1-.23 1.155l-.964-.267q.069-.247.12-.501m-.952 2.379q.276-.436.486-.908l.914.405q-.24.54-.555 1.038zm-.964 1.205q.183-.183.35-.378l.758.653a8 8 0 0 1-.401.432z"/>
+                                <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0z"/>
+                                <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5"/>
+                            </svg>
+                            活動結束時間：
+                            <time id="endTime" th:text="${actEndTime}">2023-12-01 4:00 PM</time>
+                        </p>
+
+                        <div id="map"></div>
+
+                        <div class="card shadow-sm mt-5">
+                            <div class="card-body text-center">
+                                <p id="weather"></p>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+            </div>
+        </div>
+
+        <div class="mt-5 w-100">
+            <div class="mt-3">
+                <div style="display: inline">
+                    <span class="fs-3 fw-bolder">留言區<span id="commentcount">(0)</span></span>
+                    <button id="newToOld" class="rounded-pill text-dark bg-light" onclick="newToOld()">新至舊</button>
+                    <button id="oldToNew" class="rounded-pill text-dark bg-light" onclick="oldToNew()">舊至新</button>
+                </div>
+                <div class="card w-100 p-3 mb-2 bg-white rounded" style="border: none;" id="scroll">
+                    <div id="comments" class="card-body">
+                        <div>
+                            <p class="text-center fw-bold">尚有留言</p>
+                        </div>
+                    </div>
+                    <button id="morecomments" type="button" class="btn btn-light" onclick="more()">查看更多</button>
+                </div>
+            </div>
+
+            <div class="user" th:if="${user != null}" th:data-user="${user}">
+                <form id="commentsform" class="row g-3">
+                    <label for="comment" class="visually-hidden">留言</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control p-3 shadow-sm rounded-start-5" id="comment"
+                               placeholder="輸入您的留言">
+                        <button type="submit" class="btn btn-success shadow-sm rounded-end-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-send-fill" viewBox="0 0 16 16">
+                                <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <hr class="mt-5 mb-5">
+
+        <span class="fw-bolder fs-5">參與者:</span>
+        <span id="addPeople" class="fw-bolder fs-5">(0)</span>
+        <div class="container bg-white" id="people">
+
+            <div id="add" class="row">
+
+            </div>
+        </div>
+
+        <hr class="mt-5 mb-5">
+
+        <div>
+            <h5 class="fw-bolder">推薦活動:</h5>
+            <div class="random row row-cols-1 row-cols-md-4 g-4 mb-5">
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="..." class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">放活動</h5>
+                            <p class="card-text">隨機撈4筆活動放這邊 有關聯的類別</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="join">
+            <div class="text-bark">
+                <div class="d-flex justify-content-between p-4 bg-body rounded shadow-sm">
+                    <div>
+                        <button type="button" id="addAct" class="btn btn-outline-danger btn-lg mx-3" onclick="signup()">
+                            報名活動
+                        </button>
+                        <button type="button" id="follow" class="btn btn-outline-primary btn-lg mx-3"
+                                onclick="follow()">關注
+                        </button>
+                    </div>
+                    <button class="btn btn-outline-warning btn-lg" data-bs-toggle="modal"
+                            data-bs-target="#actReportModal" data-bs-whatever="@getbootstrap" onclick="actReport()">檢舉活動
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="container">
+    <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="index.html" class="nav-link px-2 text-muted">首頁</a></li>
+            <li class="nav-item"><a href="customer.html" class="nav-link px-2 text-muted">客服中心</a></li>
+            <li class="nav-item"><a href="about.html" class="nav-link px-2 text-muted">關於我們</a></li>
+        </ul>
+        <p class="text-center text-muted">© 2024 Zuo-Huo</p>
+    </footer>
+</div>
+
+<!--檢舉留言框-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">檢舉</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="reportfrom">
+                    <div class="mb-3">
+                        <label for="report-title" class="col-form-label">請選擇檢舉原因:</label>
+                        <select class="form-control" id="report-title">
+                            <option value="SPAM">垃圾訊息</option>
+                            <option value="OFFENSIVE">不適當的內容</option>
+                            <option value="HARASSMENT">人身攻擊或霸凌行為</option>
+                            <option value="PRIVACY">侵犯隱私</option>
+                            <option value="SENSITIVE">敏感或爭議性內容</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">請說出您的檢舉原因:</label>
+                        <textarea class="form-control" id="message-text"
+                                  style="width: 100%; height: 150px; resize:none;"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                        <button type="submit" class="btn btn-primary">送出</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--檢舉活動框-->
+<div class="modal fade" id="actReportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="actReportModalLabel">檢舉活動</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="actReportfrom">
+                    <div class="mb-3">
+                        <label for="report-title" class="col-form-label">請選擇檢舉原因:</label>
+                        <select class="form-control" id="act-report-title">
+                            <option value="INAPPROPRIATE">不恰當的内容</option>
+                            <option value="NOSAFETY">不安全的</option>
+                            <option value="MISLEADING">誤導信息</option>
+                            <option value="HARASSMENT">騷擾或欺凌</option>
+                            <option value="OTHER">其他</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">請說出您的檢舉原因:</label>
+                        <textarea class="form-control" id="act-text"
+                                  style="width: 100%; height: 150px; resize:none;"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="photo">選擇圖片</label>
+                        <input type="file" id="photo" accept="image/gif, image/jpeg, image/png">
+                        <img id="preview" src="" style="width: 465px; height: auto">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                        <button type="submit" class="btn btn-primary">送出</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 所有參與者 -->
+<div class="modal fade" id="moreModal" tabindex="-1" aria-labelledby="moreModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="moreModalLabel">參與者列表</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="allUser">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div id="fb-root"></div>-->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+</script>
+<script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjHlN8i2-4cw4QDuaPgyctq7OX1n6c6ls&callback=initMap" async
+        defer>
+</script>
+
+<script>
+
+    //將thymeleaf帶出來的活動狀態改為中文顯示
+    let actStatus = $("#actStatus");
+    //活動狀態
+    let actStatusData = $("#actStatus").data("actStatus");
+
+    switch (actStatusData) {
+        case 1:
+            actStatus.text("已結束");
+            actStatus.addClass("badge bg-danger text-wrap");
+            break;
+        case 2:
+            actStatus.text("已取消");
+            actStatus.addClass("badge bg-warning text-wrap");
+            break;
+        case 3:
+            actStatus.text("進行中");
+            actStatus.addClass("badge bg-primary text-wrap");
+            break;
+        case 4:
+            actStatus.text("報名中");
+            actStatus.addClass("badge bg-success text-wrap");
+            break;
+    }
+
+    //星星icon
+    const star = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="yellow"
+               className="bi bi-star-fill" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+              </svg>`;
+    //燈泡icon
+    const light = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="yellow" class="bi bi-lightbulb-fill" viewBox="0 0 16 16">
+                    <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5"/>
+                    </svg>`;
+
+    //判斷有沒有登入過 沒有的話為null 用在顯示所有留言那邊
+    //從RetailsController來 == Session取來的memId
+    let user = $(".user").data("user");
+    //主辦人ID
+    let myActMemId = $("#memId").data("memId")
+    //檢舉留言框的Modal
+    let exampleModal;
+    //檢舉活動框的Model
+    let actReportModal;
+
+    if (myActMemId === 1) {
+        $("#memId").html(star + $("#memId").text());
+        $("#memId").removeClass("bg-primary");
+        $("#memId").addClass("bg-danger");
+    } else {
+        $("#memId").html(light + $("#memId").text());
+    }
+
+    //new出檢舉留言框並存入,為了讓檢舉留言框按下送出後可以用exampleModal.hide()隱藏檢舉框
+    exampleModal = new bootstrap.Modal(document.getElementById("exampleModal"), {
+        keyboard: false
+    });
+    actReportModal = new bootstrap.Modal(document.getElementById("actReportModal"), {
+        keyboard: false
+    });
+
+    //初始留言數量
+    let countLimit = 5;
+    //預設排序
+    let userSort = "ASC";
+    //當前顯示的留言數量 用來判斷查看更多可不可以按
+    let currentDisplayed = 0;
+
+    let total = 0;
+
+    //!!!!!!!!!從RetailsController的model取得到的 測試取得會員ID用
+    // let MyMemId = $("#memberId").text();
+
+    $(function () {
+        //進入活動詳情頁面後要先跑一遍顯示所有留言
+        allComments(countLimit, userSort);
+        //判斷有沒有關注過
+        checkActFollow();
+        //判斷有沒有報名錯
+        checkActReg();
+        //搜出參與此活動者
+        findMemAndPic();
+        //推薦活動
+        showFourAct();
+        //google map
+        showAddressOnMap();
+
+        getWeather();
+    });
+
+    let newToOldBtn = $("#newToOld");
+    let oldToNewBtn = $("#oldToNew");
+
+    function newToOld() {
+        //兩個按鈕切換顏色
+        if (newToOldBtn.hasClass("text-dark bg-light")) {
+            newToOldBtn.removeClass("text-dark bg-light")
+            newToOldBtn.addClass("text-light bg-dark")
+
+            if (oldToNewBtn.hasClass("text-light bg-dark")) {
+                oldToNewBtn.removeClass("text-light bg-dark")
+                oldToNewBtn.addClass("text-dark bg-light")
+            }
+        }
+
+        userSort = "ASC";
+        allComments(countLimit, userSort);
+    }
+
+    function oldToNew() {
+        //兩個按鈕切換顏色
+        if (oldToNewBtn.hasClass("text-dark bg-light")) {
+            oldToNewBtn.removeClass("text-dark bg-light")
+            oldToNewBtn.addClass("text-light bg-dark")
+
+            if (newToOldBtn.hasClass("text-light bg-dark")) {
+                newToOldBtn.removeClass("text-light bg-dark")
+                newToOldBtn.addClass("text-dark bg-light")
+            }
+        }
+
+        userSort = "DESC";
+        allComments(countLimit, userSort);
+    }
+
+    //按下查看更多按鈕將limit加5並且再跑一遍顯示所有留言
+    function more() {
+        countLimit += 5;
+        allComments(countLimit, userSort);
+    }
+
+    //檢查有沒有關注過 -------------------------------------------------------------------------------
+    function checkActFollow() {
+        $.ajax({
+            url: "/activity/actfollow",
+            type: 'GET',
+            contentType: 'application/json',
+            data: {
+                actId: window.location.pathname.split('/')[2]
+                // memId: MyMemId
+            },
+            dataType: 'json',
+            success: function (folStatus) {
+
+                //有關注的話關注按鈕為持續藍色
+                if (folStatus === 2) {
+                    $("#follow").removeClass("btn-outline-primary")
+                    $("#follow").addClass("btn-primary")
+                    $("#follow").text("已關注")
+                }
+
+            },
+            error(xhr, status, error) {
+
+                $("#follow").removeClass("btn-primary")
+                $("#follow").addClass("btn-outline-primary")
+                $("#follow").text("關注")
+            }
+        });
+    }
+
+    //進畫面後顯示所有留言 -------------------------------------------------------------------------------
+    function allComments(countLimit, userSort) {
+
+        // if (countLimit === 0) { //配合redis
+        //     countLimit = 5;
+        // }
+
+        $.ajax({
+            url: '/comments', //路徑有變動的話要改
+            type: 'GET',
+            // cache: false, // 禁用緩存
+            contentType: 'application/json',
+            data: {
+                actId: window.location.pathname.split('/')[2], //路徑有變動的話要改
+                limit: countLimit,
+                sort: userSort //讓用戶可以從新到舊 或舊到新
+            },
+            dataType: 'json',
+            success: function (page) {
+                let commentsHTML = "";
+                let comments = page.comments;
+                total = page.total;
+                let limit = page.limit;
+
+                comments.forEach(function (comment) {
+                    if (comment.comStatus === 1) { //被檢舉成功的不顯示 後端撈出來之前已經有先判斷了 多寫的
+                        commentsHTML +=
+                            `<div class="usertext">
+                                <div class="mb-3">
+                                    <a class="text-decoration-none" href="/member?memId=${comment.memId}">
+                                        <img src="data:image/png;base64,${comment.memPic}" class="rounded-circle me-2 img-fluid" alt="" style="max-width: 50px; height: auto;">
+                                    </a>
+                                    <p class="star badge bg-primary text-wrap align-top" data-mem-id="${comment.memId}">${comment.memName}</p>
+                                </div>
+                                <p class="content" style="margin: 0">${comment.comContent}</p>
+                                <input class="userinput content none" type="text" placeholder="請輸入內容" value="${comment.comContent}">
+                                <hr style="margin: 0">
+                                <div class="d-flex align-items-center mb-3">
+                                    <small class="text-muted">${comment.comTime}</small>
+                                        <div class="userfunction ms-auto" data-mem-id="${comment.memId}">
+                                            <a href="#" class="login ok badge rounded-pill bg-success" style="text-decoration:none; display: none;"  data-com-id="${comment.comId}">確認</a>
+                                            <a href="#" class="login nosee update badge rounded-pill bg-danger" style="text-decoration:none; display: none;"  data-com-id="${comment.comId}">編輯</a>
+                                            <a href="#" class="login nosee delete badge rounded-pill bg-warning" style="text-decoration:none; display: none;"  data-com-id="${comment.comId}">刪除</a>
+                                            <a href="#" class="login report badge rounded-pill bg-dark ms-2" style="text-decoration:none;" data-com-id="${comment.comId}"
+                                            data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap" >檢舉</a>
+                                        </div>
+                                </div>
+                            </div>`;
+                    }
+                });
+                //留言總數
+                $("#commentcount").html("(" + (total ? total : "無") + ")");
+
+                $("#comments").html(commentsHTML);
+
+                //判斷官方人員 +icon
+                $(".star").each(function () {
+                    if ($(this).data("memId") === 1) {
+                        $(this).html(star + $(this).text());
+                        $(this).removeClass("bg-primary");
+                        $(this).addClass("bg-danger");
+                    } else if ($(this).data("memId") === myActMemId) {
+                        $(this).html(light + $(this).text());
+                    }
+                });
+
+                //判斷後端session的memId有沒有值 沒有就拔掉會員功能
+                if (user === undefined) {
+                    $(".login").remove();
+                }
+
+                // //each所有的.userfunction來抓memId做判斷
+                // $("#comments .userfunction").each(function () {
+                //     let memId = $(this).data("memId")
+                //
+                //     //自己的留言才看的到修改和刪除按紐
+                //     //判斷是不是自己的留言，不是的話將修改和刪除按鈕隱藏
+                //     //!!!!!!!!!看要不要用後端來判斷
+                //     if (memId != MyMemId) {
+                //         $(this).children(".nosee").remove();
+                //     }
+                // })
+
+                //跟上面一樣 都是判斷是不是自己的留言 做法不同
+                $("#comments .userfunction").each(function () {
+                    let comId = $(this).children("a").data("comId")
+                    // console.log(comId) //留言編號
+
+                    let nosee = $(this).children(".nosee");
+
+                    checkComment(comId, nosee);
+
+                })
+
+                //判斷查看更多可不可以按
+                if (total > currentDisplayed) {
+                    currentDisplayed = comments.length;
+                } else {
+                    $("#morecomments").prop("disabled", true).text("沒有更多留言");
+                }
+
+                // memid 用來顯示會員的大頭照
+
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:" + status + " " + error);
+            }
+        });
+    }
+
+    //新增留言 -------------------------------------------------------------------------------
+    $("#commentsform").on("submit", function (e) {
+        e.preventDefault();
+
+        var commentData = {
+            actId: window.location.pathname.split('/')[2], //路徑有變動的話要改
+            // comReplyId:null,
+            comContent: $("#comment").val()
+        };
+
+        $.ajax({
+            url: '/comments', //路徑有變動的話要改
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(commentData),
+            dataType: 'json',
+            success: function (comments) {
+                $("#comment").val("");
+
+                let commentsHTML = "";
+                commentsHTML +=
+                    `<div class="usertext">
+                        <div class="mb-3">
+                            <a class="text-decoration-none" href="/member?memId=${comments.memId}">
+                                <img src="data:image/png;base64,${comments.memPic}" class="rounded-circle me-2 img-fluid" alt="" style="max-width: 50px; height: auto;">
+                                <p class="star badge bg-primary text-wrap align-top" data-mem-id="${comments.memId}">${comments.memName}</p>
+                            </a>
+                        </div>
+                        <p class="content" style="margin: 0">${comments.comContent}</p>
+                        <input class="userinput content none" type="text" placeholder="請輸入內容" value="${comments.comContent}">
+                        <hr style="margin: 0">
+                        <div class="d-flex align-items-center mb-3">
+                            <small class="text-muted">${comments.comTime}</small>
+                        <div class="userfunction ms-auto" data-mem-id="${comments.memId}">
+                            <a href="#" class="ok badge rounded-pill bg-success" style="text-decoration:none; display: none;"  data-com-id="' + comments.comId + '">確認</a>
+                            <a href="#" class="nosee update badge rounded-pill bg-danger" style="text-decoration:none;" data-com-id="${comments.comId}">編輯</a>
+                            <a href="#" class="nosee delete badge rounded-pill bg-warning" style="text-decoration:none;" data-com-id="${comments.comId}">刪除</a>
+                            <a href="#" class="report badge rounded-pill bg-dark ms-2" style="text-decoration:none;" data-com-id="${comments.comId}"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">檢舉</a>
+                        </div>
+                        </div>
+                    </div>`;
+
+                $("#commentcount").html("(" + ++total + ")");
+
+                $("#comments").prepend(commentsHTML);
+
+                //判斷官方人員 +Icon
+                $(".star").each(function () {
+                    if ($(this).data("memId") === 1) {
+                        $(this).html(star + $(this).text());
+                        $(this).removeClass("bg-primary");
+                        $(this).addClass("bg-danger");
+                    } else if ($(this).data("memId") === myActMemId) {
+                        $(this).html(light + $(this).text());
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                Swal.fire("留言要打字呦")
+            }
+        });
+    });
+
+    //檢舉留言 -------------------------------------------------------------------------------
+    //案檢舉後取得comId,並將comid存在檢舉model的form表單的data屬性
+    $(document).on("click", ".report", function (e) {
+        e.preventDefault();
+        let comId = $(this).data("comId");
+        $("#reportfrom").data("comId", comId);
+    });
+
+    $("#reportfrom").submit(function (e) {
+        e.preventDefault();
+        //抓自定義的data屬性設的值,去查全部留言ajax那邊看
+        let thisComId = $(this).data("comId");
+
+        if (!$("#message-text").val().trim()) {
+            Swal.fire("", "請輸入檢舉原因", "error");
+            return;
+        }
+
+        let commentReportData = {
+            comId: thisComId, //留言編號
+            repTitle: $("#report-title").val(),
+            repContent: $("#message-text").val()
+        };
+        $.ajax({
+            url: "/commentreport", //路徑有變動的話要改
+            type: "POST",
+            contentType: 'application/json',
+            data: JSON.stringify(commentReportData),
+            success: function (response) {
+                $("#message-text").val("");
+
+                Swal.fire("檢舉成功", "已交由後台人員處理", "success")
+                exampleModal.hide();
+            },
+            error: function (xhr, status, error) {
+                Swal.fire("檢舉失敗", "請再次確認")
+            }
+        });
+    });
+
+    //刪除留言(修改狀態) -------------------------------------------------------------------------------
+    $(document).on("click", ".delete", function (e) {
+        e.preventDefault();
+        let comId = $(this).data("comId");
+
+        // let dleData = {
+        //     comStatus: 2
+        // }
+
+        Swal.fire({
+            title: "要刪除留言嗎?",
+            width: "300px",
+            showCancelButton: true,
+            confirmButtonText: "確定",
+            cancelButtonText: "取消"
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    url: '/comment/' + comId,
+                    type: 'PUT',
+                    // data: JSON.stringify(dleData),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function () {
+                        allComments(countLimit, userSort)
+                    },
+                    error(xhr, status, error) {
+                        console.log(status + error)
+                    }
+                })
+            }
+        });
+    });
+
+    //修改留言 -------------------------------------------------------------------------------
+    $(document).on("click", ".update", function (e) {
+        e.preventDefault();
+        //當前的input
+        let input = $(this).closest(".usertext").find(".userinput")
+        //當前的p
+        let p = $(this).closest(".usertext").find(".content")
+        //當前的確認按鈕
+        let ok = $(this).closest(".usertext").find(".ok")
+        //p跟input切換顯示
+        $(this).closest(".usertext").find(".content").toggleClass("none");
+        //自動focus到input
+        input.focus();
+        //確認按鈕顯示切換
+        $(this).closest(".usertext").find(".ok").toggle();
+
+    });
+
+    //修改留言確認 -------------------------------------------------------------------------------
+    $(document).on("click", ".ok", function (e) {
+        e.preventDefault();
+        //p跟input切換顯示
+        $(this).closest(".usertext").find(".content").toggleClass("none");
+        //當前的input
+        let input = $(this).closest(".usertext").find(".userinput")
+        //當前的p
+        let p = $(this).closest(".usertext").find(".content")
+        //當前的確認按鈕
+        let ok = $(this).closest(".usertext").find(".ok")
+
+        if (!input.val().trim()) {
+            Toast.fire({
+                icon: 'info',
+                title: '請輸入內容！'
+            })
+            $(this).closest(".usertext").find(".content").toggleClass("none");
+            return;
+        }
+        //將input的val賦值給p
+        p.text(input.val());
+
+        let comId = $(this).data("comId");
+        let updataData = {
+            actId: window.location.pathname.split('/')[2],
+            comContent: input.val()
+        }
+        $.ajax({
+            url: '/comments/' + comId,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(updataData),
+            dataType: 'json',
+            success: function (updateComment) {
+                ok.hide();
+            },
+            error(xhr, status, error) {
+                ok.hide();
+            }
+        })
+    })
+
+    //檢舉活動 -------------------------------------------------------------------------------
+    function actReport() {
+        //預覽圖
+        $("#photo").change(function () {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("#preview").attr('src', e.target.result);
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+        $("#actReportfrom").submit(function (e) {
+            e.preventDefault();
+
+            let actId = window.location.pathname.split('/')[2]; //路徑有變動的話要改
+
+            // 驗證 repContent 是否為空或僅包含空白
+            if (!$("#act-text").val().trim()) {
+                Swal.fire("", "請輸入檢舉原因", "error");
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append("actId", actId);
+            formData.append("repTitle", $("#act-report-title").val());
+            formData.append("repContent", $("#act-text").val());
+
+            let fileInput = $("#photo")[0];
+            let file = fileInput.files[0];
+            if (file) {
+                formData.append("repPic", file);
+            }
+            $.ajax({
+                url: "/activityreport",
+                type: "POST",
+                data: formData,
+                processData: false, // 不要處理發送的數據
+                contentType: false, // 不要設置Content-Type
+                success: function (response) {
+                    Swal.fire("檢舉成功")
+                    actReportModal.hide();
+                },
+                error: function (xhr, ststus, error) {
+                    Swal.fire("檢舉失敗")
+                }
+            });
+        });
+    }
+
+    //報名活動按鈕 -------------------------------------------------------------------------------
+    let actCount = $("#actCount").text(); //參加人數
+    let actUpper = $("#actUpper").text(); //人數上限
+    let actTotal = (actUpper - actCount); //還可以參加的人數
+
+    function signup() {
+        let addBtn = $("#addAct");
+        let actRegStatus = addBtn.data("actRegStatus");
+
+
+        switch (actRegStatus) {
+            case 0:
+                //第一次報名 走新增api
+                Swal.fire({
+                    title: '人數',
+                    text: '剩餘名額: ' + actTotal,
+                    input: 'number',
+                    inputPlaceholder: '報名人數',
+                    inputAttributes: {
+                        min: 1,
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: '下一步',
+                    cancelButtonText: '取消',
+                }).then((result) => {
+                        if (result.isConfirmed && result.value) {
+                            Swal.fire({
+                                title: '報名原因',
+                                text: '請輸入報名原因',
+                                input: 'textarea',
+                                inputPlaceholder: '原因',
+                                showCancelButton: true,
+                                confirmButtonText: '送出',
+                                cancelButtonText: '取消',
+                            }).then((reasonResult) => {
+                                if (reasonResult.isConfirmed && reasonResult.value) {
+
+                                    let numberOfPeople = {
+                                        actId: window.location.pathname.split('/')[2], //路徑有變動的話要改
+                                        regTotal: result.value,
+                                        regReason: reasonResult.value
+                                    }
+                                    $.ajax({
+                                        url: '/actreg', //路徑有變動的話要改
+                                        type: 'POST',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify(numberOfPeople),
+                                        success: function (actReg) {
+                                            Swal.fire('報名成功!，您報名的人數：' + actReg.regTotal);
+
+                                            //報名完直接在判斷有沒有報名過 用來切換按鈕
+                                            checkActReg();
+                                        },
+                                        error: function (xhr, status, error) {
+                                            if (xhr.status === 400) {
+                                                Swal.fire("報名過了");
+                                            } else if (xhr.status === 405) {
+                                                Swal.fire("報名人數超過上限，請重新確認");
+                                            }
+                                        }
+                                    });
+                                }
+                            })
+                        }
+                    }
+                )
+                ;
+                break;
+            //防止用戶利用F12搞事 報名審核失敗 不可再報名
+            case 1:
+                return;
+            case 2:
+                //取消報名 走刪除(update) api
+                Swal.fire({
+                    title: "要取消報名嗎?",
+                    width: "300px",
+                    showCancelButton: true,
+                    confirmButtonText: "確定",
+                    cancelButtonText: "取消"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        unsignupData = {
+                            actId: window.location.pathname.split('/')[2],
+                            regStatus: 4
+                        }
+                        $.ajax({
+                            url: "/actreg",
+                            type: "PUT",
+                            data: JSON.stringify(unsignupData),
+                            dataType: "json",
+                            contentType: "application/json",
+                            success: function (actReg) {
+                                checkActReg();
+                            },
+                            error(xhr, status, error) {
+                                console.error(status, error);
+                            }
+                        })
+                    }
+                });
+                break;
+            //防止用戶用F12搞事 報名成功 不可再報名
+            case 3:
+                return;
+            //曾經報名過但是取消了 現在再次申請報名 走update api
+            case 4:
+                Swal.fire({
+                    title: '人數',
+                    text: '剩餘名額: ' + actTotal,
+                    input: 'number',
+                    inputPlaceholder: '報名人數',
+                    inputAttributes: {
+                        min: 1,
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: '下一步',
+                    cancelButtonText: '取消',
+                }).then((result) => {
+                    if (result.isConfirmed && result.value) {
+                        Swal.fire({
+                            title: '報名原因',
+                            text: '請輸入報名原因',
+                            input: 'textarea',
+                            inputPlaceholder: '原因',
+                            showCancelButton: true,
+                            confirmButtonText: '送出',
+                            cancelButtonText: '取消',
+                        }).then((reasonResult) => {
+                            if (reasonResult.isConfirmed && reasonResult.value) {
+
+                                let numberOfPeople = {
+                                    actId: window.location.pathname.split('/')[2], //路徑有變動的話要改
+                                    regTotal: result.value,
+                                    regReason: reasonResult.value,
+                                    regStatus: 2
+                                }
+                                $.ajax({
+                                    url: '/actreg', //路徑有變動的話要改
+                                    type: 'PUT',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(numberOfPeople),
+                                    success: function (actReg) {
+                                        Swal.fire('報名成功!，您報名的人數：' + actReg.regTotal);
+
+                                        //報名完直接在判斷有沒有報名過 用來切換按鈕
+                                        checkActReg();
+                                    },
+                                    error: function (xhr, status, error) {
+                                        if (xhr.status === 400) {
+                                            Swal.fire("報名過了");
+                                        } else if (xhr.status === 405) {
+                                            Swal.fire("報名人數超過上限，請重新確認");
+                                        }
+                                    }
+                                });
+                            }
+                        })
+                    }
+                });
+        }
+    }
+
+    //判斷有沒有報名過此活動 -------------------------------------------------------------------------------
+    function checkActReg() {
+        let actId = window.location.pathname.split('/')[2];
+
+        $.ajax({
+            url: "/actreg/" + actId,
+            type: "GET",
+            // data: "",
+            dataType: "json",
+            contentType: "application/json",
+            success: function (actReg) {
+                console.log("報名過")
+
+                let addBtn = $("#addAct");
+                let regStatus = actReg.regStatus;
+
+                switch (regStatus) {
+                    case 1:   //1 = 報名未通過
+                        addBtn.data("actRegStatus", actReg.regStatus);
+                        addBtn.removeClass("btn-outline-danger");
+                        addBtn.addClass("btn-danger");
+                        addBtn.addClass("disabled");
+                        addBtn.text("報名未通過");
+                        break;
+
+                    case 2:   //2 = 報名了審核中
+                        addBtn.data("actRegStatus", actReg.regStatus);
+                        addBtn.removeClass("btn-outline-danger");
+                        addBtn.addClass("btn-danger");
+                        addBtn.text("取消報名");
+                        break;
+
+                    case 3:   //3 = 報名成功
+                        addBtn.data("actRegStatus", actReg.regStatus);
+                        addBtn.removeClass("btn-outline-danger");
+                        addBtn.addClass("btn-danger");
+                        addBtn.addClass("disabled");
+                        addBtn.text("報名成功");
+                        break;
+
+                    case 4:   //4 = 報名過 自己取消報名
+                        addBtn.data("actRegStatus", actReg.regStatus);
+                        addBtn.removeClass("btn-danger");
+                        addBtn.addClass("btn-outline-danger");
+                        addBtn.text("報名活動");
+                        break;
+                }
+
+                switch (actStatusData) {
+                    case 1:
+                        addBtn.removeClass("btn-outline-danger");
+                        addBtn.addClass("btn-danger");
+                        addBtn.addClass("disabled");
+                        addBtn.text("活動已結束");
+                        break;
+                    case 2:
+                        addBtn.removeClass("btn-outline-danger");
+                        addBtn.addClass("btn-danger");
+                        addBtn.addClass("disabled");
+                        addBtn.text("活動已取消");
+                        break;
+                    case 3:
+                        addBtn.removeClass("btn-outline-danger");
+                        addBtn.addClass("btn-danger");
+                        addBtn.addClass("disabled");
+                        addBtn.text("活動進行中");
+                        break;
+                }
+
+            },
+            error(xhr, sttus, error) {
+                console.log("沒報名過")
+                let addBtn = $("#addAct");
+                addBtn.data("actRegStatus", 0); //用來點擊報名活動判斷沒報名過用
+                addBtn.removeClass("btn-danger");
+                addBtn.addClass("btn-outline-danger");
+                addBtn.text("報名活動");
+
+                //判斷是不是自己的活動 是的話不能報名 user = 後端session, myActMemId = thymeleaf渲染來的主辦人ID
+                if (user === myActMemId) {
+                    addBtn.text("我的活動");
+                    addBtn.addClass("disabled");
+                    addBtn.removeClass("btn-outline-danger");
+                    addBtn.addClass("btn-dark");
+                }
+            }
+        })
+    }
+
+    //關注活動 -------------------------------------------------------------------------------
+    function followAct() {
+        let actFollow = {
+            actId: window.location.pathname.split('/')[2], //路徑有變動的話要改
+            folStatus: 2
+        }
+
+        $.ajax({
+            url: "/activity/actfollow", //路徑有變動的話要改
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(actFollow),
+            success: function (actFollow) {
+                Toast.fire({
+                    icon: 'success',
+                    title: '關注成功！'
+                })
+                $("#follow").text("已關注")
+            },
+            error: function (xhr, status, error) {
+                Swal.fire("關注失敗")
+            }
+        });
+    }
+
+    //取消關注活動 -------------------------------------------------------------------------------
+    function unFollowAct() {
+        let actFollow = {
+            actId: window.location.pathname.split('/')[2], //路徑有變動的話要改
+            folStatus: 1
+        }
+
+        $.ajax({
+            url: "/activity/unactfollow",
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(actFollow),
+            success: function (actFollow) {
+                Toast.fire({
+                    icon: 'success',
+                    title: '已取消關注！'
+                })
+                $("#follow").text("關注")
+            },
+            error: function (xhr, status, error) {
+                Swal.fire("取消關注失敗")
+            }
+        });
+    }
+
+    //切換關注活動按鈕顏色 -------------------------------------------------------------------------------
+    function follow() {
+        //關注
+        if ($("#follow").hasClass("btn btn-outline-primary")) {
+            $("#follow").removeClass("btn btn-outline-primary");
+            $("#follow").addClass("btn btn-primary");
+
+            followAct();
+        } else {
+            //取消關注
+            $("#follow").removeClass("btn btn-primary");
+            $("#follow").addClass("btn btn-outline-primary");
+
+            unFollowAct();
+        }
+    }
+
+    //查詢留言(用來判斷是不是自己的留言,是的話才顯示修改和刪除功能) ------------------------------------------------------
+    function checkComment(comId, nosee) {
+        $.ajax({
+            url: '/comments/' + comId,
+            type: 'GET',
+            contentType: 'application/json',
+            success: function (comment) {
+                nosee.show(); //是自己的留言 看的到修改和刪除功能`
+                // console.log(comId)
+                // console.log(nosee)
+            },
+            error(xhr, status, error) {
+            }
+
+        });
+    }
+
+    //顯示參與者 -------------------------------------------------------------------------------
+    function findMemAndPic() {
+        let memAndPicData = {
+            actId: window.location.pathname.split('/')[2],
+            isActPart: 2 //參加狀態
+        }
+        $.ajax({
+            url: "/actreg/members",
+            type: "GET",
+            contentType: "application/json",
+            data: memAndPicData,
+            dataType: "json",
+            success: function (memNameAndPics) {
+                let userHTML = "";
+                // console.log(memNameAndPics.length)
+                for (let i = 0; i <= 5 && i < memNameAndPics.length; i++) {
+                    //主辦人
+                    if (i === 0) {
+                        userHTML +=
+                            `<div class="col-md-2 mb-3 mt-3">
+                                <div class="p-3 shadow-sm bg-white border border-1 rounded text-center h-100">
+                                    <a class="text-decoration-none" href="/member?memId=${memNameAndPics[i].memId}"><img src="data:image/png;base64,${memNameAndPics[i].memPic}" class="pic img-fluid d-block mx-auto" style="width: 60px; height: auto">
+                                    </a>
+                                    <p class="star badge bg-primary text-wrap mt-2" data-mem-id="${memNameAndPics[i].memId}">
+                                    ${memNameAndPics[i].memName}
+                                    </p>
+                                </div>
+                            </div>`;
+                        //會員
+                    } else if (memNameAndPics.length > 1 && i !== 5) {
+                        userHTML +=
+                            `<div class="col-md-2 mb-3 mt-3">
+                                <div class="p-3 shadow-sm bg-white border border-1 rounded text-center h-100">
+                                    <a class="text-decoration-none" href="/member?memId=${memNameAndPics[i].memId}"><img src="data:image/png;base64,${memNameAndPics[i].memPic}" class="pic img-fluid d-block mx-auto" style="width: 60px; height: auto">
+                                    </a>
+                                    <p class="badge bg-primary text-wrap mt-2">${memNameAndPics[i].memName}</p>
+                                </div>
+                            </div>`;
+                    }
+                }
+                userHTML +=
+                    `<div class="col-md-2 mb-3 mt-3">
+                                <div class="p-3 shadow-sm bg-white border border-1 rounded text-center h-100">
+                                    <a class="allPeople text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#moreModal">
+                                         <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="black" class="bi bi-people-fill" viewBox="0 0 16 16">
+                                          <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                                        </svg>
+                                    </a><br>
+                                    <p class="badge bg-primary text-wrap mt-2">查看更多</p>
+                                </div>
+                           </div>`;
+                $("#add").html(userHTML);
+
+                $(".star").each(function () {
+                    if ($(this).data("memId") === 1) {
+                        $(this).html(star + $(this).text());
+                        $(this).removeClass("bg-primary");
+                        $(this).addClass("bg-danger");
+                    } else if ($(this).data("memId") === myActMemId) {
+                        $(this).html(light + $(this).text());
+                    }
+                });
+
+                $("#addPeople").text(`(${memNameAndPics.length})`);
+                // console.log(memNameAndPics.length)
+            },
+            error(xhr, status, error) {
+            }
+        })
+    }
+
+    //顯示所有參與者(同上) -------------------------------------------------------------------------------
+    $(document).on("click", ".allPeople", function () {
+
+        let memAndPicData = {
+            actId: window.location.pathname.split('/')[2],
+            isActPart: 2 //參加狀態
+        }
+        $.ajax({
+            url: "/actreg/members",
+            type: "GET",
+            contentType: "application/json",
+            data: memAndPicData,
+            dataType: "json",
+            success: function (memNameAndPics) {
+                let HTML = "";
+                let count = 0;
+                memNameAndPics.forEach(function (memNameAndPic) {
+                    if (count === 0) {
+                        HTML +=
+                            `<div class="shadow-sm d-flex justify-content-around m-3 border">
+                                <div class="">
+                                    <img src="data:image/png;base64,${memNameAndPic.memPic}" class="pic img-fluid rounded float-start" style="width: 60px; height: auto">
+                                </div>
+                                <div class="mt-3">
+                                    <p class="star badge bg-primary text-wrap m-0" data-mem-id="${memNameAndPic.memId}">
+                                        ${memNameAndPic.memName}
+                                    </p>
+                                </div>
+                                <div class="mt-3">
+                                    <button class="btn btn-secondary btn-sm" data-mem-id="${memNameAndPic.memId}" onclick="seeUser(this)">詳情</button>
+                                </div>
+                        </div>`;
+                    } else {
+                        HTML +=
+                            `<div class="shadow-sm d-flex justify-content-around m-3 border">
+                                <div class="">
+                                    <img src="data:image/png;base64,${memNameAndPic.memPic}" class="pic img-fluid rounded float-start" style="width: 60px; height: auto">
+                                </div>
+                                <div class="mt-3">
+                                    <p class="badge bg-primary text-wrap m-0">${memNameAndPic.memName}</p>
+                                </div>
+                                <div class="mt-3">
+                                    <button class="btn btn-secondary btn-sm" data-mem-id="${memNameAndPic.memId}" onclick="seeUser(this)">詳情</button>
+                                </div>
+                             </div>`;
+                    }
+                    count++;
+                });
+
+                $(".allUser").html(HTML);
+
+                $(".star").each(function () {
+                    if ($(this).data("memId") === 1) {
+                        $(this).html(star + $(this).text());
+                        $(this).removeClass("bg-primary");
+                        $(this).addClass("bg-danger");
+                        $(this).closest(".shadow-sm").find("button").remove();
+                    } else {
+                        $(this).html(light + $(this).text());
+                    }
+                });
+
+            },
+            error: function () {
+
+            }
+
+        });
+    });
+
+    // 查看會員個人頁面 -------------------------------------------------------------------------------
+    function seeUser(e) {
+        ``
+        let memId = $(e).data("memId");
+        window.location.href = `/member/?memId=${memId}`; //乃元版本
+    }
+
+    //隨機推薦4個活動 -------------------------------------------------------------------------------
+    function showFourAct() {
+        let actTypeId = $(".actType").data("actTypeId");
+
+        $.ajax({
+            url: '/activity/random',
+            type: 'GET',
+            data: {
+                actTypeId: actTypeId,
+                actId: window.location.pathname.split('/')[2], //路徑有變動的話要改
+            },
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (actLists) {
+                let actHTML = "";
+
+                actLists.forEach(function (actList) {
+                    actHTML +=
+                        `<div class="col bg-light">
+                            <div class="card no-border h-100 fourAct">
+                                <img src="data:image/png;base64,${actList.actPic}" class="card-img-top h-50" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title fw-bold">${actList.actName}</h5>
+                                        <p class="card-text">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="brown"
+                                                 class="bi bi-pin-map" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                      d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8z"/>
+                                                <path fill-rule="evenodd"
+                                                      d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/>
+                                            </svg>
+                                        地點:${actList.actLoc}
+                                        </p>
+                                        <p class="descr card-text">簡介:${actList.actDescr}</p>
+                                        <hr>
+                                        <small class="card-text">活動開始時間:${actList.actStartTime}</small><br>
+                                        <small class="card-text">活動結束時間:${actList.actEndTime}</small>
+                                        <div class="d-flex justify-content-end">
+                                          <button class="btn btn-outline-secondary" data-act-id="${actList.actId}" onclick="seeDetails(this)">詳情</button>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>`;
+                });
+                $(".random").html(actHTML);
+
+                //只顯示10個字，後面的用...替代
+                $(".descr").each(function () {
+                    let text = $(this).text();
+                    if (text.length > 10) {
+                        $(this).text(text.substring(0, 10) + "...");
+                    }
+                })
+            },
+            error() {
+
+            }
+        });
+    }
+
+    //推薦活動滑鼠效果 -------------------------------------------------------------------------------
+    $(document).on("mousemove", ".fourAct", function () {
+        $(this).addClass("shadow")
+    })
+    $(document).on("mouseleave", ".fourAct", function () {
+        $(this).removeClass("shadow")
+    })
+
+    //查看活動詳情 -------------------------------------------------------------------------------
+    function seeDetails(e) {
+        let actId = $(e).data("actId");
+        window.location.href = `/activity/${actId}`;
+    }
+
+    //Sweetalart2 -------------------------------------------------------------------------------
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000,
+        onOpen: toast => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    //以下為google map -------------------------------------------------------------------------------
+    let actLoc = $("#actLoc").text();
+
+    function showAddressOnMap() {
+        getCoordinates(actLoc, function (coords) {
+            if (coords) {
+                initMap(coords.lat, coords.lng);
+            } else {
+                $("#map").hide(); //無法定位就隱藏google map
+            }
+        });
+    }
+
+    function getCoordinates(actLoc, callback) {
+        $.ajax({
+            url: 'https://maps.googleapis.com/maps/api/geocode/json',
+            data: {
+                address: actLoc,
+                key: 'AIzaSyBjHlN8i2-4cw4QDuaPgyctq7OX1n6c6ls' // 替换为您的 API 密钥
+            },
+            success: function (data) {
+                if (data.status === 'OK') {
+                    callback(data.results[0].geometry.location); // 返回坐标
+                } else {
+                    callback(null);
+                }
+            },
+            error: function () {
+                callback(null);
+            }
+        })
+    }
+
+    let map;
+    let marker;
+
+    function initMap(lat, lng) {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {
+                lat: lat,
+                lng: lng
+            },
+            zoom: 15,
+            gestureHandling: "none",
+            disableDefaultUI: true
+        });
+        marker = new google.maps.Marker({
+            position: {
+                lat: lat,
+                lng: lng
+            },
+            map: map
+        });
+    }
+
+    //以下為天氣預報 -------------------------------------------------------------------------------
+    function getWeather() {
+
+        $.ajax({
+            url: '/weather',
+            type: 'GET',
+            data: {
+                locationName: actLoc
+            },
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (weatherJson) {
+                let weatherHTML = "";
+
+                let description = weatherJson.weather[0].description; //天氣狀況
+                let temp = weatherJson.main.temp; //當前氣溫
+                let feelsLike = weatherJson.main.feels_like; //體感溫度
+                let tempMin = weatherJson.main.temp_min; //最低溫
+                let tempMax = weatherJson.main.temp_max; //最高溫
+                let humidity = weatherJson.main.humidity; //濕度(百分比)
+                let visibility = weatherJson.visibility; //能見度(單位:米)
+                let speed = weatherJson.wind.speed; //風速
+                let icon = weatherJson.weather[0].icon;
+
+                weatherHTML =
+                    `<h5 class="card-title">活動地區當前氣象:</h5>
+                            <p class="card-text">天氣狀況: ${description}
+                                <img src="https://openweathermap.org/img/w/${icon}.png" alt="icon">
+                            </p>
+                            <p class="card-text">當前溫度: ${temp}°C</p>
+                            <p class="card-text">體感溫度: ${feelsLike}°C</p>
+                            <p class="card-text">最低溫度: ${tempMin}°C</p>
+                            <p class="card-text">最高溫度: ${tempMax}°C</p>
+                            <p class="card-text">濕度: ${humidity}%</p>
+                            <p class="card-text">能見度: ${visibility}米</p>
+                            <p class="card-text">風速: ${speed}</p>`;
+
+                $("#weather").html(weatherHTML);
+            },
+            error: function () {
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

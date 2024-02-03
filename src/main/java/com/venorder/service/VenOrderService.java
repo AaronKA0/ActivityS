@@ -54,6 +54,7 @@ public class VenOrderService{
         List<VenOrderVO> VenOrders = repository.getLessDay(orderDate);
         return VenOrders; 
     }
+
 	
 	
 	// Nathan
@@ -65,4 +66,5 @@ public class VenOrderService{
 		}
 		return orders;
     }
+
 }

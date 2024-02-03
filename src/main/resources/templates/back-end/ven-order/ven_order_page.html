@@ -4,25 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<link rel="stylesheet" th:href="@{/back-end/css/emp_Index.css}">
-<link rel="stylesheet" th:href="@{/back-end/css/data_table.css}">
+<link rel="stylesheet" th:href="@{/back-end/emp_Index/css/emp_Index.css}">
+<link rel="stylesheet" th:href="@{/back-end/07/css/listAll.css}">
+<link rel="stylesheet" th:href="@{/back-end/07/css/data_table.css}">
 
-<title>場地訂單 - ven_order_page.html</title>
-
-<style type="text/css">
-    header {
-        z-index: 100 !important;
-    }
-    
-    main.main{
-        z-index: 1!important;
-        text-align: center !important;
-    }
-
-    th.th_title{
-        text-align: center !important;
-    }
-</style>
+<title>場地訂單</title>
 
 </head>
 <body>
@@ -54,7 +40,7 @@
           <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
-          <a href="新增公告.html">公告管理</a>
+          <a th:href="@{/back_end/announcement/ann_page}">公告管理</a>
           <a href="新增FAQ.html">FQA管理</a>
         </div>
         <hr>
@@ -62,8 +48,8 @@
           <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
-          <a href="查詢會員.html">查詢會員</a>
-          <a href="產生會員通知訊息.html">產生通知訊息</a>
+          <a th:href="@{/membership/select_page}">查詢會員</a>
+          <a th:href="@{/back_end/notify/notify_page}">會員通知管理</a>
           <a href="#">審核會員檢舉</a>
         </div>
         <hr>
@@ -81,7 +67,7 @@
         <div class="dropdown-container">
           <a href="新增場地.html">場地管理</a>
           <a th:href="@{/back_end/ven-order/ven_order_page}">場地訂單管理</a>
-          <a th:href="@{/back_end/ven-closed/listAllVenClosed}">場地狀態管理</a>
+          <a th:href="@{/back_end/ven-closed/ven_closed_date}">場地狀態管理</a>
         </div>
       </div>
 
@@ -90,36 +76,36 @@
 
 <main class="main">
 <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top">
-         <div style="text-align: left; width: 1000px; margin-left: auto; margin-right: auto; display: flex; justify-content: space-between;"> 
+         <div class="title"> 
               <div> <h2>場地訂單</h2></div>
-              <div> <h4><a class="navbar-brand" href='addVenOrder' style="color: blue; background-color: #b0c4de; text-decoration: none; padding: 5px; box-shadow: 3px 3px black;">新增資料</a></h4></div>
+              <div> <h4><a class="navbar-brand" href='addVenOrder'>新增訂單</a></h4></div>
          </div>
 </nav>
 
-<table id="example" class="display" style="width:100%; white-space: nowrap; display: block; overflow-x: auto;">
+<table style="display: block;" id="example" class="display">
         <thead>
             <tr>
                 <th class="th_title">查看</th>
-                <th class="th_title">修改</th>
+<!--            <th class="th_title">修改</th> -->
                 <th class="th_title">訂單編號</th>
 				<th class="th_title">場地</th>
 				<th class="th_title">會員帳號</th>
-				<th class="th_title">員工編號</th>
+				<th class="th_title">負責員工</th>
 				<th class="th_title">預約日期</th>
 				<th class="th_title">手機號碼</th>
-				<th class="th_title">活動概述</th>
-				<th class="th_title">預估人數</th>
-				<th class="th_title">公司統編</th>
-				<th class="th_title">訂單成立時間</th>
+<!-- 		    <th class="th_title">活動概述</th> -->
+<!-- 			<th class="th_title">預估人數</th> -->
+<!-- 			<th class="th_title">公司統編</th> -->
+<!-- 			<th class="th_title">訂單成立時間</th> -->
 				<th class="th_title">付款方式</th>
-				<th class="th_title">會員轉帳帳號</th>
-				<th class="th_title">信用卡卡號</th>
+<!-- 			<th class="th_title">會員轉帳帳號</th> -->
+<!-- 			<th class="th_title">信用卡卡號</th> -->
 				<th class="th_title">訂單狀態</th>
 				<th class="th_title">租借狀態</th>
-				<th class="th_title">使用評分</th>
-				<th class="th_title">使用評論</th>
-				<th class="th_title">評論狀態</th>
-				<th class="th_title">評論時間</th>
+<!-- 			<th class="th_title">使用評分</th> -->
+<!-- 			<th class="th_title">使用評論</th> -->
+<!-- 			<th class="th_title">評論狀態</th> -->
+<!-- 			<th class="th_title">評論時間</th> -->
 				<th class="th_title">場地訂金</th>
             </tr>
         </thead>
@@ -129,37 +115,37 @@
                 
                     <td>
                        <form method="post" th:action="@{getOne_For_Display}" style="margin-bottom: 0px;">
-                            <input style="color: blue; font-weight: bold;" type="submit" value="查看">
+                            <input class="getOne-button" type="submit" value="查看">
                             <input type="hidden" name="venOrderId" th:value="${venOrderVO.venOrderId}">
                        </form>
                     </td>
                     
-                    <td>
-                       <form method="post" th:action="@{getOne_For_Update}" style="margin-bottom: 0px;">
-                            <input style="color: red; font-weight: bold;" type="submit" value="修改">
-                            <input type="hidden" name="venOrderId" th:value="${venOrderVO.venOrderId}">
-                       </form>
-                    </td>
+<!--                <td> -->
+<!--                   <form method="post" th:action="@{getOne_For_Update}" style="margin-bottom: 0px;"> -->
+<!--                        <input style="color: red; font-weight: bold;" type="submit" value="修改"> -->
+<!--                        <input type="hidden" name="venOrderId" th:value="${venOrderVO.venOrderId}"> -->
+<!--                   </form> -->
+<!--                </td> -->
                          
 	                <td th:text="${venOrderVO.venOrderId}"></td>
 	                <td th:text="${venOrderVO.venVO.venName}"></td>
-	                <td th:text="${venOrderVO.memId}"></td>
+	                <td th:text="${venOrderVO.memVO.memName}"></td>
 	                <td th:text="${venOrderVO.empId}"></td>
 	                <td th:text="${venOrderVO.orderDate}"></td>
 	                <td th:text="${venOrderVO.memPhone}"></td>
-	                <td th:text="${venOrderVO.actDescr}"></td>
-	                <td th:text="${venOrderVO.userCount}"></td>
-	                <td th:text="${venOrderVO.memTaxid}"></td>
-	                <td th:text="${venOrderVO.orderTime}"></td>
+<!-- 	            <td th:text="${venOrderVO.actDescr}"></td> -->
+<!-- 	            <td th:text="${venOrderVO.userCount}"></td> -->
+<!-- 	            <td th:text="${venOrderVO.memTaxid}"></td> -->
+<!-- 	            <td th:text="${venOrderVO.orderTime}"></td> -->
 	                <td th:text="${venOrderVO.orderPayType}"></td>
-	                <td th:text="${venOrderVO.memTransferNum}"></td>
-	                <td th:text="${venOrderVO.memCreditNum}"></td>
+<!-- 	            <td th:text="${venOrderVO.memTransferNum}"></td> -->
+<!-- 	            <td th:text="${venOrderVO.memCreditNum}"></td> -->
 	                <td th:text="${venOrderVO.orderStatus}"></td>
 	                <td th:text="${venOrderVO.venRentStatus}"></td>
-	                <td th:text="${venOrderVO.venRating}"></td>
-	                <td th:text="${venOrderVO.venCom}"></td>
-	                <td th:text="${venOrderVO.venComStatus}"></td>
-	                <td th:text="${venOrderVO.venComTime}"></td>
+<!-- 	            <td th:text="${venOrderVO.venRating}"></td> -->
+<!-- 	            <td th:text="${venOrderVO.venCom}"></td> -->
+<!-- 	            <td th:text="${venOrderVO.venComStatus}"></td> -->
+<!-- 	            <td th:text="${venOrderVO.venComTime}"></td> -->
 	                <td th:text="${venOrderVO.venResFee}"></td>
 	                
                 </tr>
@@ -168,26 +154,26 @@
         <tfoot>
             <tr>
                 <th class="th_title">查看</th>
-                <th class="th_title">修改</th>
+<!--            <th class="th_title">修改</th> -->
                 <th class="th_title">訂單編號</th>
                 <th class="th_title">場地</th>
                 <th class="th_title">會員帳號</th>
-                <th class="th_title">員工編號</th>
+                <th class="th_title">負責員工</th>
                 <th class="th_title">預約日期</th>
                 <th class="th_title">手機號碼</th>
-                <th class="th_title">活動概述</th>
-                <th class="th_title">預估人數</th>
-                <th class="th_title">公司統編</th>
-                <th class="th_title">訂單成立時間</th>
+<!--            <th class="th_title">活動概述</th> -->
+<!--            <th class="th_title">預估人數</th> -->
+<!--            <th class="th_title">公司統編</th> -->
+<!--            <th class="th_title">訂單成立時間</th> -->
                 <th class="th_title">付款方式</th>
-                <th class="th_title">會員轉帳帳號</th>
-                <th class="th_title">信用卡卡號</th>
+<!--            <th class="th_title">會員轉帳帳號</th> -->
+<!--            <th class="th_title">信用卡卡號</th> -->
                 <th class="th_title">訂單狀態</th>
                 <th class="th_title">租借狀態</th>
-                <th class="th_title">使用評分</th>
-                <th class="th_title">使用評論</th>
-                <th class="th_title">評論狀態</th>
-                <th class="th_title">評論時間</th>
+<!--            <th class="th_title">使用評分</th> -->
+<!--            <th class="th_title">使用評論</th> -->
+<!--            <th class="th_title">評論狀態</th> -->
+<!--            <th class="th_title">評論時間</th> -->
                 <th class="th_title">場地訂金</th>
             </tr>
         </tfoot>
@@ -196,10 +182,10 @@
 </main>
 
 
-<script th:src="@{/back-end/js/jquery-3.7.0.js}"></script>
-<script th:src="@{/back-end/js/emp_Index.js}"></script>
-<script th:src="@{/back-end/js/data_table.js}"></script>
-<script th:src="@{/back-end/js/data_table_menu.js}"></script>
+<script th:src="@{/back-end/07/js/jquery-3.7.0.js}"></script>
+<script th:src="@{/back-end/emp_Index/js/emp_Index.js}"></script>
+<script th:src="@{/back-end/07/js/data_table.js}"></script>
+<script th:src="@{/back-end/07/js/data_table_menu.js}"></script>
 
 </body>
 </html>

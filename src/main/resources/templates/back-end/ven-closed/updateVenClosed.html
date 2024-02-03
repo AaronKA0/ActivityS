@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>修改場地不開放資料</title>
+
+<link rel="stylesheet" th:href="@{/back-end/07/css/update.css}">
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+         <div align="center"> <h2>修改場地不開放資料</h2></div>
+         
+         <div class="nav-content">
+              
+              <div>
+                  <a class="back" th:href="@{/back_end/ven-closed/ven_closed_date}">
+                      <<<<<< 回查詢頁</a>
+              </div>
+              
+         </div>
+</nav>
+
+    <div align="center">
+
+        <div id="center" align="center">
+        <form th:action="@{update}" method="post" th:object="${venClosedVO}" enctype="multipart/form-data">
+            
+            <div>
+                <span class="title">編號:</span>
+                <input class="immutable" type="text" th:field="*{closedDateId}" readonly/><br/>
+            </div>
+                
+            <div>
+                <span class="title">場地:</span>
+                <select th:field="*{venVO.venId}">
+                    <option th:each="venVO : ${venListData}" th:value="${venVO.venId}" th:text="${venVO.venName}" />
+                </select><br/>
+            </div>    
+            
+            <div>
+                <span class="title">不開放日期:</span>
+                <input type="date" th:field="*{closedDate}" onclick="hideContent('closedDate.errors');"/><br/>
+                <span  th:if="${#fields.hasErrors('closedDate')}" th:errors="*{closedDate}" class="error" id="closedDate.errors"></span>
+            </div>
+            
+            <div class="text_block">
+                <span class="title">不開放原因:</span>
+                <textarea class="texthighter" th:field="*{closedReason}" onclick="hideContent('closedReason.errors');"/></textarea><br/> 
+            </div>
+                <span  th:if="${#fields.hasErrors('closedReason')}" th:errors="*{closedReason}" class="error" id="closedReason.errors"></span><br/>   
+                
+            <div class="submit_button">
+                <button type="submit">確認修改</button>
+            </div>    
+             
+       </form>
+       </div>
+
+       <span class="extra_error" th:text="${hasOrder}"></span>
+    </div>
+    
+    
+<script type="text/javascript">
+
+    //清除提示信息
+    function hideContent(d) {
+        document.getElementById(d).style.display = "none";     
+    }
+
+</script>
+
+
+</body>
+</html>

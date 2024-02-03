@@ -19,10 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.notify.model.NotifyVO;
 import com.notify.service.NotifyService;
+import com.notify.service.NotifyWebSocket;
 
 
 @Controller
-@RequestMapping("/notify")
+@RequestMapping("/back_end/notify")
 public class NotifyController {
 
     @Autowired
@@ -47,7 +48,7 @@ public class NotifyController {
         List<NotifyVO> list = notifySvc.getAll();
         model.addAttribute("notifyListData", list);
         model.addAttribute("success", "- (新增成功)");
-        return "redirect:/notify/listAllNotify";
+        return "redirect:/back_end/notify/notify_page";
     }
 
     

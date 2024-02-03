@@ -1,0 +1,71 @@
+*{
+    box-sizing: border-box;
+}
+
+.nav-content {
+    display: flex; 
+    align-items: center; 
+    justify-content: space-around; 
+    margin-bottom: 20px;
+}
+
+a.back {
+	text-decoration: none; 
+	font-weight: bold;
+}
+
+div.has_two {
+    display: flex;
+    justify-content: center;
+    align-items: top !important;
+}
+
+span {
+    display: inline-block;
+    width: 300px;
+    text-align: left;
+    font-weight: bold;
+    margin: 10px 20px 10px 0px;
+}
+
+span.title {
+   width: 150px;
+   margin-right: 0px;
+}
+
+textarea{
+	background-color: lightgray; 
+    border: none;
+    border-radius: 5px;
+    resize: none;
+    outline: none;
+    width: 300px;
+    height: 65px;
+    margin-right: 20px;
+    margin-left: 3px;
+    font-weight: bold;
+    padding: 5px;
+    vertical-align: bottom;
+}
+
+div.text_block {
+	display: flex; 
+	align-items: top; 
+	justify-content: center;
+}
+
+textarea.texthighter {
+	height: 100px;
+}
+
+button {
+    color: red;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.submit_button{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}

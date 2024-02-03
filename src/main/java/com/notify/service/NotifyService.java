@@ -35,10 +35,34 @@ public class NotifyService{
 		return repository.findAll();
 	}
 	
+	
+	// 標題查詢
 	public List<NotifyVO> findByTitle(String notifyTitle) {
         List<NotifyVO> notifies = repository.findByTitle(notifyTitle);
         return notifies;    
     }
+	
+	// 會員個人通知查詢
+	public List<NotifyVO> findByMemId(Integer memId) {
+        List<NotifyVO> notifies = repository.findByMemId(memId);
+        return notifies;    
+    }
+	
+	// 會員通知未讀查詢
+	public List<NotifyVO> findUnread(Integer memId) {
+	    List<NotifyVO> notifies = repository.findUnread(memId);
+	    return notifies;    
+	}
+	
+	// 會員已讀通知
+	public List<NotifyVO> readAll(Integer memId) {
+	    List<NotifyVO> notifies = repository.findUnread(memId);
+	    for (NotifyVO notify : notifies) {
+	        notify.setNotifyStatus((byte)2);
+	        repository.save(notify);        
+	    }
+	    return repository.findAll();    
+	}
 
 	
 	
