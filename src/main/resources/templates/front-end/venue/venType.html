@@ -328,6 +328,7 @@
 <script>
 
 $(document).ready(async function(){
+
 	await getAll();
 	if(user && user !== ""){
 		   await getMemInfo(user);
@@ -727,69 +728,7 @@ function getPrice() {
        document.getElementById('viewPrice').innerHTML = '$ '+ halfprice +' .US';
    }
    
-}
-
-
-
-
-
-// 	var id = $("#sessionId").val();
-// 	$("#memId").val(id);
-	
-// 	// 取得單一場地詳情資訊
-//     async function getVen(name){
-//         await fetch("/front_end/venue/venType",{
-//             method: "POST",
-//             body: JSON.stringify({venName: name})
-//         }).then(function(response){;
-//             return response.json();
-//         }).then(function(ven){     
-//             // 清除清單內容
-//             $("#ven-name").html("");
-//             $("#ven-name").html(`${ven.venName}`);
-//             $("#ven-photo").attr("src", "");
-//             $("#ven-photo").attr("src", `data:image/jpeg;base64,${ven.venPic}`);
-//             $("#ven-location").html("");
-//             $("#ven-location").html(`地點：${ven.venLoc}`);
-//             $("#ven-descr").html("");
-//             $("#ven-descr").html(`${ven.venDescr}`);
-//             $("#ven-price").html("");
-//             $("#ven-price").html(`租金：＄${ven.venPrice} / 天`);
-                       
-//             $("#ven-star").html("");
-//             $("#ven-star").html(`${ven.venTotRating}`);
-            
-//             let starcount = ven.venTotRating;
-//             $(".star_block span").each(function(){
-//             	$(this).empty();
-//             	$(this).removeClass("-on");
-//                 if (starcount >= 1){
-//                 	$(this).addClass("-on");
-//                 	$(this).append(`<i class="fas fa-star"></i>`);
-//                 } else if(starcount > 0){ 
-//                     $(this).addClass("-on");
-//                     $(this).append(`<i class="fa-solid fa-star-half"></i>`);
-//                 } else {
-//                 	$(this).append(`<i class="fas fa-star"></i>`);
-//                 }
-//                 starcount--;
-                
-//             });
-            
-//             getVenCom(ven.venId);
-            
-//             let halfprice = parseFloat(ven.venPrice/2);
-//             $(".venResFee").html("");
-//             $(".venResFee").html(`＄${halfprice}`);
-//             $("#halfprice").val(halfprice);
-//             $("input#venueId").val(ven.venId);
-
-//         }).catch(function(err){
-//             console.log(err);
-//         }); 
-//     }
-
-	
+}	
 
   </script>
 </body>

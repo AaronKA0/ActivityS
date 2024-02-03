@@ -10,7 +10,7 @@ import com.venorder.model.VenOrderVO;
 
 public interface VenOrderRepository extends JpaRepository<VenOrderVO, Integer>{
 
-    @Query(value = "from VenOrderVO order by orderDate desc")
+    @Query(value = "from VenOrderVO order by orderTime desc")
     List<VenOrderVO> findAll();
     
     @Query(value = "from VenOrderVO where orderDate =:orderDate")

@@ -86,14 +86,14 @@
         <thead>
             <tr>
                 <th class="th_title">查看</th>
-				<th class="th_title">租借狀態</th>
-				<th class="th_title">訂單狀態</th>
-				<th class="th_title">預約日期</th>
-                <th class="th_title">訂單編號</th>
-				<th class="th_title">場地</th>
-				<th class="th_title">會員帳號</th>
-				<th class="th_title">手機號碼</th>
-				<th class="th_title">場地訂金</th>
+                <th class="th_title">租借狀態</th>
+                <th class="th_title">訂單狀態</th>
+                <th class="th_title">成立時間</th>
+                <th class="th_title">場地</th>
+                <th class="th_title">預約日期</th>
+                <th class="th_title">會員帳號</th>
+                <th class="th_title">手機號碼</th>
+                <th class="th_title">場地訂金</th>
             </tr>
         </thead>
         <tbody>
@@ -154,10 +154,10 @@
                        </form>
 	                </td>
 	                
-	                <td th:text="${venOrderVO.orderDate}"></td>
-	                <td th:text="${venOrderVO.venOrderId}"></td>
+	                <td th:text="${#dates.format(venOrderVO.orderTime, 'yyyy-MM-dd')}"></td>
 	                <td th:text="${venOrderVO.venVO.venName}"></td>
-	                <td th:text="${venOrderVO.memVO.memName}"></td>
+	                <td th:text="${venOrderVO.orderDate}"></td>
+	                <td th:text="${venOrderVO.memVO.memId+' / '+venOrderVO.memVO.memName}"></td>
 	                <td th:text="${venOrderVO.memPhone}"></td>
 	                <td th:text="${venOrderVO.venResFee}"></td>
 	                
@@ -169,9 +169,9 @@
                 <th class="th_title">查看</th>
                 <th class="th_title">租借狀態</th>
                 <th class="th_title">訂單狀態</th>
-                <th class="th_title">預約日期</th>
-                <th class="th_title">訂單編號</th>
+                <th class="th_title">成立時間</th>
                 <th class="th_title">場地</th>
+                <th class="th_title">預約日期</th>
                 <th class="th_title">會員帳號</th>
                 <th class="th_title">手機號碼</th>
                 <th class="th_title">場地訂金</th>
