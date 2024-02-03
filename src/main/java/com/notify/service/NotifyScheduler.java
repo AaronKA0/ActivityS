@@ -2,6 +2,7 @@ package com.notify.service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -40,7 +41,13 @@ public class NotifyScheduler {
 //        
 //        List<MembershipVO> memVO = memSrv.getAll();
 //        
-//        notifyNow.sendNotifyNow(memVO, "系統通知", "通知成功成功成功");
+//        Set<MembershipVO> memVOset = new HashSet<>();
+//        
+//        for(MembershipVO mem : memVO) {
+//            memVOset.add(mem);
+//        }
+//        
+//        notifyNow.sendNotifyNow(memVOset, "系統通知", "通知成功成功成功");
 //        
 //        Integer memId = null;
 //        Date orderDate = null;
