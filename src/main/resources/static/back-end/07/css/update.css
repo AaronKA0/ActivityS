@@ -2,10 +2,6 @@
     box-sizing: border-box;
 }
 
-body {
-    background-color: #b0c4de;
-}
-
 .nav-content {
 	display: flex; 
 	align-items: center; 
@@ -32,6 +28,9 @@ div.has_two {
 
 form {
     text-align: left;
+    padding: 5px;
+    border-radius: 8px;
+    background-color: #dcdcdc;
 }
 
 input,
@@ -43,6 +42,12 @@ select {
     padding: 5px;
     margin-right: 20px;
     font-weight: bold;
+}
+
+option {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 3px;
 }
 
 textarea {
@@ -84,7 +89,7 @@ span.error {
 }
 
 .immutable {
-    background-color: #b0c4de;
+    background-color: #dcdcdc;
     border: 2px solid white;
     border-radius: 5px;
     color: gray;

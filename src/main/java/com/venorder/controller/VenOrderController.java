@@ -1,6 +1,7 @@
 package com.venorder.controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,7 +78,17 @@ public class VenOrderController {
         if (result.hasErrors()) {
             return "back-end/ven-order/updateVenOrder";
         }
+        
+        // 檢查選擇日期該場地是否已有預訂
+        Date date = venOrderVO.getOrderDate();
+        List<VenVO> VenCanOrder = venSvc.pickByOrderDate(date);
+        
+        if( !(VenCanOrder.contains( venOrderVO.getVenVO() )) ) {
+            model.addAttribute("hasOrder", date + "已無法預訂");
+            return "back-end/ven-order/updateVenOrder";
+        }
 
+        
         venOrderSvc.updateVenOrder(venOrderVO);
 
         model.addAttribute("success", "- (修改成功)");
@@ -92,6 +103,14 @@ public class VenOrderController {
         List<VenVO> list = venSvc.getAll();
         return list;
     } 
+    
+    @ModelAttribute("venOnListData")
+    protected List<VenVO> venOnListData(Model model) {        
+        List<VenVO> list = venSvc.getVenueOn();
+        return list;
+    } 
+    
+    
     
     
     // 去除BindingResult中某個欄位的FieldError紀錄

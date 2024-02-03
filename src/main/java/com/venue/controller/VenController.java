@@ -62,8 +62,8 @@ public class VenController {
     
     
     @RequestMapping("all")
-    public @ResponseBody List<VenVO> getAll(){        
-        return venSvc.getAll();
+    public @ResponseBody List<VenVO> getVenueOn(){        
+        return venSvc.getVenueOn();
     }
     
     
