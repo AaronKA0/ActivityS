@@ -321,6 +321,10 @@
     /*<![CDATA[*/
     let user = /*[[${session.memId}]]*/'';
     /*]]>*/
+    /*<![CDATA[*/
+    let venReady = /*[[${venVO}]]*/'';
+    /*]]>*/
+    
 </script>
 
 
@@ -350,15 +354,19 @@ async function getAll(){
             return response.json();
         }).then(function(vens){     
             if(vens.length > 0){
-            	// 顯示第一筆場地資訊
-                getVen(vens[0].venName);
-//                 getVenCom(vens[0].venId);
-                
                 $("#ven-user").html("");   
                 $("#ven-user").append(`<option value="" selected>請選擇場地</option>`);
                 for(let ven of vens){
                     $(".form-select").append(`<option value="${ven.venName}">${ven.venName}</option>`);                       
                 }
+                
+            	if(venReady){
+            		getVen(venReady.venName);
+            		$("#venuepicker").val(venReady);
+            	}else {
+	            	// 顯示第一筆場地資訊
+	                getVen(vens[0].venName);
+            	}
             } else {
             	$("#venuepicker").html("");  
                 $("#venuepicker").append(`<option value="" selected>無場地可租用</option>`);

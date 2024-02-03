@@ -13,15 +13,16 @@
 
     <div class="wrapper">
         <h3>場地使用滿意度</h3>
-<!--    <form id="" th:action="@{feedback}" method="post" th:object="${venOrderVO}"> -->
+<!--    <form id="feedback_form" th:action="@{feedback}" method="post" th:object="${venOrderVO}"> -->
             <div class="rating">
 <!--            <input id="venRating" th:field="*{venRating}" type="hidden" name="rating" value=""> -->
-                <i class='bx bx-star star' style="--i: 0;"></i>
-                <i class='bx bx-star star' style="--i: 1;"></i>
-                <i class='bx bx-star star' style="--i: 2;"></i>
-                <i class='bx bx-star star' style="--i: 3;"></i>
-                <i class='bx bx-star star' style="--i: 4;"></i>
+                <i id="star" class='bx bx-star star' style="--i: 0;" data-star="1"></i>
+                <i id="star" class='bx bx-star star' style="--i: 1;" data-star="2"></i>
+                <i id="star" class='bx bx-star star' style="--i: 2;" data-star="3"></i>
+                <i id="star" class='bx bx-star star' style="--i: 3;" data-star="4"></i>
+                <i id="star" class='bx bx-star star' style="--i: 4;" data-star="5"></i>
             </div>
+            <span id="rating_error"></span>
 <!--             <textarea id="vencom" th:field="*{venCom}" name="opinion" cols="30" rows="5" placeholder="您的回饋..."></textarea> -->
             <div class="btn-group">
                 <button type="submit" class="btn submit">確認</button>
@@ -38,20 +39,24 @@
 
 $(document).ready(function() {
     
-    $("#taxid").focus(function(){
-        $("#taxid_error").hide();
+    $("div.rating").on("click", "i#star", function(){
+    	let star_data = parseInt($(this).attr("data-star"));
+    	$("input#venRating").val("");
+    	$("input#venRating").val(star_data);
+    	$("#rating_error").hide();
     });
+	
     
-    $(".bookingform").submit(function() {
+    $("#feedback_form").submit(function() {
         
         var venRatingValue = $("#venRating").val();
         
-        if ((/^\d{8}$/.test(taxidValue.trim())) || taxidValue.trim() == "") {
-            $("#taxid_error").hide();
-            return true;
-        } else {
-            $("#taxid_error").text("統一編號輸入錯誤").show();
+        if (venRatingValue == 0) {
+            $("#rating_error").text("請給予評分").show();
             return false;
+        } else {
+            $("#rating_error").hide();
+            return true;
         }
     });
     
