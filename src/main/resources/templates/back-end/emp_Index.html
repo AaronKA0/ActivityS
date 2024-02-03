@@ -31,7 +31,6 @@ img.logo {
 		<h1>【做伙後台管理系統】</h1>
 		
 		<p>歡迎您，
-		<span th:text="${empName}">員工名稱</span> -
         <span id="deptNumber" th:text="${deptno}" style="display: none;">部門編號</span>
 		<span th:text="${dname}">部門名稱</span>
 		</p>
@@ -93,7 +92,8 @@ img.logo {
 					活動功能管理 <i class="fa fa-caret-down"></i>
 				</button>
 				<div class="dropdown-container">
-					<a href="#">審核活動管理</a> <a href="#">審核留言管理</a>
+					<a th:href="@{/emp_Index/report}">審核活動管理</a> 
+					<a th:href="@{/emp_Index/commentreport}">審核留言管理</a>
 				</div>
 				<hr>
 				</div>
