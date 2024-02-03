@@ -17,20 +17,11 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 public class RedisConfig {
-	
-	@Bean(name = "lettuceConnectionFactory")
-	@Primary
-    public LettuceConnectionFactory redisConnectionFactory() {
-        LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory();
-        lettuceConnectionFactory.setDatabase(1); // 指定存到DB1
-        lettuceConnectionFactory.afterPropertiesSet(); // 初始化
-        return lettuceConnectionFactory;
-    }
-	
-    @Bean(name = "commentRedisTemplate")
-    public RedisTemplate<String, CommentVO> redisTemplate(@Qualifier("lettuceConnectionFactory")LettuceConnectionFactory redisConnectionFactory) {
+
+    @Bean
+    public RedisTemplate<String, CommentVO> redisTemplate(RedisConnectionFactory connectionFactory ) {
         RedisTemplate<String, CommentVO> template = new RedisTemplate<>();
-        template.setConnectionFactory(redisConnectionFactory);
+        template.setConnectionFactory(connectionFactory);
 
         // 设置key的序列化方式
         template.setKeySerializer(new StringRedisSerializer());
@@ -46,9 +37,9 @@ public class RedisConfig {
     }
 
     @Bean(name = "redisTemplateForObject")
-    public RedisTemplate<String, Object> redisTemplateForObject(@Qualifier("lettuceConnectionFactory")LettuceConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<String, Object> redisTemplateForObject(RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(redisConnectionFactory);
+        template.setConnectionFactory(connectionFactory);
 
         // 设置key的序列化方式
         template.setKeySerializer(new StringRedisSerializer());
@@ -65,12 +56,12 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisCacheManager cacheManager(@Qualifier("lettuceConnectionFactory")LettuceConnectionFactory redisConnectionFactory) {
+    public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
         RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
 
-        return RedisCacheManager.builder(redisConnectionFactory)
+        return RedisCacheManager.builder(connectionFactory)
                 .cacheDefaults(cacheConfig)
                 .build();
     }

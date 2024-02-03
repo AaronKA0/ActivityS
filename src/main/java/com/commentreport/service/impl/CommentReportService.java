@@ -99,6 +99,7 @@ public class CommentReportService implements ICommentReportService {
         Optional<CommentReportVO> commentReport = commentReportRepository.findById(repId);
         if (commentReport.isPresent()) {
             commentReport.get().setRepStatus(commentReportStatus.getRepStatus());
+            commentReport.get().setEmpId(commentReportStatus.getEmpId());
 
             switch (commentReportStatus.getRepStatus()) {
                 case 1:
