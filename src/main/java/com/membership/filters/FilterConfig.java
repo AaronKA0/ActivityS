@@ -13,7 +13,6 @@ public class FilterConfig {
 		registrationBean.setFilter(new LoginFilter());
 		registrationBean.addUrlPatterns("/membership/select_page");
 		registrationBean.addUrlPatterns("/membership/listAllMembership");
-		registrationBean.addUrlPatterns("/activity/unactfollow");
 		return registrationBean;
 		
 	}

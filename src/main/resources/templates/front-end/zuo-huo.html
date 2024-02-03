@@ -241,13 +241,9 @@
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <li><a class="dropdown-item" href="#">個人資料</a></li>
                     <li><a class="dropdown-item" href="#">Another</a></li>
-                    <li><a class="dropdown-item" href="#">登出要不要移進來</a></li>
+                    <li><a id="SignOut" class="dropdown-item" href="#">登出</a></li>
                 </ul>
 
-                <!-- 可以併到上面的li -->
-                <button type="button" class="btn btn-outline-primary me-2">
-                    <a class="nav-link" id="SignOut">登出</a>
-                </button>
             </div>
 
             <div class="after-logging" th:unless="${session.memId ne null}">
@@ -273,29 +269,59 @@
     <div class="ann_block">
         <table class="ann_table">
             <tbody id="ann_items">
-            <tr id="this_ann" th:each="annVO : ${annListData}">
-                <td class="ann_time" scope="col" th:text="${#dates.format(annVO.annTime, 'yyyy-MM-dd')}"></td>
-                <td class="ann_title" scope="col" th:text="${annVO.annName}" onclick="openPopup()"></td>
-                <td class="ann_content" scope="col" th:text="${annVO.annDescr}" onclick="openPopup()"></td>
+            <tr id="this_ann" th:each="annVO : ${annListData}" th:data-ann-id="${annVO.annId}">
+                <td class="ann_time" scope="col" th:data-ann-id="${annVO.annId}"
+                    th:text="${#dates.format(annVO.annTime, 'yyyy-MM-dd')}"></td>
+                <td class="ann_title" scope="col" th:data-ann-id="${annVO.annId}"
+                    th:text="${annVO.annName}"></td>
+                <td class="ann_content" scope="col" th:data-ann-id="${annVO.annId}"
+                    th:text="${annVO.annDescr}"></td>
                 <td>
-                    <form method="post" th:action="@{/Zuo-Huo/getOne_For_Display}">
-                        <input type="submit" value="查看">
-                        <input type="hidden" name="annId" th:value="${annVO.annId}">
-                    </form>
+                    <button type="button" class="text-nowrap btn btn-primary btn-sm"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal"
+                            th:data-ann-id="${annVO.annId}" onclick="oneAnn(this)">
+                        詳情
+                    </button>
                 </td>
+                <!--                <td>-->
+                <!--                    <form method="post" th:action="@{/Zuo-Huo/getOne_For_Display}">-->
+                <!--                        <input type="submit" value="查看">-->
+                <!--                        <input type="hidden" name="annId" th:value="${annVO.annId}">-->
+                <!--                    </form>-->
+                <!--                        </td>-->
             </tr>
             </tbody>
         </table>
     </div>
 
     <!-- 彈窗內容 -->
-    <div id="popupBox" class="popup" th:if="${getOne_For_Display}">
-        <div class="popup-content">
-            <span class="close" onclick="closePopup()">&times;</span>
-            <p th:text="${announcementVO.annName}"></p>
-            <p th:text="${announcementVO.annDescr}"></p>
+    <!--    <div id="popupBox" class="popup" th:if="${getOne_For_Display}">-->
+    <!--        <div class="popup-content">-->
+    <!--            <span class="close" onclick="closePopup()">&times;</span>-->
+    <!--            <p th:text="${announcementVO.annName}"></p>-->
+    <!--            <p th:text="${announcementVO.annDescr}"></p>-->
+    <!--        </div>-->
+    <!--    </div>-->
+
+
+    <!-- 公告單筆詳情 -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header fw-bold">
+                    <h5 class="modal-title" id="exampleModalLabel">標題</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-content"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                </div>
+            </div>
         </div>
     </div>
+
     <!-- -------------------- 公告區 END -------------------- -->
 
 
@@ -478,7 +504,7 @@
                 <h5 class="modal-title" id="loginModalLabel">會員登入</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body2">
                 <!-- 在這裡加入登入表單的 HTML 代碼 -->
                 <form>
                     <!-- 登入表單的輸入欄位 -->
@@ -607,22 +633,22 @@
 
 
     // 打開彈窗
-    function openPopup() {
-        document.getElementById("popupBox").style.display = "block";
-    }
-
-    // 關閉彈窗
-    function closePopup() {
-        document.getElementById("popupBox").style.display = "none";
-    }
-
-    //按背景關閉彈窗
-    window.onclick = function (event) {
-        var modal = document.getElementById("popupBox");
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
+    // function openPopup() {
+    //     document.getElementById("popupBox").style.display = "block";
+    // }
+    //
+    // // 關閉彈窗
+    // function closePopup() {
+    //     document.getElementById("popupBox").style.display = "none";
+    // }
+    //
+    // //按背景關閉彈窗
+    // window.onclick = function (event) {
+    //     var modal = document.getElementById("popupBox");
+    //     if (event.target == modal) {
+    //         modal.style.display = "none";
+    //     }
+    // }
 
 </script>
 
@@ -734,6 +760,20 @@
     function seeDetails(e) {
         let actId = $(e).data("actId");
         window.location.href = `/activity/${actId}`;
+    }
+
+    //單筆公告-----------------------------------------------------------------------------------
+    function oneAnn(e) {
+        let title = $(e).closest("tr").find(".ann_title").text();
+        let content = $(e).closest("tr").find(".ann_content").text();
+        let time = $(e).closest("tr").find(".ann_time").text();
+        $("#exampleModalLabel").text(title);
+        $("#exampleModal .modal-body").html(
+            `<div>${content}</div>
+            <div class="d-flex justify-content-end align-items-end" style="width: 100%;">
+                <small>發布時間: ${time}</small>
+            </div>`
+        )
     }
 
 </script>

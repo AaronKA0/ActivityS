@@ -7,7 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -36,8 +36,8 @@ public class EmpController {
 	@Autowired
 	DeptService deptSvc;
 
-	@Autowired
-	PasswordEncoder passwordEncoder;
+//	@Autowired
+//	PasswordEncoder passwordEncoder;
 
 	/*
 	 * This method will serve as addEmp.html handler.
@@ -75,8 +75,8 @@ public class EmpController {
 		/*************************** 2.開始新增資料 *****************************************/
 		// EmpService empSvc = new EmpService();
 		// 加密密碼並且開始新增
-		String encodedPassword = passwordEncoder.encode(empVO.getEmpPwd());
-		empVO.setEmpPwd(encodedPassword);
+//		String encodedPassword = passwordEncoder.encode(empVO.getEmpPwd());
+//		empVO.setEmpPwd(encodedPassword);
 		empSvc.addEmp(empVO);
 
 		/*************************** 3.新增完成,準備轉交(Send the Success view) **************/
