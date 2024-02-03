@@ -44,6 +44,11 @@ public class VenService {
 		return repository.findAll();
 	}
 	
+	// 所有上架的場地
+	public List<VenVO> getVenueOn() {
+	    return repository.getVenueOn();
+	}
+	
 	public VenVO getByName(String name) {
 		VenVO ven = repository.getByName(name);
 		return ven;	

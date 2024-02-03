@@ -154,52 +154,44 @@
         <li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
       </ul>
 
-        <div class="col-md-3 text-end">
-
-            <!-- 這邊放會員登入後的選項 -->
-            <div class="after-logging" th:if="${session.memId ne null}">
-                <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px;"></i>
-
-                <!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
-                <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                   aria-expanded="false" style="font-size: 25px;"></i>
-
-                <ul th:if="${session.notifies ne null}" class="dropdown-menu" aria-labelledby="dropdownMenuButton1"
-                    style="width: 350px;">
-                    <li th:if="${session.notifies[0] ne null and session.notifies[0].notifyContent ne ''}">
-                        <a class="dropdown-item" href="#" th:text="${session.notifies[0].notifyContent}"></a>
-                    </li>
-                    <li th:if="${session.notifies[1] ne null and session.notifies[1].notifyContent ne ''}">
-                        <a class="dropdown-item" href="#" th:text="${session.notifies[1].notifyContent}"></a>
-                    </li>
-                    <li th:if="${session.notifies[2] ne null and session.notifies[2].notifyContent ne ''}">
-                        <a class="dropdown-item" href="#" th:text="${session.notifies[2].notifyContent}"></a>
-                    </li>
-                    <li><a style="background-color: lightgreen; color: white; text-align: center;" class="dropdown-item"
-                           th:href="@{front_end/notify}">顯示全部</a></li>
-
-                </ul>
-                <!-- -------------------- 通知訊息功能 下拉選單 END -------------------- -->
-
-                <i class="icon bi bi-person-circle" style="font-size: 40px; margin: 20px;"></i>
-
-                <button type="button" class="btn btn-outline-primary me-2">
-                    <a class="nav-link" id="SignOut">登出</a>
-                </button>
-            </div>
-
-            <div class="after-logging" th:unless="${session.memId ne null}">
-                <button type="button" class="btn btn-outline-primary me-2">
-                    <a class="nav-link" th:href="@{/membership/logging}">登入</a>
-                </button>
-                <button type="button" class="btn btn-primary">
-                    <a class="nav-link" href="register.html">註冊</a>
-                </button>
-            </div>
+      <div class="col-md-3 text-end">
+        
+        <!-- 這邊放會員登入後的選項 -->
+        <div class="after-logging" th:if="${session.memId ne null}">
+            <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px;"></i>
+        
+            <!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
+            <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 25px;"></i>
+            
+            <ul id="notify_ul" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li id="notify_a1"></li>
+                <li id="notify_a2"></li>
+                <li id="notify_a3"></li>
+                <li><a id="display_all" class="dropdown-item" th:href="@{front_end/notify}">顯示全部</a></li>
+                
+            </ul>          
+            <!-- -------------------- 通知訊息功能 下拉選單 END -------------------- -->
+        
+            <i class="icon bi bi-person-circle" style="font-size: 40px; margin: 20px;"></i>
+            
+            <button type="button" class="btn btn-outline-primary me-2">
+                <a class="nav-link" id="SignOut">登出</a>
+            </button>
         </div>
-
+        
+        <div class="after-logging" th:unless="${session.memId ne null}">
+            <button type="button" class="btn btn-outline-primary me-2">
+                <a class="nav-link" th:href="@{/membership/logging}">登入</a>
+            </button>
+            <button type="button" class="btn btn-primary">
+                <a class="nav-link" href="register.html">註冊</a>
+            </button>
+        </div>
+      </div>
+      
     </header>
-</div>
+  </div>
+
 
 <main class="container mt-4">
 
@@ -458,32 +450,61 @@
     // });
     var notifycount = 0;
 
-    $(document).ready(async function () {
 
-        async function getUnread(id) {
-            await fetch("/front_end/notify/Unread", {
-                method: "POST",
-                body: JSON.stringify({memId: id})
-            }).then(function (response) {
-                ;
-                return response.json();
-            }).then(function (notifies) {
-                if (notifies.length) {
-                    notifycount = notifies.length;
-
-                    $('.bi-bell-fill').attr('data-count', `${notifycount}`);
-                    console.log(notifycount);
-                    // 添加 :after 樣式
-                    $('.bi-bell-fill').css('content', 'attr(data-count)');
+$(document).ready(async function(){
+	
+	async function getNotifyByMemId(id){
+        await fetch("/front_end/notify/memberNotify",{
+            method: "POST",
+            body: JSON.stringify({memId: id})
+        }).then(function(response){;
+            return response.json();
+        }).then(function(getAllMemNotifies){
+        	if(getAllMemNotifies.length > 0){
+        		if(getAllMemNotifies[0]){
+        		    $("#notify_a1").html("");
+        		    $("#notify_a1").append(`<span class="dropdown-item">${getAllMemNotifies[0].notifyContent}</span>`)
+        		}
+        		if(getAllMemNotifies[1]){
+        			$("#notify_a2").html("");
+                    $("#notify_a2").append(`<span class="dropdown-item">${getAllMemNotifies[1].notifyContent}</span>`)
                 }
-            }).catch(function (err) {
-                console.log(err);
-            });
-        }
+        		if(getAllMemNotifies[2]){
+        			$("#notify_a3").html("");
+                    $("#notify_a3").append(`<span class="dropdown-item">${getAllMemNotifies[2].notifyContent}</span>`)
+                }
+        	}
+            
+        }).catch(function(err){
+            console.log(err);
+        }); 
+    }
+	
+	async function getUnread(id){
+        await fetch("/front_end/notify/Unread",{
+            method: "POST",
+            body: JSON.stringify({memId: id})
+        }).then(function(response){;
+            return response.json();
+        }).then(function(notifies){  
+        	if(notifies.length){
+        	    notifycount = notifies.length;
+           
+                $('.bi-bell-fill').attr('data-count', `${notifycount}`);
+                 console.log(notifycount);
+                 // 添加 :after 樣式
+                 $('.bi-bell-fill').css('content', 'attr(data-count)');
+        	}
+        }).catch(function(err){
+            console.log(err);
+        }); 
+    }
+    
+	await getNotifyByMemId(user);
+    await getUnread(user);
+    
+});    
 
-        await getUnread(user);
-
-    });
     //------------------ Notify webSocket -------------------
 
     var MyPoint = `/notify/${user}`;

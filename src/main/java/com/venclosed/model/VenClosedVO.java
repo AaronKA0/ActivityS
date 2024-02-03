@@ -27,7 +27,7 @@ public class VenClosedVO implements java.io.Serializable {
 	private	Integer	closedDateId;
 	
 	@ManyToOne
-    @JoinColumn(name = "ven_Id", referencedColumnName = "ven_Id")
+    @JoinColumn(name = "ven_id", referencedColumnName = "ven_id")
     private VenVO venVO;
 	
 	@Column(name = "closed_date")

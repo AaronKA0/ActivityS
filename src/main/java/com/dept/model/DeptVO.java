@@ -14,6 +14,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.OrderBy;
 import com.emp.model.EmpVO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "dept")
@@ -47,7 +48,7 @@ public class DeptVO implements java.io.Serializable {
 		this.dname = dname;
 	}
 
-
+	@JsonIgnore
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="deptVO")
 	@OrderBy("empId asc")
 	//註1:【現在是設定成 cascade="all" lazy="false" inverse="true"之意】

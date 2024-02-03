@@ -46,10 +46,11 @@ public class VenOrderService{
 	
 	// getVenCom 利用場地取得訂單資訊
 	public List<VenOrderVO> getVenCom(VenVO venVO) {
-	    List<VenOrderVO> VenOrders = repository.getVenCom(venVO);
+	    List<VenOrderVO> VenOrders = repository.getVenCom(venVO.getVenId());
 	    return VenOrders; 
 	}
 	
+	// getLessDay 查詢少於天數的訂單
 	public List<VenOrderVO> getLessDay(Date orderDate) {
         List<VenOrderVO> VenOrders = repository.getLessDay(orderDate);
         return VenOrders; 

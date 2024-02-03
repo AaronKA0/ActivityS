@@ -57,12 +57,6 @@ public class VenVO implements java.io.Serializable {
 	@Column(name = "ven_loc")
 	private String venLoc;
 	
-//	@Column(name = "ven_city")
-//	private String venCity;
-	
-//	@Column(name = "ven_district")
-//	private String venDistrict;
-
 	@Column(name = "ven_city")
 	private String venCity;
 
@@ -144,22 +138,6 @@ public class VenVO implements java.io.Serializable {
 	public void setVenLoc(String venLoc) {
 		this.venLoc = venLoc;
 	}
-	
-//	public String getVenCity() {
-//		return venCity;
-//	}
-//
-//	public void setVenCity(String venCity) {
-//		this.venCity = venCity;
-//	}
-	
-//	public String getVenDistrict() {
-//		return venDistrict;
-//	}
-//
-//	public void setVenDistrict(String venDistrict) {
-//		this.venDistrict = venDistrict;
-//	}
 
 	public String getVenCity() {
 		return venCity;

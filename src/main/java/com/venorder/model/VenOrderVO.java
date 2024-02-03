@@ -21,6 +21,7 @@ import javax.validation.constraints.Pattern;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.emp.model.EmpVO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.membership.model.MembershipVO;
 import com.venue.model.VenVO;
@@ -41,13 +42,13 @@ public class VenOrderVO implements java.io.Serializable {
 	@ManyToOne
     @JoinColumn(name = "mem_id", referencedColumnName = "mem_id")
 	private MembershipVO memVO;
-		
-	@Column(name = "emp_id")
-	private Integer empId;
 	
+	@ManyToOne
+	@JoinColumn(name = "emp_id", referencedColumnName = "emp_id")
+	private EmpVO empVO;
+		
 	@JsonFormat(pattern="yyyy-MM-dd", timezone = "Asia/Taipei")
 	@Column(name = "order_date")
-//    @Future(message="日期必須是在今日(不含)之後")
 	private Date orderDate;
 	
 	@Column(name = "mem_phone", columnDefinition = "char")
@@ -79,13 +80,10 @@ public class VenOrderVO implements java.io.Serializable {
 	@Column(name = "mem_credit_num", columnDefinition = "char")
 	private String memCreditNum;
 	
-//	@Column(name = "order_status", insertable = false, updatable = false)
-//	private Byte orderStatus;
-	
 	@Column(name = "order_status", insertable = false)
 	private Byte orderStatus;
 	
-	@Column(name = "ven_rent_status", insertable = false, updatable = false)
+	@Column(name = "ven_rent_status", insertable = false)
 	private Byte venRentStatus;
 	
 	@Column(name = "ven_rating")
@@ -103,6 +101,7 @@ public class VenOrderVO implements java.io.Serializable {
 	@Column(name = "ven_res_fee")
 	private BigDecimal venResFee;
 
+	
 	public VenOrderVO() {
 		super();
 	}
@@ -132,15 +131,16 @@ public class VenOrderVO implements java.io.Serializable {
         this.memVO = memVO;
     }
 
-    public Integer getEmpId() {
-		return empId;
-	}
+	public EmpVO getEmpVO() {
+        return empVO;
+    }
 
-	public void setEmpId(Integer empId) {
-		this.empId = empId;
-	}
 
-	public Date getOrderDate() {
+    public void setEmpVO(EmpVO empVO) {
+        this.empVO = empVO;
+    }
+
+    public Date getOrderDate() {
 		return orderDate;
 	}
 
@@ -293,7 +293,7 @@ public class VenOrderVO implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "VenOrderVO [venOrderId=" + venOrderId + ", empId=" + empId + ", orderDate=" + orderDate + ", memPhone="
+		return "VenOrderVO [venOrderId=" + venOrderId + ", orderDate=" + orderDate + ", memPhone="
 				+ memPhone + ", actDescr=" + actDescr + ", userCount=" + userCount + ", memTaxid=" + memTaxid
 				+ ", orderTime=" + orderTime + ", orderPayType=" + orderPayType + ", memTransferNum=" + memTransferNum
 				+ ", memCreditNum=" + memCreditNum + ", orderStatus=" + orderStatus + ", venRentStatus=" + venRentStatus

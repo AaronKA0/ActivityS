@@ -1,6 +1,7 @@
 package com.notify.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class NotifyNow {
     @Autowired
     NotifyService notifySvc;
     
-    public void sendNotifyNow(List<MembershipVO> memVO, String title, String content) {
+    public void sendNotifyNow(Set<MembershipVO> memVO, String title, String content) {
         
         NotifyWebSocket notifyWebSocket = new NotifyWebSocket();
         
