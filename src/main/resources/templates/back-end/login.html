@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Login</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<!--  <link rel="stylesheet" th:href="@{/css/login.css}" />-->
+
+<style type="text/css">
+
+/* login.css */
+body, html {
+	height: 100%;
+	margin: 0;
+}
+
+.bg {
+	display: flex;
+	background-color: #fbfaf9;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background-image: url('back-end/10/images/Logo10.jpg');
+	background-position: top center; /* 圖片頂部至中 */
+	background-repeat: no-repeat;
+	background-size: auto 40%; /* 圖片佔用空間的大小 */
+}
+
+#loginForm {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	max-width: 330px; /* 指定表單最大寬度 */
+	padding: 20px;
+	margin-top: -100px; /* 向上偏移，確保表單在圖片下方 */
+	background: rgba(255, 255, 255, 0); /* 表單透明度 */
+	border-radius: 5px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0); /* 表單陰影 */
+	margin-top: 5px;
+}
+
+/* 輸入框樣式 */
+.input-field {
+	border-radius: 25px;
+	border: 1px solid #ddd;
+	padding: 10px;
+	width: 250px;
+	margin-bottom: 5px;
+}
+
+/* 按鈕樣式 */
+.submit-btn {
+	background-color: #e19fae;
+	border-radius: 25px;
+	border: none;
+	color: white;
+	padding: 10px 20px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	transition-duration: 0.4s;
+	cursor: pointer;
+	color: white;
+}
+
+/* 登錄系統文字 */
+.login-header {
+	font-size: 24px; /* 字體大小 */
+	color: #333; /* 字體顏色 */
+	margin-bottom: 10px; /* 和輸入框的距離 */
+	margin-top: 100px;
+}
+</style>
+</head>
+<body>
+
+	<div class="bg">
+
+		<!--  <img src='/images/Logo10.jpg'>-->
+
+		<div class="login-header">員工登入系統</div>
+
+		<form id="loginForm" th:action="@{/login}" method="post">
+			<div>
+				<input type="text" class="input-field" name="username"
+					placeholder="Username" />
+			</div>
+			<div>
+				<input type="password" class="input-field" name="password"
+					placeholder="Password" />
+			</div>
+			<div>
+				<button type="submit" class="submit-btn">登入</button>
+			</div>
+			
+		</form>
+		<a href="#" data-toggle="modal" data-target="#forgotPasswordModal">忘記密碼？</a>
+	</div>
+
+
+	<!--（Modal） -->
+	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+		aria-labelledby="modalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalLabel">登出通知</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">您已成功登出。</div>
+				<div class="modal-footer">
+					<button type="button" class="submit-btn"
+						onclick="window.location.href='/login'">確定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 登錄錯誤（Modal） -->
+	<div th:if="${errorMessage}" class="modal fade" id="errorModal"
+		tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="errorModalLabel">登錄錯誤</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" th:text="${errorMessage}"></div>
+				<div class="modal-footer">
+					<button type="button" class="submit-btn"
+						onclick="window.location.href='/login'">回登入頁面</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<!-- 忘記密碼彈窗 -->
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="forgotPasswordModalLabel">忘記密碼</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/forgotPassword}" method="post">
+                	 <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+          				  <p th:text="${errorMessage}"></p>
+       				 </div>
+               		 <div class="form-group">
+    					<label for="forgot-acc">帳號:</label>
+   						 <input type="text" class="form-control" id="empAcc" name="empAcc" placeholder="請輸入您的帳號" required>
+					</div>
+                    <div class="form-group">
+                        <label for="forgot-email">電子郵件地址:</label>
+                        <input type="email" class="form-control" id="empEmail" name="empEmail" placeholder="請輸入您的電子郵件地址" required>
+                    </div>
+                    <button type="submit" class="btn submit-btn">提交</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+	<script>
+	 $(document).ready(function() {
+	        if ($("#errorModal .modal-body p").text() !== "") {
+	            $('#errorModal').modal('show');
+	        }
+	    });
+	
+		window.onload = function() {
+			var url = new URL(window.location.href);
+			var logout = url.searchParams.get("logout");
+			var error = url.searchParams.get("error");
+
+			if (logout === "true") {
+				// 自定義登出訊息框
+				$('#logoutModal').modal('show');
+			} else if (error) {
+				// 自定義錯誤訊息框
+				$('#errorModal').modal('show');
+			}
+		};
+	</script>
+
+
+	<!-- jQuery 库 -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<!-- Popper JS -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>

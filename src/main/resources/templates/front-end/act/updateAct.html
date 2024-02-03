@@ -24,7 +24,7 @@
       color: #333; /* 字体颜色 */
 
       background: linear-gradient(to right, rgb(243, 134, 183), rgb(108, 225, 254));
-    linear-gradient(to right, #F386B7, #6CE1FE);/* Standard syntax */
+      linear-gradient:(to right, #F386B7, #6CE1FE);/* Standard syntax */
       /* 為整個頁面設置背景顏色 */
     }
 
@@ -296,7 +296,6 @@
                style="display: none; width: 465px; height: auto;">
         </div>
 
-        <img id="pre" src="" alt="123">
 
         <div class="mb-3">
           <label for="actLoc" class="form-label">活動地點:</label>
@@ -344,14 +343,14 @@
 <script>
   const actId = new URLSearchParams(window.location.search).get('id');
   $(document).ready(function () {
-    // 从 URL 获取活动 ID
+    // 從 URL 得到活動 ID
     if (actId) {
-      getActById(actId); // 使用活动 ID 获取活动详情
+      getActById(actId); // 使用活動 ID 得到活動詳情
     }
 
     // 取得活動類型清單
     $.ajax({
-      url: "/act/actTypes",
+      url: "/type/actTypes",
       type: "GET",
       dataType: "json",
       success: function (types) {
@@ -470,7 +469,7 @@
         contentType: false,
         success: function (response) {
           alert('活動更新成功！');
-          window.location.href = "join.html"; //跳轉頁面
+          window.location.href = "joinAct"; //跳轉頁面
         },
         error: function (XHR, Status, error) {
           alert('更新活動失敗，請檢查輸入是否正確。');
@@ -495,6 +494,13 @@
         $('#actEndTime').val(new Date(actVO.actEndTime).toISOString().slice(0, 16));
         $('#actLoc').val(actVO.actLoc);
         $('#actDescr').val(actVO.actDescr);
+        
+        
+        if (actVO.actPic) {
+            // 假設actPic字段是圖片的Base64編碼數據
+            var imgSrc = "data:image/jpeg;base64," + actVO.actPic;
+            $('#preview').attr('src', imgSrc).show(); // 設置src屬性並顯示圖片
+        }
 
       },
       error: function (xhr, status, error) {

@@ -7,15 +7,24 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" th:href="@{/css/後台首頁頁面.css}">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link href="https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+
     <style>
         main {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .footer{
             font-family: 'Noto Sans TC', sans-serif;
         }
 
@@ -31,178 +40,211 @@
             font-size: 16px;
         }
 
+        .page{
+            position: sticky;
+            bottom: 0;
+        }
+
     </style>
 </head>
 
 <body>
-<header class="header">
-    <h1>【會員審核報名活動】</h1>
-    <p class="welcome">歡迎您 管理員</p>
-    <nav>
-        <ul>
-            <li><a href="後台登入頁面.html">登出</a></li>
+
+<div style="width: 200px" class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
+     aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-body" style="padding: 0px; overflow-x: hidden">
+
+        <div class="b-example-divider"></div>
+
+        <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style="width: 200px;">
+            <a href="/member"
+               class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+                <svg class="bi me-2" width="30" height="24">
+                    <use xlink:href="#bootstrap"/>
+                </svg>
+                <span class="fs-5 fw-semibold">會員首頁</span>
+            </a>
+            <div class="list-group list-group-flush border-bottom scrollarea">
+                <a th:href="@{/member/chat}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">聊天</strong>
+                    </div>
+                </a>
+                <a th:href="@{/member/chat}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">通知</strong>
+                    </div>
+                </a>
+                <a th:href="@{/member/venOrder}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">場地預訂</strong>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="b-example-divider"></div>
+
+    </div>
+</div>
+
+<div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <button class="btn btn-primary fa fa-bars" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"></button>
+        <div class="col-md-3 mb-2 mb-md-0">
+            <a href="index.html" class="d-inline-flex link-body-emphasis text-decoration-none">
+                <span class="fs-4">做伙</span>
+            </a>
+        </div>
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="index.html" class="nav-link px-2 link-secondary">首頁</a></li>
+            <li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+            <li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
+            <li><a href="/ven/browse" class="nav-link px-2 link-secondary">場地租借</a></li>
+            <li><a href="customer.html" class="nav-link px-2 link-secondary">FAQs</a></li>
+            <li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
         </ul>
-    </nav>
-</header>
 
-<aside class="aside">
-    <nav class="nav">
-        <div class="sidenav">
-            <a href="../static/後台首頁頁面.html">首頁</a>
-            <hr>
-            <button class="dropdown-btn">員工管理
-                <i class="fa fa-caret-down"></i>
+        <div class="col-md-3 text-end">
+            <button type="button" class="btn btn-outline-primary me-2">
+                <a class="nav-link" href="#" data-bs-toggle="modal"
+                   data-bs-target="#loginModal">登入</a>
             </button>
-            <div class="dropdown-container">
-                <a href="修改密碼頁面.html">修改密碼</a>
-                <a href="員工資料管理首頁.html">員工資料管理</a>
-            </div>
-            <hr>
-            <button class="dropdown-btn">一般功能管理
-                <i class="fa fa-caret-down"></i>
+            <button type="button" class="btn btn-primary">
+                <a class="nav-link" href="register.html">註冊</a>
             </button>
-            <div class="dropdown-container">
-                <a href="新增公告.html">公告管理</a>
-                <a href="新增FAQ.html">FQA管理</a>
-            </div>
-            <hr>
-            <button class="dropdown-btn">會員功能管理
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-                <a href="查詢會員.html">查詢會員</a>
-                <a href="產生會員通知訊息.html">產生通知訊息</a>
-                <a href="#">審核會員檢舉</a>
-            </div>
-            <hr>
-            <button class="dropdown-btn">活動功能管理
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-                <a th:href="@{/CHA104G3/member/report}">審核活動管理</a>
-                <a th:href="@{/CHA104G3/member/commentreport}">審核留言管理</a>
-            </div>
-            <hr>
-            <button class="dropdown-btn">場地功能管理
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-                <a href="新增場地.html">場地管理</a>
-                <a href="#">場地訂單管理</a>
-                <a href="#">場地狀態管理</a>
-            </div>
         </div>
-    </nav>
-</aside>
+    </header>
 
-<main class="main">
-
-
-    <div>
+    <main class="main">
         <div>
-            <h1 class="fw-bold">我的活動</h1>
-        </div>
-        <div class="d-md-flex justify-content-md-end mb-1">
-            <div class="btn-group" role="group">
-                <button class="filterButton btn btn-secondary btn-sm" data-act-status="">所有活動</button>
-                <button class="historyButton btn btn-dark btn-sm" data-act-status="1">歷史紀錄</button>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="change btn btn-outline-dark">報名管理</button>
+                <button type="button" class="change btn btn-dark">活動管理</button>
+                <button type="button" class="change btn btn-outline-dark">關注管理</button>
+            </div>
+            <div class="d-md-flex justify-content-md-end mb-1">
+                <div class="btn-group" role="group">
+                    <button class="filterButton btn btn-secondary btn-sm" data-act-status="">所有活動</button>
+                    <button class="historyButton btn btn-dark btn-sm" data-act-status="1">歷史紀錄</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="table-responsive">
-        <table class="table table-hover shadow-sm">
-            <thead class="thead-inverse table-primary">
-            <tr>
-                <th>活動編號</th>
-                <th>活動名稱</th>
-                <th>活動詳情</th>
-                <th>活動開始時間</th>
-                <th>審核報名</th>
-                <th>活動狀態</th>
-                <th>取消活動</th>
-                <th>修改活動</th>
-            </tr>
-            </thead>
-            <tbody id="actreg">
+        <div class="table-responsive">
+            <table class="table table-hover shadow-sm">
+                <thead class="thead-inverse table-primary">
+                <tr>
+                    <th>活動編號</th>
+                    <th>活動名稱</th>
+                    <th>活動詳情</th>
+                    <th>活動開始時間</th>
+                    <th>審核報名</th>
+                    <th>活動狀態</th>
+                    <th>取消活動</th>
+                    <th>修改活動</th>
+                </tr>
+                </thead>
+                <tbody id="actreg">
 
-            </tbody>
-        </table>
-    </div>
+                </tbody>
+            </table>
+        </div>
 
-    <!-- 查看報名活動的會員modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">會員列表</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover table-sm shadow-sm">
-                            <thead class="thead-inverse">
-                            <tr>
-                                <th>會員ID</th>
-                                <th>會員資訊</th>
-                                <th>報名人數</th>
-                                <th>報名原因</th>
-                                <th>報名狀態</th>
-                                <th>審核</th>
-                            </tr>
-                            </thead>
-                            <tbody id="actmember">
-                            <tr>
-                                <td>1</td>
-                                <td>這邊放連結可以連到會員個人頁面</td>
-                                <td>6人</td>
-                                <td>報名原因</td>
-                                <td>狀態</td>
-                                <td>
-                                    <button>這邊連update api</button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+        <!-- 查看報名活動的會員modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">會員列表</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover table-sm shadow-sm">
+                                <thead class="thead-inverse">
+                                <tr>
+                                    <th>會員ID</th>
+                                    <th>會員資訊</th>
+                                    <th>報名人數</th>
+                                    <th>報名原因</th>
+                                    <th>報名狀態</th>
+                                    <th>審核</th>
+                                </tr>
+                                </thead>
+                                <tbody id="actmember">
+                                <tr>
+                                    <td>1</td>
+                                    <td>這邊放連結可以連到會員個人頁面</td>
+                                    <td>6人</td>
+                                    <td>報名原因</td>
+                                    <td>狀態</td>
+                                    <td>
+                                        <button>這邊連update api</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-                </div>
             </div>
         </div>
-    </div>
 
-    <div class="fixed-bottom">
-        <div class="container">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link">上一頁</a>
-                    </li>
-                    <li class="page-item">
-                        <!--                <a class="page-link" href="#">1</a>-->
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">下一頁</a>
-                    </li>
-                </ul>
-            </nav>
+        <div class="page fixed-bottom">
+            <div class="container">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link">上一頁</a>
+                        </li>
+                        <li class="page-item">
+                            <!--                <a class="page-link" href="#">1</a>-->
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">下一頁</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
-    </div>
-</main>
+    </main>
+</div>
+
+<div class="footer container">
+    <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="index.html" class="nav-link px-2 text-muted">首頁</a></li>
+            <li class="nav-item"><a href="customer.html" class="nav-link px-2 text-muted">客服中心</a></li>
+            <li class="nav-item"><a href="about.html" class="nav-link px-2 text-muted">關於我們</a></li>
+        </ul>
+        <p class="text-center text-muted">© 2024 Zuo-Huo</p>
+    </footer>
+</div>
+
+</body>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
 </script>
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
 
-<script th:src="@{/js/後台首頁頁面.js}"></script>
+<script src="https://cdn.tiny.cloud/1/tus9t8o6mklmhwd5c0iaejn9394stnli5i0j2ic9bb4xurm0/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
+<script src="https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/dealfonso/power-buttons/dist/powerbuttons.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 
 <script>
 
@@ -337,7 +379,7 @@
     //活動詳情
     function view(e) {
         let actId = $(e).data("actId");
-        window.location.href = `/CHA104G3/activity/${actId}`;
+        window.location.href = `/activity/${actId}`;
     }
 
     //查看報名的會員
@@ -370,7 +412,7 @@
                                 <td><span class="badge rounded-circle bg-secondary">${actMember.memId}</span></td>
                                 <td><button class="rounded-pill btn btn-info btn-sm" data-mem-id="${actMember.memId}" onclick="member(this)">查看</button></td>
                                 <td>${actMember.regTotal}</td>
-                                <td>${actMember.regReason}</td>
+                                <td>${actMember.regReason ? actMember.regReason : "無"}</td>
                                 <td class="status">${statusChinese}</td>
                                 <td>
                                     <div class="btn-group" role="group">
@@ -411,9 +453,16 @@
         });
     });
 
+    //查看會員頁面
     function member(e) {
         let memId = $(e).data("memId");
         // window.location.href = `/CHA104G3/activity/${memId}`;
+    }
+
+    //修改活動
+    function updateAct(e) {
+        let actId = $(e).closest("td").data("actId");
+        window.location.href = `/act/updateAct?id=${actId}`;//舊資料不會自動帶入欄位
     }
 
     //審核通過
@@ -557,6 +606,20 @@
         }
     });
 
+    //頁籤切換
+    $(".change").click(function () {
+        switch ($(this).text()) {
+            case "報名管理":
+                window.location.href = `/membership/actregistration`;
+                break;
+            case "活動管理":
+                window.location.href = `/membership/actreview`;
+                break;
+            case "關注管理":
+                window.location.href = `/membership/actfollow`;
+                break;
+        }
+    });
 </script>
 
 </body>

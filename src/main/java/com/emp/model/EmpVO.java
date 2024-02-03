@@ -1,6 +1,6 @@
 package com.emp.model;
 
-import java.io.IOException;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
@@ -13,25 +13,14 @@ import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.Valid;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.Past;
-
 //import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.dept.model.DeptVO;
 
@@ -58,6 +47,7 @@ public class EmpVO implements java.io.Serializable {
 	private Date empCrTime;
 	private LocalDateTime empLoginTime;
 	private byte[] empPic;
+	private Integer empStatus;
 	
 
 	public EmpVO() { // 必需有一個不傳參數建構子(JavaBean基本知識)
@@ -194,13 +184,53 @@ public class EmpVO implements java.io.Serializable {
 		this.empPic = empPic;
 	}
 
+	@NotNull(message = "狀態不能為空")	
+	@Column(name = "emp_status")
+	public Integer getEmpStatus() {
+		return empStatus;
+	}
+
+	public void setEmpStatus(Integer empStatus) {
+		this.empStatus = empStatus;
+	}
+
 	@Override
 	public String toString() {
-		return "EmpVO [empId=" + empId + ", empAcc=" + empAcc + ", empEmail=" + empEmail + ", empPwd=" + empPwd
-				+ ", empName=" + empName + ", empPhone=" + empPhone + ", empBirthdate=" + empBirthdate + ", empGender="
-				+ empGender + ", empCrTime=" + empCrTime + ", empLoginTime=" + empLoginTime + ", empPic="
-				+ Arrays.toString(empPic) + ", deptVO=" + deptVO + "]";
+		return "EmpVO [empId=" + empId + ", deptVO=" + deptVO + ", empAcc=" + empAcc + ", empEmail=" + empEmail
+				+ ", empPwd=" + empPwd + ", empName=" + empName + ", empPhone=" + empPhone + ", empBirthdate="
+				+ empBirthdate + ", empGender=" + empGender + ", empCrTime=" + empCrTime + ", empLoginTime="
+				+ empLoginTime + ", empPic=" + Arrays.toString(empPic) + ", empStatus=" + empStatus + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(empPic);
+		result = prime * result + Objects.hash(deptVO, empAcc, empBirthdate, empCrTime, empEmail, empGender, empId,
+				empLoginTime, empName, empPhone, empPwd, empStatus);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EmpVO other = (EmpVO) obj;
+		return Objects.equals(deptVO, other.deptVO) && Objects.equals(empAcc, other.empAcc)
+				&& Objects.equals(empBirthdate, other.empBirthdate) && Objects.equals(empCrTime, other.empCrTime)
+				&& Objects.equals(empEmail, other.empEmail) && Objects.equals(empGender, other.empGender)
+				&& Objects.equals(empId, other.empId) && Objects.equals(empLoginTime, other.empLoginTime)
+				&& Objects.equals(empName, other.empName) && Objects.equals(empPhone, other.empPhone)
+				&& Arrays.equals(empPic, other.empPic) && Objects.equals(empPwd, other.empPwd)
+				&& Objects.equals(empStatus, other.empStatus);
+	}
+
+	
 
 	
 
