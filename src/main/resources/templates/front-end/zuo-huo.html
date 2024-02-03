@@ -16,6 +16,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link href="https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+
     <!-- <link rel="stylesheet" href="assets/form.css"> -->
 
 
@@ -118,9 +125,8 @@
         }
 
         .useshadow {
-            text-shadow:
-                    1px 1px 3px black,
-                    5px 3px 0 #cccccc;
+            text-shadow: 1px 1px 3px black,
+            5px 3px 0 #cccccc;
         }
 
         .custom-img-height {
@@ -137,61 +143,111 @@
 
 <body onload="connect();" onunload="disconnect();">
 
+<div style="width: 200px" class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
+     aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-body" style="padding: 0px; overflow-x: hidden">
+
+        <div class="b-example-divider"></div>
+
+        <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style="width: 200px;">
+            <a href="/member"
+               class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+                <svg class="bi me-2" width="30" height="24">
+                    <use xlink:href="#bootstrap"/>
+                </svg>
+                <span class="fs-5 fw-semibold">會員首頁</span>
+            </a>
+            <div class="list-group list-group-flush border-bottom scrollarea">
+                <a th:href="@{/member/chat}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">聊天</strong>
+                    </div>
+                </a>
+                <a th:href="@{/member/chat}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">通知</strong>
+                    </div>
+                </a>
+                <a th:href="@{/member/venOrder}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">場地預訂</strong>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="b-example-divider"></div>
+
+    </div>
+</div>
+
 <div class="container">
-
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-      <div class="col-md-3 mb-2 mb-md-0">
-        <a href="activity.html" class="d-inline-flex link-body-emphasis text-decoration-none">
-          <span class="fs-4">做伙</span>
-        </a>
-      </div>
-      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a th:href="@{/}" class="nav-link px-2 link-secondary">首頁</a></li>
-        <li><a th:href="@{/act/joinAct}" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
-        <li><a th:href="@{/act/createAct}" class="nav-link px-2 link-secondary">舉辦活動</a></li>
-        <li><a th:href="@{front_end/venue/venue}" class="nav-link px-2 link-secondary">場地租借</a></li>
-        <li><a href="customer.html" class="nav-link px-2 link-secondary">FAQs</a></li>
-        <li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
-      </ul>
 
-      <div class="col-md-3 text-end">
-        
-        <!-- 這邊放會員登入後的選項 -->
         <div class="after-logging" th:if="${session.memId ne null}">
-            <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px;"></i>
-        
-            <!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
-            <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 25px;"></i>
-            
-            <ul id="notify_ul" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li id="notify_a1"></li>
-                <li id="notify_a2"></li>
-                <li id="notify_a3"></li>
-                <li><a id="display_all" class="dropdown-item" th:href="@{front_end/notify}">顯示全部</a></li>
-                
-            </ul>          
-            <!-- -------------------- 通知訊息功能 下拉選單 END -------------------- -->
-        
-            <i class="icon bi bi-person-circle" style="font-size: 40px; margin: 20px;"></i>
-            
-            <button type="button" class="btn btn-outline-primary me-2">
-                <a class="nav-link" id="SignOut">登出</a>
-            </button>
+            <button class="btn btn-primary fa fa-bars" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"></button>
         </div>
-        
-        <div class="after-logging" th:unless="${session.memId ne null}">
-            <button type="button" class="btn btn-outline-primary me-2">
-                <a class="nav-link" th:href="@{/membership/logging}">登入</a>
-            </button>
-            <button type="button" class="btn btn-primary">
-                <a class="nav-link" href="register.html">註冊</a>
-            </button>
-        </div>
-      </div>
-      
-    </header>
-  </div>
 
+        <div class="col-md-3 mb-2 mb-md-0">
+            <a th:href="@{front_end/zuo-huo}" class="d-inline-flex link-body-emphasis text-decoration-none">
+                <img alt="zuo-huo" src="/front-end/zuo-huo/images/LogoName.jpg" style="width: 160px;">
+            </a>
+        </div>
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="activity.html" class="nav-link px-2 link-secondary">首頁</a></li>
+            <li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+            <li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
+            <li><a th:href="@{front_end/venue/venue}" class="nav-link px-2 link-secondary">場地租借</a></li>
+            <li><a href="customer.html" class="nav-link px-2 link-secondary">FAQs</a></li>
+            <li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
+        </ul>
+
+        <div class="col-md-3 text-end">
+
+            <!-- 這邊放會員登入後的選項 -->
+            <div class="after-logging" th:if="${session.memId ne null}">
+                <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px; color: blue;"></i>
+
+                <!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
+                <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 25px; color: yellow;" ></i>
+            
+	            <ul id="notify_ul" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+	                <li id="notify_a1"></li>
+	                <li id="notify_a2"></li>
+	                <li id="notify_a3"></li>
+	                <li><a id="display_all" class="dropdown-item" th:href="@{front_end/notify}">顯示全部</a></li>
+	            </ul>   
+                <!-- -------------------- 通知訊息功能 下拉選單 END -------------------- -->
+
+                <!-- class拿掉dropdown-toggle 有問題再加回來 -->
+                <i class="icon bi bi-person-circle" id="dropdownMenuLink"
+                   type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                   style="font-size: 40px; margin: 20px;"></i>
+
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="#">個人資料</a></li>
+                    <li><a class="dropdown-item" href="#">Another</a></li>
+                    <li><a id="SignOut" class="dropdown-item" href="#">登出</a></li>
+                </ul>
+
+            </div>
+
+            <div class="after-logging" th:unless="${session.memId ne null}">
+                <button type="button" class="btn btn-outline-primary me-2">
+                    <a class="nav-link" th:href="@{/membership/logging}">登入</a>
+                </button>
+                <button type="button" class="btn btn-primary">
+                    <a class="nav-link" href="register.html">註冊</a>
+                </button>
+            </div>
+        </div>
+
+    </header>
+</div>
 
 <main class="container mt-4">
 
@@ -203,36 +259,66 @@
     <div class="ann_block">
         <table class="ann_table">
             <tbody id="ann_items">
-            <tr id="this_ann" th:each="annVO : ${annListData}">
-                <td class="ann_time" scope="col" th:text="${#dates.format(annVO.annTime, 'yyyy-MM-dd')}"></td>
-                <td class="ann_title" scope="col" th:text="${annVO.annName}" onclick="openPopup()"></td>
-                <td class="ann_content" scope="col" th:text="${annVO.annDescr}" onclick="openPopup()"></td>
+            <tr id="this_ann" th:each="annVO : ${annListData}" th:data-ann-id="${annVO.annId}">
+                <td class="ann_time" scope="col" th:data-ann-id="${annVO.annId}"
+                    th:text="${#dates.format(annVO.annTime, 'yyyy-MM-dd')}"></td>
+                <td class="ann_title" scope="col" th:data-ann-id="${annVO.annId}"
+                    th:text="${annVO.annName}"></td>
+                <td class="ann_content" scope="col" th:data-ann-id="${annVO.annId}"
+                    th:text="${annVO.annDescr}"></td>
                 <td>
-                    <form method="post" th:action="@{/Zuo-Huo/getOne_For_Display}">
-                        <input type="submit" value="查看">
-                        <input type="hidden" name="annId" th:value="${annVO.annId}">
-                    </form>
+                    <button type="button" class="text-nowrap btn btn-primary btn-sm"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal"
+                            th:data-ann-id="${annVO.annId}" onclick="oneAnn(this)">
+                        詳情
+                    </button>
                 </td>
+                <!--                <td>-->
+                <!--                    <form method="post" th:action="@{/Zuo-Huo/getOne_For_Display}">-->
+                <!--                        <input type="submit" value="查看">-->
+                <!--                        <input type="hidden" name="annId" th:value="${annVO.annId}">-->
+                <!--                    </form>-->
+                <!--                        </td>-->
             </tr>
             </tbody>
         </table>
     </div>
 
     <!-- 彈窗內容 -->
-    <div id="popupBox" class="popup" th:if="${getOne_For_Display}">
-        <div class="popup-content">
-            <span class="close" onclick="closePopup()">&times;</span>
-            <p th:text="${announcementVO.annName}"></p>
-            <p th:text="${announcementVO.annDescr}"></p>
+    <!--    <div id="popupBox" class="popup" th:if="${getOne_For_Display}">-->
+    <!--        <div class="popup-content">-->
+    <!--            <span class="close" onclick="closePopup()">&times;</span>-->
+    <!--            <p th:text="${announcementVO.annName}"></p>-->
+    <!--            <p th:text="${announcementVO.annDescr}"></p>-->
+    <!--        </div>-->
+    <!--    </div>-->
+
+
+    <!-- 公告單筆詳情 -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header fw-bold">
+                    <h5 class="modal-title" id="exampleModalLabel">標題</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-content"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                </div>
+            </div>
         </div>
     </div>
+
     <!-- -------------------- 公告區 END -------------------- -->
 
 
     <section id="slogan" class="text-center mt-3">
         <h2 class="shadow-lg p-3 mb-5 bg-body rounded">
             <div class="scene1">
-            <marquee class="useshadow" behavior="alternate">發現、參與、共享，做伙舉辦精彩活動！</marquee>
+                <marquee class="useshadow" behavior="alternate">發現、參與、共享，做伙舉辦精彩活動！</marquee>
             </div>
         </h2>
     </section>
@@ -287,8 +373,9 @@
                 <div class="col-md-12 d-flex justify-content-between align-items-center">
                     <h3>
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="yellow"
-                             class="bi bi-star-fill" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
-                         </svg>
+                             class="bi bi-star-fill" viewBox="0 0 16 16">
+                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                        </svg>
                         官方活動
                     </h3>
                     <a href="join.html" class="">查看所有活動</a>
@@ -301,20 +388,20 @@
     <div class="my-0"></div>
 
     <div class="official row row-cols-1 row-cols-md-4 g-5">
-<!--        <div class="col">-->
-<!--            <div class="card h-100">-->
-<!--                <a href="#">-->
-<!--                    <img src="/front-end/zuo-huo/images/dog.jpg" class="card-img-top" alt="...">-->
-<!--                </a>-->
-<!--                <div class="card-body">-->
-<!--                    <h5 class="card-title">Card title</h5>-->
-<!--                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to-->
-<!--                        additional-->
-<!--                        content. This content is a little bit longer.-->
-<!--                    </p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--        <div class="col">-->
+        <!--            <div class="card h-100">-->
+        <!--                <a href="#">-->
+        <!--                    <img src="/front-end/zuo-huo/images/dog.jpg" class="card-img-top" alt="...">-->
+        <!--                </a>-->
+        <!--                <div class="card-body">-->
+        <!--                    <h5 class="card-title">Card title</h5>-->
+        <!--                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to-->
+        <!--                        additional-->
+        <!--                        content. This content is a little bit longer.-->
+        <!--                    </p>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </div>
 
     <!-- 間距用 -->
@@ -325,12 +412,14 @@
             <div class="row">
                 <div class="col-md-12 d-flex justify-content-between align-items-center">
                     <h3 class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="blue" class="bi bi-balloon-fill" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M8.48 10.901C11.211 10.227 13 7.837 13 5A5 5 0 0 0 3 5c0 2.837 1.789 5.227 4.52 5.901l-.244.487a.25.25 0 1 0 .448.224l.04-.08c.009.17.024.315.051.45.068.344.208.622.448 1.102l.013.028c.212.422.182.85.05 1.246-.135.402-.366.751-.534 1.003a.25.25 0 0 0 .416.278l.004-.007c.166-.248.431-.646.588-1.115.16-.479.212-1.051-.076-1.629-.258-.515-.365-.732-.419-1.004a2 2 0 0 1-.037-.289l.008.017a.25.25 0 1 0 .448-.224zM4.352 3.356a4 4 0 0 1 3.15-2.325C7.774.997 8 1.224 8 1.5s-.226.496-.498.542c-.95.162-1.749.78-2.173 1.617a.6.6 0 0 1-.52.341c-.346 0-.599-.329-.457-.644"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="blue"
+                             class="bi bi-balloon-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M8.48 10.901C11.211 10.227 13 7.837 13 5A5 5 0 0 0 3 5c0 2.837 1.789 5.227 4.52 5.901l-.244.487a.25.25 0 1 0 .448.224l.04-.08c.009.17.024.315.051.45.068.344.208.622.448 1.102l.013.028c.212.422.182.85.05 1.246-.135.402-.366.751-.534 1.003a.25.25 0 0 0 .416.278l.004-.007c.166-.248.431-.646.588-1.115.16-.479.212-1.051-.076-1.629-.258-.515-.365-.732-.419-1.004a2 2 0 0 1-.037-.289l.008.017a.25.25 0 1 0 .448-.224zM4.352 3.356a4 4 0 0 1 3.15-2.325C7.774.997 8 1.224 8 1.5s-.226.496-.498.542c-.95.162-1.749.78-2.173 1.617a.6.6 0 0 1-.52.341c-.346 0-.599-.329-.457-.644"/>
                         </svg>
                         最新活動
                     </h3>
-                        <a href="join.html" class="">查看所有活動</a>
+                    <a href="join.html" class="">查看所有活動</a>
                 </div>
             </div>
         </div>
@@ -405,7 +494,7 @@
                 <h5 class="modal-title" id="loginModalLabel">會員登入</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body2">
                 <!-- 在這裡加入登入表單的 HTML 代碼 -->
                 <form>
                     <!-- 登入表單的輸入欄位 -->
@@ -434,6 +523,12 @@
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
+<script src="https://cdn.tiny.cloud/1/tus9t8o6mklmhwd5c0iaejn9394stnli5i0j2ic9bb4xurm0/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
+<script src="https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/dealfonso/power-buttons/dist/powerbuttons.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script th:inline="javascript">
     /*<![CDATA[*/
     let user = /*[[${session.memId}]]*/'';
@@ -448,59 +543,59 @@
     // $("#popupBox").modal({
     //     show : true
     // });
-    var notifycount = 0;
+       var notifycount = 0;
 
 
 $(document).ready(async function(){
-	
-	async function getNotifyByMemId(id){
+    
+    async function getNotifyByMemId(id){
         await fetch("/front_end/notify/memberNotify",{
             method: "POST",
             body: JSON.stringify({memId: id})
         }).then(function(response){;
             return response.json();
         }).then(function(getAllMemNotifies){
-        	if(getAllMemNotifies.length > 0){
-        		if(getAllMemNotifies[0]){
-        		    $("#notify_a1").html("");
-        		    $("#notify_a1").append(`<span class="dropdown-item">${getAllMemNotifies[0].notifyContent}</span>`)
-        		}
-        		if(getAllMemNotifies[1]){
-        			$("#notify_a2").html("");
+            if(getAllMemNotifies.length > 0){
+                if(getAllMemNotifies[0]){
+                    $("#notify_a1").html("");
+                    $("#notify_a1").append(`<span class="dropdown-item">${getAllMemNotifies[0].notifyContent}</span>`)
+                }
+                if(getAllMemNotifies[1]){
+                    $("#notify_a2").html("");
                     $("#notify_a2").append(`<span class="dropdown-item">${getAllMemNotifies[1].notifyContent}</span>`)
                 }
-        		if(getAllMemNotifies[2]){
-        			$("#notify_a3").html("");
+                if(getAllMemNotifies[2]){
+                    $("#notify_a3").html("");
                     $("#notify_a3").append(`<span class="dropdown-item">${getAllMemNotifies[2].notifyContent}</span>`)
                 }
-        	}
+            }
             
         }).catch(function(err){
             console.log(err);
         }); 
     }
-	
-	async function getUnread(id){
+    
+    async function getUnread(id){
         await fetch("/front_end/notify/Unread",{
             method: "POST",
             body: JSON.stringify({memId: id})
         }).then(function(response){;
             return response.json();
         }).then(function(notifies){  
-        	if(notifies.length){
-        	    notifycount = notifies.length;
+            if(notifies.length){
+                notifycount = notifies.length;
            
                 $('.bi-bell-fill').attr('data-count', `${notifycount}`);
                  console.log(notifycount);
                  // 添加 :after 樣式
                  $('.bi-bell-fill').css('content', 'attr(data-count)');
-        	}
+            }
         }).catch(function(err){
             console.log(err);
         }); 
     }
     
-	await getNotifyByMemId(user);
+    await getNotifyByMemId(user);
     await getUnread(user);
     
 });    
@@ -555,24 +650,6 @@ $(document).ready(async function(){
             xhr.send();
         });
 
-
-    // 打開彈窗
-    function openPopup() {
-        document.getElementById("popupBox").style.display = "block";
-    }
-
-    // 關閉彈窗
-    function closePopup() {
-        document.getElementById("popupBox").style.display = "none";
-    }
-
-    //按背景關閉彈窗
-    window.onclick = function (event) {
-        var modal = document.getElementById("popupBox");
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
 
 </script>
 
@@ -684,6 +761,20 @@ $(document).ready(async function(){
     function seeDetails(e) {
         let actId = $(e).data("actId");
         window.location.href = `/activity/${actId}`;
+    }
+
+    //單筆公告-----------------------------------------------------------------------------------
+    function oneAnn(e) {
+        let title = $(e).closest("tr").find(".ann_title").text();
+        let content = $(e).closest("tr").find(".ann_content").text();
+        let time = $(e).closest("tr").find(".ann_time").text();
+        $("#exampleModalLabel").text(title);
+        $("#exampleModal .modal-body").html(
+            `<div>${content}</div>
+            <div class="d-flex justify-content-end align-items-end" style="width: 100%;">
+                <small>發布時間: ${time}</small>
+            </div>`
+        )
     }
 
 </script>
