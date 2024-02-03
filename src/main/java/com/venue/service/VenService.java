@@ -1,5 +1,6 @@
-package com.ven;
+package com.venue.service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -8,6 +9,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.venue.model.VenVO;
 
 @Service("venService")
 public class VenService {
@@ -44,6 +47,10 @@ public class VenService {
 	public VenVO getByName(String name) {
 		VenVO ven = repository.getByName(name);
 		return ven;	
+	}
+	
+	public List<VenVO> pickByOrderDate(Date date){
+	    return repository.pickByOrderDate(date);
 	}
 	
 

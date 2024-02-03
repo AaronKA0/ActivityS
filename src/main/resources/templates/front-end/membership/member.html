@@ -126,9 +126,26 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 	text-align: center;
 	display: block;
 }
+
+.visit-mem:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
 </style>
 
 <body>
+
+	<form style="display:none" id="visitMemForm" th:action="@{/member}">
+		<input id="visitMem" type="number" th:name="memId" /> <input
+			type="submit" />
+	</form>
+
+	<form style="display:none" id="visitChatForm" th:action="@{/member/chat}">
+		<input id="visitChat" type="number" th:name="memId" /> <input
+			type="submit" />
+	</form>
+
 
 	<div class="container">
 		<header
@@ -149,7 +166,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 				<li><a href="index.html" class="nav-link px-2 link-secondary">首頁</a></li>
 				<li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
 				<li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
-				<li><a href="rent.html" class="nav-link px-2 link-secondary">場地租借</a></li>
+				<li><a href="/ven/browse" class="nav-link px-2 link-secondary">場地租借</a></li>
 				<li><a href="customer.html"
 					class="nav-link px-2 link-secondary">FAQs</a></li>
 				<li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
@@ -167,138 +184,44 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 		</header>
 	</div>
 
-	<div class="offcanvas offcanvas-start" tabindex="-1"
-		id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-		<div class="offcanvas-header">
-			<h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
-			<button type="button" class="btn-close text-reset"
-				data-bs-dismiss="offcanvas" aria-label="Close"></button>
-		</div>
-		<div class="offcanvas-body">
+	<div style="width: 200px" class="offcanvas offcanvas-start"
+		tabindex="-1" id="offcanvasExample"
+		aria-labelledby="offcanvasExampleLabel">
+		<div class="offcanvas-body" style="padding: 0px; overflow-x: hidden">
 
 			<div class="b-example-divider"></div>
 
 			<div
 				class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white"
-				style="width: 380px;">
-				<a href="/"
+				style="width: 200px;">
+				<a href="/member"
 					class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
 					<svg class="bi me-2" width="30" height="24">
-						<use xlink:href="#bootstrap" /></svg> <span class="fs-5 fw-semibold">List
-						group</span>
+						<use xlink:href="#bootstrap" /></svg> <span class="fs-5 fw-semibold">會員首頁</span>
 				</a>
 				<div class="list-group list-group-flush border-bottom scrollarea">
 					<a th:href="@{/member/chat}"
-						class="list-group-item list-group-item-action active py-3 lh-tight"
-						aria-current="true">
-						<div
-							class="d-flex w-100 align-items-center justify-content-between">
-							<strong class="mb-1">聊天</strong> <small>Wed</small>
-						</div>
-						<div class="col-10 mb-1 small">Some placeholder content in a
-							paragraph below the heading and date.</div>
-					</a> <a href="#"
-						class="list-group-item list-group-item-action py-3 lh-tight">
-						<div
-							class="d-flex w-100 align-items-center justify-content-between">
-							<strong class="mb-1">List group item heading</strong> <small
-								class="text-muted">Tues</small>
-						</div>
-						<div class="col-10 mb-1 small">Some placeholder content in a
-							paragraph below the heading and date.</div>
-					</a> <a href="#"
-						class="list-group-item list-group-item-action py-3 lh-tight">
-						<div
-							class="d-flex w-100 align-items-center justify-content-between">
-							<strong class="mb-1">List group item heading</strong> <small
-								class="text-muted">Mon</small>
-						</div>
-						<div class="col-10 mb-1 small">Some placeholder content in a
-							paragraph below the heading and date.</div>
-					</a> <a href="#"
 						class="list-group-item list-group-item-action py-3 lh-tight"
 						aria-current="true">
 						<div
 							class="d-flex w-100 align-items-center justify-content-between">
-							<strong class="mb-1">List group item heading</strong> <small
-								class="text-muted">Wed</small>
+							<strong class="mb-1">聊天</strong>
 						</div>
-						<div class="col-10 mb-1 small">Some placeholder content in a
-							paragraph below the heading and date.</div>
-					</a> <a href="#"
-						class="list-group-item list-group-item-action py-3 lh-tight">
-						<div
-							class="d-flex w-100 align-items-center justify-content-between">
-							<strong class="mb-1">List group item heading</strong> <small
-								class="text-muted">Tues</small>
-						</div>
-						<div class="col-10 mb-1 small">Some placeholder content in a
-							paragraph below the heading and date.</div>
-					</a> <a href="#"
-						class="list-group-item list-group-item-action py-3 lh-tight">
-						<div
-							class="d-flex w-100 align-items-center justify-content-between">
-							<strong class="mb-1">List group item heading</strong> <small
-								class="text-muted">Mon</small>
-						</div>
-						<div class="col-10 mb-1 small">Some placeholder content in a
-							paragraph below the heading and date.</div>
-					</a> <a href="#"
+					</a> <a th:href="@{/member/notification}"
 						class="list-group-item list-group-item-action py-3 lh-tight"
 						aria-current="true">
 						<div
 							class="d-flex w-100 align-items-center justify-content-between">
-							<strong class="mb-1">List group item heading</strong> <small
-								class="text-muted">Wed</small>
+							<strong class="mb-1">通知</strong>
 						</div>
-						<div class="col-10 mb-1 small">Some placeholder content in a
-							paragraph below the heading and date.</div>
-					</a> <a href="#"
-						class="list-group-item list-group-item-action py-3 lh-tight">
-						<div
-							class="d-flex w-100 align-items-center justify-content-between">
-							<strong class="mb-1">List group item heading</strong> <small
-								class="text-muted">Tues</small>
-						</div>
-						<div class="col-10 mb-1 small">Some placeholder content in a
-							paragraph below the heading and date.</div>
-					</a> <a href="#"
-						class="list-group-item list-group-item-action py-3 lh-tight">
-						<div
-							class="d-flex w-100 align-items-center justify-content-between">
-							<strong class="mb-1">List group item heading</strong> <small
-								class="text-muted">Mon</small>
-						</div>
-						<div class="col-10 mb-1 small">Some placeholder content in a
-							paragraph below the heading and date.</div>
-					</a> <a href="#"
+					</a>
+					<a th:href="@{/member/venOrder}"
 						class="list-group-item list-group-item-action py-3 lh-tight"
 						aria-current="true">
 						<div
 							class="d-flex w-100 align-items-center justify-content-between">
-							<strong class="mb-1">List group item heading</strong> <small
-								class="text-muted">Wed</small>
+							<strong class="mb-1">場地預訂</strong>
 						</div>
-						<div class="col-10 mb-1 small">Some placeholder content in a
-							paragraph below the heading and date.</div>
-					</a> <a href="#"
-						class="list-group-item list-group-item-action py-3 lh-tight">
-						<div
-							class="d-flex w-100 align-items-center justify-content-between">
-							<strong class="mb-1">List group item heading</strong> <small
-								class="text-muted">Tues</small>
-						</div>
-						<div class="col-10 mb-1 small">Some placeholder content in a
-							paragraph below the heading and date.</div>
-					</a> <a href="#"
-						class="list-group-item list-group-item-action py-3 lh-tight">
-						<div
-							class="d-flex w-100 align-items-center justify-content-between">
-							<strong class="mb-1">List group item heading</strong> <small
-								class="text-muted">Mon</small>
-						</div>
-						<div class="col-10 mb-1 small">Some placeholder content in a
-							paragraph below the heading and date.</div>
 					</a>
 				</div>
 			</div>
@@ -307,22 +230,21 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 
 		</div>
 	</div>
-	</div>
 
 
 	<div style="width: 1000px; margin-left: 150px; margin-top: 20px"
 		class="row">
 		<div class="col-3" style="height: 250px">
 			<img id="mem-img"
-				style="width: 200px; height: 200px; border-radius: 50%">
+				style="max-width: 200px; border-radius: 50%">
 		</div>
 		<div class="col-3" style="height: 250px">
 			<div class="text-start" style="margin-top: 20px">
 				<h2 style="margin-left: 0px" id="mem-name"></h2>
 				<h5 style="margin-left: 0px" id="mem-num-friend"></h5>
 				<h5 id="mem-relation"></h5>
-				<div class="curMember" style="margin-top: 10px">
-					<button style="font-size: 20px; color: red">
+				<div class="curMember" style="margin-top: 10px; display:none">
+					<button id="mem-edit" style="font-size: 20px; color: green; ; display:none">
 						更新<i class="fa fa-edit"></i>
 					</button>
 				</div>
@@ -332,7 +254,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 						解除好友<i class="fa fa-close"></i>
 					</button>
 					<button class="visit-relation-btn" id="visit-add-friend"
-						style="display: none; font-size: 20px; color: red">
+						style="display: none; font-size: 20px; color: green">
 						加好友<i class="fas fa-user-friends"> </i>
 					</button>
 					<button class="visit-relation-btn" id="visit-unsend-request"
@@ -349,7 +271,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 					</button>
 				</div>
 				<div class="visitor" style="margin-top: 10px">
-					<button style="font-size: 20px; color: red">
+					<button id="visit-chat-btn" style="font-size: 20px; color: blue; display:none">
 						聊天<i class="fa fa-comments-o"></i>
 					</button>
 
@@ -360,7 +282,8 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 			</div>
 		</div>
 		<div class="col-6 text-start" style="height: 250px">
-			<h3 style="margin-left: 0px; margin-bottom: 20px">
+			<h3
+				style="margin-left: 0px; margin-bottom: 20px; padding-left: 150px">
 				<b>自我介紹</b>
 			</h3>
 			<div style="font-size: 14px; height: 200px; overflow-y: auto"
@@ -369,7 +292,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 	</div>
 
 
-	<ul style="width: 1000px; margin-left: 150px; margin-top: 30px"
+	<ul  id="member-tabs" style="width: 1000px; margin-left: 150px; margin-top: 30px; display:none"
 		class="nav nav-tabs">
 		<li id="friend-tab" class="nav-item"><a style="width: 100px"
 			class="nav-link active" aria-current="page" href="#">好友</a></li>
@@ -440,12 +363,12 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 				style="display: inline-block; margin-left: 20px; margin-right: 20px">貼文</h2>
 			<i id="post-sort" data-order="desc" class="fa-solid fa-sort"></i>
 		</div>
-		<div style="width: 1000px" id="posts-body" class="text-center"></div>
+		<div style="width: 1000px; height: 500px; overflow-y: auto" id="posts-body" class="text-center"></div>
 	</div>
 
 
 
-	<div style="width: 1000px; margin-left: 150px; border: solid black 1px"
+	<div style="width: 1000px; margin-left: 150px; border: solid black 1px; display:none"
 		id="friends" class="tab">
 		<div style="background-color: yellow" class="text-center"
 			id="friends-title">
@@ -454,7 +377,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 			<input type="text" id="friend-search" placeholder="搜尋好友">
 			<button id="clear-friend-search">清除</button>
 		</div>
-		<div style="width: 1000px" id="friends-body" class="text-center"></div>
+		<div style="width: 1000px; height: 500px; overflow-y: auto" id="friends-body" class="text-center"></div>
 	</div>
 
 	<div
@@ -465,7 +388,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 			<h2
 				style="display: inline-block; margin-left: 20px; margin-right: 20px">好友請求</h2>
 		</div>
-		<div style="width: 1000px" id="friend-requests-body"
+		<div style="width: 1000px; height: 500px; overflow-y: auto" id="friend-requests-body"
 			class="text-center"></div>
 	</div>
 
@@ -477,27 +400,32 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 			<h2
 				style="display: inline-block; margin-left: 20px; margin-right: 20px">封鎖會員</h2>
 		</div>
-		<div style="width: 1000px" id="blocks-body" class="text-center"></div>
+		<div style="width: 1000px; height: 500px; overflow-y: auto" id="blocks-body" class="text-center"></div>
 	</div>
 
 
 	<script th:inline="javascript">
 		/*<![CDATA[*/	
 	
+		let members = [];
+		let filteredMembers = [];
+		let isSearch;
 		let memId;
 		let visitId;
 		let memRelation;
 		
 		let status = /*[[${status}]]*/'';
+
+		status = status ?? "visit";
+
 		
-		status = "cur";
-		
-		if(status == "cur"){
-			memId = /*[[${session.memId}]]*/'';
-		} else if (status == "visit"){
+		if (status == "visit"){
 			memId = /*[[${rMemId}]]*/'';
 			visitId = /*[[${session.memId}]]*/'';
 		}
+		else {
+			memId = /*[[${session.memId}]]*/'';
+		} 
 		
 		let member;
 		let posts;
@@ -512,40 +440,38 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 		let blocks;
 		let friends;
 		
-		visitId = 1;
+		let isBlocked = false;
+		
+// 		memId = 16;
+// 		visitId = 19;
 		
 		if(!visitId){
 			$(".visitor").hide();
+			$(".curMember").show();
 		} else{
 			$(".curMember").hide();
 		}
+		
 		/*]]>*/
 	</script>
 
 	<script>
 	$(document).ready(async function(){
 // 		await sendFriendRequest();
-		memRelation = await getMemRelation();
-		if(memRelation == 0){
-			$(".visit-relation-btn").hide();
-			$("#visit-add-friend").show();
-			$("#visit-block-member").show();
-			$("#mem-relation").text("");
-		} else if(memRelation == 1){
-			$(".visit-relation-btn").hide();
-			$("#visit-unsend-request").show();
-			$("#mem-relation").text("已發送好友請求");
-		} else if(memRelation == 2){
-			$(".visit-relation-btn").hide();
-			$("#visit-unfriend").show();
-			$("#mem-relation").text("已是好友");
-		} else if(memRelation == 3){
-			$(".visit-relation-btn").hide();
-			$("#visit-unblock-member").show();
-			$("#mem-relation").text("已封鎖");
+// 		await blockMember();
+
+		if(visitId){
+			await displayRelation();
+			await displayBlock();
+		} else{
+			$("#mem-edit").show();
+			$("#member-tabs").show();
+			$("#friends").show();
 		}
+
 		
-		
+		member = await loadMember();
+		posts = await loadPosts();
 		await displayFriends();
 		await displayRequests();
 		await displayBlocks();		
@@ -553,7 +479,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 	
 	</script>
 
-	<!-- 	get mem relation -->
+	<!-- 	member page -->
 	<script>
 	async function getMemRelation(){
 		let relation = {memIdA: visitId, memIdB: memId};
@@ -567,6 +493,122 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 		});
 	}
 	
+	async function displayBlock(){
+		console.log(memId + " : " + visitId);
+		let relation = {memIdA: memId, memIdB: visitId};
+		let status = await fetch("/member/getRelationStatus", {
+			method: "POST",
+			body: JSON.stringify(relation)
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+			return relation.status;
+		});
+		if(status == 3){		
+			isBlocked = true;
+			$(".visit-relation-btn").hide();
+			$("#visit-block-member").show();
+			$("#visit-chat-btn").hide();
+			$("#mem-relation").text(`您被${$("#mem-name").text()}封鎖`);
+		} else{
+			$("#member-tabs").show();
+			$("#friends").show();
+		}
+	}
+	
+	async function displayRelation(){
+		memRelation = await getMemRelation();
+// 		alert("memRelation: " + memRelation);
+		if(memRelation == 0){
+			$(".visit-relation-btn").hide();
+			$("#visit-add-friend").show();
+			$("#visit-block-member").show();
+			$("#mem-relation").text("");
+			$("#visit-chat-btn").show();
+		} else if(memRelation == 1){
+			$(".visit-relation-btn").hide();
+			$("#visit-unsend-request").show();
+			$("#mem-relation").text("已發送好友請求");
+			$("#visit-chat-btn").show();
+		} else if(memRelation == 2){
+			$(".visit-relation-btn").hide();
+			$("#visit-unfriend").show();
+			$("#mem-relation").text("已是好友");
+			$("#visit-chat-btn").show();
+		} else if(memRelation == 3){
+			$(".visit-relation-btn").hide();
+			$("#visit-unblock-member").show();
+			$("#mem-relation").text("已封鎖");
+			$("#visit-chat-btn").show();
+		}
+		if(isBlocked){
+			$("#visit-add-friend").hide();
+			$("#visit-chat-btn").hide();
+		}
+	}
+	
+	$(document).on("click", ".visit-mem", function(){
+		$("#visitMem").val($(this).attr("data-id"));
+		$("#visitMemForm").submit();
+	});
+	
+	$("#visit-chat-btn").on("click", function(){
+		$("#visitChat").val(memId);
+		$("#visitChatForm").submit();
+	});
+	
+	$("#visit-unfriend").on("click", async function(){
+		let memRelation = {memIdA: visitId, memIdB: memId};
+		
+		await fetch("/member/unfriend", {
+			method: "POST",
+			body: JSON.stringify(memRelation)
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+			return relation;
+		});
+		
+		await displayRelation();
+		await displayFriends();
+	});
+	
+	$("#visit-add-friend").on("click", async function(){		
+		await sendFriendRequest();
+		await displayRelation();
+	});
+	
+	$("#visit-unsend-request").on("click", async function(){	
+		let memRelation = {memIdA: visitId, memIdB: memId};
+		await fetch("/member/unsendRequest", {
+			method: "POST",
+			body: JSON.stringify(memRelation)
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+			return relation;
+		});
+		await displayRelation();
+	});
+	
+	$("#visit-block-member").on("click", async function(){	
+		await blockMember();
+		await displayRelation();
+	});
+	
+	$("#visit-unblock-member").on("click", async function(){
+		let memRelation = {memIdA: visitId, memIdB: memId};
+		await fetch("/member/unblock", {
+			method: "POST",
+			body: JSON.stringify(memRelation)
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+			return relation;
+		});
+		await displayRelation();
+	});
+	
 	</script>
 
 
@@ -575,6 +617,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 	$(".nav-item").on("click", function(){
 		$(".nav-item .nav-link").removeClass("active");
 		$(this).find(".nav-link").addClass("active");
+		$("#friend-search").val("");
 		return false;
 	});
 	
@@ -601,6 +644,14 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 		$("#blocks").show();
 	});
 	
+	
+	$(document).on("click", ".mem-chat-btn", function(){
+		let rMemId = $(this).attr("data-id");
+		$("#visitChat").val(rMemId);
+		$("#visitChatForm").submit();
+	});
+	
+	
 	</script>
 
 
@@ -608,7 +659,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 	<script>
 	
 	async function sendFriendRequest(){
-		let memRelation = {memIdA: "2", memIdB: memId};
+		let memRelation = {memIdA: visitId, memIdB: memId};
 		return await fetch("/member/sendFriendRequest", {
 			method: "POST",
 			body: JSON.stringify(memRelation)
@@ -633,14 +684,21 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 	async function displayRequests(){
 		requests = await getFriendRequests();
 		await getFriends();
+    	
+    	if(!requests.length){
+    		$("#friend-requests-body").html("");
+    		$("#friend-requests-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>暫無請求</h3></div>`);
+    		return;
+    	}
+    	
 		$('#friend-requests').pagination({
 		    dataSource: requests,
 		    pageSize: 5,
 		    callback: async function(requests, pagination) {
 		    	$("#friend-requests-body").html("");
-		    	if(!requests.length){
-		    		$("#friend-requests-body").append(`<div style="margin-top:50px; margin-bottom:50px"><h3>暫無請求</h3></div>`);
-		    	}
+// 		    	if(!requests.length){
+// 		    		$("#friend-requests-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>暫無請求</h3></div>`);
+// 		    	}
 		        for (request of requests) {
 					await fetch("/member/getById", {
 						method: "POST",
@@ -649,18 +707,28 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 						return response.json();
 					}).then(function(mem){
 												
-				let html = `<div style="width:300px; margin-top: 50px; margin-bottom: 50px; margin-left:350px"
+				let html = `<div style="width:500px; margin-top: 100px; margin-bottom: 50px; margin-left:250px"
 				class="row text-center mem-div" data-id="${mem.memId}">
-				<div class="col-6" style="height: 100px">
+				<div class="col-4" style="height: 150px">
 					<img class="request-mem-img" src="data:img/png;base64,${mem.memPic}"
-						style="width: 100px; height: 100px; border-radius: 50%">
+						style="max-width: 150px; border-radius: 50%">
 				</div>
-				<div class="col-6" style="height: 100px">
-					<div class="text-center">
-						<h3 class="request-mem-name">${mem.memUsername}</h3>
-						<button class="accept-request-btn" data-id="${mem.memId}" style="font-size: 24px; color: red">接受請求</button>
+				<div class="col-4" style="height: 150px">
+					<div class="text-center" style="margin-top: 50px">
+						<h3 class="visit-mem request-mem-name" data-id="${mem.memId}">${mem.memUsername}</h3>			
 					</div>
-				</div>`;
+				</div>
+				<div class="col-4" style="height: 150px">
+					<div style="margin-top:20px">
+						<div class="text-center">
+							<button class="accept-request-btn" data-id="${mem.memId}" style="font-size: 24px; color: green">接受請求</button>
+						</div>
+						<div style="margin-top:20px" class="text-center">
+							<button data-id="${mem.memId}" class="mem-chat-btn" style="font-size: 24px; color: blue">聊天</button>
+						</div>
+					</div>
+				</div>	
+			</div>`;
 												
 						$("#friend-requests-body").append(html);
 						
@@ -695,17 +763,18 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 	<script>
 	
 
-// 	async function blockMember(){
-// 		let memRelation = {memIdA: memId, memIdB: "5"};
-// 		return await fetch("/member/blockMember", {
-// 			method: "POST",
-// 			body: JSON.stringify(memRelation)
-// 		}).then(function(response){
-// 			return response.json();
-// 		}).then(function(relation){
-// 			return relation;
-// 		});
-// 	}
+
+	async function blockMember(){
+		let memRelation = {memIdA: visitId, memIdB: memId};
+		return await fetch("/member/blockMember", {
+			method: "POST",
+			body: JSON.stringify(memRelation)
+		}).then(function(response){
+			return response.json();
+		}).then(function(relation){
+			return relation;
+		});
+	}
 	
 	async function getBlockedMembers(){
 		return await fetch("/member/getBlockedMembers", {
@@ -720,14 +789,21 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 	
 	async function displayBlocks(){
 		blocks = await getBlockedMembers();
+		
+    	if(!blocks.length){
+    		$("#blocks-body").html("");
+    		$("#blocks-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>無封鎖會員</h3></div>`);
+    		return;
+    	}
+    	
 		$('#blocks').pagination({
 		    dataSource: blocks,
 		    pageSize: 5,
 		    callback: async function(blocks, pagination) {
 		    	$("#blocks-body").html("");
-		    	if(!blocks.length){
-		    		$("#blocks-body").append(`<div style="margin-top:50px; margin-bottom:50px"><h3>無封鎖會員</h3></div>`);
-		    	}
+// 		    	if(!blocks.length){
+// 		    		$("#blocks-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>無封鎖會員</h3></div>`);
+// 		    	}
 		        for (block of blocks) {
 					await fetch("/member/getById", {
 						method: "POST",
@@ -736,24 +812,34 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 						return response.json();
 					}).then(function(mem){
 												
-				let html = `<div style="width:300px; margin-top: 50px; margin-bottom: 50px; margin-left:350px"
+				let html = `<div style="width:500px; margin-top: 100px; margin-bottom: 50px; margin-left:250px"
 				class="row text-center mem-div" data-id="${mem.memId}">
-				<div class="col-6" style="height: 100px">
+				<div class="col-4" style="height: 150px">
 					<img class="block-mem-img" src="data:img/png;base64,${mem.memPic}"
-						style="width: 100px; height: 100px; border-radius: 50%">
+						style="max-width: 150px; border-radius: 50%">
 				</div>
-				<div class="col-6" style="height: 100px">
+				<div class="col-4" style="height: 150px; margin-top: 50px">
 					<div class="text-center">
-						<h3 class="block-mem-name">${mem.memUsername}</h3>
-						<button id="unblock${mem.memId}" class="unblock-btn" data-id="${mem.memId}" style="font-size: 24px; color: red">解除封鎖</button>
+						<h3 class="visit-mem block-mem-name" data-id="${mem.memId}">${mem.memUsername}</h3>
 					</div>
-				</div>`;
+				</div>				
+				<div class="col-4" style="height: 150px; margin-top: 20px">
+					<div class="text-center">
+						<div>
+							<button id="unblock${mem.memId}" class="unblock-btn" data-id="${mem.memId}" data-userName="${mem.memUsername}" style="font-size: 24px; color: red">解除封鎖</button>
+						</div>
+						<div style="margin-top: 20px">
+							<button class="mem-chat-btn" data-id="${mem.memId}" style="font-size: 24px; color: blue">聊天</button>
+						</div>
+					</div>
+				</div>	
+			</div>`;
 												
 						$("#blocks-body").append(html);
 						
 				        let options = {
 				        		title: null,
-				        	    confirm: `解除封鎖？`,
+				        	    confirm: `解除對${mem.memUsername}的封鎖？`,
 				        	    buttonConfirm: `<span class="confirmUnblock" id="confirmUnblock${mem.memId}" data-id="${mem.memId}">確認</span>`,	        	 
 				        	    buttonCancel: "取消",
 				        	    header: null    	    
@@ -799,34 +885,25 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 	<!-- 	friends -->
 	<script>
 	
-	$("#friend-search").on("input", function(){
+	$("#friend-search").on("input", async function(){
 		let input = $(this).val().toLowerCase();
-		$(".friend-div").each(function(){
-			if($(this).find(".unfriend-mem-name").text().toLowerCase().startsWith(input)){
-				$(this).show();
-			} else{
-				$(this).hide();
-			}
-		});
-	});
-	
-	$("#clear-friend-search").on("click", function(){
-		$("#friend-search").val("");
-		$(".friend-div").show();
-	});
-	
-
-// 	async function blockMember(){
-// 		let memRelation = {memIdA: memId, memIdB: "5"};
-// 		return await fetch("/member/blockMember", {
-// 			method: "POST",
-// 			body: JSON.stringify(memRelation)
-// 		}).then(function(response){
-// 			return response.json();
-// 		}).then(function(relation){
-// 			return relation;
+		isSearch = true;
+		filteredMembers = members.filter(member => member.memUsername.toLowerCase().startsWith(input));
+		await displayFriends();
+		// 		$(".friend-div").each(function(){
+// 			if($(this).find(".unfriend-mem-name").text().toLowerCase().startsWith(input)){
+// 				$(this).show();
+// 			} else{
+// 				$(this).hide();
+// 			}
 // 		});
-// 	}
+	});
+	
+	$("#clear-friend-search").on("click", async function(){
+		$("#friend-search").val("");
+		await displayFriends();
+// 		$(".friend-div").show();
+	});
 	
 	async function getFriends(){
 		return await fetch("/member/getFriends", {
@@ -842,40 +919,104 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 	
 	async function displayFriends(){
 		friends = await getFriends();
+		
+		if(isSearch){
+	    	if(!filteredMembers.length){
+	    		$("#friends-body").html("");
+	    		$("#friends-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>無搜尋到的好友</h3></div>`);
+	    		return;
+	    	}
+		} else{
+	    	if(!friends.length){
+	    		$("#friends-body").html("");
+	    		$("#friends-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>暫無好友</h3></div>`);
+	    		return;
+	    	}
+		}
+
 		$('#friends').pagination({
 		    dataSource: friends,
-		    pageSize: 5,
+		    pageSize: 10,
 		    callback: async function(friends, pagination) {
 		    	$("#friends-body").html("");
-		    	if(!friends.length){
-		    		$("#friends-body").append(`<div style="margin-top:50px; margin-bottom:50px"><h3>暫無好友</h3></div>`);
+
+		    	if(isSearch){
+
+// 			    	if(!filteredMembers.length){
+// 			    		$("#friends-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>無搜尋到的好友</h3></div>`);
+// 			    	}
+			        for (mem of filteredMembers) {		        	
+													
+					let html = `<div style="width:500px; margin-top: 100px; margin-bottom: 50px; margin-left:250px"
+					class="row text-center mem-div friend-div" data-id="${mem.memId}" data-userName="${mem.memUsername}">
+					<div class="col-4" style="height: 150px">
+						<img class="friend-mem-img" src="data:img/png;base64,${mem.memPic}"
+							style="max-width: 150px; border-radius: 50%">
+					</div>
+					<div class="col-4" style="height: 150px">
+						<div style="margin-top:20px" class="text-center">
+							<h3 class="visit-mem unfriend-mem-name" data-id="${mem.memId}">${mem.memUsername}</h3>				
+						</div>
+					</div>	
+					<div class="col-4" style="height: 150px">
+						<div style="margin-top:20px" class="text-center">
+							<div><button id="unfriend${mem.memId}" class="curMember block-btn" data-id="${mem.memId}" style="font-size: 24px; color: red; display:${visitId? 'none': ''}">解除好友</button></div>
+							<div style="margin-top:20px"><button class="curMember mem-chat-btn" data-id="${mem.memId}" style="font-size: 24px; color: blue; display:${visitId? 'none': ''}">聊天</button></div>											
+						</div>
+					</div>	
+				</div>`;
+													
+							$("#friends-body").append(html);
+							
+					        let options = {
+					        		title: null,
+					        	    confirm: `解除與${mem.memUsername}的好友關係？`,
+					        	    buttonConfirm: `<span class="confirmUnfriend" id="confirmUnfriend${mem.memId}" data-id="${mem.memId}">確認</span>`,	        	 
+					        	    buttonCancel: "取消",
+					        	    header: null    	    
+					        	};
+					        	let unfriendBtn = document.getElementById(`unfriend${mem.memId}`);
+					        	window.powerButtons('confirm', unfriendBtn, options);							
+			        }
 		    	}
-		        for (friend of friends) {
+		    	else{
+// 			    	if(!friends.length){
+// 			    		$("#friends-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>暫無好友</h3></div>`);
+// 			    	}
+		    	members = [];
+		        for (friend of friends) {		        	
 					await fetch("/member/getById", {
 						method: "POST",
 						body: JSON.stringify({memId: friend.memIdB})
 					}).then(function(response){
 						return response.json();
 					}).then(function(mem){
+						members.push(mem);
 												
-				let html = `<div style="width:300px; margin-top: 50px; margin-bottom: 50px; margin-left:350px"
-				class="row text-center mem-div friend-div" data-id="${mem.memId}">
-				<div class="col-6" style="height: 100px">
+				let html = `<div style="width:500px; margin-top: 100px; margin-bottom: 50px; margin-left:250px"
+				class="row text-center mem-div friend-div" data-id="${mem.memId}" data-userName="${mem.memUsername}">
+				<div class="col-4" style="height: 150px">
 					<img class="friend-mem-img" src="data:img/png;base64,${mem.memPic}"
-						style="width: 100px; height: 100px; border-radius: 50%">
+						style="max-width: 150px; border-radius: 50%">
 				</div>
-				<div class="col-6" style="height: 100px">
+				<div class="col-4" style="height: 150px">
 					<div style="margin-top:20px" class="text-center">
-						<h3 class="unfriend-mem-name">${mem.memUsername}</h3>
-						<button style="display:${visitId? 'none': ''}" id="unfriend${mem.memId}" class="curMember block-btn" data-id="${mem.memId}" style="font-size: 24px; color: red">解除好友</button>
+						<h3 class="visit-mem unfriend-mem-name" data-id="${mem.memId}">${mem.memUsername}</h3>				
 					</div>
-				</div>`;
+				</div>	
+				<div class="col-4" style="height: 150px">
+					<div style="margin-top:20px" class="text-center">
+						<div><button id="unfriend${mem.memId}" class="curMember block-btn" data-id="${mem.memId}" style="font-size: 24px; color: red; display:${visitId? 'none': ''}">解除好友</button></div>
+						<div style="margin-top:20px"><button class="curMember mem-chat-btn" data-id="${mem.memId}" style="font-size: 24px; color: blue; display:${visitId? 'none': ''}">聊天</button></div>											
+					</div>
+				</div>	
+			</div>`;
 												
 						$("#friends-body").append(html);
 						
 				        let options = {
 				        		title: null,
-				        	    confirm: `解除好友關係？`,
+				        	    confirm: `解除與${mem.memUsername}的好友關係？`,
 				        	    buttonConfirm: `<span class="confirmUnfriend" id="confirmUnfriend${mem.memId}" data-id="${mem.memId}">確認</span>`,	        	 
 				        	    buttonCancel: "取消",
 				        	    header: null    	    
@@ -885,6 +1026,8 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 						
 					});
 		        }
+		    }
+		    	isSearch = false;
 		    }
 		});
 	}
@@ -921,7 +1064,6 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 
 	<!-- load member and posts -->
 	<script>
-	$(document).ready(async function(){
 		async function loadMember(){
 			return await fetch("/member/getById", {
 				method: "POST",
@@ -933,6 +1075,9 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 				$("#mem-img").attr("src",mem.memPic? "data:image/png;base64," + mem.memPic: "/front-end/01/images/notfind.jpg");
 				$("#mem-name").text(mem.memUsername);
 				$("#mem-intro").text(mem.memIntro);
+				if(!$("#mem-intro").text()){
+					$("#mem-intro").append(`<div style="margin-left: 125px; margin-top:50px; margin-bottom:50px"><h3>暫無自我介紹</h3></div>`);
+		    	}
 				return mem;
 			});
 		}	
@@ -949,35 +1094,39 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 				return posts;
 			});
 		}		
-		
-		member = await loadMember();
-		posts = await loadPosts();
-	
-	});
 	
 	
 	function displayPosts(posts){
+		if(visitId){
+			posts = posts.filter(post => post.postStatus != 2);
+		}
+    	if(!posts.length){
+    		$("#posts-body").html("");
+    		$("#posts-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>暫無貼文</h3></div>`);
+    		return;
+    	}
 		$('#posts').pagination({
 		    dataSource: posts,
-		    pageSize: 2,
+		    pageSize: 3,
 // 		    showSizeChanger: true,
 // 		    sizeChangerOptions: [2, 5, 10, 20, 50, 100],
 		    callback: function(posts, pagination) {
 		    	$("#posts-body").html("");
 		    	
-		    	if(!posts.length){
-		    		$("#posts-body").append(`<div style="margin-top:50px; margin-bottom:50px"><h3>暫無貼文</h3></div>`);
-		    	}
+// 		    	if(!posts.length){
+// 		    		$("#posts-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>暫無貼文</h3></div>`);
+// 		    		return;
+// 		    	}
 		    	
 		        for (post of posts) {
-		        let html = `<div class="post" data-id="${post.postId}"><div class="row"><div class="post-time col-6 text-start"></div><div style="display:${visitId? 'none': ''}" class="post-status col-6 text-end">${post.postStatus}</div></div><div class="post-title" style="width: 750px"><h3 class="text-center">${post.postTitle}</h3></div><div style="width: 750px" class="post-content text-center">${post.postContent}</div><div class="row"><div class="col-6 text-start"><button style="display:${visitId? 'none': ''}" data-bs-target="#add-post-modal" data-bs-toggle="modal" class="edit-post-btn" data-post="${post.postId}"><i class="fa fa-edit"></i></button></div><div class="col-6 text-end"><button style="display:${visitId? 'none': ''}" class="delete-post-btn" id="deletePost${post.postId}"><i class="fa fa-trash" aria-hidden="true"></button></div></div></div>`;
+		        let html = `<div class="post" data-id="${post.postId}"><div class="row"><div class="post-time col-6 text-start"></div><div style="display:${visitId? '': 'none'}" data-id="${post.postId}" class="post-report-btn col-6 text-end"><button style="font-size: 20px; color: red">檢舉<i class="fa fa-file"></i></button></div><div style="display:${visitId? 'none': ''}" class="post-status col-6 text-end">${post.postStatus}</div></div><div class="post-title" style="width: 750px"><h3 class="text-center">${post.postTitle}</h3></div><div style="width: 750px" class="post-content text-center">${post.postContent}</div><div class="row"><div class="col-6 text-start"><button style="display:${visitId? 'none': ''}" data-bs-target="#add-post-modal" data-bs-toggle="modal" class="edit-post-btn" data-post="${post.postId}"><i class="fa fa-edit"></i></button></div><div class="col-6 text-end"><button style="display:${visitId? 'none': ''}" class="delete-post-btn" id="deletePost${post.postId}"><i class="fa fa-trash" aria-hidden="true"></button></div></div></div>`;
 		        $("#posts-body").append(html);
 		        displayTime(post.postId, post.postTime);
 		        displayStatus(post.postId, post.postStatus);
 		        
 		        let options = {
 		        		title: null,
-		        	    confirm: `刪除這個貼文？`,
+		        	    confirm: `刪除這篇貼文？`,
 		        	    buttonConfirm: `<span class="confirmDeletePost" id="confirmDelete${post.postId}" data-post="${post.postId}">確認</span>`,	        	 
 		        	    buttonCancel: "取消",
 		        	    header: null    	    
@@ -1246,7 +1395,7 @@ $(document).on("click", "li.status-li", async function(){
 })
 
 
-$("#post-sort").on("click", function(){
+$(document).on("click", "#post-sort", function(){
 	if($(this).attr("data-order") == "asc"){
 		posts.sort((a, b) => b.postTime.localeCompare(a.postTime));
 		displayPosts(posts);

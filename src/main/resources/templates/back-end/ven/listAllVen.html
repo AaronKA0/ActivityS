@@ -147,13 +147,13 @@ thead tr:first-child {
 
 <body>
 
-	<div class="accordion" id="accordionExample">
+	<div class="accordion" id="accordionExample" style="margin-top:20px; margin-bottom:20px">
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="headingOne">
-				<button class="accordion-button" type="button"
+				<button class="accordion-button text-center" type="button"
 					data-bs-toggle="collapse" data-bs-target="#collapseOne"
 					aria-expanded="true" aria-controls="collapseOne">
-					<b>搜尋場地</b>
+					<div style="width:100%; font-size:24px" class="text-center"><b>搜尋場地</b></div>
 				</button>
 			</h2>
 			<div id="collapseOne" class="accordion-collapse collapse"
@@ -167,7 +167,7 @@ thead tr:first-child {
 									<button class="accordion-button" type="button"
 										data-bs-toggle="collapse" data-bs-target="#collapseBasic"
 										aria-expanded="true" aria-controls="collapseBasic">
-										<b>基本搜尋</b>
+										<div style="width:100%" class="text-center"><b>基本搜尋</b></div>
 									</button>
 								</h2>
 								<div id="collapseBasic" class="accordion-collapse collapse"
@@ -215,7 +215,7 @@ thead tr:first-child {
 									<button class="accordion-button" type="button"
 										data-bs-toggle="collapse" data-bs-target="#collapseAdvanced"
 										aria-expanded="true" aria-controls="collapseAdvanced">
-										<b>進階搜尋</b>
+										<div style="width:100%" class="text-center"><b>進階搜尋</b></div>
 									</button>
 								</h2>
 								<div id="collapseAdvanced" class="accordion-collapse collapse"
@@ -260,14 +260,14 @@ thead tr:first-child {
 										</div>
 										<div class="row g-3 text-center" style="margin-bottom: 20px">
 											<div class="col">
-												<label for="s-lcount" style="margin-right: 20px">最低人數</label>
+												<label for="s-lcount" style="margin-right: 20px">最低評分人數</label>
 												<input step="1" type="number" inputmode="numeric"
 													oninput="this.value = this.value.replace(/\D+/g, '')"
 													style="display: inline-block" class="form-control lower"
 													id="s-lcount">
 											</div>
 											<div class="col">
-												<label for="s-hcount" style="margin-right: 20px">最高人數</label>
+												<label for="s-hcount" style="margin-right: 20px">最高評分人數</label>
 												<input step="1" type="number" inputmode="numeric"
 													oninput="this.value = this.value.replace(/\D+/g, '')"
 													style="display: inline-block" class="form-control upper"
@@ -379,7 +379,7 @@ thead tr:first-child {
 	</ul>
 
 
-	<div>
+	<div style="margin-top:20px; margin-bottom:20px">
 		<!-- Button trigger insert modal -->
 		<button id="insert" type="button" class="btn btn-success"
 			data-bs-toggle="modal" data-bs-target="#staticBackdrop">新增場地</button>
@@ -658,7 +658,7 @@ thead tr:first-child {
 							<div style="margin-top: 50px" class="col-12">
 								<input class="align-top" type="file" id="p_file" name="venPic"
 									accept="image/*"> <span id="preview"> <img
-									style="width: 250px" id="oldPic" src="/images/notfind.jpg"
+									style="width: 250px" id="oldPic" src="/back-end/01/images/notfind.jpg"
 									class="preview_img"></img> <img style="width: 250px"
 									id="newPic" class="preview_img"></img>
 								</span>
@@ -753,7 +753,7 @@ thead tr:first-child {
 								<input style="margin-bottom: 10px" class="align-top" type="file"
 									id="u-file" name="u-pic" accept="image/*"> <span
 									id="u-preview"> <img style="max-height: 200px"
-									id="u-oldPic" src="/images/notfind.jpg" class="preview_img"></img>
+									id="u-oldPic" src="back-end/01/images/notfind.jpg" class="preview_img"></img>
 									<img style="max-height: 200px" id="u-newPic"
 									class="preview_img"></img>
 								</span>
@@ -791,7 +791,7 @@ thead tr:first-child {
 
 							<div>以下是被選取上架的場地</div>
 							<div class="text-center"
-								style="overflow-y: auto; max-height: 300px; margin-bottom: 20px">
+								style="overflow-y: auto; max-height: 300px; margin-bottom: 20px; margin-top:20px">
 
 								<ul id="up-list" class="list-group"
 									style="display: inline-block; width: 50%; list-style-position: inside"></ul>
@@ -839,7 +839,7 @@ thead tr:first-child {
 
 							<div>以下是被選取下架的場地</div>
 							<div class="text-center"
-								style="overflow-y: auto; max-height: 300px; margin-bottom: 20px">
+								style="overflow-y: auto; max-height: 300px; margin-bottom: 20px; margin-top:20px">
 
 								<ul id="down-list" class="list-group"
 									style="display: inline-block; width: 50%; list-style-position: inside"></ul>
@@ -921,23 +921,29 @@ thead tr:first-child {
 
 
 <!-- ven warning button -->
-<button id="ven-warning-btn" style="display:none" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#warningModal">
+<button id="ven-warning-btn" style="display:none" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#venWarningModal">
   Launch static backdrop modal
 </button>
 
 <!-- ven warning modal -->
-<div class="modal fade" id="warningModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+<div class="modal fade" id="venWarningModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="warningModalLabel">Modal title</h5>
+      <div class="modal-header text-center">
+        <h5 style="width:100%" class="modal-title" id="warningModalLabel">無法下架有被預訂的場地</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        ...
+      <div class="modal-body text-center">
+       <div class="text-center">以下是有被預訂的場地</div>
+							<div class="text-center"
+								style="overflow-y: auto; max-height: 300px; margin-bottom: 20px; margin-top:20px">
+
+								<ul id="invalid-down-list" class="list-group"
+									style="display: inline-block; width: 50%; list-style-position: inside"></ul>
+							</div>
       </div>
       <div class="modal-footer">
-     	 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+     	 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
       </div>
     </div>
   </div>
@@ -1366,7 +1372,7 @@ $(document).on("click", ".view", function(){
 			$("#view-type").text(result.venType.venTypeName);
 			$("#view-location").text(result.venLoc);
 			$("#view-description").text(result.venDescr);
-			$("#view-image").attr("src",result.venPic? "data:image/png;base64," + result.venPic: "/images/notfind.jpg");
+			$("#view-image").attr("src",result.venPic? "data:image/png;base64," + result.venPic: "/back-end/01/images/notfind.jpg");
 		} else{
 			
 		}	
@@ -1384,6 +1390,8 @@ $(document).on("click", ".view", function(){
 $(document).ready(function() {
 	
 	let venNames = [];
+	let reservedVenNames = [];
+	let allReservedVenNames = [];
 	
 	const updateDown = new tempusDominus.TempusDominus(document.getElementById('u-downtime'),
 			  {
@@ -1437,13 +1445,33 @@ $(document).ready(function() {
 	});
 	
 
-	$("#downtime-form").on("submit", function(e){
+	$("#downtime-form").on("submit", async function(e){
 		e.preventDefault();
 		
-		if(true){
+		allReservedVenNames = await fetch("/venOrder/active", {
+				method: "GET",
+			}).then(function(response){
+				return response.json();
+			}).then(function(result){
+				return result.filter(ord => ord.orderStatus != 1).map(ord => ord.venVO.venName);
+			});
+		
+		reservedVenNames = [];
+		$(".check:checked").each(function(index) {
+			let venName = $(this).closest("tr").find("td").eq(1).text();
+			if(!$(this).hasClass("check-all") && allReservedVenNames.includes(venName)){
+				reservedVenNames.push(venName);				
+			}
+		});
+		
+		if(reservedVenNames.length){
 			$("#ven-warning-btn").click();
+// 			$("#downtime-btn-close").click();
+			$(".check").prop("checked", false);
 			return false;
 		}
+		
+		$(".check").prop("checked", false);
 		
 		let coeff = 1000 * 60 * 1;
 		let date = new Date();
@@ -1469,6 +1497,21 @@ $(document).ready(function() {
 		    	 await reload();
 		    }
 		});
+	});
+	
+	
+	$('#venWarningModal').on('show.bs.modal', function (e) {
+		
+		$("#invalid-down-list").empty();
+			
+		reservedVenNames.sort();
+		
+		for(let venName of reservedVenNames){
+			$("#invalid-down-list").append(`<li class="text-center list-group-item ">${venName}</li>`);
+		}	
+		
+		reservedVenNames = [];
+		
 	});
 	
 });
@@ -2581,7 +2624,7 @@ $("#u-price").on("blur", function(){
 				$("#u-location").val(result.venLoc);
 				$("#u-description").val(result.venDescr);
 				$("#u-price").val(result.venPrice);
-				$("#u-oldPic").attr("src",result.venPic? "data:image/png;base64," + result.venPic: "/images/notfind.jpg");
+				$("#u-oldPic").attr("src",result.venPic? "data:image/png;base64," + result.venPic: "/back-end/01/images/notfind.jpg");
 			} else{
 				
 			}	

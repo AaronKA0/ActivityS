@@ -157,4 +157,9 @@ public class ChatController {
 				reason.getCloseCode().getCode(), userNames);
 		System.out.println(text);
 	}
+	
+	
+	public void updateNotification() {
+		System.out.println("new notification");
+	}
 }

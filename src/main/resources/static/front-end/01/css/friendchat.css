@@ -1,120 +1,4 @@
-/* * { */
-/* 	margin: auto; */
-/* 	padding: 0px; */
-/* } */
 
-/* html, body { */
-/* 	font: 15px verdana, Times New Roman, arial, helvetica, sans-serif, */
-/* 		Microsoft JhengHei; */
-/* 	width: 90%; */
-/* 	height: 90%; */
-/* 	background: #eeeeda; */
-/* } */
-
-/* .panel { */
-/* 	float: right; */
-/* 	border: 2px solid #0078ae; */
-/* 	border-radius: 5px; */
-/* 	width: 50%; */
-/* } */
-
-/* .message-area { */
-/* 	height: 70%; */
-/* 	resize: none; */
-/* 	box-sizing: border-box; */
-/* 	overflow: auto; */
-/* 	background-color: #ffffff; */
-/* } */
-
-/* .input-area { */
-/* 	background: #0078ae; */
-/* 	box-shadow: inset 0 0 10px #00568c; */
-/* } */
-
-/* .input-area input { */
-/* 	margin: 0.5em 0em 0.5em 0.5em; */
-/* } */
-
-/* .text-field { */
-/* 	border: 1px solid grey; */
-/* 	padding: 0.2em; */
-/* 	box-shadow: 0 0 5px #000000; */
-/* } */
-
-/* h1 { */
-/* 	font-size: 1.5em; */
-/* 	padding: 5px; */
-/* 	margin: 5px; */
-/* } */
-
-/* #message { */
-/* 	min-width: 50%; */
-/* 	max-width: 60%; */
-/* } */
-
-/* .statusOutput { */
-/* 	background: #0078ae; */
-/* 	text-align: center; */
-/* 	color: #ffffff; */
-/* 	border: 1px solid grey; */
-/* 	padding: 0.2em; */
-/* 	box-shadow: 0 0 5px #000000; */
-/* 	width: 30%; */
-/* 	margin-top: 10%; */
-/* 	margin-left: 60%; */
-/* } */
-
-/* #row { */
-/* 	float: left; */
-/* 	width: 50%; */
-/* } */
-
-/* .column { */
-/*   float: left; */
-/*   width: 50%; */
-/*   padding: 5%; */
-/*   margin-bottom: 5px; */
-/*   background-color: #ffffff; */
-/* } */
-
-/* ul{ */
-/*   list-style: none; */
-/*   margin: 0; */
-/*   padding: 0; */
-/* } */
-
-/* ul li{ */
-/*   display:inline-block; */
-/*   clear: both; */
-/*   padding: 20px; */
-/*   border-radius: 30px; */
-/*   margin-bottom: 2px; */
-/*   font-family: Helvetica, Arial, sans-serif; */
-/* } */
-
-/* .friend{ */
-/*   background: #eee; */
-/*   float: left; */
-/* } */
-
-/* .me{ */
-/*   float: right; */
-/*   background: #0084ff; */
-/*   color: #fff; */
-/* } */
-
-/* .friend + .me{ */
-/*   border-bottom-right-radius: 5px; */
-/* } */
-
-/* .me + .me{ */
-/*   border-top-right-radius: 5px; */
-/*   border-bottom-right-radius: 5px; */
-/* } */
-
-/* .me:last-of-type { */
-/*   border-bottom-right-radius: 30px; */
-/* } */
 body {
 	font-family: helvetica;
 	/*   display: flex ; */
@@ -130,7 +14,7 @@ body {
 }
 
 .messages {
-	padding: 10px;
+	padding: 10px 20px;
 	margin-top: 30px;
 	display: flex;
 	flex-direction: column;
@@ -138,6 +22,7 @@ body {
 
 .message {
 	border-radius: 20px;
+	border-collapse: collapse;	
 	padding: 8px 15px;
 	margin-top: 5px;
 	margin-bottom: 5px;
@@ -264,7 +149,8 @@ body {
 
 #contacts-div {
 	/* 	width: 500px; */
-	border: solid 1px #EEE;
+	/* 	border: solid 1px #EEE; */
+	border: solid 1px black;
 	border-collapse: collapse;
 	padding: 0px;
 }
@@ -286,8 +172,9 @@ body {
 
 #chat-div {
 	/* 	width: 500px; */
-	height: 500px;
-	border: solid 1px #EEE;
+	height: 502px;
+	/* 	border: solid 1px #EEE; */
+	border: solid 1px black;
 	border-collapse: collapse;
 	padding: 0px;
 }
@@ -309,8 +196,9 @@ body {
 
 .contact img {
 	border-radius: 50%;
-	max-height: 75px;
+	max-width: 80px;
 	margin-left: 10px;
+	border-collapse: collapse;
 }
 
 .contact .new {
@@ -321,6 +209,7 @@ body {
 	width: 15px;
 	background-color: blue;
 	border-radius: 50%;
+	border-collapse: collapse;
 	margin-top: 0px;
 }
 
@@ -349,6 +238,11 @@ body {
 	background-color: white;
 }
 
+#input-message{
+	padding-left: 50px;
+	padding-right: 50px;	
+}
+
 #chat-friend {
 	height: 50px;
 	width: 100%;
@@ -356,6 +250,11 @@ body {
 	z-index: 10;
 	padding: 10px;
 	display: none;
+	border: solid black 1px;
+	border-collapse: collapse;
+}
+
+#contacts-search-div {
 	border: solid black 1px;
 	border-collapse: collapse;
 }
@@ -374,6 +273,7 @@ body {
 
 .retrieved {
 	border-radius: 20px;
+	border-collapse: collapse;	
 	padding: 8px 15px;
 	margin-top: 5px;
 	margin-bottom: 5px;
@@ -396,5 +296,6 @@ body {
 ::-webkit-scrollbar-thumb {
 	background-color: rgba(155, 155, 155, 0.5);
 	border-radius: 20px;
+	border-collapse: collapse;
 	border: transparent;
 }

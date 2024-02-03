@@ -1,4 +1,4 @@
-package com.ven;
+package com.venue.controller;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -21,18 +21,22 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.services.EmailService;
-import com.ventype.VenTypeService;
+import com.google.gson.Gson;
+import com.ventype.service.VenTypeService;
+import com.venue.model.VenVO;
+import com.venue.service.VenService;
 
 @Controller
 @RequestMapping("/ven")
-public class VenController {
+public class VenBackendController {
 
 	@Autowired
 	VenService venSvc;
 
 	@Autowired
 	VenTypeService venTypeSvc;
+	
+	Gson gson = new Gson();
 
 //	@Autowired
 //	EmailService emailService;
@@ -171,21 +175,13 @@ public class VenController {
 			e.printStackTrace();
 		}
 		String venName = ven.getVenName();
-		return venSvc.getByName(venName);
-
-//		ObjectMapper mapper = new ObjectMapper();
-//		TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {
-//		};
-//		Map<String, Object> data = new HashMap<String, Object>();
-//		try {
-//			data = mapper.readValue(json, typeRef);
-//		} catch (JsonProcessingException e) {
-//			e.printStackTrace();
-//		}
-//		String venName = (String) data.get("venName");
-//		return venSvc.getByName(venName);
-		
-		
+		return venSvc.getByName(venName);		
+	}
+	
+	@RequestMapping("getById")
+	public @ResponseBody VenVO getById(@RequestBody String json) {
+		VenVO ven = gson.fromJson(json, VenVO.class);
+		return venSvc.getOneVen(ven.getVenId());		
 	}
 
 	@RequestMapping("updateTime")

@@ -1,11 +1,9 @@
-package com.ventype;
+package com.ventype.service;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.ven.VenVO;
+import com.ventype.model.VenTypeVO;
 
 public interface VenTypeRepository extends JpaRepository<VenTypeVO, Integer> {
 	

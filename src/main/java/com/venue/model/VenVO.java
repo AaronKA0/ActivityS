@@ -1,4 +1,4 @@
-package com.ven;
+package com.venue.model;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ventype.VenTypeVO;
+import com.ventype.model.VenTypeVO;
 
 @Entity
 @Table(name = "venue")
@@ -24,11 +24,10 @@ public class VenVO implements java.io.Serializable {
 
 //	@Transient
 	private static final long serialVersionUID = 7247353469714932743L;
-	
-	
+
 	@Transient
 	private Double venRating;
-	
+
 	public void setVenRating(Double venRating) {
 		this.venRating = venRating;
 	}
@@ -36,19 +35,18 @@ public class VenVO implements java.io.Serializable {
 	public Double getVenRating() {
 		return venRating;
 	}
-	
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // uses auto_increment
 	@Column(name = "ven_id", insertable = false, updatable = false)
 	private Integer venId;
 
 	// fetch 預設為 EAGER
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ven_type_id", referencedColumnName = "ven_type_id")
 	private VenTypeVO venType;
 
-	@Column(name = "ven_name", unique=true)
+	@Column(name = "ven_name", unique = true)
 	private String venName;
 
 	@Column(name = "ven_descr")
@@ -59,10 +57,10 @@ public class VenVO implements java.io.Serializable {
 
 	@Column(name = "ven_loc")
 	private String venLoc;
-	
+
 	@Column(name = "ven_city")
 	private String venCity;
-	
+
 	@Column(name = "ven_district")
 	private String venDistrict;
 
@@ -72,11 +70,11 @@ public class VenVO implements java.io.Serializable {
 	@Column(name = "ven_status", nullable = false, columnDefinition = "tinyint default 1")
 	private Byte venStatus;
 
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "Asia/Taipei")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Taipei")
 	@Column(name = "ven_uptime")
 	private Timestamp venUptime;
 
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "Asia/Taipei")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Taipei")
 	@Column(name = "ven_downtime")
 	private Timestamp venDowntime;
 
@@ -139,7 +137,7 @@ public class VenVO implements java.io.Serializable {
 	public void setVenLoc(String venLoc) {
 		this.venLoc = venLoc;
 	}
-	
+
 	public String getVenCity() {
 		return venCity;
 	}
@@ -147,7 +145,7 @@ public class VenVO implements java.io.Serializable {
 	public void setVenCity(String venCity) {
 		this.venCity = venCity;
 	}
-	
+
 	public String getVenDistrict() {
 		return venDistrict;
 	}
@@ -212,14 +210,12 @@ public class VenVO implements java.io.Serializable {
 		this.venRateCount = venRateCount;
 	}
 
-
-
 	@Override
 	public String toString() {
-		return "VenueVO [venId=" + venId + ", venType=" + venType + ", venName=" + venName + ", venDescr="
-				+ venDescr + ", venLoc=" + venLoc + ", venPrice=" + venPrice + ", venStatus=" + venStatus
-				+ ", venUptime=" + venUptime + ", venDowntime=" + venDowntime + ", venModTime=" + venModTime
-				+ ", venTotRating=" + venTotRating + ", venRateCount=" + venRateCount + "]";
+		return "VenueVO [venId=" + venId + ", venType=" + venType + ", venName=" + venName + ", venDescr=" + venDescr
+				+ ", venLoc=" + venLoc + ", venPrice=" + venPrice + ", venStatus=" + venStatus + ", venUptime="
+				+ venUptime + ", venDowntime=" + venDowntime + ", venModTime=" + venModTime + ", venTotRating="
+				+ venTotRating + ", venRateCount=" + venRateCount + "]";
 	}
 
 	@Override

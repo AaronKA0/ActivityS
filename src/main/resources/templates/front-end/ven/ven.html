@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>場地租借</title>
+<!-- 引入 Bootstrap CSS 文件 -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+	integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+<script
+	src="https://cdn.tiny.cloud/1/tus9t8o6mklmhwd5c0iaejn9394stnli5i0j2ic9bb4xurm0/tinymce/6/tinymce.min.js"
+	referrerpolicy="origin"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/@tinymce/tinymce-jquery@2/dist/tinymce-jquery.min.js"></script>
+
+
+<script
+	src="
+https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.js
+"></script>
+<link
+	href="
+https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
+"
+	rel="stylesheet">
+
+<script
+	src="https://cdn.jsdelivr.net/gh/dealfonso/power-buttons/dist/powerbuttons.min.js"></script>
+
+
+<link
+	href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+	rel="stylesheet" />
+<script
+	src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+<style>
+main {
+	min-height: calc(100vh - 70px);
+}
+
+#top {
+	margin-bottom: 30px;
+}
+
+/* ===== 重要性的星號 ===== */
+div.star_block {
+	display: inline-block;
+}
+
+div.star_block>span.star {
+	cursor: pointer;
+	display: inline-block;
+	margin-right: 3px;
+}
+
+div.star_block>span.star.-on {
+	color: yellow;
+}
+
+div.star_block>span.star.-off {
+	color: white;
+}
+
+.ven-card:hover {
+	cursor: pointer;
+}
+
+.paginationjs .paginationjs-pages {
+	display: inline-block;
+	float: none;
+}
+
+.paginationjs {
+	margin-top: 50px;
+	text-align: center;
+	display: block;
+}
+
+.ven-card {
+	display: flex;
+	height: 425px;
+}
+
+.card-body {
+	display: inline-block;
+	margin-top: auto;
+	max-height: 200px;
+}
+
+.form-control {
+	width: 200px;
+}
+
+.select2-container--open {
+	z-index: 9999999;
+}
+
+.active {
+	background-color: grey;
+	color: white;
+}
+
+.sort-btn{
+	font-size: 20px;
+}
+</style>
+</head>
+
+<body>
+
+	<div style="width: 200px" class="offcanvas offcanvas-start"
+		tabindex="-1" id="offcanvasExample"
+		aria-labelledby="offcanvasExampleLabel">
+		<div class="offcanvas-body" style="padding: 0px; overflow-x: hidden">
+
+			<div class="b-example-divider"></div>
+
+			<div
+				class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white"
+				style="width: 200px;">
+				<a href="/member"
+					class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+					<svg class="bi me-2" width="30" height="24">
+						<use xlink:href="#bootstrap" /></svg> <span class="fs-5 fw-semibold">會員首頁</span>
+				</a>
+				<div class="list-group list-group-flush border-bottom scrollarea">
+					<a th:href="@{/member/chat}"
+						class="list-group-item list-group-item-action py-3 lh-tight"
+						aria-current="true">
+						<div
+							class="d-flex w-100 align-items-center justify-content-between">
+							<strong class="mb-1">聊天</strong>
+						</div>
+					</a> <a th:href="@{/member/chat}"
+						class="list-group-item list-group-item-action py-3 lh-tight"
+						aria-current="true">
+						<div
+							class="d-flex w-100 align-items-center justify-content-between">
+							<strong class="mb-1">通知</strong>
+						</div>
+					</a> <a th:href="@{/member/venOrder}"
+						class="list-group-item list-group-item-action py-3 lh-tight"
+						aria-current="true">
+						<div
+							class="d-flex w-100 align-items-center justify-content-between">
+							<strong class="mb-1">場地預訂</strong>
+						</div>
+					</a>
+				</div>
+			</div>
+
+			<div class="b-example-divider"></div>
+
+		</div>
+	</div>
+
+	<div class="container">
+		<header
+			class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+			<button class="btn btn-primary fa fa-bars" type="button"
+				data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+				aria-controls="offcanvasExample"></button>
+			<div class="col-md-3 mb-2 mb-md-0">
+				<a href="index.html"
+					class="d-inline-flex link-body-emphasis text-decoration-none">
+					<span class="fs-4">做伙</span>
+				</a>
+			</div>
+
+			<ul
+				class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+				<li><a href="index.html" class="nav-link px-2 link-secondary">首頁</a></li>
+				<li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+				<li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
+				<li><a href="/ven/browse" class="nav-link px-2 link-secondary">場地租借</a></li>
+				<li><a href="customer.html"
+					class="nav-link px-2 link-secondary">FAQs</a></li>
+				<li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
+			</ul>
+
+			<div class="col-md-3 text-end">
+				<button type="button" class="btn btn-outline-primary me-2">
+					<a class="nav-link" href="#" data-bs-toggle="modal"
+						data-bs-target="#loginModal">登入</a>
+				</button>
+				<button type="button" class="btn btn-primary">
+					<a class="nav-link" href="register.html">註冊</a>
+				</button>
+			</div>
+		</header>
+	</div>
+
+
+
+
+
+	<main id="top" class="container mt-5">
+		<section id="venue-rental" class="mt-5 text-center">
+			<h1>場地租借</h1>
+			<p>歡迎租借我們的場地！</p>
+
+			<div class="accordion" id="accordionExample">
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="headingOne">
+						<button class="accordion-button" type="button"
+							data-bs-toggle="collapse" data-bs-target="#collapseOne"
+							aria-expanded="true" aria-controls="collapseOne">
+							<div style="width: 100%; font-size: 24px" class="text-center">
+								<b>搜尋場地</b>
+							</div>
+						</button>
+					</h2>
+					<div id="collapseOne" class="accordion-collapse collapse"
+						aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+						<div class="accordion-body">
+							<form>
+
+								<div class="accordion" id="accordionBasic">
+									<div class="accordion-item">
+										<h2 class="accordion-header" id="headingBasic">
+											<button class="accordion-button" type="button"
+												data-bs-toggle="collapse" data-bs-target="#collapseBasic"
+												aria-expanded="true" aria-controls="collapseBasic">
+												<div style="width: 100%" class="text-center">
+													<b>基本搜尋</b>
+												</div>
+											</button>
+										</h2>
+										<div id="collapseBasic" class="accordion-collapse collapse"
+											aria-labelledby="headingBasic"
+											data-bs-parent="#accordionBasic">
+											<div class="accordion-body">
+												<div class="row g-3 text-center" style="margin-bottom: 20px">
+													<div class="col">
+														<label for="s-name" style="margin-right: 20px">名稱</label>
+														<input style="display: inline-block" class="form-control"
+															id="s-name" type="text">
+													</div>
+													<div class="col">
+														<label for="s-type"
+															style="margin-right: 27px; margin-left: 7px">類別</label> <select
+															class="form-select" id="s-type">
+															<option selected value="全類別">全類別</option>
+														</select>
+													</div>
+												</div>
+												<div class="row g-3 text-center">
+													<div class="col">
+														<label for="s-city"
+															style="margin-right: 27px; margin-left: 60px">市</label> <select
+															class="form-select" id="s-city">
+															<option selected value="全市">全市</option>
+														</select>
+													</div>
+													<div class="col">
+														<label for="s-district"
+															style="margin-right: 27px; margin-left: 23px">區</label> <select
+															class="form-select" id="s-district">
+															<option selected value="全區">全區</option>
+														</select>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="accordion" id="accordionAdvanced">
+									<div class="accordion-item">
+										<h2 class="accordion-header" id="headingAdvanced">
+											<button class="accordion-button" type="button"
+												data-bs-toggle="collapse" data-bs-target="#collapseAdvanced"
+												aria-expanded="true" aria-controls="collapseAdvanced">
+												<div style="width: 100%" class="text-center">
+													<b>進階搜尋</b>
+												</div>
+											</button>
+										</h2>
+										<div id="collapseAdvanced" class="accordion-collapse collapse"
+											aria-labelledby="headingAdvanced"
+											data-bs-parent="#accordionAdvanced">
+											<div class="accordion-body">
+
+
+												<div class="row g-3 text-center" style="margin-bottom: 20px">
+													<div class="col">
+														<label for="s-lprice" style="margin-right: 20px">最低租金</label>
+														<input step="1" type="number" inputmode="numeric"
+															oninput="this.value = this.value.replace(/\D+/g, '')"
+															style="display: inline-block" class="form-control lower"
+															id="s-lprice">
+													</div>
+													<div class="col">
+														<label for="s-hprice" style="margin-right: 20px">最高租金</label>
+														<input step="1" type="number" inputmode="numeric"
+															oninput="this.value = this.value.replace(/\D+/g, '')"
+															style="display: inline-block" class="form-control upper"
+															id="s-hprice">
+													</div>
+												</div>
+												<div class="row g-3 text-center" style="margin-bottom: 20px">
+													<div class="col">
+														<label for="s-lrating" style="margin-right: 20px">最低評分</label>
+														<input step="1" min="1" max="5" type="number"
+															inputmode="numeric"
+															oninput="this.value = this.value.replace(/\D+/g, '')"
+															style="display: inline-block" class="form-control lower"
+															id="s-lrating">
+													</div>
+													<div class="col">
+														<label for="s-hrating" style="margin-right: 20px">最高評分</label>
+														<input step="1" min="1" max="5" type="number"
+															inputmode="numeric"
+															oninput="this.value = this.value.replace(/\D+/g, '')"
+															style="display: inline-block" class="form-control upper"
+															id="s-hrating">
+													</div>
+												</div>
+												<div class="row g-3 text-center" style="margin-bottom: 20px">
+													<div class="col" style="margin-right: 62px">
+														<label for="s-lcount" style="margin-right: 20px">最低評分人數</label>
+														<input step="1" type="number" inputmode="numeric"
+															oninput="this.value = this.value.replace(/\D+/g, '')"
+															style="display: inline-block" class="form-control lower"
+															id="s-lcount">
+													</div>
+													<div class="col">
+														<label for="s-hcount" style="margin-right: 20px">最高評分人數</label>
+														<input step="1" type="number" inputmode="numeric"
+															oninput="this.value = this.value.replace(/\D+/g, '')"
+															style="display: inline-block; margin-right: 62px"
+															class="form-control upper" id="s-hcount">
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+								<div style="margin-top: 30px" class="text-center">
+									<span style="margin-right: 20px"><button
+											class="btn btn-secondary" id="s-clear" type="reset">清除</button></span><span><button
+											class="btn btn-primary" id="search" type="button">搜尋</button></span>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="container mt-3">
+				<div class="btn-toolbar" role="toolbar"
+					aria-label="Toolbar with button groups">
+					<div class="btn-group me-2" role="group" aria-label="Third group">
+						<button id="high-rating-btn" type="button"
+							class="active sort-btn  btn btn-outline-secondary" data-filter="">最高評價</button>
+					</div>
+					<div class="btn-group me-2" role="group" aria-label="Second group">
+						<button id="low-price-btn" type="button"
+							class="sort-btn  btn btn-outline-secondary" data-filter="">最低價</button>
+					</div>
+
+				</div>
+			</div>
+
+
+			<div id="venues">
+				<div id="venues-body"></div>
+			</div>
+		</section>
+	</main>
+
+
+	<script>
+
+let vens;
+let groupedVens;
+
+
+$(".sort-btn").on("click", function(){
+	$(".sort-btn").removeClass("active");
+	$(this).addClass("active");
+});
+
+$("#high-rating-btn").on("click", function(){
+	vens = highRatingSort(vens);
+	groupVens();
+	displayVens();
+});
+
+$("#low-price-btn").on("click", function(){
+	vens = lowPriceSort(vens);
+	groupVens();
+	displayVens();
+});
+
+
+async function getVens(){
+	vens = await fetch("/ven/all", {
+		method: "GET"
+	}).then(function(response){
+		return response.json();
+	}).then(function(vens){
+		return vens.filter(ven => ven.venStatus == 2);
+	});	
+	filterVens();
+	groupVens();
+}
+
+async function loadVenPics(){
+	for(ven of vens){
+	await fetch("/ven/getById", {
+		method: "POST",
+		body: JSON.stringify({venId: ven.venId})
+	}).then(function(response){
+		return response.json();
+	}).then(function(ven){
+		$(`#venPic${ven.venId}`).attr("src", ven.venPic? "data:image/png;base64," + ven.venPic: "/front-end/01/images/notfind.jpg");
+	});
+	}
+}
+
+
+function groupVens(){
+	groupedVens = [];
+	for(let i = 0; i < vens.length; i += 4){
+		for(let j = 0; j < 4; j++){
+			let ven = vens[i+j];
+			if(j == 0){
+				groupedVens.push([]);
+			}
+			if(ven){
+				if(i>0){
+					groupedVens[i/4].push(ven);
+				} else{
+					groupedVens[0].push(ven);
+				}
+			}
+		}
+	}
+		
+}
+
+
+function filterVens(){
+	if($("#s-name").val().trim()){
+		let name = $("#s-name").val().trim().toLowerCase();
+		vens = vens.filter(ven => ven.venName.toLowerCase() == name);
+	}
+	
+    let types = [];
+    
+    $("#s-type option:selected").each(function( index ){
+    	types.push($(this).text().toLowerCase());
+    });
+    
+    if(types.length){
+    	vens = vens.filter(ven => types.includes(ven.venType.venTypeName.toLowerCase()));
+    }
+    
+    
+    if($('#s-city').select2('data')[0].text !== "全市"){	    	
+    	vens = vens.filter(ven => ven.venCity.toLowerCase() == $('#s-city').select2('data')[0].text.toLowerCase());
+    }
+ 
+    if($('#s-district').select2('data')[0].text !== "全區"){
+    	vens = vens.filter(ven => ven.venDistrict.toLowerCase() == $('#s-district').select2('data')[0].text.toLowerCase());
+    }
+    else{
+    	if($('#s-city').select2('data')[0].text === "臺北"){
+    		vens = vens.filter(ven => taipei.includes(ven.venDistrict.toLowerCase()));
+    	}
+    
+    	if($('#s-city').select2('data')[0].text === "桃園"){
+    		vens = vens.filter(ven => taoyuan.includes(ven.venDistrict.toLowerCase()));
+    	}
+    
+   		if($('#s-city').select2('data')[0].text === "臺中"){
+    		vens = vens.filter(ven => taichung.includes(ven.venDistrict.toLowerCase()));
+    	}
+    }
+    
+	if(!!$("#s-lprice").val()){
+		vens = vens.filter(ven => ven.venPrice >= parseInt($("#s-lprice").val()));
+	}
+	
+	if(!!$("#s-hprice").val()){
+		vens = vens.filter(ven => ven.venPrice <= parseInt($("#s-hprice").val()));
+	}
+	
+	if(!!$("#s-lrating").val()){
+		vens = vens.filter(ven => ven.venRating >= parseInt($("#s-lrating").val()));
+	}
+	
+	if(!!$("#s-hrating").val()){
+		vens = vens.filter(ven => ven.venRating <= parseInt($("#s-hrating").val()));
+	}
+	    
+	if(!!$("#s-lcount").val()){
+		vens = vens.filter(ven => ven.venRateCount >= parseInt($("#s-lcount").val()));
+	}   
+	
+	if(!!$("#s-hcount").val()){
+		vens = vens.filter(ven => ven.venRateCount <= parseInt($("#s-hcount").val()));
+	}  
+    
+}
+
+
+
+function lowPriceSort(data) {
+    return data.sort(function (a, b) {
+        if (a.venPrice > b.venPrice) {
+            return 1;
+        }
+        if (a.venPrice < b.venPrice) {
+            return -1;
+        }
+        return 0;
+    });
+}
+
+function highRatingSort(data) {
+    return data.sort(function (a, b) {
+        if (a.venRating < b.venRating) {
+            return 1;
+        }
+        if (a.venRating > b.venRating) {
+            return -1;
+        }
+        return 0;
+    });
+}
+
+
+async function loadVens(){
+	await getVens();
+	$("#high-rating-btn").click();
+	displayVens();
+}
+
+function displayVens(){
+	if(!vens.length){
+		$("#venues-body").html("");
+		$("#venues-body").append(`<div style="margin-top:100px; margin-bottom:50px"><h2>暫無搜尋到可以出租的場地</h2></div>`);
+		return;
+	}
+	$('#venues').pagination({
+	    dataSource: groupedVens,
+	    pageSize: 3,
+	    callback: async function(vens, pagination) {
+	    	$("#venues-body").html("");
+	    	
+// 	    	if(!vens.length){
+// 	    		$("#venues-body").append(`<div style="margin-top:100px; margin-bottom:50px"><h2>暫無搜尋到可以出租的場地</h2></div>`);
+// 	    	}
+	        for (let i = 0; i < vens.length; i++) {
+	        	for(let j = 0; j < 4; j++){
+	        		let ven = vens[i][j];
+	        		if(j == 0){
+	        			$("#venues-body").append(`<div id="ven-row-${i}" class="row" style="margin-left:75px; width:1000px"></div>`);
+	        		}
+	        		
+	        		if(ven){
+	        			$(`#ven-row-${i}`).append(`<div class="col col-3" style="margin-top:50px">
+	        					<div class="card ven-card text-center">
+	        					<img src="${ven.venPic? 'data:image/png;base64,' + venPic: '/front-end/01/images/notfind.jpg'}"
+	        						class="card-img-top ven-img" id="venPic${ven.venId}" alt="...">
+	        					<div class="card-body">
+	        						<h5 class="card-title ven-name">${ven.venName}</h5>
+	        						<h5 class="card-title ven-type">${ven.venType.venTypeName}</h5>
+	        						<h5 class="card-title ven-loc">${ven.venCity} ${ven.venDistrict}</h5>
+	        						<h5 class="card-title ven-price">一天 $${ven.venPrice}</h5>
+	        						<div class="star_block">
+	        							<span
+	        								class="star ${ven.venTotRating/ven.venRateCount >= 0.25? '-on': ''}"><i
+	        								class="fa fa-star ${ven.venTotRating/ven.venRateCount >= 0.25 && ven.venTotRating/ven.venRateCount < 0.75? 'fa-star-half-o': ''}"></i></span>
+	        							<span
+	        								class="star ${ven.venTotRating/ven.venRateCount >= 1.25? '-on': ''}"><i
+	        								class="fa fa-star ${ven.venTotRating/ven.venRateCount >= 1.25 && ven.venTotRating/ven.venRateCount < 1.75? 'fa-star-half-o': ''}"></i></span>
+	        							<span
+	        								class="star ${ven.venTotRating/ven.venRateCount >= 2.25? '-on': ''}"><i
+	        								class="fa fa-star ${ven.venTotRating/ven.venRateCount >= 2.25 && ven.venTotRating/ven.venRateCount < 2.75? 'fa-star-half-o': ''}"></i></span>
+	        							<span
+	        								class="star ${ven.venTotRating/ven.venRateCount >= 3.25? '-on': ''}"><i
+	        								class="fa fa-star ${ven.venTotRating/ven.venRateCount >= 3.25 && ven.venTotRating/ven.venRateCount < 3.75? 'fa-star-half-o': ''}"></i></span>
+	        							<span
+	        								class="star ${ven.venTotRating/ven.venRateCount >= 4.25? '-on': ''}"><i
+	        								class="fa fa-star ${ven.venTotRating/ven.venRateCount >= 4.25 && ven.venTotRating/ven.venRateCount < 4.75? 'fa-star-half-o': ''}"></i></span>
+	        								<span>${ven.venRateCount == 0? "無評分": Math.round((ven.venTotRating/ven.venRateCount)*100)/100 + " (" + ven.venRateCount + ")"}</span>
+	        							
+	        						</div>
+	        						</div>
+	        				</div>
+	        			</div>`);
+	        		}
+	        	}
+	        }
+	        await loadVenPics();
+	    }
+	});
+}
+
+</script>
+
+	<script>
+
+$(document).ready(async function(){
+	await loadVenTypes();
+	await loadVens();
+// await getVens();
+});
+
+</script>
+
+
+	<!-- searching -->
+	<script>
+$(".lower").on("change", function(){
+    let upper = $(this).closest("div.row").find(".upper");      
+    upper.attr("min", $(this).val());
+    if(parseInt(upper.val()) < parseInt($(this).val())){
+	    upper.val($(this).val());
+    }
+});
+
+$(".upper").on("change", function(){
+    let lower = $(this).closest("div.row").find(".lower");
+    if(parseInt(lower.val()) > parseInt($(this).val())){
+    	$(this).val(lower.val());
+    }
+});
+
+
+let sorter = function(data) {
+    return data.sort(function (a, b) {
+    	if(b.text == "全類別") return 1;
+        if (a.text.toLowerCase() > b.text.toLowerCase()) {
+            return 1;
+        }
+        if (a.text.toLowerCase() < b.text.toLowerCase()) {
+            return -1;
+        }
+        return 0;
+    });
+}
+
+async function loadVenTypes(){
+	await fetch("/ventype/all").then(function(response){
+		return response.json();
+	}).then(function(result){
+
+		let data = $.map(result, function (item) {
+	    	return {
+	        	text: item.venTypeName,
+	        	id: item.venTypeId
+	    	};
+		});
+	    
+	    $("#s-type").empty().trigger('change');
+	    let option = new Option("全類別", "全類別", true, true);
+	    $("#s-type").append(option).trigger('change');
+		$('#s-type').select2({sorter:sorter, data: data, width: '50%', multiple: true, allowClear: true, placeholder: "請選場地類別"});
+		$("#s-type > option").prop("selected", false);
+		$("#s-type").val('').trigger('change'); 
+	});
+}
+
+$('#s-type').on("select2:select", function (e) { 
+    var data = e.params.data.text;
+
+    if(data=='全類別'){
+    	$("#s-type > option").prop("selected", false);
+     $("#s-type > option").filter(function(index ) {
+    	    return $(this).text() != "全類別";
+     }).prop("selected","selected");
+     $("#s-type").trigger("change");
+    }
+});
+
+
+
+
+let cities = ["臺北市", "桃園市", "臺中市"];
+let taoyuan = ["桃園區", "中壢區", "八德區", "平鎮區", "大溪區", "楊梅區", "龜山區", "蘆竹區", "大園區", "觀音區", "新屋區", "龍潭區", "復興區"];
+let taipei = ["北投區", "士林區", "中山區", "內湖區", "大同區", "松山區", "萬華區", "中正區", "大安區", "信義區", "南港區", "文山區"];
+let taichung = ["中區", "北區", "西區", "東區", "南區", "北屯區", "西屯區", "南屯區"];
+let option = new Option("全區", "全區", true, true);
+
+$('#s-city').select2({data: cities, width: '50%'});
+
+
+$('#s-district').select2({width: '50%'});
+
+
+$('#s-city').on('select2:select', function (e) {
+
+    let data = e.params.data;
+    
+    $("#s-district").empty();
+    
+    $("#s-district").append(option).trigger('change');
+
+    if(data.id == "臺北市"){
+    	$("#s-district").select2({
+    		data: taipei, width: '50%'
+    	});
+    } else if(data.id == "桃園市"){
+    	$("#s-district").select2({
+    		data: taoyuan, width: '50%'
+    	});
+    } else if(data.id == "臺中市"){
+    	$("#s-district").select2({
+    		data: taichung, width: '50%'
+    	});
+    }
+});
+
+
+
+
+$("#s-clear").on("click", async function(){
+	$("#s-hprice").attr("min", 0);
+	$("#s-hrating").attr("min", 1);
+	
+	$('#s-city').val('全市').trigger('change');
+    $("#s-district").empty();	    
+    $("#s-district").append(option).trigger('change');
+	
+    await loadVenTypes(); 
+    await loadVens();
+
+});
+
+
+$("#search").on("click", async function(){
+	await loadVens();
+});
+</script>
+
+</body>
+
+</html>
