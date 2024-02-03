@@ -239,16 +239,13 @@ main.main {
 }
 </style>
 
-<style type="text/css">
+
+<style>
 table {
 	/* width: 1000px; */
 	background-color: white;
 	margin-top: 5px;
 	margin-bottom: 5px;
-}
-
-table, th, td {
-	border: 1px solid #ABABAB;
 }
 
 th, td {
@@ -260,28 +257,6 @@ th, td {
 .center {
 	margin-left: auto;
 	margin-right: auto;
-}
-
-/* 以下為table分頁用 */
-#pageStyle {
-	display: inline-block;
-	width: 32px;
-	height: 32px;
-	border: 1px solid #CCC;
-	line-height: 32px;
-	text-align: center;
-	color: #999;
-	margin-top: 20px;
-	text-decoration: none;
-}
-
-#pageStyle:hover {
-	background-color: #CCC;
-}
-
-#pageStyle .active {
-	background-color: #0CF;
-	color: #ffffff;
 }
 
 h2 {
@@ -383,6 +358,16 @@ h7 {
 	margin-left: 83px;
 	font-weight: bold;
 }
+
+table, th, td {
+	border: 1px solid #00000012;
+}
+
+h7#text {
+	color: red;
+	font-size: 14px;
+	margin-left: 7px;
+}
 </style>
 
 
@@ -422,8 +407,7 @@ h7 {
 					會員功能管理 <i class="fa fa-caret-down"></i>
 				</button>
 				<div class="dropdown-container">
-					<a th:href="@{/back_end/notify/notify_page}">會員通知管理</a>
-					<a href="#">審核會員檢舉</a>
+					<a href='listAllMembership'>查詢會員</a> <a href="#">產生通知訊息</a> <a href="#">審核會員檢舉</a>
 				</div>
 				<hr>
 				<button class="dropdown-btn">
@@ -437,8 +421,7 @@ h7 {
 					場地功能管理 <i class="fa fa-caret-down"></i>
 				</button>
 				<div class="dropdown-container">
-					<a href="#">場地管理</a> <a href="#">場地訂單管理</a> 
-					<a href="#">場地狀態管理</a>
+					<a href="#">場地管理</a> <a href="#">場地訂單管理</a> <a href="#">場地狀態管理</a>
 				</div>
 			</div>
 
@@ -458,17 +441,16 @@ h7 {
 				<tr>
 					<th>編號</th>
 					<th>帳號</th>
-					<th>電子信箱</th>
+					<!-- 					<th>電子信箱</th> -->
 					<th>姓名</th>
 					<th>帳戶狀態</th>
 					<th>參加活動權限</th>
 					<th>舉辦活動權限</th>
 					<th>租借場地權限</th>
 					<th>留言權限</th>
-					<!-- 					<th>查看</th> -->
 					<th>查看</th>
 					<th>權限修改</th>
-					<th>會員資料修改</th>
+					<!-- 					<th>會員資料修改</th> -->
 
 				</tr>
 			</thead>
@@ -478,9 +460,12 @@ h7 {
 					<tr>
 						<td th:text="${membershipVOStat.count}"></td>
 						<td th:text="${membershipVO.memAcc}"></td>
-						<td th:text="${membershipVO.memEmail}"></td>
+						<!-- 						<td th:text="${membershipVO.memEmail}"></td> -->
 						<td th:text="${membershipVO.memName}"></td>
-						<td th:text="${membershipVO.isAccEna == 1 ? '停用' : '啟用'}"></td>
+						<!-- 						<td th:text="${membershipVO.isAccEna == 1 ? '停用' : '啟用'}"></td> -->
+						<td th:text="${membershipVO.isAccEna == 1 ? '停用' : '啟用'}"
+							th:style="${membershipVO.isAccEna == 1 ? 'color: red; font-weight: bold;' : ''}"></td>
+
 						<td th:text="${membershipVO.isPartEna == 1 ? '停用' : '啟用'}"></td>
 						<td th:text="${membershipVO.isHostEna == 1 ? '停用' : '啟用'}"></td>
 						<td th:text="${membershipVO.isRentEna} == 1 ? '停用' : '啟用'"></td>
@@ -513,30 +498,20 @@ h7 {
 							</form>
 						</td>
 
-						<td>
-							<form method="post" th:action="@{/membership/getOne_For_Update}"
-								style="margin-bottom: 0px;">
-								<input type="submit" value="修改"> <input type="hidden"
-									name="memId" th:value="${membershipVO.memId}">
-							</form>
-						</td>
- 						<h7 th:text="${session.memId}"></h7>  <!--要取session 需要session.memId--> 
+						<!-- 						<td> -->
+						<!-- 							<form method="post" th:action="@{/membership/getOne_For_Update}" -->
+						<!-- 								style="margin-bottom: 0px;"> -->
+						<!-- 								<input type="submit" value="修改"> <input type="hidden" -->
+						<!-- 									name="memId" th:value="${membershipVO.memId}"> -->
+						<!-- 							</form> -->
+						<!-- 						</td> -->
+						<!--  						<h7 th:text="${session.memId}"></h7>  要取session 需要session.memId  -->
 
 
 					</tr>
 			</tbody>
 		</table>
 	</main>
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -564,7 +539,7 @@ h7 {
 
 					<div class="modal-body">
 						<h2>個人資料</h2>
-						<!-- =========================================以下為原listOneEmp.jsp的內容========================================== -->
+						<!-- ================================================================================== -->
 						<div id="center" align="center"
 							th:fragment="listOneMembership-div">
 							<!-- 此div被select_page.html第128行insert用 -->
@@ -583,7 +558,7 @@ h7 {
 								th:src="@{/membership/DBGifReader} + '?memId=' + ${membershipVO.memId}"
 								width="200px"></span><br /> <br />
 						</div>
-						<!-- =========================================以上為原listOneEmp.jsp的內容========================================== -->
+						<!-- =================================================================================== -->
 					</div>
 
 					<div class="modal-footer">
@@ -629,41 +604,42 @@ h7 {
 					</div>
 
 					<div class="modal-body">
-						<!-- 						=========================================以下為原listOneEmp.jsp的內容========================================== -->
+						<!-- 						=================================================================================== -->
 						<div id="center2" align="center" th:fragment="status_update-div">
 							<!-- 							此div被select_page.html第128行insert用 -->
 							<div>
 								<h3>會員權限狀態更改</h3>
 								<h4 style="color: red;">⚠️⚠️請謹慎修改⚠️⚠️</h4>
 							</div>
-							<br>
+
 							<form id="yourFormId" th:action="@{update_Status}" method="post"
 								th:object="${membershipVO}" enctype="multipart/form-data">
 
-
-
+								<br>
 								<div id="memId">
-									<label>會員編號:</label> <input id="pk" type="text"
+									<label>會員編號 </label> <input id="pk" type="text"
 										th:field="*{memId}" style="border: 0px; font-weight: bold;"
 										readonly /><br />
 								</div>
 								<br>
 								<div id="memAcc">
-									<label>會員帳號:</label> <input type="text" th:field="*{memAcc}"
+									<label>會員帳號 </label> <input type="text" th:field="*{memAcc}"
 										style="border: 0px; font-weight: bold;" readonly /><br />
 								</div>
 								<br>
-
 								<div>
-									<label for="isAccEna">會員帳戶狀態:</label> <select id="isAccEna"
-										name="isAccEna" th:field="${membershipVO.isAccEna}">
+									<label for="isAccEna">會員帳戶狀態 </label><font color="red"><b>**</b></font><select
+										id="isAccEna" name="isAccEna"
+										th:field="${membershipVO.isAccEna}">
 										<option value="1" th:selected="${membershipVO.isAccEna == 1}">已停用會員帳戶</option>
 										<option value="2" th:selected="${membershipVO.isAccEna == 2}">沒有停用會員帳戶</option>
 									</select>
 								</div>
+								<h7 id="text">⚠️注意此狀態更改後會影響會員的登入權益⚠️</h7>
+								<br>
 								<br>
 								<div>
-									<label for="isPartEna">會員參加活動權限:</label> <select id="isPartEna"
+									<label for="isPartEna">會員參加活動權限 </label> <select id="isPartEna"
 										name="isPartEna" th:field="${membershipVO.isPartEna}">
 										<option value="1" th:selected="${membershipVO.isPartEna == 1}">會員無法參加活動</option>
 										<option value="2" th:selected="${membershipVO.isPartEna == 2}">會員可以參加活動</option>
@@ -671,7 +647,7 @@ h7 {
 								</div>
 								<br>
 								<div>
-									<label for="isHostEna">會員舉辦活動權限:</label> <select id="isHostEna"
+									<label for="isHostEna">會員舉辦活動權限 </label> <select id="isHostEna"
 										name="isHostEna" th:field="${membershipVO.isHostEna}">
 										<option value="1" th:selected="${membershipVO.isHostEna == 1}">會員無法舉辦活動</option>
 										<option value="2" th:selected="${membershipVO.isHostEna == 2}">會員可以舉辦活動</option>
@@ -679,7 +655,7 @@ h7 {
 								</div>
 								<br>
 								<div>
-									<label for="isRentEna">會員租借場地權限:</label> <select id="isRentEna"
+									<label for="isRentEna">會員租借場地權限 </label> <select id="isRentEna"
 										name="isRentEna" th:field="${membershipVO.isRentEna}">
 										<option value="1" th:selected="${membershipVO.isRentEna == 1}">會員無法租借場地</option>
 										<option value="2" th:selected="${membershipVO.isRentEna == 2}">會員可以租借場地</option>
@@ -687,7 +663,7 @@ h7 {
 								</div>
 								<br>
 								<div>
-									<label for="isMsgEna">會員留言權限:</label> <select id="isMsgEna"
+									<label for="isMsgEna">會員留言權限 </label> <select id="isMsgEna"
 										name="isMsgEna" th:field="${membershipVO.isMsgEna}">
 										<option value="1" th:selected="${membershipVO.isMsgEna == 1}">會員無法留言</option>
 										<option value="2" th:selected="${membershipVO.isMsgEna == 2}">會員可以留言</option>
@@ -702,10 +678,12 @@ h7 {
 									<br>
 									<h7 id="error-message" style="color:red";></h7>
 								</div>
+
+
 							</form>
 						</div>
 
-						<!-- 						=========================================以上為原listOneEmp.jsp的內容========================================== -->
+						<!-- 						=================================================================================== -->
 					</div>
 
 					<div class="modal-footer">
@@ -765,20 +743,6 @@ h7 {
 
 		//------------------------必須要打勾checkbox才能送出表單---------------------------
 
-		// 		window.onload = function() {
-		// 			var submitBtn = document.getElementById("submit");
-		// 			var checkbox = document.getElementById("checkbox");
-
-		// 			submitBtn.onclick = function() {
-		// 				if (!checkbox.checked) {
-		// 					alert("要提送表單前，請先勾選!!");
-		// 					return false;
-		// 				}else{
-		// 					alert("修改成功!!");
-		// 					return true;
-		// 				}
-		// 			};
-		// 		};
 
 		window.onload = function() {
 			var submitBtn = document.getElementById("submit");
@@ -798,7 +762,10 @@ h7 {
 				errorMessage.textContent = ""; // 清除錯誤訊息
 			};
 		};
+	
 	</script>
+
+
 
 
 </body>

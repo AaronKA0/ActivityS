@@ -6,8 +6,8 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>會員註冊</title>
 
-<!-- <head th:insert="~{/back-end/signup/included-fragment}"></head> -->
 
+<!-- 前台畫面header的引入文件-->
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap">
 
@@ -17,6 +17,7 @@
 	rel="stylesheet"
 	integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
 	crossorigin="anonymous">
+<!-- 前台畫面header的引入文件-->
 
 
 <style>
@@ -128,6 +129,7 @@ h6#memBirthdate {
 h6#memPic {
 	margin-left: -500px;
 }
+
 </style>
 
 <style>
@@ -162,7 +164,7 @@ h6#memPic {
 			<div class="col-md-3 mb-2 mb-md-0">
 				<a href='select_page'
 					class="d-inline-flex link-body-emphasis text-decoration-none">
-					<span class="fs-4">做伙</span>
+					<span class="fs-4"><img alt="ZuoHuo" src="/front-end/16/images/ZuoHuo4.jpg" width="160px" ></span>
 				</a>
 			</div>
 
@@ -179,12 +181,11 @@ h6#memPic {
 			</ul>
 
 			<div class="col-md-3 text-end">
-				<button type="button" class="btn btn-outline-primary me-2">
-					<a class="nav-link" href="#" data-bs-toggle="modal"
-						data-bs-target="#loginModal">登入</a>
+				<button type="button" class="btn btn-primary">
+					<a class="nav-link" href='login'>登入</a>
 				</button>
 				<button type="button" class="btn btn-primary">
-					<a class="nav-link" href="register.html">註冊</a>
+					<a class="nav-link" href='addMembership'>註冊</a>
 				</button>
 			</div>
 		</header>
@@ -231,16 +232,16 @@ h6#memPic {
 						id="memAcc-error"></span><span id="memAcc-error2"></span></li>
 
 					<li class="controls-float"><label class="title"
-						for="registerMemEmail"></label> <input class="form-control text"
+						for="registerMemEmail"></label><input class="form-control text"
 						id="registerMemEmail" type="text" placeholder="電子信箱(必填)"
 						autocomplete="off" name="memEmail" /> <span class="error-message"
 						id="memEmail-error"></span><span id="memEmail-error2"></span></li>
-
+					
 					<li class="controls-float"><label class="title"
 						for="registerMemPwd"></label> <input class="form-control text"
 						id="registerMemPwd" type="password" placeholder="會員密碼(必填)"
-						autocomplete="current-password" name="memPwd" /> <span class="error-message"
-						id="memPwd-error"></span></li>
+						autocomplete="current-password" name="memPwd" /> <span
+						class="error-message" id="memPwd-error"></span></li>
 
 
 					<li class="controls-float"><label class="title"
@@ -288,9 +289,9 @@ h6#memPic {
 					<li class="controls-float"><label class="title"
 						for="registerMemPic"></label><input type="file"
 						id="registerMemPic" th:field="*{memPic}" onclick="previewImage()"
-						multiple="multiple"/> <span
-						class="error" th:utext="${errorMessage}" id="memPic.errors"></span>
-						<br> <span class="error-message" id="memPic-error"></span>
+						multiple="multiple" /> <span class="error"
+						th:utext="${errorMessage}" id="memPic.errors"></span> <br> <span
+						class="error-message" id="memPic-error"></span>
 						<div id="blob_holder"></div></li>
 
 				</ul>
@@ -321,62 +322,64 @@ h6#memPic {
 	</div>
 
 	<!-- 登入選項的Modal 彈窗 -->
-	<div class="modal fade" id="loginModal" tabindex="-1"
-		aria-labelledby="loginModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="loginModalLabel">會員登入</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<!-- 在這裡加入登入表單的 HTML 代碼 -->
-					<form>
-						<!-- 登入表單的輸入欄位 -->
-						<div class="mb-3">
-							<label for="username" class="form-label">帳號：</label> <input
-								type="text" class="form-control" id="username" name="username"
-								placeholder="輸入您的帳號" required>
-						</div>
-						<div class="mb-3">
-							<label for="password" class="form-label">密碼：</label>
-							<div class="input-group">
-								<input type="password" class="form-control" id="password"
-									name="password" placeholder="輸入您的密碼" required>
-								<!-- 在密碼輸入框右上方新增"忘記密碼"的連結 -->
-								<a href="#" class="input-group-text" id="forgotPasswordLink">忘記密碼</a>
-							</div>
-						</div>
-						<!-- 登入按鈕 -->
-						<button type="submit" class="btn btn-primary">登入</button>
-					</form>
+	<!-- 	<div class="modal fade" id="loginModal" tabindex="-1" -->
+	<!-- 		aria-labelledby="loginModalLabel" aria-hidden="true"> -->
+	<!-- 		<div class="modal-dialog"> -->
+	<!-- 			<div class="modal-content"> -->
+	<!-- 				<div class="modal-header"> -->
+	<!-- 					<h5 class="modal-title" id="loginModalLabel">會員登入</h5> -->
+	<!-- 					<button type="button" class="btn-close" data-bs-dismiss="modal" -->
+	<!-- 						aria-label="Close"></button> -->
+	<!-- 				</div> -->
+	<!-- 				<div class="modal-body"> -->
+	<!-- 					在這裡加入登入表單的 HTML 代碼 -->
+	<!-- 					<form> -->
+	<!-- 						登入表單的輸入欄位 -->
+	<!-- 						<div class="mb-3"> -->
+	<!-- 							<label for="username" class="form-label">帳號：</label> <input -->
+	<!-- 								type="text" class="form-control" id="username" name="username" -->
+	<!-- 								placeholder="輸入您的帳號" required> -->
+	<!-- 						</div> -->
+	<!-- 						<div class="mb-3"> -->
+	<!-- 							<label for="password" class="form-label">密碼：</label> -->
+	<!-- 							<div class="input-group"> -->
+	<!-- 								<input type="password" class="form-control" id="password" -->
+	<!-- 									name="password" placeholder="輸入您的密碼" required> -->
+	<!-- 								在密碼輸入框右上方新增"忘記密碼"的連結 -->
+	<!-- 								<a href="#" class="input-group-text" id="forgotPasswordLink">忘記密碼</a> -->
+	<!-- 							</div> -->
+	<!-- 						</div> -->
+	<!-- 						登入按鈕 -->
+	<!-- 						<button type="submit" class="btn btn-primary">登入</button> -->
+	<!-- 					</form> -->
 
-				</div>
-			</div>
-		</div>
-	</div>
+	<!-- 				</div> -->
+	<!-- 			</div> -->
+	<!-- 		</div> -->
+	<!-- 	</div> -->
 
 
 
 	<!-- -----------------------------引入文件----------------------------------- -->
-
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<!-- -----------------------------引入文件----------------------------------- -->
+
+	<!-- -----------------------------前台畫面引入文件----------------------------------- -->
 	<!-- 引入 Bootstrap JavaScript 文件 -->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
 		crossorigin="anonymous"></script>
 
-	<!-- -----------------------------引入文件----------------------------------- -->
+	<!-- -----------------------------前台畫面引入文件----------------------------------- -->
 
 
 	<!-- JavaScript part -->
 	<script type="text/javascript">
 		//清除提示信息
-// 		function hideContent(d) {
-// 			document.getElementById(d).style.display = "none";
-// 		}
+		function hideContent(d) {
+			document.getElementById(d).style.display = "none";
+		}
 
 		//照片上傳-預覽用
 		var filereader_support = typeof FileReader != 'undefined';
@@ -408,7 +411,7 @@ h6#memPic {
 					image.src = event.target.result;
 					image.width = 180;
 // 					image.height =180;
-					image.border = 2;
+					image.border = 0;
 					if (blob_holder.hasChildNodes()) {
 						blob_holder.removeChild(blob_holder.childNodes[0]);
 					}
@@ -433,6 +436,10 @@ h6#memPic {
 			}
 		}
 
+		<!-- JavaScript part -->
+		
+		
+		
 		// --------------------- 以下為memAcc帳號的判斷------------------------
 
 		$(document).ready(function() {
@@ -473,7 +480,7 @@ h6#memPic {
 
 		    fetch("/membership/checkMemAcc",{
 		    	   method: "POST",
-		    	   body: JSON.stringify({memAcc: memAcc})  //回傳的為body標籤
+		    	   body: JSON.stringify({memAcc: memAcc})  //回傳的為body標籤  　key(VO對應)　：　輸入的值
 		    	  }).then(function(response){;
 		    	   return response.json();
 		    	  }).then(function(result){
@@ -481,21 +488,48 @@ h6#memPic {
 		    	
 		    	   if(result != null){ 
 
-		    	    $("#memAcc-error2").text("此帳號已使用過").show();
-		    	    $("#memAcc-error2").data("show", true);
-		    	    	$("#yourFormId").submit(function(){    /////////*******
-		    	    		return false;
-		    	    	});
-		    	   } else{
-		    	    $("#memAcc-error2").hide(); 
-		    	    $("#memAcc-error2").data("show", false);
-		    	   } 
-		    	  }).catch(function(err){
-		    	   $("#memAcc-error2").hide(); 
-		    	   $("#memAcc-error2").data("show", false);
-		    	  });
-		}
+				    $("#memAcc-error2").text("此帳號已使用過").show();
+				    $("#memAcc-error2").data("show", true);			    	    
 
+				    // 清除之前的提交阻止
+				    $("#yourFormId").off("submit");
+				    	    	
+				    } else{
+				    $("#memAcc-error2").hide(); 
+				    $("#memAcc-error2").data("show", false);
+				    	    	
+				    // 允許表單提交
+				    $("#yourFormId").off("submit").submit();
+				    
+				    } 
+				   }).catch(function(err){
+				    $("#memAcc-error2").hide(); 
+				    $("#memAcc-error2").data("show", false);
+				  });
+				}
+	  
+		    		  
+// 		    	   if(result != null){ 
+
+// 		    	    $("#memAcc-error2").text("此帳號已使用過").show();
+// 		    	    $("#memAcc-error2").data("show", true);
+		    	    
+// 		    	    	$("#yourFormId").submit(function(){    /////////******* 禁止提交表單
+// 		    	    		return false;
+// 		    	    	});
+		    	    	
+// 		    	   } else{
+// 		    	    $("#memAcc-error2").hide(); 
+// 		    	    $("#memAcc-error2").data("show", false);
+		    
+// 		    	   } 
+// 		    	  }).catch(function(err){
+// 		    	   $("#memAcc-error2").hide(); 
+// 		    	   $("#memAcc-error2").data("show", false);
+// 		    	  });
+// 		}
+		
+		
 		// ----------------------- 以下為memEmail帳號的判斷----------------------------
 		$(document).ready(function() {
 			$("#registerMemEmail").on("input", function() {
@@ -537,28 +571,35 @@ h6#memPic {
 
 		    fetch("/membership/checkMemEmail",{
 		    	   method: "POST",
-		    	   body: JSON.stringify({memEmail: memEmail})  //回傳的為body標籤
+		    	   body: JSON.stringify({memEmail: memEmail})  //回傳的為body標籤   key(VO對應)　：　輸入的值
 		    	  }).then(function(response){;
 		    	   return response.json();
 		    	  }).then(function(result){
 		    		  		    		   
-		    	 		if(result != null){ 
+		    	 		if(result != null){     //如果result != null，信箱使用過，不允許提交表單
+		    	 								//如果result == null，信箱未使用過，允許表單提交
 
 		       	    $("#memEmail-error2").text("此信箱已使用過").show();
 		       	    $("#memEmail-error2").data("show", true);
+		       	    
+		       	    //清除之前的提交阻止
+		       	    $("#yourFormId").off("submit");
+		       	    
 		       	   } else{
 		       	    $("#memEmail-error2").hide(); 
 		       	    $("#memEmail-error2").data("show", false);
+		       	    
+		       	    //允許表單提交
+		       	    $("#yourFormId").off("submit").submit();
+		       	    
 		       	   } 
 		       	  }).catch(function(err){
 		       	   $("#memEmail-error2").hide(); 
 		       	   $("#memEmail-error2").data("show", false);
 		       	  });
-		  }
+		}
 		
-		
-		
-		
+				
 		// ----------------------- 以下為memPwd密碼的判斷------------------------------
 		$(document).ready(function() {
 			$("#registerMemPwd").on("input", function() {
@@ -586,6 +627,7 @@ h6#memPic {
 
 		});
 
+
 		// ----------------------- 以下為memPhone手機號碼的判斷------------------------------
 		$(document).ready(function() {
 			$("#registerMemPhone").on("input", function() {
@@ -600,8 +642,30 @@ h6#memPic {
 				}
 			});
 		});
-
+		
+		
+		
 		// ----------------------- 以下為memName姓名的判斷------------------------------
+	$(document).ready(function(){
+    $("#registerMemName").on("input", function(){
+        var memName = $(this).val();
+        
+        // 使用正規表示法，判斷是否只包含中文字
+        var validNameRegex = /^[\u4E00-\u9FA5]+$/;
+        
+        if (!validNameRegex.test(memName)) {
+            // 如果輸入的名字包含非中文字，顯示錯誤訊息
+            $("#memName-error").text("請輸入中文字").show();
+        } else {
+            // 隱藏錯誤訊息
+            $("#memName-error").hide();
+        }
+    });
+});
+
+
+		// --------------------------------------------------------------
+		
 		$(document).ready(function() {
     // 輸入框時檢查
     $("#registerMemName").on("input", function() {
@@ -666,10 +730,12 @@ h6#memPic {
 
 		    // 生日更改時的處理
 		    $("#registerMemBirthdate").change(function () {
-		        $("#memBirthdate-error").hide(); // 隐藏错误提示
+		        $("#memBirthdate-error").hide(); // 隱藏錯誤訊息
 		    });
 		});
-	
+		
+		
+		
 	</script>
 
 </body>

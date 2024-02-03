@@ -2,6 +2,8 @@
 
 package com.emp.model;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +17,6 @@ public interface EmpRepository extends JpaRepository<EmpVO, Integer> {
 	void deleteByEmpId(Integer empId);
 
 	EmpVO findByEmpAcc(String empAcc);
+	
+	Optional<EmpVO> findByEmpEmail(String empEmail);
 }

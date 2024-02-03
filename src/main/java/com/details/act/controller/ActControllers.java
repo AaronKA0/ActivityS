@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 public class ActControllers {
@@ -49,5 +50,20 @@ public class ActControllers {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+
+    @GetMapping("/acts/news")
+    public ResponseEntity<List<ActVOs>> getNewActs() {
+        List<ActVOs> newActs = actService.getNewActs();
+
+        return ResponseEntity.status(HttpStatus.OK).body(newActs);
+    }
+
+    @GetMapping("acts/official")
+    public ResponseEntity<List<ActVOs>> getOfficialActs(){
+        List<ActVOs> newActs = actService.getOfficialActs();
+
+        return ResponseEntity.status(HttpStatus.OK).body(newActs);
+
     }
 }

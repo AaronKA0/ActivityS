@@ -6,6 +6,9 @@ import com.actreg.dto.*;
 import com.actreg.model.ActRegVO;
 import com.actreg.repository.ActRegRepository;
 import com.actreg.service.IActRegService;
+import com.membership.model.MembershipVO;
+import com.membership.service.MembershipService;
+import com.notify.service.NotifyNow;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +21,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class ActRegService implements IActRegService {
@@ -33,6 +38,12 @@ public class ActRegService implements IActRegService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private MembershipService membershipService;
+
+    @Autowired
+    private NotifyNow notifyNow;
 
     //log紀錄
     private final static Logger log = LoggerFactory.getLogger(ActRegService.class);
@@ -130,14 +141,20 @@ public class ActRegService implements IActRegService {
         //審核報名者
         switch (actRegReviewRequest.getRegStatus()) {
             case 1:
-                //失敗要通知會員
                 log.info("通知會員報名失敗");
+                MembershipVO oneMembership = membershipService.getOneMembership(actReg.getMemId());
+                Set<MembershipVO> list = new HashSet<>();
+                list.add(oneMembership);
+                notifyNow.sendNotifyNow(list, "活動通知", "活動報名失敗");
                 break;
             case 3:
                 //通過要將活動table參加人數增加
                 actReg.getAct().setActCount(actReg.getAct().getActCount() + actReg.getRegTotal());
                 log.info("通知會員報名成功");
-                //通過通知會員
+                MembershipVO okOneMembership = membershipService.getOneMembership(actReg.getMemId());
+                Set<MembershipVO> okList = new HashSet<>();
+                okList.add(okOneMembership);
+                notifyNow.sendNotifyNow(okList, "活動通知", "活動報名成功！");
                 break;
         }
         return actRegRepository.save(actReg);
@@ -145,11 +162,22 @@ public class ActRegService implements IActRegService {
 
     @Override
     public List<MemNameAndPicDTO> findMemNameAndPic(Integer actId, Integer isActPart) {
-
+        //查參與的會員
         List<Object[]> membersAndPicByPart = actRegRepository.findMembersAndPicAndMemIdByPart(actId, isActPart);
+        //查主辦人
+        List<Object[]> actMembers = actRepository.findMembersAndPicAndMemIdByActId(actId);
 
         List<MemNameAndPicDTO> dtos = new ArrayList<>();
 
+        //活動主辦人
+        for (Object[] obj : actMembers) {
+            MemNameAndPicDTO memNameAndPicDTO = new MemNameAndPicDTO();
+            memNameAndPicDTO.setMemName((String) obj[0]);
+            memNameAndPicDTO.setMemPic((byte[]) obj[1]);
+            memNameAndPicDTO.setMemId((Integer) obj[2]);
+            dtos.add(memNameAndPicDTO);
+        }
+        //參與的會員
         for (Object[] obj : membersAndPicByPart) {
             MemNameAndPicDTO memNameAndPicDTO = new MemNameAndPicDTO();
             memNameAndPicDTO.setMemName((String) obj[0]);

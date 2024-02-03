@@ -101,6 +101,7 @@ public class VenOrderVO implements java.io.Serializable {
 	@Column(name = "ven_res_fee")
 	private BigDecimal venResFee;
 
+	
 	public VenOrderVO() {
 		super();
 	}
@@ -288,7 +289,19 @@ public class VenOrderVO implements java.io.Serializable {
         VenOrderVO other = (VenOrderVO) obj;
         return Objects.equals(venOrderId, other.venOrderId);
     }
+
+
+	@Override
+	public String toString() {
+		return "VenOrderVO [venOrderId=" + venOrderId + ", orderDate=" + orderDate + ", memPhone="
+				+ memPhone + ", actDescr=" + actDescr + ", userCount=" + userCount + ", memTaxid=" + memTaxid
+				+ ", orderTime=" + orderTime + ", orderPayType=" + orderPayType + ", memTransferNum=" + memTransferNum
+				+ ", memCreditNum=" + memCreditNum + ", orderStatus=" + orderStatus + ", venRentStatus=" + venRentStatus
+				+ ", venRating=" + venRating + ", venCom=" + venCom + ", venComStatus=" + venComStatus + ", venComTime="
+				+ venComTime + ", venResFee=" + venResFee + "]";
+	}
 	
+    
 	
 	
 }

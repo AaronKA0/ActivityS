@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="BIG5">
+<title>User</title>
+</head>
+<body>
+
+	<form method="post" th:action="@{/chat/user}">
+		<input id="userName" name="userName" class="text-field" type="text"
+			placeholder="Input user name" /> <input id="receiver"
+			name="receiver" class="text-field" type="text"
+			placeholder="Input receiver" />
+		<button type="submit">Chat</button>
+	</form>
+
+</body>
+</html>

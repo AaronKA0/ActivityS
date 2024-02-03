@@ -55,4 +55,17 @@ public class VenOrderService{
         List<VenOrderVO> VenOrders = repository.getLessDay(orderDate);
         return VenOrders; 
     }
+
+	
+	
+	// Nathan
+	public List<VenOrderVO> getMemOrders(Integer memId) {
+		
+		List<VenOrderVO> orders = repository.getMemOrders(memId);
+		for(VenOrderVO order : orders) {
+			order.getVenVO().setVenPic(null);
+		}
+		return orders;
+    }
+
 }

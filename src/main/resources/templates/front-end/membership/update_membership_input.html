@@ -6,8 +6,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>會員個人資料修改</title>
 
-<!-- <head th:insert="~{/back-end/signup/included-fragment}"></head> -->
-
+<!-- 前台畫面header的引入文件-->
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap">
 
@@ -18,6 +17,7 @@
 	rel="stylesheet"
 	integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
 	crossorigin="anonymous">
+<!-- 前台畫面header的引入文件-->
 
 
 <style>
@@ -120,7 +120,7 @@ div#status {
 			<div class="col-md-3 mb-2 mb-md-0">
 				<a href='select_page'
 					class="d-inline-flex link-body-emphasis text-decoration-none">
-					<span class="fs-4">做伙</span>
+					<span class="fs-4"><img alt="ZuoHuo" src="/front-end/16/images/ZuoHuo4.jpg" width="160px" ></span>
 				</a>
 			</div>
 
@@ -137,12 +137,11 @@ div#status {
 			</ul>
 
 			<div class="col-md-3 text-end">
-				<button type="button" class="btn btn-outline-primary me-2">
-					<a class="nav-link" href="#" data-bs-toggle="modal"
-						data-bs-target="#loginModal">登入</a>
+				<button type="button" class="btn btn-primary">
+					<a class="nav-link" href='login'>登入</a>
 				</button>
 				<button type="button" class="btn btn-primary">
-					<a class="nav-link" href="register.html">註冊</a>
+					<a class="nav-link" href='addMembership'>註冊</a>
 				</button>
 			</div>
 		</header>
@@ -182,7 +181,7 @@ div#status {
 					<li class="controls-float"><label class="title"
 						for="registerMemPwd"></label> <input class="form-control text"
 						id="registerMemPwd" type="password" placeholder="會員密碼(必填)"
-						autocomplete="off" name="memPwd" 
+						autocomplete="off" name="memPwd"
 						onclick="hideContent('memPwd.errors');" /> <span
 						class="error-message" id="memPwd-error"></span></li>
 
@@ -245,7 +244,8 @@ div#status {
 						class="error" th:utext="${errorMessage}" id="memPic.errors"></span>
 						<br> <span class="error-message" id="memPic-error"></span>
 						<div id="blob_holder">
-							<img th:src="@{/membership/DBGifReader} + '?memId=' + ${membershipVO.memId}"
+							<img
+								th:src="@{/membership/DBGifReader} + '?memId=' + ${membershipVO.memId}"
 								width="200px">
 						</div></li>
 				</ul>
@@ -325,55 +325,56 @@ div#status {
 	</div>
 
 	<!-- 登入選項的Modal 彈窗 -->
-	<div class="modal fade" id="loginModal" tabindex="-1"
-		aria-labelledby="loginModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="loginModalLabel">會員登入</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<!-- 在這裡加入登入表單的 HTML 代碼 -->
-					<form>
-						<!-- 登入表單的輸入欄位 -->
-						<div class="mb-3">
-							<label for="username" class="form-label">帳號：</label> <input
-								type="text" class="form-control" id="username" name="username"
-								placeholder="輸入您的帳號" required>
-						</div>
-						<div class="mb-3">
-							<label for="password" class="form-label">密碼：</label>
-							<div class="input-group">
-								<input type="password" class="form-control" id="password"
-									name="password" placeholder="輸入您的密碼" required>
-								<!-- 在密碼輸入框右上方新增"忘記密碼"的連結 -->
-								<a href="#" class="input-group-text" id="forgotPasswordLink">忘記密碼</a>
-							</div>
-						</div>
-						<!-- 登入按鈕 -->
-						<button type="submit" class="btn btn-primary">登入</button>
-					</form>
+	<!-- 	<div class="modal fade" id="loginModal" tabindex="-1" -->
+	<!-- 		aria-labelledby="loginModalLabel" aria-hidden="true"> -->
+	<!-- 		<div class="modal-dialog"> -->
+	<!-- 			<div class="modal-content"> -->
+	<!-- 				<div class="modal-header"> -->
+	<!-- 					<h5 class="modal-title" id="loginModalLabel">會員登入</h5> -->
+	<!-- 					<button type="button" class="btn-close" data-bs-dismiss="modal" -->
+	<!-- 						aria-label="Close"></button> -->
+	<!-- 				</div> -->
+	<!-- 				<div class="modal-body"> -->
+	<!-- 					在這裡加入登入表單的 HTML 代碼 -->
+	<!-- 					<form> -->
+	<!-- 						登入表單的輸入欄位 -->
+	<!-- 						<div class="mb-3"> -->
+	<!-- 							<label for="username" class="form-label">帳號：</label> <input -->
+	<!-- 								type="text" class="form-control" id="username" name="username" -->
+	<!-- 								placeholder="輸入您的帳號" required> -->
+	<!-- 						</div> -->
+	<!-- 						<div class="mb-3"> -->
+	<!-- 							<label for="password" class="form-label">密碼：</label> -->
+	<!-- 							<div class="input-group"> -->
+	<!-- 								<input type="password" class="form-control" id="password" -->
+	<!-- 									name="password" placeholder="輸入您的密碼" required> -->
+	<!-- 								在密碼輸入框右上方新增"忘記密碼"的連結 -->
+	<!-- 								<a href="#" class="input-group-text" id="forgotPasswordLink">忘記密碼</a> -->
+	<!-- 							</div> -->
+	<!-- 						</div> -->
+	<!-- 						登入按鈕 -->
+	<!-- 						<button type="submit" class="btn btn-primary">登入</button> -->
+	<!-- 					</form> -->
 
-				</div>
-			</div>
-		</div>
-	</div>
+	<!-- 				</div> -->
+	<!-- 			</div> -->
+	<!-- 		</div> -->
+	<!-- 	</div> -->
 
 
 
 	<!-- -----------------------------引入文件----------------------------------- -->
-
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<!-- -----------------------------引入文件----------------------------------- -->
 
+	<!-- -----------------------------前台畫面引入文件----------------------------------- -->
 	<!-- 引入 Bootstrap JavaScript 文件 -->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
 		crossorigin="anonymous"></script>
+	<!-- -----------------------------前台畫面引入文件----------------------------------- -->
 
-	<!-- -----------------------------引入文件----------------------------------- -->
 
 
 	<!-- JavaScript part -->
@@ -382,63 +383,6 @@ div#status {
 		function hideContent(d) {
 			document.getElementById(d).style.display = "none";
 		}
-
-		//照片上傳-預覽用
-// 		var filereader_support = typeof FileReader != 'undefined';
-// 		if (!filereader_support) {
-// 			alert("No FileReader support");
-// 		}
-// 		acceptedTypes = {
-// 			'image/png' : true,
-// 			'image/jpeg' : true, //和jpg一樣
-// 			'image/gif' : true
-// 		};
-// 		function previewImage() {
-// 			var upfile1 = document.getElementById("registerMemPic");
-// 			upfile1.addEventListener("change", function(event) {
-// 				var files = event.target.files || event.dataTransfer.files;
-// 				for (var i = 0; i < files.length; i++) {
-// 					previewfile(files[i])
-// 				}
-// 			}, false);
-// 		}
-// 		function previewfile(file) {
-// 			if (filereader_support === true
-// 					&& acceptedTypes[file.type] === true) {
-// 				var reader = new FileReader();
-// 				reader.onload = function(event) {
-// 					var image = new Image();
-// 					image.src = event.target.result;
-// 					image.width = 180;
-// // 					image.height =180;
-// 					image.border = 2;
-// 					if (blob_holder.hasChildNodes()) {
-// 						blob_holder.removeChild(blob_holder.childNodes[0]);
-// 					}
-// 					blob_holder.appendChild(image);
-// 				};
-// 				reader.readAsDataURL(file);
-// 				document.getElementById('submit').disabled = false;
-// 			} else {
-// 				blob_holder.innerHTML = "<div  style='text-align: left;'>"
-// 						+ "● filename: "
-// 						+ file.name
-// 						+ "<br>"
-// 						+ "● ContentTyp: "
-// 						+ file.type
-// 						+ "<br>"
-// 						+ "● size: "
-// 						+ file.size
-// 						+ "bytes"
-// 						+ "<br>"
-// 						+ "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";
-// 				document.getElementById('submit').disabled = true;
-// 			}
-// 		}
-
-
-
-
 
 
 
@@ -594,7 +538,7 @@ function previewfile(file) {
 		
 		// ------------------------------------------------------	
 		$(document).ready(function() {
-		    // 给输入框绑定input事件，当输入内容变化时触发检查
+			// 輸入框綁定input事件，當輸入產生變化時檢查
 		    $("#registerMemEmail").on("input", function() {
 		        checkMemEmail();
 		    });
@@ -659,7 +603,7 @@ function previewfile(file) {
 			$("#registerMemPhone").on("input", function() {
 				var memPhone = $(this).val();
 
-				// 使用正则表达式检查是否为数字且不超过10位
+				// 使用正規表示法，判斷是否只包含中文字
 				var validPhone = /^\d{1,10}$/;
 				if (!validPhone.test(memPhone)) {
 					$("#memPhone-error").text("請輸入正確格式的手機號碼").show();
@@ -671,7 +615,7 @@ function previewfile(file) {
 
 		// ----------------------- 以下為memName姓名的判斷------------------------------
 		$(document).ready(function() {
-    // 当输入框内容变化时检测
+	// 輸入框時檢查
     $("#registerMemName").on("input", function() {
         var memName = $(this).val();
         if (memName.length >= 1) {
@@ -679,7 +623,7 @@ function previewfile(file) {
         }
     });
 
-    // 在表单提交时检测
+ 	// 表單提交時間檢查
     $("#yourFormId").submit(function() {
         var memName = $("#registerMemName").val();
         if (memName.length < 1) {
@@ -720,7 +664,7 @@ function previewfile(file) {
 		// --------------------- 以下為memBirthdate生日的判斷------------------------
 		
 		$(document).ready(function () {
-		    // 提交表单时的处理
+			// 提交表單時的處理
 		    $("#yourFormId").submit(function () {
 		        var memBirthdate = $("#registerMemBirthdate").val();
 		        if (memBirthdate === "") {
@@ -731,10 +675,10 @@ function previewfile(file) {
 		            return true; // 允許表單提交
 		        }
 		    });
-
-		    // 生日字段值更改时的处理
+ 
+		    // 生日更改時的處理
 		    $("#registerMemBirthdate").change(function () {
-		        $("#memBirthdate-error").hide(); // 隐藏错误提示
+		        $("#memBirthdate-error").hide(); // 隐藏錯誤訊息
 		    });
 		});
 			

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>會員檢舉資料修改 - update_memberreport_input.html</title>
+
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap">
+
+
+<style>
+header {
+	z-index: 100;
+}
+
+main {
+	z-index: 1; /* 或任何低於 header z-index 的值 */
+}
+
+* {
+	box-sizing: border-box;
+}
+
+:root {
+	--header-height: 70px;
+	/*原本是60px*/
+	--aside-width: 200px;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	overflow-x: hidden; /* Prevent horizontal scrollbars */
+}
+
+img {
+	max-width: 100%;
+}
+
+/* ==================== header 區域 ==================== */
+header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background-color: #f0f0f0;
+	padding: 10px;
+	z-index: 100;
+}
+
+header.header {
+	border: 2px solid #d68a8a;
+	width: 100%;
+	position: sticky;
+	top: 0;
+	height: var(--header-height);
+	background-color: #e8bfbc;
+}
+
+h1 {
+	/* border: 2px solid red; */
+	font-size: 30px;
+	color: #474c66;
+}
+
+p {
+	/* border: 2px solid red; */
+	margin-top: -48px;
+	margin-left: 870px;
+	color: #262e54;
+}
+
+header.header ul>li {
+	/* border: 2px solid red; */
+	margin-top: -40px;
+	margin-left: 1100px;
+	font-size: 20px;
+	list-style: none;
+}
+
+header.header ul>li>a {
+	color: #35394c;
+	text-decoration: none;
+	font-weight: bold
+}
+
+header.header button.btn_hamburger {
+	display: none;
+}
+
+/* ==================== aside 區域 ==================== */
+aside {
+	width: 200px; /* 調整側邊欄的寬度 */
+	height: 100%; /* 或其他適當的高度 */
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 2; /* 設定一個較大的 z-index 值，以確保 aside 在 main 上面 */
+}
+
+aside.aside {
+	/* border: 2px solid rgb(73, 73, 74); */
+	position: fixed;
+	top: var(--header-height);
+	left: 0;
+	height: calc(100% - var(--header-height));
+	width: var(--aside-width);
+	background-color: rgb(240, 242, 243);
+	overflow-y: auto;
+	padding: 20px 0;
+	transition: all 1s;
+	overflow-y: scroll;
+	scrollbar-width: none;
+	/* Firefox */
+	-ms-overflow-style: none;
+	/* IE 10+ */
+}
+
+.aside.aside::-webkit-scrollbar {
+	/* WebKit */
+	/*側邊欄卷軸隱藏*/
+	width: 0px;
+}
+
+@media screen and (max-width: 767px) {
+	aside.aside {
+		top: 0;
+		height: 100%;
+		transform: translateX(-100%);
+	}
+}
+
+aside.aside.-on {
+	transform: translateX(0%);
+}
+
+/* ==================== main 區域 ==================== */
+main.main {
+	/* border: 2px solid red; */
+	margin-left: var(--aside-width);
+	width: calc(100% - var(--aside-width));
+	padding: 20px;
+	background-color: hsl(0, 0%, 99%);
+	min-height: calc(100vh - var(--header-height));
+	transition: all 1s;
+}
+
+@media screen and (max-width: 767px) {
+	main.main {
+		width: 100%;
+		margin-left: 0;
+	}
+}
+
+/* ==================== 側邊欄 ==================== */
+
+/* 固定側欄 */
+.sidenav {
+	height: 200px;
+	width: 30vh;
+	background-color: rgb(240, 242, 243);
+	padding-top: 15px;
+}
+
+/* 設置 sidenav 鏈接和下拉按鈕的樣式 */
+.sidenav a, .dropdown-btn {
+	padding: 6px 8px 6px 16px;
+	text-decoration: none;
+	font-size: 20px;
+	color: #818181;
+	display: block;
+	border: none;
+	background: none;
+	height: 40px;
+	width: 100%;
+	text-align: left;
+	cursor: pointer;
+}
+
+/* 滑鼠 */
+.sidenav a:hover, .dropdown-btn:hover {
+	color: #454444;
+}
+
+.sidenav {
+	position: relative;
+	top: 110px
+}
+
+/* 主要内容 */
+.main {
+	margin-left: 200px;
+	/* 與 sidenav 的寬度相同 */
+	font-size: 20px;
+	/* Increased text to enable scrolling */
+	padding: 0px 10px;
+}
+
+/* 添加一個活動類活動下拉按鈕 */
+.active {
+	background-color: rgb(159, 189, 218);
+	color: rgb(27, 24, 24);
+}
+
+/* 下拉容器 (默認隐藏） 添加較浅的背景颜色和一些左側填充以更改下拉内容的設計 */
+.dropdown-container {
+	display: none;
+	background-color: #ffffff;
+	padding-left: 4px;
+}
+
+/* 可選：設置插入符號圖標的樣式 */
+.fa-caret-down {
+	float: right;
+	padding-right: 8px;
+}
+
+form {
+	display: table;
+}
+
+form div {
+	display: table-row;
+}
+
+label, input, span, select {
+	display: table-cell;
+	margin: 5px;
+	text-align: left;
+}
+
+form div div {
+	display: table-cell;
+}
+
+input#repPic {
+	display: none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+	<header class="header">
+		<h1>【做伙後台管理系統】</h1>
+		<p class="welcome">歡迎您 管理員</p>
+		<nav>
+			<ul>
+				<li><a href="#">登出</a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<aside class="aside">
+		<nav class="nav">
+			<div class="sidenav">
+				<a href='select_page'>首頁</a>
+				<hr>
+				<button class="dropdown-btn">
+					員工管理 <i class="fa fa-caret-down"></i>
+				</button>
+				<div class="dropdown-container">
+					<a href="#">修改密碼</a> <a href="#">員工資料管理</a>
+				</div>
+				<hr>
+				<button class="dropdown-btn">
+					一般功能管理 <i class="fa fa-caret-down"></i>
+				</button>
+				<div class="dropdown-container">
+					<a href="#">公告管理</a> <a href="#">FQA管理</a>
+				</div>
+				<hr>
+				<button class="dropdown-btn">
+					會員功能管理 <i class="fa fa-caret-down"></i>
+				</button>
+				<div class="dropdown-container">
+					<a href="#">查詢會員</a> <a href="#">產生通知訊息</a> <a href="#">審核會員檢舉</a>
+				</div>
+				<hr>
+				<button class="dropdown-btn">
+					活動功能管理 <i class="fa fa-caret-down"></i>
+				</button>
+				<div class="dropdown-container">
+					<a href="#">審核活動管理</a> <a href="#">審核留言管理</a>
+				</div>
+				<hr>
+				<button class="dropdown-btn">
+					場地功能管理 <i class="fa fa-caret-down"></i>
+				</button>
+				<div class="dropdown-container">
+					<a href="#">場地管理</a> <a href="#">場地訂單管理</a> <a href="#">場地狀態管理</a>
+				</div>
+			</div>
+
+		</nav>
+	</aside>
+
+
+	<main class="main">
+
+
+		<div align="center">
+			<h1>會員檢舉管理狀態更改</h1>
+			<form th:action="@{update}" method="post"
+				th:object="${memberReportVO}" enctype="multipart/form-data">
+
+				<!-- 			<div> -->
+				<!-- 				<label>會員檢舉編號:</label> <input type="text" th:field="*{repId}" -->
+				<!-- 					style="border: 0px; font-weight: bold;" readonly /><br /> -->
+				<!-- 			</div> -->
+
+				<!-- 			<div> -->
+				<!-- 				<label>檢舉會員編號:</label> <input type="text" th:field="*{reporterId}" -->
+				<!-- 					onclick="hideContent('reporterId.errors');" /><br /> <span -->
+				<!-- 					th:if="${#fields.hasErrors('reporterId')}" -->
+				<!-- 					th:errors="*{reporterId}" class="error" id="reporterId.errors"></span> -->
+				<!-- 			</div> -->
+
+				<!-- 			<div> -->
+				<!-- 				<label>被檢舉會員編號:</label> <input type="text" th:field="*{reporteeId}" -->
+				<!-- 					onclick="hideContent('reporteeId.errors');" /><br /> <span -->
+				<!-- 					th:if="${#fields.hasErrors('reporteeId')}" -->
+				<!-- 					th:errors="*{reporteeId}" class="error" id="reporteeId.errors"></span> -->
+				<!-- 			</div> -->
+
+
+				<!-- 			<div> -->
+				<!-- 				<label>員工編號:</label> <input type="text" th:field="*{empId}" -->
+				<!-- 					onclick="hideContent('empId.errors');" /><br /> <span -->
+				<!-- 					th:if="${#fields.hasErrors('empId')}" th:errors="*{empId}" -->
+				<!-- 					class="error" id="empId.errors"></span> -->
+				<!-- 			</div> -->
+
+
+
+				<!-- 			<div> -->
+				<!-- 				<label>檢舉標題:</label> <input type="text" th:field="*{repTitle}" -->
+				<!-- 					onclick="hideContent('repTitle.errors');" /><br /> <span -->
+				<!-- 					th:if="${#fields.hasErrors('repTitle')}" th:errors="*{repTitle}" -->
+				<!-- 					class="error" id="repTitle.errors"></span> -->
+				<!-- 			</div> -->
+
+
+				<!-- 			<div> -->
+				<!-- 				<label>檢舉內容:</label> <input type="text" th:field="*{repContent}" -->
+				<!-- 					onclick="hideContent('repContent.errors');" /><br /> <span -->
+				<!-- 					th:if="${#fields.hasErrors('repContent')}" -->
+				<!-- 					th:errors="*{repContent}" class="error" id="repContent.errors"></span> -->
+				<!-- 			</div> -->
+
+				<!-- 						<div> -->
+				<!-- 							<label>檢舉圖片:</label> <input type="file" th:field="*{repPic}" -->
+				<!-- 								onclick="previewImage()" multiple="multiple" /> -->
+				<!-- 							可以不修改圖片 <span  th:if="${#fields.hasErrors('upFiles')}" th:errors="*{upFiles}" class="error" id="upFiles.errors"></span> -->
+				<!-- 							<div id="blob_holder"> -->
+				<!-- 								<img -->
+				<!-- 									th:src="@{/memberreport/DBGifReader} + '?repId=' + ${memberReportVO.repPic}" -->
+				<!-- 									width="100px"> -->
+				<!-- 							</div> -->
+				<!-- 						</div> -->
+
+				<!-- 			<div> -->
+				<!-- 				<label>會員檢舉狀態:</label> -->
+				<!-- 				<div> -->
+				<!-- 					<input type="radio" name="repStatus" value="1" id="repStatus1" -->
+				<!-- 						th:checked="${memberReportVO.repStatus == 1}" /> <label -->
+				<!-- 						for="repStatus1">審核中</label> -->
+				<!-- 				</div> -->
+				<!-- 				<div> -->
+				<!-- 					<input type="radio" name="repStatus" value="2" id="repStatus2" -->
+				<!-- 						th:checked="${memberReportVO.repStatus == 2}" /> <label -->
+				<!-- 						for="repStatus2">通過</label> -->
+				<!-- 				</div> -->
+				<!-- 				<div> -->
+				<!-- 					<input type="radio" name="repStatus" value="3" id="repStatus3" -->
+				<!-- 						th:checked="${memberReportVO.repStatus == 3}" /> <label -->
+				<!-- 						for="repStatus3">未通過</label> -->
+				<!-- 				</div> -->
+				<!-- 			</div> -->
+
+				<!-- 			<div> -->
+				<!-- 				<label>檢舉時間:</label> <input type="text" th:field="*{repTime}" -->
+				<!-- 					id="repTime" name="repTime" class="datetime-local" /> <br /> <span -->
+				<!-- 					th:if="${#fields.hasErrors('repTime')}" th:errors="*{repTime}" -->
+				<!-- 					class="error" id="repTime.errors"></span> -->
+				<!-- 			</div> -->
+
+
+
+				<div>
+					<label>會員檢舉編號:</label> <input type="text" th:field="*{repId}"
+						style="border: 0px; font-weight: bold;" readonly /><br />
+				</div>
+
+				<div>
+					<label>檢舉會員編號:</label> <input type="text" th:field="*{reporterId}"
+						style="border: 0px; font-weight: bold;" readonly /><br />
+				</div>
+
+				<div>
+					<label>被檢舉會員編號:</label> <input type="text" th:field="*{reporteeId}"
+						style="border: 0px; font-weight: bold;" readonly /><br />
+				</div>
+
+				<div>
+					<label>員工編號:</label> <input type="text" th:field="*{empId}"
+						onclick="hideContent('empId.errors');" /><br /> <span
+						th:if="${#fields.hasErrors('empId')}" th:errors="*{empId}"
+						class="error" id="empId.errors"></span>
+				</div>
+
+				<div>
+					<label>檢舉標題:</label> <input type="text" th:field="*{repTitle}"
+						style="border: 0px; font-weight: bold;" readonly /><br />
+				</div>
+
+				<div>
+					<label>檢舉內容:</label> <input type="text" th:field="*{repContent}"
+						style="border: 0px; font-weight: bold;" readonly /><br />
+				</div>
+
+				<div>
+					<label>檢舉圖片:</label> <input type="file" th:field="*{repPic}"
+						style="border: 0px; font-weight: bold;" readonly /> <img
+						th:src="@{'/memberreport/DBGifReader?repId=' + ${memberReportVO.repId}}"
+						width="180px"><br />
+				</div>
+
+
+				<div>
+					<label>檢舉時間:</label> <input type="text" th:field="*{repTime}"
+						style="border: 0px; font-weight: bold;" readonly /><br />
+				</div>
+
+
+				<div>
+					<label for="repStatus">會員檢舉狀態:</label> <select id="repStatus"
+						name="repStatus" th:field="*{repStatus}">
+						<option value="1" th:selected="${memberReportVO.repStatus == 1}">審核中</option>
+						<option value="2" th:selected="${memberReportVO.repStatus == 2}"
+							style="color: blue;">通過</option>
+						<option value="3" th:selected="${memberReportVO.repStatus == 3}"
+							style="color: red;">未通過</option>
+					</select>
+				</div>
+				<br>
+
+				<div>
+					<div></div>
+					<div>
+						<button type="submit" id="submit">送出修改</button>
+					</div>
+					<div></div>
+				</div>
+			</form>
+
+		</div>
+	</main>
+
+
+
+	<!-- JavaScript part -->
+	<script type="text/javascript">
+		//清除提示信息
+		function hideContent(d) {
+			document.getElementById(d).style.display = "none";
+		}
+
+		//照片上傳-預覽用
+		var filereader_support = typeof FileReader != 'undefined';
+		if (!filereader_support) {
+			alert("No FileReader support");
+		}
+		acceptedTypes = {
+			'image/png' : true,
+			'image/jpeg' : true, //和jpg一樣
+			'image/gif' : true
+		};
+		function previewImage() {
+			var upfile1 = document.getElementById("repPic");
+			upfile1.addEventListener("change", function(event) {
+				var files = event.target.files || event.dataTransfer.files;
+				for (var i = 0; i < files.length; i++) {
+					previewfile(files[i])
+				}
+			}, false);
+		}
+		function previewfile(file) {
+			if (filereader_support === true
+					&& acceptedTypes[file.type] === true) {
+				var reader = new FileReader();
+				reader.onload = function(event) {
+					var image = new Image();
+					image.src = event.target.result;
+					image.width = 180;
+					// 					image.height =180;
+					image.border = 2;
+					if (blob_holder.hasChildNodes()) {
+						blob_holder.removeChild(blob_holder.childNodes[0]);
+					}
+					blob_holder.appendChild(image);
+				};
+				reader.readAsDataURL(file);
+				document.getElementById('submit').disabled = false;
+			} else {
+				blob_holder.innerHTML = "<div  style='text-align: left;'>"
+						+ "● filename: "
+						+ file.name
+						+ "<br>"
+						+ "● ContentTyp: "
+						+ file.type
+						+ "<br>"
+						+ "● size: "
+						+ file.size
+						+ "bytes"
+						+ "<br>"
+						+ "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";
+				document.getElementById('submit').disabled = true;
+			}
+		}
+	</script>
+
+</body>
+</html>

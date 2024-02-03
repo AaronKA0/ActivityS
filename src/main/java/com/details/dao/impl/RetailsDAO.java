@@ -47,7 +47,7 @@ public class RetailsDAO implements IRetailsDAO {
 //        String sql = "SELECT * FROM activity WHERE act_type_id = :actTypeId";
 
         String sql = "SELECT act_id, act_name, act_loc, act_descr, act_start_time, act_end_time, act_pic" +
-                " FROM activity WHERE act_type_id = :actTypeId AND act_id <> :actId";
+                " FROM activity WHERE act_type_id = :actTypeId AND act_id <> :actId AND act_status = 4";
 
         Map<String, Object> map = new HashMap<>();
         map.put("actTypeId", actTypeId);

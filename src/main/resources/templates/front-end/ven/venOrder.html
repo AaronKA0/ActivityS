@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>場地租借</title>
+<!-- 引入 Bootstrap CSS 文件 -->
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+	integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+<script
+	src="https://cdn.tiny.cloud/1/tus9t8o6mklmhwd5c0iaejn9394stnli5i0j2ic9bb4xurm0/tinymce/6/tinymce.min.js"
+	referrerpolicy="origin"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/@tinymce/tinymce-jquery@2/dist/tinymce-jquery.min.js"></script>
+
+
+<script
+	src="
+https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.js
+"></script>
+<link
+	href="
+https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
+"
+	rel="stylesheet">
+
+<script
+	src="https://cdn.jsdelivr.net/gh/dealfonso/power-buttons/dist/powerbuttons.min.js"></script>
+
+
+<link
+	href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+	rel="stylesheet" />
+<script
+	src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script
+	src="https://cdn.jsdelivr.net/gh/dealfonso/power-buttons/dist/powerbuttons.min.js"></script>
+
+<style>
+main {
+	min-height: calc(100vh - 70px);
+}
+
+#top {
+	margin-bottom: 30px;
+}
+
+/* ===== 重要性的星號 ===== */
+div.star_block {
+	display: inline-block;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+div.star_block>span.star {
+	cursor: pointer;
+	display: inline-block;
+	margin-right: 3px;
+}
+
+div.star_block>span.star.-on {
+	color: yellow;
+}
+
+div.star_block>span.star.-off {
+	color: white;
+}
+
+/* .order-card:hover { */
+/* 	cursor: pointer; */
+/* } */
+.paginationjs .paginationjs-pages {
+	display: inline-block;
+	float: none;
+}
+
+.paginationjs {
+	margin-top: 50px;
+	text-align: center;
+	display: block;
+}
+
+.order-card {
+	display: flex;
+	height: 470px;
+}
+
+.order-card.upcoming {
+	display: flex;
+	height: 500px;
+}
+
+.order-card.past {
+	display: flex;
+	height: 520px;
+}
+
+.card-body {
+	display: inline-block;
+	margin-top: auto;
+	max-height: 240px;
+}
+
+.card-body.upcoming {
+	display: inline-block;
+	margin-top: auto;
+	max-height: 270px;
+}
+
+.card-body.past {
+	display: inline-block;
+	margin-top: auto;
+	max-height: 290px;
+}
+
+.form-control {
+	width: 200px;
+}
+
+.select2-container--open {
+	z-index: 9999999;
+}
+
+.active {
+	background-color: grey;
+	color: white;
+}
+
+.cancel-order {
+	color: red;
+}
+
+#order-sort:hover {
+	cursor: pointer;
+}
+
+.sort-btn {
+	font-size: 24px;
+}
+</style>
+</head>
+
+<body>
+
+	<div style="width: 200px" class="offcanvas offcanvas-start"
+		tabindex="-1" id="offcanvasExample"
+		aria-labelledby="offcanvasExampleLabel">
+		<div class="offcanvas-body" style="padding: 0px; overflow-x: hidden">
+
+			<div class="b-example-divider"></div>
+
+			<div
+				class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white"
+				style="width: 200px;">
+				<a th:href="@{/member}"
+					class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+					<svg class="bi me-2" width="30" height="24">
+						<use xlink:href="#bootstrap" /></svg> <span class="fs-5 fw-semibold">會員首頁</span>
+				</a>
+				<div class="list-group list-group-flush border-bottom scrollarea">
+					<a th:href="@{/member/chat}"
+						class="list-group-item list-group-item-action py-3 lh-tight"
+						aria-current="true">
+						<div
+							class="d-flex w-100 align-items-center justify-content-between">
+							<strong class="mb-1">聊天</strong>
+						</div>
+					</a> <a th:href="@{/member/chat}"
+						class="list-group-item list-group-item-action py-3 lh-tight"
+						aria-current="true">
+						<div
+							class="d-flex w-100 align-items-center justify-content-between">
+							<strong class="mb-1">通知</strong>
+						</div>
+					</a> <a th:href="@{/member/venOrder}"
+						class="list-group-item list-group-item-action py-3 lh-tight"
+						aria-current="true">
+						<div
+							class="d-flex w-100 align-items-center justify-content-between">
+							<strong class="mb-1">場地預訂</strong>
+						</div>
+					</a> </a> <a th:href="@{/member/venOrder}"
+						class="list-group-item list-group-item-action py-3 lh-tight"
+						aria-current="true">
+						<div
+							class="d-flex w-100 align-items-center justify-content-between">
+							<strong class="mb-1">活動管理</strong>
+						</div>
+					</a>
+				</div>
+			</div>
+
+			<div class="b-example-divider"></div>
+
+		</div>
+	</div>
+
+	<div class="container">
+		<header
+			class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+			<button class="btn btn-primary fa fa-bars" type="button"
+				data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+				aria-controls="offcanvasExample"></button>
+			<div class="col-md-3 mb-2 mb-md-0">
+				<a href="index.html"
+					class="d-inline-flex link-body-emphasis text-decoration-none">
+					<span class="fs-4">做伙</span>
+				</a>
+			</div>
+
+			<ul
+				class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+				<li><a href="index.html" class="nav-link px-2 link-secondary">首頁</a></li>
+				<li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+				<li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
+				<li><a href="/ven/browse" class="nav-link px-2 link-secondary">場地租借</a></li>
+				<li><a href="customer.html"
+					class="nav-link px-2 link-secondary">FAQs</a></li>
+				<li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
+			</ul>
+
+			<div class="col-md-3 text-end">
+				<button type="button" class="btn btn-outline-primary me-2">
+					<a class="nav-link" href="#" data-bs-toggle="modal"
+						data-bs-target="#loginModal">登入</a>
+				</button>
+				<button type="button" class="btn btn-primary">
+					<a class="nav-link" href="register.html">註冊</a>
+				</button>
+			</div>
+		</header>
+	</div>
+
+
+
+
+
+	<main id="top" class="container mt-5">
+		<section id="venue-rental" class="mt-5 text-center">
+			<h1 style="margin-bottom: 50px">租借的場地</h1>
+
+			<div class="container mt-3">
+				<div class="btn-toolbar" role="toolbar"
+					aria-label="Toolbar with button groups">
+					<div style="width: 100%" class="text-center">
+						<div class="btn-group me-2" role="group" aria-label="Second group">
+							<button id="upcoming-btn" type="button"
+								class="active sort-btn  btn btn-outline-secondary"
+								data-filter="">即將到來</button>
+						</div>
+						<div class="btn-group me-2" role="group" aria-label="Second group">
+							<button id="archive-btn" type="button"
+								class="sort-btn  btn btn-outline-secondary" data-filter="">租借歷史</button>
+						</div>
+						<div class="btn-group me-2" role="group" aria-label="Third group">
+							<button id="cancelled-btn" type="button"
+								class="sort-btn  btn btn-outline-secondary" data-filter="">已取消</button>
+						</div>
+						<div class="btn-group me-2" role="group" aria-label="Second group">
+							<button id="refunded-btn" type="button"
+								class="sort-btn  btn btn-outline-secondary" data-filter="">已退款</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+
+			<div id="orders">
+				<div id="orders-body"></div>
+			</div>
+		</section>
+	</main>
+
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/	
+			memId = /*[[${session.memId}]]*/'';	
+		/*]]>*/
+	</script>
+
+
+	<script>
+
+let orders;
+let groupedOrders;
+let curDate;
+
+let dateOrder;
+
+
+
+$(".sort-btn").on("click", function(){
+	curDate = new Date().toJSON().slice(0, 10);
+	$(".sort-btn").removeClass("active");
+	$(this).addClass("active");
+	dateOrder = "asc";
+});
+
+async function getOrders(){
+	orders = await fetch("/mem/venOrders", {
+		method: "POST",
+		body: JSON.stringify({memVO: {memId: memId}})
+	}).then(function(response){
+		return response.json();
+	}).then(function(orders){
+		return orders;
+	});	
+	orders = sortAscReservationDate(orders);
+	dateOrder = "asc";
+}
+
+async function loadVenPics(){
+	for(order of orders){
+	await fetch("/ven/getById", {
+		method: "POST",
+		body: JSON.stringify({venId: order.venVO.venId})
+	}).then(function(response){
+		return response.json();
+	}).then(function(ven){
+		$(`.venPic${ven.venId}`).attr("src", ven.venPic? "data:image/png;base64," + ven.venPic: "/front-end/01/images/notfind.jpg");
+	});
+	}
+}
+
+
+function groupOrders(){
+	groupedOrders = [];
+	for(let i = 0; i < orders.length; i += 4){
+		for(let j = 0; j < 4; j++){
+			let order = orders[i+j];
+			if(j == 0){
+				groupedOrders.push([]);
+			}
+			if(order){
+				if(i>0){
+					groupedOrders[i/4].push(order);
+				} else{
+					groupedOrders[0].push(order);
+				}
+			}
+		}
+	}
+		
+}
+
+
+function sortAscReservationDate(data) {
+    return data.sort(function (a, b) {
+        if (a.orderDate > b.orderDate) {
+            return 1;
+        }
+        if (a.orderDate < b.orderDate) {
+            return -1;
+        }
+        return 0;
+    });
+}
+
+function sortDescReservationDate(data) {
+    return data.sort(function (a, b) {
+        if (a.orderDate < b.orderDate) {
+            return 1;
+        }
+        if (a.orderDate > b.orderDate) {
+            return -1;
+        }
+        return 0;
+    });
+}
+
+
+async function loadOrders(){
+	$("#upcoming-btn").click();
+}
+
+function displayOrders(){
+	if(!orders.length){
+		$("#orders-body").html("");
+		$("#orders-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h2>無租借的場地</h2></div>`);
+		return;
+	}
+	$('#orders').pagination({
+	    dataSource: groupedOrders,
+	    pageSize: 3,
+	    callback: async function(orders, pagination) {
+	    	$("#orders-body").html("");
+	    	
+// 	    	if(!orders.length){
+// 	    		$("#orders-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h2>無租借的場地</h2></div>`);
+// 	    		return;
+// 	    	}
+	    	
+	    	let date = new Date(), dayBeforeYes= new Date(), yesterday= new Date(), today= new Date(), tomorrow= new Date(), dayAfterTom  = new Date();
+			dayBeforeYes.setDate(date.getDate() - 2);
+			yesterday.setDate(date.getDate() - 1);
+			today.setDate(date.getDate());
+			tomorrow.setDate(date.getDate() + 1);
+			dayAfterTom.setDate(date.getDate() + 2);
+
+			$("#orders-body").append(`<div id="order-sort" style="margin-top:30px; font-size:24px"><span style="margin-right:20px">預訂日期</span><i data-order="${dateOrder}" class="fa-solid fa-sort"></i></div>`);
+			
+	        for (let i = 0; i < orders.length; i++) {
+	        	for(let j = 0; j < 4; j++){
+	        		let order = orders[i][j];
+	        		if(j == 0){
+	        			$("#orders-body").append(`<div id="order-row-${i}" class="row" style="margin-left:75px; width:1000px"></div>`);
+	        		}
+	        		
+	        		if(order){
+	        			let ven = order.venVO;
+	        			let isUpcoming = order.orderStatus == 1 && order.orderDate >= curDate;
+	        			let isPast = order.orderStatus == 1 && order.orderDate < curDate;
+	        			let orderDate = new Date(order.orderDate).toLocaleDateString();
+	        			let dateString = orderDate == dayBeforeYes.toLocaleDateString()? "前天": orderDate == yesterday.toLocaleDateString()? "昨天": orderDate == today.toLocaleDateString()? "今天": orderDate == tomorrow.toLocaleDateString()? "明天": orderDate == dayAfterTom.toLocaleDateString()? "後天": orderDate;	        			
+	        			
+	        			$(`#order-row-${i}`).append(`<div id="order${order.venOrderId}" class="col col-3" style="margin-top:50px">
+	        					<div class="card order-card text-center ${isUpcoming? 'upcoming': ''} ${isPast? 'past': ''}" data-bs-toggle="tooltip" data-bs-placement="top" title="${order.actDescr}">
+	        					<img src="${ven.venPic? 'data:image/png;base64,' + ven.venPic: '/front-end/01/images/notfind.jpg'}"
+	        						class="card-img-top ven-img venPic${ven.venId}" alt="...">
+	        					<div class="card-body ${isUpcoming? 'upcoming': ''} ${isPast? 'past': ''}">
+	        						<h5 class="card-title order-date">${dateString}</h5>
+	        						<h5 class="card-title ven-name"><a href="#">${ven.venName}</a></h5>
+	        						<h5 class="card-title ven-loc">${ven.venCity} ${ven.venDistrict}</h5>
+	        						<h5 class="card-title order-count">預約人數: ${order.userCount}</h5>
+	        						<h5 class="card-title order-fee">預訂金額: $${order.venResFee}</h5>
+	        						<h5 style="display:${isPast? '': 'none'}" class="card-title order-fee">總金額: $${Math.floor(order.venResFee*2)}</h5>
+	        						<h5 style="display:${order.orderStatus == 3? '': 'none'}" class="card-title order-fee">退款金額: $${order.orderStatus == 2? Math.ceil(order.venResFee*0.5): order.venResFee}</h5>
+	        						<div style="display:${isPast? '': 'none'}" data-id="${order.venOrderId}" data-venid="${ven.venId}" class="star_block">
+										<span data-star="1" class="star ${order.venRating >= 1? '-on': ''}"><i class="fa fa-star"></i></span>
+    									<span data-star="2" class="star ${order.venRating >= 2? '-on': ''}"><i class="fa fa-star"></i></span>
+    									<span data-star="3" class="star ${order.venRating >= 3? '-on': ''}"><i class="fa fa-star"></i></span>
+    									<span data-star="4" class="star ${order.venRating >= 4? '-on': ''}"><i class="fa fa-star"></i></span>
+    									<span data-star="5" class="star ${order.venRating >= 5? '-on': ''}"><i class="fa fa-star"></i></span><span style="margin-left:10px" id="no-rating">${order.venRating? "": "無評分"}</span>	        							
+	        						</div>
+	        						<div style="display:${order.orderStatus == 1 && order.orderDate > curDate? '': 'none'}; margin-top:30px">
+	        							<button data-id="${order.venOrderId}" data-status="${order.orderStatus}" type="button"
+	        							class="cancel-order btn btn-outline-secondary" id="cancelOrder${order.venOrderId}">取消預訂</button>
+	        						</div>
+	        						</div>
+	        				</div>
+	        			</div>`);
+	        			
+
+				        let options = {
+				        		title: null,
+				        	    confirm: `取消該場地預約？`,
+				        	    buttonConfirm: `<span class="confirmCancelOrder" data-order="${order.venOrderId}">確認</span>`,	        	 
+				        	    buttonCancel: "取消",
+				        	    header: null    	    
+				        	};
+				        	let cancelBtn = document.getElementById(`cancelOrder${order.venOrderId}`);
+				        	window.powerButtons('confirm', cancelBtn, options);
+	        		}
+			        	
+	        	}
+	        }
+	        createToolTips();
+	        await loadVenPics();
+	    }
+	});
+}
+
+</script>
+
+	<script>
+
+$(document).ready(async function(){
+	await loadOrders();
+});
+
+</script>
+
+
+	<!-- update ven order -->
+	<script>
+$(document).on("click", ".star", async function(){
+	let star = $(this).attr("data-star");
+	let stars = $(this).closest(".star_block").find(".star");
+	stars.removeClass("-on");
+	stars.filter((index, node) => $(node).attr("data-star") <= star).addClass("-on");	
+	await updateOrderRating($(this).closest(".star_block").attr("data-id"), $(this).attr("data-star"), $(this).closest(".star_block").attr("data-venid"));
+});
+
+async function updateOrderRating(venOrderId, venRating, venId){
+	await fetch("/mem/updateVenOrder", {
+		method: "POST",
+		body: JSON.stringify({venVO: {venId: venId}, venOrderId: venOrderId, venRating: venRating})
+	})
+}
+
+
+async function updateOrderStatus(venOrderId, orderStatus){
+	await fetch("/mem/updateVenOrder", {
+		method: "POST",
+		body: JSON.stringify({venOrderId: venOrderId, orderStatus: orderStatus})
+	})
+	await loadOrders();
+}
+</script>
+
+
+	<!-- filter ven order -->
+	<script>
+$("#upcoming-btn").on("click", async function(){
+	await getOrders();
+	orders = orders.filter(order => order.orderStatus == 1 && order.orderDate >= curDate);
+	groupOrders();
+	displayOrders();
+});
+
+$("#archive-btn").on("click", async function(){
+	await getOrders();
+	orders = orders.filter(order => order.orderStatus == 1 && order.orderDate < curDate);
+	orders = sortDescReservationDate(orders);
+	dateOrder = "desc";
+	groupOrders();
+	displayOrders();
+});
+
+$("#cancelled-btn").on("click", async function(){
+	await getOrders();
+	orders = orders.filter(order => order.orderStatus == 2);
+	groupOrders();
+	displayOrders();
+});
+
+$("#refunded-btn").on("click", async function(){
+	await getOrders();
+	orders = orders.filter(order => order.orderStatus == 3);
+	groupOrders();
+	displayOrders();
+});
+
+
+function createToolTips(){
+	let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+	let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+	  return new bootstrap.Tooltip(tooltipTriggerEl);
+	});
+}
+
+$(document).on("click", "#order-sort", function(){
+	if(dateOrder == "asc"){
+		orders = sortDescReservationDate(orders);
+		dateOrder = "desc";
+		groupOrders();
+		displayOrders();
+	} else{
+		orders = sortAscReservationDate(orders);
+		dateOrder = "asc";
+		groupOrders();
+		displayOrders();
+	}
+});
+
+
+$(document).on("click", ".button0", async function(){
+	if(!$(this).find(".confirmCancelOrder").length) return false;	
+	let orderId = $(this).find(".confirmCancelOrder").attr("data-order");	
+	await updateOrderStatus(orderId, 2);
+});
+</script>
+
+
+</body>
+
+</html>

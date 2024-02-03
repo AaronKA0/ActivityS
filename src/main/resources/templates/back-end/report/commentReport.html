@@ -7,7 +7,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" th:href="@{/css/後台首頁頁面.css}">
+    <link rel="stylesheet" th:href="@{/back-end/emp_Index/css/emp_Index.css}">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,6 +40,14 @@
         /*    table-layout: fixed;*/
         /*}*/
 
+        .custom-select-width {
+            width: 10%; /* 或者您可以使用固定宽度，例如 150px */
+        }
+
+        .table-responsive {
+            max-height: 300px; /* 高度 */
+            overflow-y: auto; /* 加scroll */
+        }
 
     </style>
 </head>
@@ -58,30 +66,30 @@
 <aside class="aside">
     <nav class="nav">
         <div class="sidenav">
-            <a href="../static/後台首頁頁面.html">首頁</a>
+            <a href="">首頁</a>
             <hr>
             <button class="dropdown-btn">員工管理
                 <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
-                <a href="修改密碼頁面.html">修改密碼</a>
-                <a href="員工資料管理首頁.html">員工資料管理</a>
+                <a href="">修改密碼</a>
+                <a href="">員工資料管理</a>
             </div>
             <hr>
             <button class="dropdown-btn">一般功能管理
                 <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
-                <a href="新增公告.html">公告管理</a>
-                <a href="新增FAQ.html">FQA管理</a>
+                <a href="">公告管理</a>
+                <a href="">FQA管理</a>
             </div>
             <hr>
             <button class="dropdown-btn">會員功能管理
                 <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
-                <a href="查詢會員.html">查詢會員</a>
-                <a href="產生會員通知訊息.html">產生通知訊息</a>
+                <a href="">查詢會員</a>
+                <a href="">產生通知訊息</a>
                 <a href="#">審核會員檢舉</a>
             </div>
             <hr>
@@ -97,7 +105,7 @@
                 <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
-                <a href="新增場地.html">場地管理</a>
+                <a href="">場地管理</a>
                 <a href="#">場地訂單管理</a>
                 <a href="#">場地狀態管理</a>
             </div>
@@ -108,7 +116,11 @@
 <main class="main">
 
     <div class="w-100">
-        <h1 class="fw-bold">活動留言檢舉</h1>
+        <div class="btn-group mb-2" role="group" aria-label="Basic example">
+            <button type="button" class="change btn btn-dark btn-sm">留言檢舉管理</button>
+            <button type="button" class="change btn btn-outline-dark btn-sm">活動檢舉管理</button>
+        </div>
+
         <div class="d-flex justify-content-between mb-1">
             <div class="input-group input-group-sm w-25 h-75">
                 <label for="memId">會員ID:</label>
@@ -185,6 +197,12 @@
             </tbody>
         </table>
     </div>
+    <select class="showcount custom-select-width form-select form-select-sm mt-5" aria-label=".form-select-sm example">
+        <option value="5">5筆</option>
+        <option value="10">10筆</option>
+        <option value="15">15筆</option>
+        <option value="20">20筆</option>
+    </select>
 
     <div class="fixed-bottom">
         <div class="container">
@@ -255,7 +273,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
 
-<script th:src="@{/js/後台首頁頁面.js}"></script>
+<script th:src="@{/back-end/emp_Index/js/emp_Index.js}"></script>
 
 <script>
 
@@ -267,28 +285,34 @@
     let repStatus; // 狀態預設
     let repTime = "DESC"; // 排序預設
     let pageNumber = 1; // 第幾頁預設(進function會 -1 所以會變0)
-    let size = 5; //
+    let size; //顯示幾筆資料
     let memId;
     let empId;
 
     //第幾頁
-    function loadPage(pageNumber, repTime, repStatus, memId, empId) {
+    function loadPage(pageNumber, repTime, repStatus, memId, empId, size) {
 
-        loadCommentReports(pageNumber, repTime, repStatus, memId, empId);
+        loadCommentReports(pageNumber, repTime, repStatus, memId, empId, size);
     }
+
+    //顯示筆數
+    $(".showcount").change(function () {
+        size = $(".showcount").val();
+        loadCommentReports(pageNumber, repTime, repStatus, memId, empId, size);
+    });
 
     //依審核狀態篩選
     $(".filterButton").on("click", function () {
         repStatus = $(this).data("repStatus");
 
-        loadCommentReports(pageNumber, repTime, repStatus, memId, empId);
+        loadCommentReports(pageNumber, repTime, repStatus, memId, empId, size);
     });
 
     //時間排序
     $("#time").change(function () {
         repTime = $("#time").val();
 
-        loadCommentReports(pageNumber, repTime, repStatus, memId, empId);
+        loadCommentReports(pageNumber, repTime, repStatus, memId, empId, size);
     });
 
     //會員ID查詢
@@ -308,7 +332,7 @@
         $(".selectEmpId").closest("div").find("#empId").val("");
 
         empId = null;
-        loadCommentReports(pageNumber, repTime, repStatus, memId, empId);
+        loadCommentReports(pageNumber, repTime, repStatus, memId, empId, size);
     });
 
     //員工ID查詢
@@ -329,7 +353,7 @@
 
         //清掉會員ID
         memId = null;
-        loadCommentReports(pageNumber, repTime, repStatus, memId, empId);
+        loadCommentReports(pageNumber, repTime, repStatus, memId, empId, size);
     })
 
     //清空參數
@@ -352,7 +376,7 @@
     }
 
     //顯示所有留言檢舉內容
-    function loadCommentReports(pageNumber, repTime, repStatus, memId, empId) {
+    function loadCommentReports(pageNumber, repTime, repStatus, memId, empId, size) {
         let url = "/commentreport";
 
         if (repStatus !== undefined && repStatus !== null) {
@@ -366,7 +390,8 @@
                 page: pageNumber - 1,
                 sortDirection: repTime,
                 memId: memId,
-                empId:empId
+                empId: empId,
+                size: size
             },
             dataType: 'json',
             success: function (commentReportList) {
@@ -376,13 +401,13 @@
 
                 //做分頁需要的
                 let total = commentReportList.totalElements; //總數量
-                let size = commentReportList.size; //每頁顯示的數據數量
+                size = commentReportList.size; //每頁顯示的數據數量
                 let number = commentReportList.number; //第幾頁(0為第一頁)
                 let totalPages = commentReportList.totalPages; //總頁數
                 let first = commentReportList.first; //當前是第一頁為ture
                 let last = commentReportList.last; // 當前是最後一頁為true
-
-                nextPage(totalPages, repTime, repStatus, memId, empId);
+                console.log(size)
+                nextPage(totalPages, repTime, repStatus, memId, empId, size);
 
                 //在哪頁就將哪頁按鈕加顏色
                 $(".number").each(function () {
@@ -424,7 +449,7 @@
                     commentReportHTML +=
                         `<tr>
                             <td><span class="badge rounded-circle bg-dark">${commetreport.repId}</span></td>
-                            <td><a class="badge rounded-circle bg-secondary text-decoration-none" href="">${commetreport.memId}</a></td>
+                            <td><a class="badge rounded-circle bg-secondary text-decoration-none" href="/member?memId=${commetreport.memId}">${commetreport.memId}</a></td>
                             <td>
                             <button type="button" class="rounded-pill btn btn-info btn-sm"
                             data-bs-toggle="modal" data-bs-target="#exampleModal"
@@ -503,7 +528,7 @@
         let actId = $(this).data("actId");
         let newStatus = {
             repStatus: $(this).val(),
-            actId:actId
+            actId: actId
         };
 
         if (newStatus.repStatus === "1") {
@@ -562,12 +587,12 @@
         });
     });
 
-    function nextPage(totalPages, repTime, repStatus, memId, empId) {
+    function nextPage(totalPages, repTime, repStatus, memId, empId, size) {
         let pageHTML = "";
         for (let i = 0; i < totalPages; i++) {
             pageHTML +=
                 `<li  class="page-item">
-                <a class="number page-link" href="#" onclick="loadPage(${i + 1}, '${repTime}', ${repStatus},${memId},${empId}); return false;">${i + 1}</a>
+                <a class="number page-link" href="#" onclick="loadPage(${i + 1}, '${repTime}', ${repStatus},${memId},${empId},${size}); return false;">${i + 1}</a>
                 </li>`;
         }
 
@@ -579,12 +604,12 @@
 
     //下一頁
     function next() {
-        loadCommentReports(pageNumber + 1, repTime, repStatus, memId, empId);
+        loadCommentReports(pageNumber + 1, repTime, repStatus, memId, empId, size);
     }
 
     //上一頁
     function previous() {
-        loadCommentReports(pageNumber - 1, repTime, repStatus, memId, empId);
+        loadCommentReports(pageNumber - 1, repTime, repStatus, memId, empId, size);
     }
 
     //Sweetalart2
@@ -596,6 +621,18 @@
         onOpen: toast => {
             toast.addEventListener('mouseenter', Swal.stopTimer)
             toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    //頁籤切換
+    $(".change").click(function () {
+        switch ($(this).text()) {
+            case "留言檢舉管理":
+                window.location.href = `/membership/commentreport`;
+                break;
+            case "活動檢舉管理":
+                window.location.href = `/membership/report`;
+                break;
         }
     });
 </script>
