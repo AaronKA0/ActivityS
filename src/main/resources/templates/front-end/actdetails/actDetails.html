@@ -180,9 +180,9 @@
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="index.html" class="nav-link px-2 link-secondary">首頁</a></li>
-            <li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
-            <li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
-            <li><a href="rent.html" class="nav-link px-2 link-secondary">場地租借</a></li>
+            <li><a th:href="@{/act/joinAct}" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+            <li><a th:href="@{/act/createAct}" class="nav-link px-2 link-secondary">舉辦活動</a></li>
+            <li><a th:href="@{front_end/venue/venue}" class="nav-link px-2 link-secondary">場地租借</a></li>
             <li><a href="customer.html" class="nav-link px-2 link-secondary">FAQs</a></li>
             <li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
         </ul>
@@ -194,7 +194,8 @@
                 <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px; color: blue;"></i>
 
                 <!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
-                <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 25px; color: yellow;" ></i>
+                <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                   aria-expanded="false" style="font-size: 25px; color: yellow;"></i>
 
                 <ul id="notify_ul" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li id="notify_a1"></li>
@@ -319,7 +320,9 @@
                                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
                             </svg>
                             報名截止日期:
-                            <time th:text="${#temporals.format(act.regEndTime, 'yyyy-MM-dd HH:mm')}"></time>
+                            <time id="regEndTime"
+                                  th:text="${#temporals.format(act.regEndTime, 'yyyy-MM-dd HH:mm')}"></time>
+                            <small id="strEndTime" class="badge bg-success text-wrap"></small>
                         </p>
                         <p class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -328,7 +331,8 @@
                                 <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
                             </svg>
                             活動開始時間：
-                            <time id="startTime" th:text="${actStartTime}">2023-12-01 10:00 AM</time>
+                            <time id="actStartTime" th:text="${actStartTime}">2023-12-01 10:00 AM</time>
+                            <small id="strActStartTime" class="badge bg-success text-wrap"></small>
                         </p>
                         <p class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -338,7 +342,8 @@
                                 <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5"/>
                             </svg>
                             活動結束時間：
-                            <time id="endTime" th:text="${actEndTime}">2023-12-01 4:00 PM</time>
+                            <time id="actEndTime" th:text="${actEndTime}">2023-12-01 4:00 PM</time>
+                            <small id="strActEndTime" class="badge bg-success text-wrap"></small>
                         </p>
 
                         <div id="map"></div>
@@ -364,7 +369,7 @@
                 <div class="card w-100 p-3 mb-2 bg-white rounded" style="border: none;" id="scroll">
                     <div id="comments" class="card-body">
                         <div>
-                            <p class="text-center fw-bold">尚有留言</p>
+
                         </div>
                     </div>
                     <button id="morecomments" type="button" class="btn btn-light" onclick="more()">查看更多</button>
@@ -563,6 +568,46 @@
 
 <script>
 
+    let end;
+    let diff;
+    let days;
+    //報名截止日期
+    end = new Date($("#regEndTime").text())
+    diff = end - new Date();
+    days = Math.floor(diff / ((1000 * 60 * 60 * 24)));
+    let strEndTime = $("#strEndTime");
+    if (days > 0) {
+        strEndTime.text(days + "天後")
+    } else {
+        strEndTime.removeClass("bg-warning");
+        strEndTime.addClass("bg-warning")
+        strEndTime.text("已結束")
+    }
+    //活動開始日期
+    end = new Date($("#actStartTime").text());
+    diff = end - new Date();
+    days = Math.floor(diff / ((1000 * 60 * 60 * 24)));
+    let strActStartTime = $("#strActStartTime");
+    if (days > 0) {
+        strActStartTime.text(days + "天後")
+    } else {
+        strActStartTime.removeClass("bg-warning");
+        strActStartTime.addClass("bg-warning")
+        strActStartTime.text("已結束")
+    }
+    //活動結束日期
+    end = new Date($("#actEndTime").text());
+    diff = end - new Date();
+    days = Math.floor(diff / ((1000 * 60 * 60 * 24)));
+    let strActEndTime = $("#strActEndTime");
+    if (days > 0) {
+        strActEndTime.text(days + "天後")
+    } else {
+        strActEndTime.removeClass("bg-warning");
+        strActEndTime.addClass("bg-warning")
+        strActEndTime.text("已結束")
+    }
+
     //將thymeleaf帶出來的活動狀態改為中文顯示
     let actStatus = $("#actStatus");
     //活動狀態
@@ -752,6 +797,23 @@
                 let limit = page.limit;
 
                 comments.forEach(function (comment) {
+
+                    let endTime = new Date(comment.comTime);
+                    let diff = new Date() - endTime;
+                    let days = Math.floor(diff / (1000 * 60 * 60 * 24))
+                    let hours = Math.floor(diff / (1000 * 60 * 60))
+                    let timeText;
+                    if (days >= 1) {
+                        timeText = days + "天前";
+                    } else if (hours >= 1) {
+                        timeText = hours + "小時前";
+                    } else {
+                        timeText = "剛剛";
+                    }
+                    // console.log(diff)
+                    // console.log(days)
+                    // console.log(hours)
+
                     if (comment.comStatus === 1) { //被檢舉成功的不顯示 後端撈出來之前已經有先判斷了 多寫的
                         commentsHTML +=
                             `<div class="usertext">
@@ -766,6 +828,7 @@
                                 <hr style="margin: 0">
                                 <div class="d-flex align-items-center mb-3">
                                     <small class="text-muted">${comment.comTime}</small>
+                                    <small class="text-muted text-danger-emphasis ms-3">${timeText}</small>
                                         <div class="userfunction ms-auto" data-mem-id="${comment.memId}">
                                             <a href="#" class="login ok badge rounded-pill bg-success" style="text-decoration:none; display: none;"  data-com-id="${comment.comId}">確認</a>
                                             <a href="#" class="login nosee update badge rounded-pill bg-danger" style="text-decoration:none; display: none;"  data-com-id="${comment.comId}">編輯</a>
