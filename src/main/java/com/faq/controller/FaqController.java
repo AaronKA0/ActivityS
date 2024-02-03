@@ -64,8 +64,12 @@ public class FaqController {
 		FaqVO faqVO = new FaqVO();
 		model.addAttribute("faqVO", faqVO);
 		return "front-end/faq/faqs";
-
 	}
+
+//	@GetMapping("faqs")
+//	public String faqs2(ModelMap model) {
+//		return "front-end/faq/faqs";
+//	}
 
 //  ----------------------insert-------------------------
 	@PostMapping("insert")
