@@ -42,7 +42,6 @@ public class VenVO implements java.io.Serializable {
 	// fetch 預設為 EAGER
 
 	@ManyToOne(fetch = FetchType.EAGER)
-
 	@JoinColumn(name = "ven_type_id", referencedColumnName = "ven_type_id")
 	private VenTypeVO venType;
 
