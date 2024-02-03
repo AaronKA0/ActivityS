@@ -24,7 +24,6 @@ public class CommentService implements ICommentService {
     private ICommentDAO commentDAO;
 
     @Autowired
-    @Qualifier("commentRedisTemplate")
     private RedisTemplate<String, CommentVO> redisTemplate;
 
     @Override
