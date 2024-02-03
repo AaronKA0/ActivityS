@@ -1,6 +1,7 @@
 package com.membership.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,10 +13,13 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.announcement.model.AnnouncementVO;
+import com.announcement.service.AnnouncementService;
 import com.membership.model.MembershipVO;
 import com.membership.service.MailService;
 import com.membership.service.MembershipService;
@@ -26,6 +30,9 @@ import com.membership.service.RedisService;
 @Controller
 @RequestMapping("/membership")
 public class LoginController {
+	
+	@Autowired
+    AnnouncementService annSvc;
 	
 	@GetMapping("ZuoHuo")
 	public String ZuoHuo(ModelMap model) {
@@ -187,5 +194,12 @@ public class LoginController {
 		return "front-end/membership/updatepassword";
 
 	}
+	
+	@ModelAttribute("annListData")
+    protected List<AnnouncementVO> annListData(Model model) {
+        
+        List<AnnouncementVO> list = annSvc.getAll();
+        return list;
+    }
 
 }

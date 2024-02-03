@@ -16,7 +16,8 @@ public interface ActRepositorys extends JpaRepository<ActVOs, Integer> {
 
     Page<ActVOs> findByMemId(Integer memId, Pageable pageable);
 
-    Page<ActVOs> findByMemIdAndActStatus(Integer memId, Byte actStatus, Pageable pageable);
+    @Query("SELECT a FROM ActVOs a WHERE a.memId = :memId AND (a.actStatus = :status1 OR a.actStatus = :actStatus2)")
+    Page<ActVOs> findByMemIdAndActStatus(Integer memId, Byte status1, Byte actStatus2, Pageable pageable);
 
 
     //找主辦人的會員資料

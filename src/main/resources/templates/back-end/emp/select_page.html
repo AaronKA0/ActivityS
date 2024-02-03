@@ -98,7 +98,7 @@ header h1, header p, header span {
 	display: flex;
 	position: absolute;
 	bottom: 0.1em;
-	right: 50px
+	right: 135px
 }
 
 header a {
@@ -150,6 +150,16 @@ header a {
     font-size:2rem;
     margin-top: 50px
 }
+
+h1 {
+    display: block;
+    font-size: 2em;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
 </style>
 
 </head>
@@ -163,10 +173,9 @@ header a {
 
 		<div id="nav-div">
 			<p>歡迎您，</p>
-			<span th:text="${empName}">員工名稱</span><span>-</span></span></span><span
-				id="deptNumber" th:text="${deptno}" style="display: none;">部門編號</span>
-			<span th:text="${dname}">部門名稱</span> <a href="/login?logout=true"
-				onclick="logout()">登出</a>
+			<span th:text="${deptno}" id="deptNumber" style="display: none;">部門編號</span>
+			<span th:text="${dname}">部門名稱</span> 
+			<a href="/login?logout=true" onclick="logout()">登出</a>
 		</div>
 		
 	</header>
