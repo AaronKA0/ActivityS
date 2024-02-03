@@ -25,7 +25,8 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		
-		http
+		http	// 啟用cors並禁用csrf
+				.cors().and().csrf().disable()
 				// 配置請求授權的規則
 				.authorizeRequests(authz -> authz
 						// 指定某些請求路徑不需要驗證，這裡將/login對所有用戶開放
