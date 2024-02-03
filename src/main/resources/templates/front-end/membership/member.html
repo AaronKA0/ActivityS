@@ -1444,6 +1444,105 @@ $("#add-post-modal").on("hidden.bs.modal", function () {
 
 
 
+<!-- 	<!-- 新增貼文檢舉按鈕 --> -->
+<!-- 	<button type="button" class="btn btn-primary" id="openInsertModalBtn">新增貼文檢舉</button> -->
+
+
+
+<!-- 	<!-- 彈窗 --> -->
+<!-- 	<div class="modal fade" id="insertModal" tabindex="-1" role="dialog" -->
+<!-- 		aria-labelledby="insertModalLabel" aria-hidden="true"> -->
+<!-- 		<div class="modal-dialog" role="document"> -->
+<!-- 			<div class="modal-content"> -->
+
+<!-- 				<div class="modal-header"> -->
+<!-- 					<h3 class="modal-title" id="myModalLabel">貼文檢舉</h3> -->
+<!-- 				</div> -->
+
+<!-- 				<div class="modal-body"> -->
+
+<!-- 					<form id="yourFormId" th:action="@{insert}" method="post" -->
+<!-- 						th:object="${postReportVO}" enctype="multipart/form-data"> -->
+
+<!-- 										<div> -->
+<!-- 											<label>員工編號:<font color="red"><b>*</b></font></label> <input -->
+<!-- 												id="empId" type="text" th:field="*{empId}" value="2" -->
+<!-- 												onclick="hideContent('empId.errors');" /><br /> <span -->
+<!-- 												th:if="${#fields.hasErrors('empId')}" th:errors="*{empId}" -->
+<!-- 												class="error" id="empId.errors"></span> -->
+<!-- 										</div> -->
+<!-- 										<br> -->
+
+<!-- 						<div> -->
+<!-- 							<label>個人貼文編號<font color="red"><b>*</b></font></label> <input -->
+<!-- 								id="postId" type="text" th:field="*{postId}" /><br /> <span -->
+<!-- 								class="error" id="postId-error"></span><br> -->
+<!-- 						</div> -->
+
+<!-- 						<div> -->
+<!-- 							<label>會員編號<font color="red"><b>*</b></font></label> <input -->
+<!-- 								id="memId" type="text" th:field="*{memId}" /><br /> <span -->
+<!-- 								class="error" id="memId-error"></span><br> -->
+<!-- 						</div> -->
+
+
+<!-- 						<div> -->
+<!-- 							<label>檢舉標題<font color="red"><b>*</b></font></label> <input -->
+<!-- 								id="repTitle" type="text" th:field="*{repTitle}" /><br /> <span -->
+<!-- 								class="error" id="repTitle-error"></span><br> -->
+<!-- 						</div> -->
+
+<!-- 						<div> -->
+<!-- 							<label>檢舉內容<font color="red"><b>*</b></font></label> -->
+<!-- 							<textarea id="repContent" th:field="*{repContent}" rows="4" -->
+<!-- 								cols="50" style="resize: both;"></textarea> -->
+<!-- 							<br /> <span class="error" id="repContent-error"></span><br> -->
+<!-- 						</div> -->
+
+
+
+<!-- 						<div> -->
+<!-- 							<label>檢舉圖片</label><input type="file" id="registerRepPic" -->
+<!-- 								th:field="*{repPic}" onclick="previewImage()" -->
+<!-- 								multiple="multiple" /> <span class="error" -->
+<!-- 								th:utext="${errorMessage}" id="repPic.errors"></span> <br> -->
+<!-- 							<span class="error-message" id="repPic-error"></span><br> -->
+<!-- 							<div id="blob_holder"></div> -->
+<!-- 						</div> -->
+<!-- 						<br> -->
+
+<!-- 						<div> -->
+
+<!-- 							<div> -->
+<!-- 								<button type="submit" id="submit" class="btn btn-secondary">送出新增</button> -->
+<!-- 							</div> -->
+
+<!-- 						</div> -->
+<!-- 					</form> -->
+<!-- 				</div> -->
+
+<!-- 				<br> -->
+
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+
+
+<!-- 	<script> -->
+// 		// 使用 jQuery 確保 DOM 已加載
+// 		$(document).ready(function() {
+// 			// 觸發按鈕點擊事件，顯示彈窗
+// 			$("#openInsertModalBtn").click(function() {
+// 				$("#insertModal").modal("show");
+// 			});
+
+// 			// 在送出新增按鈕點擊時，可以執行相應的 JavaScript 或 jQuery 代碼
+// 			$("#submitInsert").click(function() {
+// 				// 在這裡添加你想要的邏輯，例如驗證表單等
+// 				console.log("Submit Insert Button Clicked!");
+// 			});
+// 		});
+<!-- 	</script> -->
 
 
 

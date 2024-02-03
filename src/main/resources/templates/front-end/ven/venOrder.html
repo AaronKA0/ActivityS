@@ -504,6 +504,12 @@ $(document).on("click", ".star", async function(){
 });
 
 async function updateOrderRating(venOrderId, venRating, venId){
+	orders.forEach(function(order){
+		if(order.venOrderId == venOrderId){
+			order.venRating = venRating;
+			return;
+		}
+	});
 	await fetch("/mem/updateVenOrder", {
 		method: "POST",
 		body: JSON.stringify({venVO: {venId: venId}, venOrderId: venOrderId, venRating: venRating})
