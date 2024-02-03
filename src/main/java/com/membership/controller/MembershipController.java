@@ -263,7 +263,6 @@ public class MembershipController {
 		/*************************** 2.開始修改資料 *****************************************/
 
 //	    ----------------------------------------------------------
-
 		MembershipVO membership = membershipSvc.getOneMembership(membershipVO.getMemId()); // getOne直接去查單一會員的id
 		// 從 Redis get值
 		String redisValue = redisSvc.getFromRedis2(membership.getMemAcc());
