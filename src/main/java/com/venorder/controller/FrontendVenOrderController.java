@@ -75,21 +75,21 @@ public class FrontendVenOrderController {
         return venOrderSvc.getVenCom(venVO);
     }
     
-    @RequestMapping("getMemInfo")
-    public @ResponseBody MembershipVO findMemInfo(@RequestBody String json) {
-        
-        MembershipVO memVO = null;
-       
-        try {
-            memVO = new ObjectMapper().readValue(json, MembershipVO.class);
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return memSvc.getMemInfo(memVO.getMemId());
-    }
-    
+//    @RequestMapping("getMemInfo")
+//    public @ResponseBody MembershipVO findMemInfo(@RequestBody String json) {
+//        
+//        MembershipVO memVO = null;
+//       
+//        try {
+//            memVO = new ObjectMapper().readValue(json, MembershipVO.class);
+//        } catch (JsonMappingException e) {
+//            e.printStackTrace();
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
+//        return memSvc.getMemInfo(memVO.getMemId());
+//    }
+//    
     
 
     @GetMapping("addVenOrder")

@@ -1,7 +1,6 @@
 package com.membership.controller;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,21 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.membership.model.MembershipVO;
 import com.membership.service.MailService;
 import com.membership.service.MembershipService;
 
 import com.membership.service.RedisService;
-import com.notify.model.NotifyVO;
-import com.notify.service.NotifyService;
 
 @Controller
 @RequestMapping("/membership")
@@ -41,9 +32,6 @@ public class LoginController {
 
 	@Autowired
 	RedisService redisSvc;
-	
-	@Autowired
-	NotifyService notifySvc;
 
 	// ---------------------------登入---------------------------
 	@PostMapping("login")
@@ -54,23 +42,41 @@ public class LoginController {
 			// 登入成功
 			int memId = membershipSvc.getMemId(memAcc); // 使用新的方法獲取會員編號
 			String memName = membershipSvc.getMemName(memAcc);
+			int IsAccEna = membershipSvc.getIsAccEna(memAcc);
+
+			// 帳戶狀態 == 1(停用)，就無法登入會員
+			if (IsAccEna == 1) {
+				// 帳戶被停用
+				model.addAttribute("errorMessage", "您的帳號已被停用，不能登入");
+				return "front-end/membership/login";
+			}
+
 			request.getSession().setAttribute("memAcc", memAcc);
 			request.getSession().setAttribute("memId", memId); // 將會員編號存入 session
-			request.getSession().setAttribute("memName", memName);
+			request.getSession().setAttribute("memName", memName); // 將會員姓名存入 session
+			request.getSession().setAttribute("IsAccEna", IsAccEna); // 將會員帳戶狀態存入 session
+
 			Integer a = (Integer) session.getAttribute("memId");
 			String b = (String) session.getAttribute("memName");
+			Integer c = (Integer) session.getAttribute("IsAccEna");
+
 			System.out.println(a);
 			System.out.println(b);
+			System.out.println(c);
 //	        System.out.print("line 65 :" + "memId:" + memId +" "+"memAcc:" + memAcc +" " + "memPwd:" + memPwd);
-			
-			// +++++++++++++++ 代入會員個人訊息通知 +++++++++++++++
-			List<NotifyVO> notifies = notifySvc.findByMemId(memId);
-			request.getSession().setAttribute("notifies", notifies);
-			// +++++++++++++++ 將會員個人訊息存入 session +++++++++++++++
-			
+
+//			// +++++++++++++++ 將會員個人訊息存入 session +++++++++++++++
+//			List<NotifyVO> notifies = notifySvc.findByMemId(memId);
+//			request.getSession().setAttribute("notifies", notifies);
+//			// +++++++++++++++ 將會員個人訊息存入 session +++++++++++++++
+
+			// 每次登入就更新一次登入時間
+			membershipSvc.updateMemLoginTime(memAcc);
+
 			return "redirect:/Zuo-Huo";
 
 		} else {
+
 			// 登入失敗
 			if (!membershipSvc.memberExists(memAcc)) {
 				model.addAttribute("errorMessage", "帳號密碼有錯誤，請重新輸入");
@@ -111,17 +117,19 @@ public class LoginController {
 				// 生成驗證碼
 				String verificationCode = generateRandomVerificationCode();
 
-				// 將驗證碼和 memAcc 保存到 Redis，過期時間為一小時
+				// 將驗證碼verificationCode 和 memAcc 保存到 Redis，過期時間為一小時為3600L
 				redisSvc.saveToRedis(memAcc, verificationCode, 1800L);
 
 				// 發送包含驗證連結的郵件，傳遞驗證碼作為參數
-				mailSvc.sendVerificationCode(memEmail, "做伙zuoheo密碼變更通知信!", verificationCode);
+				mailSvc.sendVerificationCode(memEmail, "做伙Zuò huǒ密碼變更通知信!", verificationCode);
 
-				model.addAttribute("success", "提交成功");
-				return "back-end/membership/login";
+				model.addAttribute("success", "提交成功，請去信箱收信!");
+				// model.addAttribute("emailSent",true);
+
+				return "front-end/membership/forgetpassword";
 			} else {
-				model.addAttribute("error", "找不到對應的會員帳號");
-				return "back-end/membership/forgetpassword";
+				model.addAttribute("error", "無此會員帳號");
+				return "front-end/membership/forgetpassword";
 			}
 		} else {
 			model.addAttribute("error", "請輸入信箱");
@@ -143,21 +151,6 @@ public class LoginController {
 		return verificationCode.toString();
 	}
 
-	// ----------------------拿redis的帳號及密碼去做比對-------------------------
-
-//	@GetMapping
-//	public String showResetPassword(@RequestParam("memAcc") String memAcc, @RequestParam("token") String token,
-//			Model model) {
-//
-//		String storedToken = redisSvc.getFromRedis(memAcc + "_token");
-//		if (storedToken != null && storedToken.equals(token)) {
-//			model.addAttribute("memAcc", memAcc);
-//			return "back-end/membership/login";
-//		} else {
-//			return "back-end/membership/forgetpassword";
-//		}
-//	}
-
 	// ---------------使用redis的密碼去做會員登入---->密碼更改為驗證碼-----------------
 
 	@PostMapping("/updatepassword")
@@ -166,8 +159,12 @@ public class LoginController {
 
 		String pwd = redisSvc.getFromRedis(memAcc);
 
-		if (pwd == null || !pwd.equals(newPassword)) { // *||-->or*
+		if (pwd == null || !pwd.equals(newPassword)) {
+
+			model.addAttribute("error", "帳號及驗證碼有誤，請再次輸入。");
+
 			return "front-end/membership/updatepassword";
+
 		}
 
 		// MD5加密
@@ -178,7 +175,7 @@ public class LoginController {
 
 		model.addAttribute("success", "密碼已成功更新，請使用新密碼登入。");
 
-		return "front-end/membership/login";
+		return "front-end/membership/updatepassword";
 
 	}
 
