@@ -18,13 +18,11 @@ public class NotifyNow {
     
     public void sendNotifyNow(Set<MembershipVO> memVO, String title, String content) {
         
-        NotifyWebSocket notifyWebSocket = new NotifyWebSocket();
-        
         for (MembershipVO mem : memVO) {
             NotifyVO notifyVO = new NotifyVO(mem, title, content);
             
             notifySvc.addNotify(notifyVO);
-            notifyWebSocket.sendNotification(notifyVO);
+            NotifyWebSocket.sendNotification(notifyVO);
             System.out.println("傳送成功");
         }
          

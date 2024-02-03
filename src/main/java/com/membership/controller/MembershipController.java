@@ -1,9 +1,13 @@
 package com.membership.controller;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,6 +53,7 @@ public class MembershipController {
 	RedisService redisSvc;
 
 	Gson gson = new Gson(); // gson
+	
 
 	@GetMapping("addMembership")
 	public String addMembership(ModelMap model) {
@@ -263,53 +268,50 @@ public class MembershipController {
 		/*************************** 2.開始修改資料 *****************************************/
 
 //	    ----------------------------------------------------------
+
 		MembershipVO membership = membershipSvc.getOneMembership(membershipVO.getMemId()); // getOne直接去查單一會員的id
-		// 從 Redis get值
-		String redisValue = redisSvc.getFromRedis2(membership.getMemAcc());
+		
 
-		// 檢查值是否不為 null
-		if (redisValue != null) {
-			// 使用 Byte.valueOf 將字符串轉換為 Byte
-			membership.setIsAccEna(Byte.valueOf(redisValue));
-
-		} else {
-			// 處理當 Redis 值為 null 的情況
-			// 將其狀態設為 1(停用)：
-			membership.setIsAccEna((byte) 1);
-
-		}
-
-		// 如果 Redis 中沒有值，設置 Redis 鍵的值為 "1" 並執行 Redis 的封鎖時間
-		LocalDateTime unlockTime = LocalDateTime.now().plusSeconds(30);
-		redisSvc.saveToRedis2(membership.getMemAcc(), "1", unlockTime);
-		System.out.println("Redis Value: " + redisSvc.getFromRedis2(membership.getMemAcc()));
-
-		// 如果狀態由 2(啟用) 變更為 1(停用)，表示帳號被封鎖，發送郵件通知
+//		// 如果狀態由 2(啟用) 變更為 1(停用)，表示帳號被封鎖，發送郵件通知
+//		if (membershipVO.getIsAccEna() == 1 && membership.getIsAccEna() == 2) {
+//			
+//			// 如果 Redis 中沒有值，設置 Redis 鍵的值為 "1" 並執行 Redis 的封鎖時間
+//			LocalDateTime unlockTime = LocalDateTime.now().plusSeconds(30);
+//			
+//			
+//			// 獲取會員信箱
+//			String memberEmail = membershipSvc.getMemberEmailById(membershipVO.getMemId());
+//
+//			// 檢查信箱是否存在
+//			if (memberEmail != null && !memberEmail.isEmpty()) {
+//				// 發送信件
+//				membershipSvc.sendAccountBlockedEmail(memberEmail);
+//			} else {
+//				System.out.println("無法取得會員信箱");
+//			}
+//		}
+		
+		// 在帳號被停用的地方，調用 scheduleUnlockTask 方法
 		if (membershipVO.getIsAccEna() == 1 && membership.getIsAccEna() == 2) {
-			// 獲取會員信箱
-			String memberEmail = membershipSvc.getMemberEmailById(membershipVO.getMemId());
-
-			// 檢查信箱是否存在
-			if (memberEmail != null && !memberEmail.isEmpty()) {
-				// 發送信件
-				membershipSvc.sendAccountBlockedEmail(memberEmail);
-			} else {
-				System.out.println("無法取得會員信箱");
-			}
+		    LocalDateTime unlockTime = LocalDateTime.now().plusSeconds(30);
+		    String memberEmail = membershipSvc.getMemberEmailById(membershipVO.getMemId());
+		    if (memberEmail != null && !memberEmail.isEmpty()) {
+		        membershipSvc.sendAccountBlockedEmail(memberEmail);
+		        // 調用 scheduleUnlockTask 方法
+		        scheduleUnlockTask(membership.getMemAcc(), unlockTime);
+		    } else {
+		        System.out.println("無法取得會員信箱");
+		    }
 		}
 
-		// membership.setIsAccEna(membershipVO.getIsAccEna());
+
+		membership.setIsAccEna(membershipVO.getIsAccEna());
 		membership.setIsPartEna(membershipVO.getIsPartEna());
 		membership.setIsHostEna(membershipVO.getIsHostEna());
 		membership.setIsRentEna(membershipVO.getIsRentEna());
 		membership.setIsMsgEna(membershipVO.getIsMsgEna());
 		membership.setBlockStartTime(membershipVO.getBlockStartTime());
 
-		// 檢查 isAccEna 是否設為 1，並相應地更新 MySQL 值
-		if (membership.getIsAccEna() == 1) {
-			// 同時更新 MySQL 中的值
-			membershipSvc.updateMembership(membership);
-		}
 
 //	   ----------------------------------------------------------	    
 
@@ -322,10 +324,38 @@ public class MembershipController {
 		List<MembershipVO> list = membershipSvc.getAll();
 		model.addAttribute("membershipListData", list);
 
-		return "back-end/membership/listAllMembership";
+		//return "back-end/membership/listAllMembership";
+		return "redirect:/membership/listAllMembership";
 	}
 
-//  -------------------update----------------------
+	
+	// ----------------------定時器------------------------
+
+	// 一個執行緒池
+   private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+			
+	private void scheduleUnlockTask(String memAcc, LocalDateTime unlockTime) {
+	        scheduler.schedule(() -> {
+	            // 同時更新 MySQL 中的值
+	            MembershipVO membership = membershipSvc.findByMemAcc(memAcc);
+	            membership.setIsAccEna((byte) 2);
+	            membershipSvc.updateMembership(membership);
+
+	            System.out.println("memAcc : " + memAcc);
+
+	        }, Duration.between(LocalDateTime.now(), unlockTime).toSeconds(), TimeUnit.SECONDS);
+	    }
+
+	    // 關閉執行緒池
+	    public void closeScheduler() {
+	        scheduler.shutdown();
+	    }
+	    
+	 // ----------------------定時器------------------------
+	    
+	    
+
+	//  -------------------update----------------------
 	@PostMapping("update")
 	public String update(@Valid MembershipVO membershipVO, BindingResult result, ModelMap model,
 			@RequestParam("memPic") MultipartFile[] parts) throws IOException {
