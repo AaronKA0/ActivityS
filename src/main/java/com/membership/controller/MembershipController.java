@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
@@ -175,13 +176,17 @@ public class MembershipController {
 	}
 
 //  ----------------getOne_For_Update-----------------
-	@PostMapping("getOne_For_Update")
-	public String getOne_For_Update(@RequestParam("memId") String memId, ModelMap model) {
+	@GetMapping("getOne_For_Update")
+	public String getOne_For_Update(ModelMap model, HttpSession session) {
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
-
+		
 		/*************************** 2.開始查詢資料 *****************************************/
+		
+		Integer memId = (Integer) session.getAttribute("memId"); 
+		
 		// EmpService empSvc = new EmpService();
-		MembershipVO membershipVO = membershipSvc.getOneMembership(Integer.valueOf(memId));
+		MembershipVO membershipVO = membershipSvc.getOneMembership(memId);
+		
 
 		/*************************** 3.查詢完成,準備轉交(Send the Success view) **************/
 		model.addAttribute("membershipVO", membershipVO);
