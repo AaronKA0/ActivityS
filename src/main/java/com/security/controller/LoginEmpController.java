@@ -60,7 +60,7 @@ public class LoginEmpController {
 		if (empVO == null) {
 			model.addAttribute("error", "找不到該電子郵件地址的用戶。");
 			System.out.println("1");
-			return "redirect:login";
+			return "redirect:/login?error=notFound";
 			
 		}
 
@@ -68,7 +68,7 @@ public class LoginEmpController {
 		if (!(empVO.getEmpEmail().equals(empEmail))) {
 			model.addAttribute("error", "提供的email和帳號不匹配");
 			System.out.println("2");
-			return "redirect:login";
+			return "redirect:/login?error=mismatch";
 		}
 
 		// 生成隨機密碼
@@ -88,7 +88,7 @@ public class LoginEmpController {
 
 		model.addAttribute("message", "新密碼已發送到您的電子郵件。");
 
-		return "redirect:login";
+		return "redirect:/login?message=passwordSent";
 	}
 
 	// 生成隨機密碼的方法

@@ -86,6 +86,11 @@ body, html {
 #activity{
 margin-top:150px;
 }
+
+.submit-btn:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
 </style>
 </head>
 <body>
@@ -96,10 +101,10 @@ margin-top:150px;
 		<!--  <img src='/images/Logo10.jpg'>-->
 
 		<div id="activity" style="font-size: 2em; font-weight: bold;">
-			<span class="letter">A</span> <span class="letter">c</span> <span
-				class="letter">t</span> <span class="letter">i</span> <span
-				class="letter">v</span> <span class="letter">i</span> <span
-				class="letter">t</span> <span class="letter">y</span>
+			<span class="letter">員</span> <span class="letter">工</span> <span
+				class="letter">登</span> <span class="letter">入</span> <span
+				class="letter">系</span> <span class="letter">統</span> <span>
+				</span>
 		</div>
 
 		<form id="loginForm" th:action="@{/login}" method="post">
@@ -162,6 +167,24 @@ margin-top:150px;
 			</div>
 		</div>
 	</div>
+	
+	<!-- 成功消息（Modal）-->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">操作成功</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="window.location.href='/login'">確定</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 	<!-- 忘記密碼彈窗 -->
@@ -201,26 +224,54 @@ margin-top:150px;
 	</div>
 
 	<script>
-		$(document).ready(function() {
-			if ($("#errorModal .modal-body p").text() !== "") {
-				$('#errorModal').modal('show');
-			}
-		});
+$(document).ready(function() {
+  const params = new URLSearchParams(window.location.search);
+  const error = params.get('error');
+  const message = params.get('message');
 
-		window.onload = function() {
-			var url = new URL(window.location.href);
-			var logout = url.searchParams.get("logout");
-			var error = url.searchParams.get("error");
+  if (error) {
+    let errorMessage = '';
+    switch(error) {
+      case 'notFound':
+        errorMessage = '找不到該用戶';
+        break;
+      case 'mismatch':
+        errorMessage = '提供的email和帳號不匹配。';
+        break;
+      default:
+        errorMessage = '未知錯誤。';
+    }
+    
+    $('#errorModal .modal-body').text(errorMessage);
+    $('#errorModal').modal('show');
+  } else if (message) {
+    let successMessage = '';
+    switch(message) {
+      case 'passwordSent':
+        successMessage = '新密碼已發送至您的信箱。';
+        break;
+      default:
+        successMessage = '操作成功。';
+    }
+    
+    $('#successModal .modal-body').text(successMessage);
+    $('#successModal').modal('show');
+  }
+});
 
-			if (logout === "true") {
-				// 自定義登出訊息框
-				$('#logoutModal').modal('show');
-			} else if (error) {
-				// 自定義錯誤訊息框
-				$('#errorModal').modal('show');
-			}
-		};
-	</script>
+function generateSimilarColor() {
+	  let baseHue = 340; // 基准色相，#e19fae 大约对应的 HSL 色相值
+	  let hueVariation = 10; // 允许色相上下波动20度
+	  let saturation = 60; // 饱和度保持不变
+	  let lightness = 70; // 亮度保持不变
+
+	  let hue = baseHue + (Math.random() * hueVariation * 2) - hueVariation; // 随机调整色相
+
+	  return `hsl(${hue}, ${saturation}%, ${lightness}%)`; // 返回生成的颜色字符串
+	}
+
+
+</script>
 	<script src="https://cdn.jsdelivr.net/npm/gsap@3.10.4/dist/gsap.min.js"></script>
 	<script>
 	
@@ -231,7 +282,7 @@ margin-top:150px;
 	    stagger: 0.3, // 每個元素之間的延遲時間
 	    ease: "bounce.out", // 緩動效果
 	    from: {y: -200, opacity: 0}, // 開始位置和透明度
-	    color: function() { return `hsl(${Math.random() * 360}, 100%, 50%)`; }, // 隨機顏色
+	    color: generateSimilarColor, // 隨機顏色
 	    fontSize: '+=10px' // 字體放大
 	  });
 	
@@ -239,26 +290,26 @@ margin-top:150px;
 	
 <script>
 $(document).ready(function() {
-  // 鼠标悬停时的动画效果
+  // 當鼠標懸停時的動畫效果
   $("#forgot-password").hover(
     function() {
-      // 鼠标进入时
+      // 鼠標進入時
       gsap.to(this, {
-        duration: 0.5, // 动画持续时间为0.5秒
-        rotationY: 360, // Y轴旋转360度
-        color: "#e19fae", // 文本颜色变化
-        ease: "power1.inOut", // 动画缓动函数
+        duration: 0.5, // 動畫持續時間為0.5秒
+        rotationY: 360, // Y軸旋轉360度
+        color: "#e19fae", // 文本顏色變化
+        ease: "power1.inOut", // 動畫緩動函數
         scale: 1.2 // 放大到1.2倍大小
       });
     },
     function() {
-      // 鼠标离开时
+      // 鼠標離開時
       gsap.to(this, {
-        duration: 0.5, // 动画持续时间为0.5秒
-        rotationY: 0, // Y轴旋转回0度
-        color: "#000", // 文本颜色变回原色
-        ease: "power1.inOut", // 动画缓动函数
-        scale: 1 // 大小恢复正常
+        duration: 0.5, // 動畫持續時間為0.5秒
+        rotationY: 0, // Y軸旋轉回0度
+        color: "#000", // 文本顏色變回原色
+        ease: "power1.inOut", // 動畫緩動函數
+        scale: 1 // 大小恢復正常
       });
     }
   );
@@ -267,17 +318,17 @@ $(document).ready(function() {
 
 <script>
 $(document).ready(function() {
-  // 监听模态框的显示事件
+  // 監聽模態框的顯示事件
   $('#forgotPasswordModal').on('show.bs.modal', function (e) {
-    // 先设置模态框的初始状态：透明度为0，缩放为50%
+    // 先設置模態框的初始狀態：透明度為0，縮放為50%
     gsap.set('#forgotPasswordModal', {opacity: 0, scale: 0.5});
 
-    // 使用GSAP创建动画：淡入和放大
+    // 使用GSAP創建動畫：淡入和放大
     gsap.to('#forgotPasswordModal', {
-      opacity: 1, // 最终透明度为1
-      scale: 1, // 最终缩放为100%
-      duration: 0.5, // 动画持续时间0.5秒
-      ease: "elastic.out(1, 0.3)" // 使用弹性缓动效果
+      opacity: 1, // 最終透明度為1
+      scale: 1, // 最終縮放為100%
+      duration: 0.5, // 動畫持續時間0.5秒
+      ease: "elastic.out(1, 0.3)" // 使用彈性緩動效果
     });
   });
 });
