@@ -7,11 +7,22 @@
 <title>修改通知訊息</title>
 
 <link rel="stylesheet" th:href="@{/back-end/07/css/update.css}">
+<!--   首頁的css   -->
+<link rel="stylesheet" th:href="@{/back-end/10/css/error.css}">
+<link rel="stylesheet" th:href="@{/back-end/10/css/emp_Index.css}">
 
 </head>
 
-<body>
+<body onload="showDivsBasedOnDeptno()">
 
+    <!-- header -->
+    <div th:insert="~{/back-end/emp_Index :: header-div}"></div>
+
+    <!-- aside -->
+    <div th:insert="~{/back-end/emp_Index :: aside-div}"></div>
+    
+    
+<main class="main"> 
 <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
          <div align="center"> <h2>修改通知訊息</h2></div>
          
@@ -28,7 +39,7 @@
     <div align="center">
 
         <div id="center" align="center">
-        <form th:action="@{update}" method="post" th:object="${notifyVO}">
+        <form id="this_form" th:action="@{update}" method="post" th:object="${notifyVO}">
             
             <div>
                 <span class="title">通知編號:</span>
@@ -52,28 +63,49 @@
             
             <div class="text_block">
                 <span class="title">通知內容:</span>
-                <textarea class="annDescr_text" th:field="*{notifyContent}" onclick="hideContent('notifyContent.errors');" /></textarea><br/>
+                <textarea id="notifyContent" class="annDescr_text" th:field="*{notifyContent}" /></textarea><br/>
             </div>
-                <span th:if="${#fields.hasErrors('notifyContent')}" th:errors="*{notifyContent}" class="error" id="notifyContent.errors"></span>
+                <span class="error" id="notifyContent_error"></span>
             
             <input type="hidden" th:field="*{notifyStatus}" th:value="1" readonly/>
             
             <div class="submit_button">
-                <button type="submit">確認修改</button>
+                <button class="submit_button" type="submit">確認修改</button>
             </div>    
              
        </form>
        </div>
 
     </div>
-    
+</main>
+
+
+<script th:src="@{/back-end/10/js/jquery-1.11.3.min.js}"></script>
+<!-- 左側jquery為table分頁用 -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<!--   首頁的js   -->
+<script th:src="@{/back-end/10/js/aside.js}"></script>   
     
 <script type="text/javascript">
 
-    //清除提示信息
-    function hideContent(d) {
-        document.getElementById(d).style.display = "none";     
-    }
+$(document).ready(function() {
+    
+    $("#notifyContent").focus(function(){
+        $("#notifyContent_error").hide();
+    });
+    
+    $("#this_form").submit(function() {
+        
+        var notifyContentValue = $("#notifyContent").val();
+        
+        if (notifyContentValue.trim() == "") {
+            $("#notifyContent_error").text("請填入通知內容").show();
+            return false;
+        }else{       
+            return true;
+        } 
+    });
+});
 
 </script>
 

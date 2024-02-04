@@ -112,18 +112,18 @@
         </div>
 
         <div class="col-md-3 mb-2 mb-md-0">
-            <a th:href="@{front_end/zuo-huo}" class="d-inline-flex link-body-emphasis text-decoration-none">
+            <a th:href="@{/Zuo-Huo}" class="d-inline-flex link-body-emphasis text-decoration-none">
                 <img alt="zuo-huo" src="/front-end/zuo-huo/images/LogoName.jpg" style="width: 160px;">
             </a>
         </div>
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="index.html" class="nav-link px-2 link-secondary">首頁</a></li>
+            <li><a th:href="@{/Zuo-Huo}" class="nav-link px-2 link-secondary">首頁</a></li>
             <li><a th:href="@{/act/joinAct}" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
             <li><a th:href="@{/act/createAct}" class="nav-link px-2 link-secondary">舉辦活動</a></li>
-            <li><a th:href="@{front_end/venue/venue}" class="nav-link px-2 link-secondary">場地租借</a></li>
-            <li><a href="customer.html" class="nav-link px-2 link-secondary">FAQs</a></li>
-            <li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
+            <li><a th:href="@{/front_end/venue/browse}" class="nav-link px-2 link-secondary">場地租借</a></li>
+            <li><a th:href="@{/faq/faqs}" class="nav-link px-2 link-secondary">FAQs</a></li>
+            <li><a th:href="@{/faq/faqs}" class="nav-link px-2 link-secondary">關於我們</a></li>
         </ul>
 
         <div class="col-md-3 text-end">
@@ -140,7 +140,7 @@
                     <li id="notify_a1"></li>
                     <li id="notify_a2"></li>
                     <li id="notify_a3"></li>
-                    <li><a id="display_all" class="dropdown-item" th:href="@{front_end/notify}">顯示全部</a></li>
+                    <li><a id="display_all" class="dropdown-item" th:href="@{/front_end/notify}">顯示全部</a></li>
                 </ul>
                 <!-- -------------------- 通知訊息功能 下拉選單 END -------------------- -->
 

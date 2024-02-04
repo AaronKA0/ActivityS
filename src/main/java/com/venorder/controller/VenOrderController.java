@@ -75,9 +75,7 @@ public class VenOrderController {
     @PostMapping("update")
     public String update(@Valid VenOrderVO venOrderVO, BindingResult result, ModelMap model) throws IOException {
 
-        System.out.println(venOrderVO.getVenComTime());
         if (result.hasErrors()) {
-            System.out.println(result);
             return "back-end/ven-order/updateVenOrder";
         }
         

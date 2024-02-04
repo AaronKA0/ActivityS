@@ -14,46 +14,45 @@
 </head>
 
 <body onload="showDivsBasedOnDeptno()">
-<!-- header -->
+
+    <!-- header -->
 	<div th:insert="~{/back-end/emp_Index :: header-div}"></div>
 
 	<!-- aside -->
 	<div th:insert="~{/back-end/emp_Index :: aside-div}"></div>
+	
+	
+<main class="main">	
 <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
-         <div align="center"> <h2>場地不開放資料</h2></div>
-         
+    <div align="center"> <h3 style="margin: 0px;">場地不開放資料</h3></div>
+    
+    <div class="nav_div">   
+        <a class="back" th:href="@{/back_end/ven-closed/ven_closed_date}"><<< 回查詢頁</a>
+            
          <div class="nav-content">
-              
-              <div>
-                  <a class="back" th:href="@{/back_end/ven-closed/ven_closed_date}">
-                      <<<<<< 回查詢頁</a>
-              </div>
-              
-         </div>
+            <form method="post" th:action="@{getOne_For_Update}">
+                <input type="hidden" name="closedDateId" th:value="${venClosedVO.closedDateId}">
+                <button class="submit_button" type="submit" style="padding: 5px;">修改資料</button>
+            </form>
+        </div>
+    </div>
 </nav>
 
     <div align="center">
 
         <div id="center" align="center">
         
-            <span class="title">編號:</span><span th:text="${venClosedVO.closedDateId}"></span><br/>
-            <span class="title">場地:</span><span th:text="${venClosedVO.venVO.venName}"></span><br/>
-            <span class="title">不開放日期:</span><span th:text="${venClosedVO.closedDate}"></span><br/>
+            <span class="title">編號:</span><span class="content" th:text="${venClosedVO.closedDateId}"></span><br/>
+            <span class="title">場地:</span><span class="content" th:text="${venClosedVO.venVO.venName}"></span><br/>
+            <span class="title">不開放日期:</span><span class="content" th:text="${venClosedVO.closedDate}"></span><br/>
             <div class="text_block">
                 <span class="title">不開放原因:</span>
                 <textarea class="texthighter" th:text="${venClosedVO.closedReason}" readonly></textarea><br/>
             </div>   
         </div>        
-        
-        <div>
-            <form method="post" th:action="@{getOne_For_Update}">
-                <input type="hidden" name="closedDateId" th:value="${venClosedVO.closedDateId}">
-                <button class="submit_button" type="submit" style="padding: 5px;">修改資料</button>
-            </form>
-        </div>
 
     </div>
-
+</main>
 
 <script th:src="@{/back-end/10/js/jquery-1.11.3.min.js}"></script>
 <!-- 左側jquery為table分頁用 -->
