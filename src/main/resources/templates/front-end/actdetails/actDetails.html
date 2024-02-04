@@ -249,7 +249,7 @@
                     <div class="w-auto h-100">
                         <div class="bg-white">
                             <img th:src="@{/activity/images/{actId}(actId=${act.actId})}" src=""
-                                 class="w-100 img-fluid"
+                                 class="actImg w-100 img-fluid"
                                  alt="活動照片">
                         </div>
                         <h2 class="fw-bolder">活動內容:</h2>
@@ -1239,7 +1239,6 @@
         let addBtn = $("#addAct");
         let actRegStatus = addBtn.data("actRegStatus");
 
-
         switch (actRegStatus) {
             case 0:
                 //第一次報名 走新增api
@@ -1254,6 +1253,14 @@
                     showCancelButton: true,
                     confirmButtonText: '下一步',
                     cancelButtonText: '取消',
+                    preConfirm: (value) => {
+                        // 判斷
+                        if (value > actTotal) {
+                            Swal.showValidationMessage(`報名人數超過上限，請重新確認`);
+                            return false;
+                        }
+                        return value;
+                    }
                 }).then((result) => {
                         if (result.isConfirmed && result.value) {
                             Swal.fire({
@@ -1264,6 +1271,13 @@
                                 showCancelButton: true,
                                 confirmButtonText: '送出',
                                 cancelButtonText: '取消',
+                                preConfirm: (value) => {
+                                    if (!value || value.trim() === "") {
+                                        Swal.showValidationMessage("請輸入報名原因")
+                                        return false;
+                                    }
+                                    return value;
+                                }
                             }).then((reasonResult) => {
                                 if (reasonResult.isConfirmed && reasonResult.value) {
 
@@ -1298,7 +1312,7 @@
                 )
                 ;
                 break;
-            //防止用戶利用F12搞事 報名審核失敗 不可再報名
+            //報名審核失敗 不可再報名
             case 1:
                 return;
             case 2:
@@ -1347,6 +1361,14 @@
                     showCancelButton: true,
                     confirmButtonText: '下一步',
                     cancelButtonText: '取消',
+                    preConfirm: (value) => {
+                        // 判斷
+                        if (value > actTotal) {
+                            Swal.showValidationMessage(`報名人數超過上限，請重新確認`);
+                            return false;
+                        }
+                        return value;
+                    }
                 }).then((result) => {
                     if (result.isConfirmed && result.value) {
                         Swal.fire({
@@ -1357,6 +1379,13 @@
                             showCancelButton: true,
                             confirmButtonText: '送出',
                             cancelButtonText: '取消',
+                            preConfirm: (value) => {
+                                if (!value || value.trim() === "") {
+                                    Swal.showValidationMessage("請輸入報名原因")
+                                    return false;
+                                }
+                                return value;
+                            }
                         }).then((reasonResult) => {
                             if (reasonResult.isConfirmed && reasonResult.value) {
 
@@ -1408,67 +1437,83 @@
                 let addBtn = $("#addAct");
                 let regStatus = actReg.regStatus;
 
-                switch (regStatus) {
-                    case 1:   //1 = 報名未通過
-                        addBtn.data("actRegStatus", actReg.regStatus);
-                        addBtn.removeClass("btn-outline-danger");
-                        addBtn.addClass("btn-danger");
-                        addBtn.addClass("disabled");
-                        addBtn.text("報名未通過");
-                        break;
-
-                    case 2:   //2 = 報名了審核中
-                        addBtn.data("actRegStatus", actReg.regStatus);
-                        addBtn.removeClass("btn-outline-danger");
-                        addBtn.addClass("btn-danger");
-                        addBtn.text("取消報名");
-                        break;
-
-                    case 3:   //3 = 報名成功
-                        addBtn.data("actRegStatus", actReg.regStatus);
-                        addBtn.removeClass("btn-outline-danger");
-                        addBtn.addClass("btn-danger");
-                        addBtn.addClass("disabled");
-                        addBtn.text("報名成功");
-                        break;
-
-                    case 4:   //4 = 報名過 自己取消報名
-                        addBtn.data("actRegStatus", actReg.regStatus);
-                        addBtn.removeClass("btn-danger");
-                        addBtn.addClass("btn-outline-danger");
-                        addBtn.text("報名活動");
-                        break;
+                if (actStatusData === 4) { //4 = 活動還在報名中
+                    switch (regStatus) {
+                        case 1: //未通過 不能按
+                            addBtn.data("actRegStatus", actReg.regStatus);
+                            addBtn.text("審核未通過")
+                            addBtn.addClass("disabled")
+                            addBtn.removeClass("btn-outline-danger");
+                            addBtn.addClass("btn-danger");
+                            break;
+                        case 2: //審核中
+                            addBtn.data("actRegStatus", actReg.regStatus);
+                            addBtn.text("取消報名")
+                            addBtn.removeClass("btn-outline-danger");
+                            addBtn.addClass("btn-danger");
+                            break;
+                        case 3: //報名成功 不能按
+                            addBtn.data("actRegStatus", actReg.regStatus);
+                            addBtn.text("報名成功")
+                            addBtn.addClass("disabled")
+                            addBtn.removeClass("btn-outline-danger");
+                            addBtn.addClass("btn-success");
+                            break;
+                        case 4: //取消報名
+                            addBtn.data("actRegStatus", actReg.regStatus);
+                            addBtn.text("報名活動")
+                            addBtn.removeClass("btn-danger");
+                            addBtn.addClass("btn-outline-danger");
+                            break;
+                    }
+                } else {
+                    switch (actStatusData) {
+                        case 1:
+                            addBtn.text("活動結束")
+                            addBtn.addClass("disabled")
+                            addBtn.removeClass("btn-outline-danger");
+                            addBtn.addClass("btn-danger");
+                            break;
+                        case 2:
+                            addBtn.text("活動取消")
+                            addBtn.addClass("disabled")
+                            addBtn.removeClass("btn-outline-danger");
+                            addBtn.addClass("btn-warning");
+                            break;
+                        case 3:
+                            addBtn.text("活動進行中")
+                            addBtn.addClass("disabled")
+                            addBtn.removeClass("btn-outline-danger");
+                            addBtn.addClass("btn-primary");
+                            break;
+                    }
                 }
-
-                switch (actStatusData) {
-                    case 1:
-                        addBtn.removeClass("btn-outline-danger");
-                        addBtn.addClass("btn-danger");
-                        addBtn.addClass("disabled");
-                        addBtn.text("活動已結束");
-                        break;
-                    case 2:
-                        addBtn.removeClass("btn-outline-danger");
-                        addBtn.addClass("btn-danger");
-                        addBtn.addClass("disabled");
-                        addBtn.text("活動已取消");
-                        break;
-                    case 3:
-                        addBtn.removeClass("btn-outline-danger");
-                        addBtn.addClass("btn-danger");
-                        addBtn.addClass("disabled");
-                        addBtn.text("活動進行中");
-                        break;
-                }
-
             },
             error(xhr, sttus, error) {
                 console.log("沒報名過")
                 let addBtn = $("#addAct");
                 addBtn.data("actRegStatus", 0); //用來點擊報名活動判斷沒報名過用
-                addBtn.removeClass("btn-danger");
-                addBtn.addClass("btn-outline-danger");
-                addBtn.text("報名活動");
+                console.log(actStatusData)
+                switch (actStatusData) {
+                    case 1:
+                        addBtn.text("活動結束")
+                        addBtn.addClass("disabled")
+                        addBtn.removeClass("btn-outline-danger");
+                        addBtn.addClass("btn-danger");
+                        break;
+                    case 2:
+                        addBtn.text("活動取消")
+                        addBtn.addClass("disabled")
+                        addBtn.removeClass("btn-outline-danger");
+                        addBtn.addClass("btn-warning");
+                        break;
+                    case 3:
+                        addBtn.text("活動進行中")
+                        addBtn.addClass("disabled")
+                        addBtn.removeClass("btn-outline-danger");
+                        addBtn.addClass("btn-primary");
+                        break;
+                }
 
                 //判斷是不是自己的活動 是的話不能報名 user = 後端session, myActMemId = thymeleaf渲染來的主辦人ID
                 if (user === myActMemId) {
@@ -1914,22 +1959,6 @@
             };
             xhr.send();
         });
-
-    // Swal.fire({
-    //     title: 'TibaMe新春好禮',
-    //     html:
-    //         "2/1限量領取<br>" +
-    //         "就業培訓班報名輸入<div style='color: red'>「NY888」</div>" +
-    //         "享優惠價再折2,888元！<br>" +
-    //         "<small style='color: red; font-size: 10px;'>不限台北/中壢自費班只用(政府補助班除外)</small>",
-    //     confirmButtonText: "更多轉職培訓",
-    //     showCloseButton: true,
-    //     customClass: {
-    //         title: 'text-danger',
-    //         confirmButton: 'btn btn-white',
-    //         confirmButtonText: 'text-danger'
-    //     }
-    // })
 
 </script>
 </body>
