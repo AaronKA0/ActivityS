@@ -32,6 +32,7 @@ public class AllSecurityController {
 			EmpVO empVO = empSvc.findByEmpAcc(username);
 			if (empVO != null) {
 				// 添加empName和dname到模型
+			    model.addAttribute("empId", empVO.getEmpId());
 				model.addAttribute("empName", empVO.getEmpName());
 				DeptVO deptVO = empVO.getDeptVO();
 				if (deptVO != null) {

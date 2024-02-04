@@ -48,6 +48,14 @@ public class BookingMail {
             e.printStackTrace();
         }
     }
+    
+    
+//    public static String generateUrl() {
+//        String uniqueId = UUID.randomUUID().toString();
+//        String url = "https://example.com/" + uniqueId;
+//        return url;
+//    }
+
 
 //    public static void main(String args[]) {
 //
