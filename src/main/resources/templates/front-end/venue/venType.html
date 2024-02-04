@@ -160,15 +160,14 @@
 
         <div class="user-input-box">
           <label for="memPhone">手機號碼<span class="star">*</span></label>
-          <input type="text" th:field="*{memPhone}" id="memPhone" /><br/>
-<!--           <span  th:if="${#fields.hasErrors('memPhone')}" th:errors="*{memPhone}" class="error" id="memPhone.errors"></span> -->
+          <input id="memPhone" type="text" th:field="*{memPhone}" /><br/>
+          <span class="error" id="memPhone_errors"></span>
         </div>
 
         <div class="user-input-box">
           <label for="userCount">預估人數<span class="star">*</span></label>
           <input id="userCount" type="text" th:field="*{userCount}" required/><br/>
           <span class="error" id="userCount_errors"></span>
-<!--           <span  th:if="${#fields.hasErrors('userCount')}" th:errors="*{userCount}" class="error" id="userCount_errors"></span> -->
         </div>
         
         <div class="user-input-box">
@@ -334,13 +333,26 @@
 <script>
 
 $(document).ready(async function(){
-
 	console.log(venReady);
 	console.log(ovReady);
+
 	await getAll();
+	
+	if(venReady){
+		getVen(venReady.venName);
+		await getClosedbyVen(venReady.venName);
+		$("#venuepicker").val(venReady.venName);
+		$("span.venId").html("");
+        $("span.venId").html(`${venReady.venName}`);
+		datepicker();
+		
+	}else {
+        // 顯示第一筆場地資訊
+//         ----------------------getVen(vens[0].venName);
+    }
+	
 	if(user && user !== ""){
-		   await getMemInfo(user);
-		   $("#credit").prop('checked', true);
+	    await getMemInfo(user);
 	}
 	
 });
@@ -364,14 +376,6 @@ async function getAll(){
                 for(let ven of vens){
                     $(".form-select").append(`<option value="${ven.venName}">${ven.venName}</option>`);                       
                 }
-                
-            	if(venReady){
-            		getVen(venReady.venName);
-            		$("#venuepicker").val(venReady);
-            	}else {
-	            	// 顯示第一筆場地資訊
-	                getVen(vens[0].venName);
-            	}
             } else {
             	$("#venuepicker").html("");  
                 $("#venuepicker").append(`<option value="" selected>無場地可租用</option>`);
@@ -382,6 +386,33 @@ async function getAll(){
         }).catch(function(err){
             console.log(err);
         }); 
+}
+
+function datepicker() {
+   
+        dates=[];
+        $('#datepicker').datepicker('destroy');
+        console.log(ordereddate);
+        for(let date of ordereddate){
+            dates.push(date.orderDate);
+        }
+        for(let date of closeddates){
+            dates.push(date.closedDate);
+        }
+        console.log(dates);
+        
+        initDatePicker();	
+};
+
+// 變更場地可預訂的日期
+function initDatePicker(){
+    $("#datepicker").datepicker({
+        beforeShowDay: DisableDates,
+    });
+}
+function DisableDates(date) {
+    var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+    return [dates.indexOf(string) == -1];
 }
 
 
@@ -398,6 +429,7 @@ async function getMemInfo(id){
             $("span.memEmail").html("");
             $("span.memEmail").html(`${mem.memEmail}`);
             $("#memPhone").val(`${mem.memPhone}`);
+            $("#credit").prop('checked', true);
         }).catch(function(err){
             console.log(err);
         }); 
@@ -500,6 +532,7 @@ async function getVenCom(id){
         	
         	// 存入orderDate
         	ordereddate = vens;
+        	console.log(ordereddate);
         	
             $("#ven-experience").empty();  
             for(let ven of vens){
@@ -614,17 +647,6 @@ $('#venuepicker').change(async function() {
 });
 
 
-// 變更場地可預訂的日期
-function DisableDates(date) {
-    var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
-    return [dates.indexOf(string) == -1];
-}
-
-function initDatePicker(){
-    $("#datepicker").datepicker({
-        beforeShowDay: DisableDates,
-    });
-}
 
 
 // 選擇信用卡
@@ -661,6 +683,26 @@ $("#bookingnow").on("click", function(){
 });	
 
 
+$(document).ready(function() {
+    
+    $("#memPhone").focus(function(){
+        $("#memPhone_errors").hide();
+    });
+    
+    $(".bookingform").submit(function() {
+        
+        var memPhoneValue = $("#memPhone").val();
+        
+        if ((/^\d{10}$/.test(memPhoneValue.trim()))) {
+            $("#memPhone_errors").hide();
+            return true;
+        }else{
+            $("#memPhone_errors").text("請填入正確手機號碼").show();
+            return false;
+        } 
+    });
+});
+
 
 $(document).ready(function() {
 	
@@ -683,7 +725,6 @@ $(document).ready(function() {
 });
   
 
-
     
 $(document).ready(function() {
 	
@@ -704,8 +745,7 @@ $(document).ready(function() {
         }
     });
 });
-  
-  
+   
 
 $(document).ready(function() {
 	

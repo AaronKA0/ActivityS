@@ -53,8 +53,9 @@
 	            
 	            <div>
 	                <span class="title">負責員工:</span>
-	                <input class="immutable" th:value="${venOrderVO.empVO.empId+' / '+venOrderVO.empVO.empName}" readonly/>
-	                <input class="immutable" type="hidden" th:field="*{empVO.empId}" readonly/>
+	                <input th:if="${empVO ne null}" class="immutable" th:value="${venOrderVO.empVO.empId+' / '+venOrderVO.empVO.empName}" readonly/>
+	                <input th:if="${empVO ne null}" class="immutable" type="hidden" th:field="*{empVO.empId}" readonly/>
+	                <input th:unless="${empVO ne null}" th:value="無" readonly/>
 	            </div>
             </div>
 	            

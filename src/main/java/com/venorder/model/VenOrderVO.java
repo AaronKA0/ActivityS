@@ -52,15 +52,12 @@ public class VenOrderVO implements java.io.Serializable {
 	private Date orderDate;
 	
 	@Column(name = "mem_phone", columnDefinition = "char")
-	@Pattern(regexp = "^09[0-9]{8}$", message = "請輸入正確手機號碼(ex：09xxxxxxxx)")
 	private String memPhone;
 	
-	@Column(name = "act_descr")
-	@NotEmpty(message="請填寫活動內容概述")
+	@Column(name = "act_descr", updatable = false)
 	private String actDescr;
 	
-	@Column(name = "user_count")
-	@NotNull(message="請填寫預估人數")
+	@Column(name = "user_count", updatable = false)
 	@Digits(integer = 2, fraction = 0, message = "不符合人數規定")
 	private Integer userCount;
 	
@@ -71,7 +68,6 @@ public class VenOrderVO implements java.io.Serializable {
 	private Timestamp orderTime;
 	
 	@Column(name = "order_pay_type")
-	@NotNull(message="請選擇付款方式")
 	private Byte orderPayType;
 	
 	@Column(name = "mem_transfer_num")

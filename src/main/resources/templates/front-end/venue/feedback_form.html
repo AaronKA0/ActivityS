@@ -25,9 +25,26 @@
             </div>
             <span id="rating_error" style="color: red; font-weight: bold"></span>
             <textarea id="vencom" th:field="*{venCom}" name="opinion" cols="30" rows="5" placeholder="您的回饋..."></textarea>
+            
+            
+            <input type="hidden" th:field="*{venOrderId}" readonly/>
+            <input type="hidden" th:field="*{venVO.venId}" readonly/>
+            <input type="hidden" th:field="*{memVO.memId}" readonly/>
+            <input type="hidden" th:field="*{orderDate}" readonly>
+            <input type="hidden" th:field="*{memPhone}" readonly>
+            <input type="hidden" th:field="*{actDescr}" readonly>
+            <input type="hidden" th:field="*{userCount}" readonly>
+            <input type="hidden" th:field="*{memTaxid}" readonly>
+            <input type="hidden" th:field="*{orderTime}" readonly>
+            <input type="hidden" th:field="*{orderPayType}" readonly>
+            <input type="hidden" th:field="*{memTransferNum}" readonly>
+            <input type="hidden" th:field="*{memCreditNum}" readonly>
+            <input type="hidden" th:field="*{orderStatus}" readonly>
+            <input type="hidden" th:field="*{venRentStatus}" readonly>
+            <input type="hidden" th:field="*{venResFee}" readonly>
+            
             <div class="btn-group">
                 <button type="submit" class="btn submit">確認</button>
-                <button class="btn cancel">清除</button>
             </div>
         </form>
     </div>

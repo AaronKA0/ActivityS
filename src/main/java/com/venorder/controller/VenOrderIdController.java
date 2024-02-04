@@ -64,7 +64,10 @@ public class VenOrderIdController {
         String to = venOrderVO.getMemVO().getMemEmail();
         String subject = "租借場地滿意度通知";
         String memName = venOrderVO.getMemVO().getMemName();
-        String messageText = "Hello! " + memName + " : 感謝您租借我們的場地，請幫我們填寫使用滿意度!!";
+        
+        String feedbackURL = "http://localhost:8080/front_end/venue/feedbackform?venOrderId="+venOrderId;
+        
+        String messageText = "Hello! " + memName + " : 感謝您租借我們的場地，請幫我們填寫使用滿意度!!" + feedbackURL;
 
         
         BookingMail bookingMail = new BookingMail();
