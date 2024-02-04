@@ -622,14 +622,20 @@
         timeId = setInterval(timer, 1000);
     }, 5000);
     $("#countdown").html(count);
+
     function timer() {
         count--;
         $("#countdown").html(count);
         if (count === 0) {
             $("#countdown").html("下次請早！");
             clearInterval(timeId);
+            setTimeout(function () {
+                $(".tibame").addClass("d-none");
+                $('.backdrop').addClass('d-none');
+            }, 5000);
         }
     }
+
     //tibame--------------------------------------------------------------
 
     let end;
