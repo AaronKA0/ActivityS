@@ -219,8 +219,8 @@ main {
 			<ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
 				<li><a th:href="@{/membership/ZuoHuo}"
 					class="nav-link px-2 link-secondary">首頁</a></li>
-				<li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
-				<li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
+				<li><a th:href="@{/act/joinAct}" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+				<li><a th:href="@{/act/createAct}" class="nav-link px-2 link-secondary">舉辦活動</a></li>
 				<li><a th:href="@{front_end/venue/venue}"
 					class="nav-link px-2 link-secondary">場地租借</a></li>
 				<li><a th:href="@{/faq/faqs}"
@@ -414,7 +414,7 @@ main {
                         </svg>
 							官方活動
 						</h3>
-						<a href="join.html" class="">查看所有活動</a>
+						<a th:href="@{/act/joinAct}" class="">查看所有活動</a>
 					</div>
 				</div>
 			</div>
@@ -456,7 +456,7 @@ main {
                         </svg>
 							最新活動
 						</h3>
-						<a href="join.html" class="">查看所有活動</a>
+						<a th:href="@{/act/joinAct}" class="">查看所有活動</a>
 					</div>
 				</div>
 			</div>
