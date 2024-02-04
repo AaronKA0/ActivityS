@@ -118,6 +118,10 @@
             border: none;
         }
 
+        /*.tibame{*/
+        /*    position: absolute;*/
+        /*}*/
+
     </style>
 </head>
 
@@ -322,7 +326,7 @@
                             報名截止日期:
                             <time id="regEndTime"
                                   th:text="${#temporals.format(act.regEndTime, 'yyyy-MM-dd HH:mm')}"></time>
-                            <small id="strEndTime" class="badge bg-success text-wrap"></small>
+                            <small id="strEndTime" class="badge bg-warning text-wrap"></small>
                         </p>
                         <p class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -547,6 +551,36 @@
     </div>
 </div>
 
+
+<!-- 遮罩層 -->
+<div class="backdrop position-fixed top-0 end-0 bottom-0 start-0 bg-dark d-none"
+     style="opacity: 0.5; z-index: 1040;"></div>
+<!-- tibame -->
+<div class="position-relative">
+    <div class="tibame position-fixed top-50 start-50 translate-middle d-none" style="z-index: 1050;">
+        <div class="card text-center w-75 shadow-sm" style="height:400px;">
+            <div class="header">
+                <button type="button" class="tibameclose btn-close position-absolute top-0 end-0"></button>
+            </div>
+            <div class="card-body">
+                <div>
+                    <h2 class="text-danger fw-bolder mt-4">TibaMe新春好禮</h2>
+                    <p class="mt-4">2/1限量領取就業培訓班報名輸入<span class="text-danger">「NY888」</span>享優惠價再折2,888元！
+                    </p>
+                    <small style='color: red; font-size: 10px;'>不限台北/中壢自費班只用(政府補助班除外)</small>
+                </div>
+            </div>
+            <div class="footer bg-danger mt-auto py-5">
+                <button type="button"
+                        class="btn btn-light text-danger mb-4 position-absolute bottom-0 start-50 translate-middle-x"
+                        onclick="gotibame()">
+                    更多轉職培訓
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--<div id="fb-root"></div>-->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
@@ -567,6 +601,17 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
+    //tibame--------------------------------------------------------------
+    function gotibame() {
+        // window.location.href = `https://www.tibame.com/goodjob`;
+        window.open(`https://www.tibame.com/goodjob`, `_blank`);
+    }
+
+    $(".tibameclose").click(function () {
+        $(".tibame").addClass("d-none");
+        $('.backdrop').addClass('d-none');
+    })
+    //tibame--------------------------------------------------------------
 
     let end;
     let diff;
@@ -577,10 +622,10 @@
     days = Math.floor(diff / ((1000 * 60 * 60 * 24)));
     let strEndTime = $("#strEndTime");
     if (days > 0) {
-        strEndTime.text(days + "天後")
+        strEndTime.text("剩餘" + days + "天")
     } else {
         strEndTime.removeClass("bg-warning");
-        strEndTime.addClass("bg-warning")
+        strEndTime.addClass("bg-danger")
         strEndTime.text("已結束")
     }
     //活動開始日期
@@ -591,8 +636,8 @@
     if (days > 0) {
         strActStartTime.text(days + "天後")
     } else {
-        strActStartTime.removeClass("bg-warning");
-        strActStartTime.addClass("bg-warning")
+        strActStartTime.removeClass("bg-success");
+        strActStartTime.addClass("bg-danger")
         strActStartTime.text("已結束")
     }
     //活動結束日期
@@ -603,8 +648,8 @@
     if (days > 0) {
         strActEndTime.text(days + "天後")
     } else {
-        strActEndTime.removeClass("bg-warning");
-        strActEndTime.addClass("bg-warning")
+        strActEndTime.removeClass("bg-success");
+        strActEndTime.addClass("bg-danger")
         strActEndTime.text("已結束")
     }
 
@@ -699,6 +744,16 @@
         showAddressOnMap();
         //天氣預報
         getWeather();
+        //tibame廣告
+        setTimeout(function () {
+            if (!sessionStorage.getItem("tibame")) {
+                $(".tibame").removeClass("d-none");
+                $('.backdrop').removeClass('d-none');
+
+                sessionStorage.setItem("tibame", "true")
+            }
+        }, 10000);
+
     });
 
     let newToOldBtn = $("#newToOld");
@@ -1832,9 +1887,24 @@
                     window.location.href = "/membership/login"; // 重新導向到登入頁面
                 }
             };
-
             xhr.send();
         });
+
+    // Swal.fire({
+    //     title: 'TibaMe新春好禮',
+    //     html:
+    //         "2/1限量領取<br>" +
+    //         "就業培訓班報名輸入<div style='color: red'>「NY888」</div>" +
+    //         "享優惠價再折2,888元！<br>" +
+    //         "<small style='color: red; font-size: 10px;'>不限台北/中壢自費班只用(政府補助班除外)</small>",
+    //     confirmButtonText: "更多轉職培訓",
+    //     showCloseButton: true,
+    //     customClass: {
+    //         title: 'text-danger',
+    //         confirmButton: 'btn btn-white',
+    //         confirmButtonText: 'text-danger'
+    //     }
+    // })
 
 </script>
 </body>
