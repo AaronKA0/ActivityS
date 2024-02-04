@@ -7,11 +7,18 @@
 <title>關閉全部場地</title>
 
 <link rel="stylesheet" th:href="@{/back-end/07/css/add.css}">
+<!--   首頁的css   -->
+<link rel="stylesheet" th:href="@{/back-end/10/css/error.css}">
+<link rel="stylesheet" th:href="@{/back-end/10/css/emp_Index.css}">
 
 </head>
 
-<body>
+<body onload="showDivsBasedOnDeptno()">
+<!-- header -->
+	<div th:insert="~{/back-end/emp_Index :: header-div}"></div>
 
+	<!-- aside -->
+	<div th:insert="~{/back-end/emp_Index :: aside-div}"></div>
 <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
          <div align="center"> <h2>關閉全部場地</h2></div>
          
@@ -52,7 +59,11 @@
         <span class="extra_error" th:text="${hasOrder}"></span>
     </div>
     
-    
+<script th:src="@{/back-end/10/js/jquery-1.11.3.min.js}"></script>
+<!-- 左側jquery為table分頁用 -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<!--   首頁的js   -->
+<script th:src="@{/back-end/10/js/aside.js}"></script>
 <script type="text/javascript">
 
     //清除提示信息
