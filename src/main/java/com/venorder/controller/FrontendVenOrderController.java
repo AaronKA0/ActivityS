@@ -120,7 +120,7 @@ public class FrontendVenOrderController {
         List<VenOrderVO> list = venOrderSvc.getAll();
         model.addAttribute("venOrderListData", list);
         model.addAttribute("success", "- (新增成功)");
-        return "redirect:/back_end/ven-order/ven_order_page";
+        return "redirect:/member/venOrder";
     }
 
     

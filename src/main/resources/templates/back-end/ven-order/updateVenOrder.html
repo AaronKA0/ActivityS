@@ -53,9 +53,8 @@
 	            
 	            <div>
 	                <span class="title">負責員工:</span>
-	                <input th:if="${empVO ne null}" class="immutable" th:value="${venOrderVO.empVO.empId+' / '+venOrderVO.empVO.empName}" readonly/>
-	                <input th:if="${empVO ne null}" class="immutable" type="hidden" th:field="*{empVO.empId}" readonly/>
-	                <input th:unless="${empVO ne null}" th:value="無" readonly/>
+	                <input class="immutable" th:value="${empName}" readonly/>
+	                <input id="empId" type="hidden" class="immutable" th:field="*{empVO.empId}" value="" readonly/>
 	            </div>
             </div>
 	            
@@ -67,16 +66,16 @@
 	            
 	            <div>
 	                <span class="title">手機號碼:</span>
-	                <input type="text" th:field="*{memPhone}" onclick="hideContent('memPhone.errors');"/><br/>
-	                <span  th:if="${#fields.hasErrors('memPhone')}" th:errors="*{memPhone}" class="error" id="memPhone.errors"></span>
+	                <input id="memPhone" type="text" th:field="*{memPhone}" /><br/>
+	                <span class="error" id="memPhone_error"></span>
 	            </div>
             </div>
             
             <div class="has_two">
 	            <div>  
 	                <span class="title">預估人數:</span>
-	                <input type="text" th:field="*{userCount}" onclick="hideContent('userCount.errors');"/><br/>
-	                <span  th:if="${#fields.hasErrors('userCount')}" th:errors="*{userCount}" class="error" id="userCount.errors"></span>
+	                <input id="userCount" type="text" th:field="*{userCount}" /><br/>
+	                <span class="error" id="userCount_error"></span>
 	            </div>
 	            
 	            <div>
@@ -154,8 +153,8 @@
 	            
 	            <div>
                     <span class="title">評論時間:</span>
-                    <input class="immutable" th:value="${#dates.format(venOrderVO.venComTime, 'yyyy-MM-dd HH:mm:ss')}" readonly>
-                    <input type="hidden" class="immutable" th:field="${venOrderVO.venComTime}" readonly/>
+                    <input th:if="${venOrderVO.venComTime ne null}" class="immutable" th:value="${#dates.format(venOrderVO.venComTime, 'yyyy-MM-dd HH:mm:ss')}" readonly>
+                    <input th:unless="${venOrderVO.venComTime ne null}" class="immutable" th:value="無" readonly>
                 </div>
             </div>
             
@@ -183,7 +182,17 @@
 	
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>	
 	
+<script th:inline="javascript">
+/*<![CDATA[*/
+let user = /*[[${empId}]]*/'';
+/*]]>*/
+</script>
+
 <script type="text/javascript">
+
+$(document).ready(async function(){
+	$('#empId').val(user);
+});
 
 var ordereddate = $('#datepicker').val();
 
@@ -202,6 +211,53 @@ $('#datepicker').change(async function() {
 
 
 $(document).ready(function() {
+    
+    $("#memPhone").focus(function(){
+        $("#memPhone_error").hide();
+    });
+    
+    $("#this_form").submit(function() {
+        
+        var memPhoneValue = $("#memPhone").val();
+        
+        if ((/^\d{10}$/.test(memPhoneValue.trim()))) {
+            $("#memPhone_error").hide();
+            return true;
+        }else{
+            $("#memPhone_error").text("請填入正確手機號碼").show();
+            return false;
+        } 
+    });
+});
+
+
+$(document).ready(function() {
+    
+    $("#userCount").focus(function(){
+        $("#userCount_error").hide();
+    });
+    
+    $("#this_form").submit(function() {
+        
+        var userCountValue = $("#userCount").val();
+        
+        if ((/^\d{2}$/.test(userCountValue.trim()))) {
+            $("#userCount_error").hide();
+            return true;
+        }else{
+            $("#userCount_error").text("請填入正確人數").show();
+            return false;
+        } 
+    });
+});
+
+
+$(document).ready(function() {
+	
+	$("#taxid").focus(function(){
+        $("#taxid_error").hide();
+    });
+	
     $("#this_form").submit(function() {
         var taxidValue = $("#taxid").val();
         
@@ -217,10 +273,6 @@ $(document).ready(function() {
 });
 
 
-    //清除提示信息
-    function hideContent(d) {
-        document.getElementById(d).style.display = "none";     
-    }
 
 </script>
 

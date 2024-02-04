@@ -37,7 +37,8 @@
             
             <div>
                 <span class="title">編輯人員:</span>
-                <input type="text" th:field="*{empVO.empId}" placeholder="請輸入員工編號"/><br/>
+                <input class="immutable" th:value="${empName}" readonly/>
+                <input id="empId" type="hidden" class="immutable" th:field="*{empVO.empId}" value="" readonly/>
             </div>
             
             <br/>
@@ -51,8 +52,8 @@
             <div class="text_block">
                 <span class="title">公告內容:</span>
                 <textarea th:field="*{annDescr}" class="texthighter" onclick="hideContent('annDescr.errors');" /></textarea><br/>  
-                <span  th:if="${#fields.hasErrors('annDescr')}" th:errors="*{annDescr}" class="error" id="annDescr.errors"></span>
             </div>
+                <span  th:if="${#fields.hasErrors('annDescr')}" th:errors="*{annDescr}" class="error" id="annDescr.errors"></span>
             
             <div class="submit_button">
                 <button type="submit">確認修改</button>
@@ -63,8 +64,20 @@
 
     </div>
     
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> 
+    
+<script th:inline="javascript">
+/*<![CDATA[*/
+let user = /*[[${empId}]]*/'';
+/*]]>*/
+</script>
+
     
 <script type="text/javascript">
+
+$(document).ready(async function(){
+    $('#empId').val(user);
+});
 
     //清除提示信息
     function hideContent(d) {

@@ -45,8 +45,7 @@
         
             <div>
                 <span class="title">不開放日期:</span>
-                <input type="date" th:field="*{closedDate}" onclick="hideContent('closedDate.errors');"/><br/>
-                <span  th:if="${#fields.hasErrors('closedDate')}" th:errors="*{closedDate}" class="error" id="closedDate.errors"></span>
+                <input id="datepicker" type="date" th:field="*{closedDate}" /><br/>
             </div>
             
             <div class="text_block">
@@ -66,7 +65,22 @@
     </div>
     
     
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>     
+
 <script type="text/javascript">
+
+$('#datepicker').change(async function() {
+    
+    let selectedDate = $(this).val();
+    let compareTime = new Date(selectedDate);
+    let today = new Date();
+    
+    if (compareTime < today){
+        $('#datepicker').val("");
+        alert("日期不可小於今日");
+    }
+    
+});
 
     //清除提示信息
     function hideContent(d) {

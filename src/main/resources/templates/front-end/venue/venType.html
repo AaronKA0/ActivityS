@@ -71,13 +71,13 @@
 
   <main class="container mt-4">
     <div style="display: block; text-align: center;">
-      <select id="venuepicker" class="form-select" aria-label="Default select example" style="width: 450px; display: inline-block;">
+      <select id="venuepicker" class="form-select" aria-label="Default select example" style="width: 450px; display: inline-block; cursor: pointer;">
         <option value="" selected>請選擇場地</option>
         <!-- 嵌入所有場地資料庫 -->
         
       </select>
       
-      <input type="text" id="datepicker" class="form-select" aria-label="Default select example" value="請選擇日期" style="width: 450px; display: inline-block; margin-left: 50px;">
+      <input type="text" id="datepicker" class="form-select" aria-label="Default select example" value="請選擇日期" style="width: 450px; display: inline-block; margin-left: 50px; cursor: pointer;">
     </div>
     
     <!-- --------------------- 場地詳情內容 --------------------- -->
@@ -332,6 +332,10 @@
 
 <script>
 
+var ordereddate;
+var closeddates;
+var dates = [];
+
 $(document).ready(async function(){
 	console.log(venReady);
 	console.log(ovReady);
@@ -339,7 +343,7 @@ $(document).ready(async function(){
 	await getAll();
 	
 	if(venReady){
-		getVen(venReady.venName);
+		await getVen(venReady.venName);
 		await getClosedbyVen(venReady.venName);
 		$("#venuepicker").val(venReady.venName);
 		$("span.venId").html("");
@@ -359,9 +363,6 @@ $(document).ready(async function(){
 
 
 
-var ordereddate;
-var closeddates;
-var dates = [];
 
 // 取得所有場地資訊
 async function getAll(){
@@ -475,7 +476,7 @@ async function getVen(name){
         body: JSON.stringify({venName: name})
     }).then(function(response){;
         return response.json();
-    }).then(function(ven){     
+    }).then(async function(ven){     
         // 清除清單內容
         $("#ven-name").html("");
         $("#ven-name").html(`${ven.venName}`);
@@ -489,9 +490,9 @@ async function getVen(name){
         $("#ven-price").html(`租金：＄${ven.venPrice} / 天`);
                    
         $("#ven-star").html("");
-        $("#ven-star").html(`${ven.venTotRating}`);
         
-        let starcount = ven.venTotRating;
+        let starcount = Math.round((ven.venTotRating / ven.venRateCount)*100)/100;
+        $("#ven-star").html(starcount);
         $(".star_block span").each(function(){
             $(this).empty();
             $(this).removeClass("-on");
@@ -507,7 +508,7 @@ async function getVen(name){
             starcount--;
             
         });
-        getVenCom(ven.venId);
+        await getVenCom(ven.venId);
         
         let halfprice = parseFloat(ven.venPrice/2);
         $(".venResFee").html("");
@@ -693,7 +694,7 @@ $(document).ready(function() {
         
         var memPhoneValue = $("#memPhone").val();
         
-        if ((/^\d{10}$/.test(memPhoneValue.trim()))) {
+        if ((/^\d{10}$/.test(memPhoneValue))) {
             $("#memPhone_errors").hide();
             return true;
         }else{
@@ -714,7 +715,7 @@ $(document).ready(function() {
     	
         var userCountValue = $("#userCount").val();
         
-        if ((/^\d{2}$/.test(userCountValue.trim()))) {
+        if ((/^\d{2}$/.test(userCountValue))) {
             $("#userCount_errors").hide();
             return true;
         }else{
@@ -736,7 +737,7 @@ $(document).ready(function() {
         
     	var taxidValue = $("#taxid").val();
         
-    	if ((/^\d{8}$/.test(taxidValue.trim())) || taxidValue.trim() == "") {
+    	if ((/^\d{8}$/.test(taxidValue)) || taxidValue.trim() == "") {
             $("#taxid_error").hide();
             return true;
         } else {
@@ -757,7 +758,7 @@ $(document).ready(function() {
         
     	var accountNumberValue = $("#account_number").val();
         
-    	if ((/^\d{16}$/.test(accountNumberValue.trim()))) {
+    	if ((/^\d{16}$/.test(accountNumberValue))) {
     		$("#account_number_error").hide();
             return true;
         } else {

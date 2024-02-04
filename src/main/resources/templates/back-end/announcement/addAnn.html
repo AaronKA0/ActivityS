@@ -32,7 +32,8 @@
             
             <div>
                 <span class="title">編輯人員:</span>
-                <input type="text" th:field="*{empVO.empId}" placeholder="請輸入員工編號"/><br/>
+                <input class="immutable" th:value="${empName}" readonly/>
+                <input id="empId" type="hidden" class="immutable" th:field="*{empVO.empId}" value="" readonly/>
             </div>
             
             <br/>
@@ -58,9 +59,22 @@
 
         <span class="extra_error" th:text="${hasOrder}"></span>
     </div>
+
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> 
+    
+<script th:inline="javascript">
+/*<![CDATA[*/
+let user = /*[[${empId}]]*/'';
+/*]]>*/
+</script>
     
     
 <script type="text/javascript">
+
+$(document).ready(async function(){
+    $('#empId').val(user);
+});
 
     //清除提示信息
     function hideContent(d) {
