@@ -8,71 +8,21 @@
 <link rel="stylesheet" th:href="@{/back-end/07/css/listAll.css}">
 <link rel="stylesheet" th:href="@{/back-end/07/css/data_table.css}">
 
+<!--   首頁的css   -->
+<link rel="stylesheet" th:href="@{/back-end/10/css/error.css}">
+<link rel="stylesheet" th:href="@{/back-end/10/css/emp_Index.css}">
+
+
 <title>會員通知管理</title>
 
 </head>
-<body>
+<body onload="showDivsBasedOnDeptno()">
 
-<header class="header">
-    <h1>【做伙後台管理系統】</h1>
-    <p class="welcome">歡迎您 管理員</p>
-    <nav>
-      <ul>
-        <li><a href="後台登入頁面.html">登出</a></li>
-      </ul>
-    </nav>
-  </header>
+<!-- header -->
+	<div th:insert="~{/back-end/emp_Index :: header-div}"></div>
 
-  <aside class="aside">
-    <nav class="nav">
-      <div class="sidenav">
-        <a th:href="@{/emp_Index}">首頁</a>
-        <hr>
-        <button class="dropdown-btn">員工管理
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
-          <a href="修改密碼頁面.html">修改密碼</a>
-          <a href="員工資料管理首頁.html">員工資料管理</a>
-        </div>
-        <hr>
-        <button class="dropdown-btn">一般功能管理
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
-          <a th:href="@{/back_end/announcement/ann_page}">公告管理</a>
-          <a href="新增FAQ.html">FQA管理</a>
-        </div>
-        <hr>
-        <button class="dropdown-btn">會員功能管理
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
-          <a th:href="@{/membership/select_page}">查詢會員</a>
-          <a th:href="@{/back_end/notify/notify_page}">會員通知管理</a>
-          <a href="#">審核會員檢舉</a>
-        </div>
-        <hr>
-        <button class="dropdown-btn">活動功能管理
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
-          <a href="#">審核活動管理</a>
-          <a href="#">審核留言管理</a>
-        </div>
-        <hr>
-        <button class="dropdown-btn">場地功能管理
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-container">
-          <a href="新增場地.html">場地管理</a>
-          <a th:href="@{/back_end/ven-order/ven_order_page}">場地訂單管理</a>
-          <a th:href="@{/back_end/ven-closed/ven_closed_date}">場地狀態管理</a>
-        </div>
-      </div>
-
-    </nav>
-  </aside>
+	<!-- aside -->
+	<div th:insert="~{/back-end/emp_Index :: aside-div}"></div>
 
 <main class="main">
 <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top">
@@ -133,6 +83,7 @@
 <script th:src="@{/back-end/emp_Index/js/emp_Index.js}"></script>
 <script th:src="@{/back-end/07/js/data_table.js}"></script>
 <script th:src="@{/back-end/07/js/data_table_menu.js}"></script>
+<script th:src="@{/back-end/10/js/jquery-1.11.3.min.js}"></script>
 
 </body>
 </html>
