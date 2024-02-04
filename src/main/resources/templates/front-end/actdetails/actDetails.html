@@ -568,6 +568,7 @@
                     <p class="mt-4">2/1限量領取就業培訓班報名輸入<span class="text-danger">「NY888」</span>享優惠價再折2,888元！
                     </p>
                     <small style='color: red; font-size: 10px;'>不限台北/中壢自費班只用(政府補助班除外)</small>
+                    <div id="countdown"></div>
                 </div>
             </div>
             <div class="footer bg-danger mt-auto py-5">
@@ -593,6 +594,7 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjHlN8i2-4cw4QDuaPgyctq7OX1n6c6ls&callback=initMap" async
         defer>
 </script>
+<script src="path_to/jquery.countdown.min.js"></script>
 
 <script src="https://cdn.tiny.cloud/1/tus9t8o6mklmhwd5c0iaejn9394stnli5i0j2ic9bb4xurm0/tinymce/6/tinymce.min.js"
         referrerpolicy="origin"></script>
@@ -611,6 +613,12 @@
         $(".tibame").addClass("d-none");
         $('.backdrop').addClass('d-none');
     })
+
+    $(function() {
+        $('#countdown').countdown(15 * 60 * 1000 + Date.now(), function(event) {
+            $(this).html(event.strftime('%M:%S'));
+        });
+    });
     //tibame--------------------------------------------------------------
 
     let end;
