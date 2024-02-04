@@ -22,7 +22,7 @@ body, html {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	height: 100vh;
+	height: 600px;
 	background-image: url('back-end/10/images/Logo10.jpg');
 	background-position: top center; /* 圖片頂部至中 */
 	background-repeat: no-repeat;
@@ -91,10 +91,60 @@ margin-top:150px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   transform: scale(1.05);
 }
+
+.input-field:focus {
+    transform: scale(1.05);
+    border-color: #e19fae;
+    box-shadow: 0 0 8px #e19fae;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+#container {
+  position: absolute; /* 或者 fixed，取决于您想要的效果 */
+  top: 10%; /* 调整为合适的值以垂直居中 */
+  left: 0; /* 放在左侧 */
+  transform: translateY(-50%); /* 垂直居中 */
+  width: 300px; /* 或者需要的宽度 */
+  height: auto; /* 根据内容调整高度 */
+  background-color: transparent; /* 透明背景或根据需要调整 */
+  color: white; /* 文字颜色 */
+  display: flex;
+  flex-direction: column; /* 子元素垂直排列 */
+  justify-content: center;
+  align-items: center;
+}
+
+#circle, #square {
+  width: 40px;
+  height: 40px;
+  background-color: pink;
+}
+
+#circle {
+  border-radius: 50%; /* 使其成为圆形 */
+}
+
+#square {
+  /* 使其成为正方形 */
+}
+
+#text {
+  font-size: 30px;
+  color:#cc627b;
+  margin: 0 20px;
+}
+
 </style>
 </head>
 <body>
 
+
+<div id="container">
+  <div id="circle"></div>
+  <h1 id="text">Zuo-Huo</h1>
+  <div id="square"></div>
+</div>
 
 	<div class="bg">
 
@@ -332,7 +382,23 @@ $(document).ready(function() {
     });
   });
 });
+
+//确保DOM加载完成后执行
+document.addEventListener('DOMContentLoaded', function() {
+  // 选择要动画的元素
+  var circle = document.getElementById('circle');
+  var text = document.getElementById('text');
+  var square = document.getElementById('square');
+
+  // 使用GSAP创建动画
+  gsap.to(circle, {duration: 2, x: 100, ease: "power1.out"}); // 水平移动圆形
+  gsap.to(square, {duration: 2, x: -100, ease: "power1.out"}); // 水平移动方形
+  gsap.from(text, {duration: 2, opacity: 0, scale: 0.5}); // 文本淡入和放大
+  gsap.to(square, {duration: 2, rotation: 360, background: "linear-gradient(150deg, #f09caf, #c95d76)"}); // 正方形旋转和颜色渐变
+});
 </script>
+
+
 
 
 	<!-- jQuery 库 -->
