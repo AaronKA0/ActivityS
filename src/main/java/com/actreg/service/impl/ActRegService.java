@@ -109,9 +109,11 @@ public class ActRegService implements IActRegService {
 
         Integer actRegId = actReg.getActRegId(); //為了解決modelMapper映射問題 先將PK存起來 mapper完後再將PK set回正確的
         Byte actStatus = actReg.getAct().getActStatus();
+        Integer actMemId = actReg.getAct().getMemId();
         modelMapper.map(actRegStatus, actReg);
         actReg.setActRegId(actRegId); //modelMapper映射會將actId的值連動改到PK-actRegId
         actReg.getAct().setActStatus(actStatus);
+        actReg.getAct().setMemId(actMemId);
 
         switch (actRegStatus.getRegStatus()) {
             case 2:

@@ -42,8 +42,8 @@ public class ActRegController {
     ) {
 
         //模擬從session取出會員id
-        Integer testMemId = 1;
-        session.setAttribute("memId", testMemId);
+//        Integer testMemId = 1;
+//        session.setAttribute("memId", testMemId);
         Integer memId = (Integer) session.getAttribute("memId");
 
         //傳進來是DESC的話替換掉pageable內的Sort
@@ -71,8 +71,8 @@ public class ActRegController {
                                               HttpSession session) {
 
         //模擬從session取出會員id
-        Integer testMemId = 1;
-        session.setAttribute("memId", testMemId);
+//        Integer testMemId = 1;
+//        session.setAttribute("memId", testMemId);
         Integer memId = (Integer) session.getAttribute("memId");
 
         ActRegVO actReg = actRegService.getActReg(actId, memId);
@@ -87,8 +87,8 @@ public class ActRegController {
     public ResponseEntity<ActRegVO> createActReg(@RequestBody @Valid ActRegRequest actRegRequest, HttpSession session) {
 
         //模擬從session取會員id
-        Integer testMemId = 1;
-        session.setAttribute("memId", testMemId);
+//        Integer testMemId = 1;
+//        session.setAttribute("memId", testMemId);
 
         Integer memId = (Integer) session.getAttribute("memId");
 
@@ -110,8 +110,8 @@ public class ActRegController {
                                                  HttpSession session) {
 
         //模擬從session取出會員id
-        Integer testMemId = 1;
-        session.setAttribute("memId", testMemId);
+//        Integer testMemId = 1;
+//        session.setAttribute("memId", testMemId);
         Integer memId = (Integer) session.getAttribute("memId");
         actRegStatus.setMemId(memId);
 
@@ -125,8 +125,8 @@ public class ActRegController {
                                                  HttpSession session) {
 
         //模擬從session取出會員id
-        Integer testMemId = 1;
-        session.setAttribute("memId", testMemId);
+//        Integer testMemId = 1;
+//        session.setAttribute("memId", testMemId);
         Integer memId = (Integer) session.getAttribute("memId");
 
         ActRegVO actReg = actRegService.reviewActReg(actRegReviewRequest);
