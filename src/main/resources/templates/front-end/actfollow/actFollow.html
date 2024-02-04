@@ -170,8 +170,8 @@
                     <th>
                         報名截止日
                         <select id="time">
-                            <option value="ASC">舊到新</option>
-                            <option value="DESC">新到舊</option>
+                            <option value="ASC">近到遠</option>
+                            <option value="DESC">遠到近</option>
                         </select>
                     </th>
                     <th>活動開始日</th>
@@ -290,6 +290,11 @@
 
                 actFollows.forEach(function (actFollow) {
 
+                    let endTime = new Date(actFollow.act.regEndTime);
+                    let now = new Date();
+                    let diff = endTime - now;
+                    let days = Math.floor(diff / (1000 * 60 * 60 * 24))
+
                     if (actFollow.folStatus === 2) {
                         count++;
                         followHTML += `<tr>
@@ -300,6 +305,7 @@
                                             </td>
                                             <td>
                                                 <span>${actFollow.act.regEndTime}</span>
+                                                <small class="badge ${days > 0 ? "bg-success" : "bg-warning"} text-wrap">${days > 0 ? days + "天後" : "已結束"}</small>
                                             </td>
                                             <td>
                                                 <span>${actFollow.act.actStartTime}</span>
