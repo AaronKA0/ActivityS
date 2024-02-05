@@ -95,6 +95,7 @@ public class PostService {
 		jedis.select(14);
 		
 		List<String> postStrings = jedis.lrange(key, 0, -1);	
+		System.out.println(key);
 		List<Post> posts = postStrings.stream()
 				.map(e -> gson.fromJson(e, Post.class))
 				.filter(p -> p.getPostId() == postId)

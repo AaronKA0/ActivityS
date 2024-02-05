@@ -278,8 +278,8 @@
 
             <!-- 這邊放會員登入後的選項 -->
             <div class="after-logging" th:if="${session.memId ne null}">
-                <i class="icon bi bi-messenger"
-                   style="font-size: 28px; margin: 20px; color: #6161f2;"></i>
+                <a th:href="@{/member/chat}"><i class="icon bi bi-messenger"
+                   style="font-size: 28px; margin: 20px; color: #6161f2;"></i></a>
 
                 <!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
                 <i class="icon bi bi-bell-fill" type="button"
@@ -303,7 +303,7 @@
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <li><a class="dropdown-item"
-                           th:href="@{/membership/getOne_For_Update}">個人資料</a></li>
+                           th:href="@{/member}">個人資料</a></li>
                     <li><a id="SignOut" class="dropdown-item" th:href="@{/membership/login}">登出</a></li>
                 </ul>
 

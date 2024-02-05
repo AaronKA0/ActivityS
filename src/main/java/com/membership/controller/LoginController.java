@@ -87,8 +87,8 @@ public class LoginController {
 			membershipSvc.updateMemLoginTime(memAcc);
 
 
-			return "redirect:/Zuo-Huo";
-//			return "redirect:/member";
+//			return "redirect:/Zuo-Huo";
+			return "redirect:/member";
 
 
 		} else {

@@ -34,7 +34,7 @@ main {
 	margin-bottom: 20px;
 }
 
-span.fs-4{
+span.fs-4 {
 	font-size: 36px;
 	font-weight: bold;
 }
@@ -173,32 +173,37 @@ button#SignOut:hover {
 		<header
 			class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
 			<div class="col-md-3 mb-2 mb-md-0">
-				<a href='select_page'
+				<a th:href="@{/membership/ZuoHuo}"
 					class="d-inline-flex link-body-emphasis text-decoration-none">
-					<span class="fs-4"><img alt="ZuoHuo" src="/front-end/16/images/ZuoHuo4.jpg" width="160px" ></span>
+					<span class="fs-4"><img alt="ZuoHuo"
+						src="/front-end/16/images/ZuoHuo4.jpg" width="160px"></span>
 				</a>
 			</div>
 
 
 			<ul
 				class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-				<li><a th:href="@{/membership/ZuoHuo}" class="nav-link px-2 link-secondary">首頁</a></li>
-				<li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
-				<li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
-				<li><a href="rent.html" class="nav-link px-2 link-secondary">場地租借</a></li>
-				<li><a th:href="@{/faq/faqs}" 
+				<li><a th:href="@{/membership/ZuoHuo}"
+					class="nav-link px-2 link-secondary">首頁</a></li>
+				<li><a th:href="@{/act/joinAct}"
+					class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+				<li><a th:href="@{/act/createAct}"
+					class="nav-link px-2 link-secondary">舉辦活動</a></li>
+				<li><a th:href="@{/front_end/venue/browse}"
+					class="nav-link px-2 link-secondary">場地租借</a></li>
+				<li><a th:href="@{/faq/faqs}"
 					class="nav-link px-2 link-secondary">FAQs</a></li>
-				<li><a th:href="@{/faq/faqs}"  class="nav-link px-2 link-secondary">關於我們</a></li>
+				<li><a th:href="@{/faq/faqs}"
+					class="nav-link px-2 link-secondary">關於我們</a></li>
 			</ul>
-
 			<div class="col-md-3 text-end">
-                <button type="button" class="btn btn-outline-primary me-2">
-                    <a class="nav-link" th:href="@{/membership/logging}">登入</a>
-                </button>
-                <button type="button" class="btn btn-primary">
-                    <a class="nav-link" th:href="@{/membership/addMembership}">註冊</a>
-                </button>
-            </div>
+				<button type="button" class="btn btn-outline-primary me-2">
+					<a class="nav-link" th:href="@{/membership/logging}">登入</a>
+				</button>
+				<button type="button" class="btn btn-primary">
+					<a class="nav-link" th:href="@{/membership/addMembership}">註冊</a>
+				</button>
+			</div>
 		</header>
 	</div>
 
@@ -207,7 +212,7 @@ button#SignOut:hover {
 	<main class="container mt-5">
 
 		<div id="center">
-<!-- 			<button id="SignOut" type="button">會員登出</button> -->
+			<!-- 			<button id="SignOut" type="button">會員登出</button> -->
 			<div id="center2">
 				<!-- 加入會員超链接 -->
 				<a id="signupSection" href='addMembership'>加入會員</a>
@@ -256,9 +261,9 @@ button#SignOut:hover {
 					<br>
 					<button type="submit" id="submit">會員登入</button>
 				</div>
-<!-- 				<h7 th:text="${session.memId}"></h7> -->
-<!-- 				<h7 th:text="${session.memName}"></h7> -->
-<!-- 				<h7 th:text="${session.IsAccEna}"></h7> -->
+				<!-- 				<h7 th:text="${session.memId}"></h7> -->
+				<!-- 				<h7 th:text="${session.memName}"></h7> -->
+				<!-- 				<h7 th:text="${session.IsAccEna}"></h7> -->
 				<!--要取session 需要session.memId-->
 			</form>
 		</div>
@@ -379,24 +384,22 @@ button#SignOut:hover {
 		});
 
 		// ------------------------登出-------------------------
-		
+
 		document.getElementById("SignOut").addEventListener("click",
 				function() {
 					// 使用 XMLHttpRequest 或 Fetch API 發送登出請求到後端
 					var xhr = new XMLHttpRequest();
-					xhr.open("GET", "/membership/logout", true);            //這行設置了請求的類型（GET）、URL（"/membership/logout"）和是否使用異步（true，表示異步執行）。
+					xhr.open("GET", "/membership/logout", true); //這行設置了請求的類型（GET）、URL（"/membership/logout"）和是否使用異步（true，表示異步執行）。
 
-					xhr.onreadystatechange = function() {                   //當請求的狀態發生變化時（例如，完成了請求或發生了錯誤），這個函數將被觸發。
-						if (xhr.readyState == 4 && xhr.status == 200) {     //是否已經完成（readyState == 4）並且是否成功（status == 200）。如果是，表示登出請求成功。
+					xhr.onreadystatechange = function() { //當請求的狀態發生變化時（例如，完成了請求或發生了錯誤），這個函數將被觸發。
+						if (xhr.readyState == 4 && xhr.status == 200) { //是否已經完成（readyState == 4）並且是否成功（status == 200）。如果是，表示登出請求成功。
 							// 處理登出成功的回應，這裡將重新導向到登入頁面
-							window.location.href = "/membership/login";     //重新導向到登入頁面
-						} 
+							window.location.href = "/membership/login"; //重新導向到登入頁面
+						}
 					};
 
 					xhr.send();
 				});
-		
-		
 	</script>
 
 
