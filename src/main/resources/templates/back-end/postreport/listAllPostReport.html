@@ -559,7 +559,10 @@ button.close {
 							<span>編號: </span><span th:text="${postReportVO.repId}"></span><br />
 							<br /> <span>員工編號: </span><span th:text="${postReportVO.empId}"></span><br />
 							<br /> <span>被檢舉個人貼文編號: </span><span
-								th:text="${postReportVO.postId}"></span><br /> <br /> <span>被檢舉會員編號:
+								th:text="${postReportVO.postId}"></span><br /><br />
+								<span>被檢舉者會員編號: </span><span
+								th:text="${postReportVO.reporteeId}"></span><br />
+								 <br /> <span>檢舉者會員編號:
 							</span><span th:text="${postReportVO.memId}"></span><br /> <br /> <span>檢舉標題:
 							</span><span th:text="${postReportVO.repTitle}"></span><br /> <br /> <span>檢舉內容:
 							</span><span th:text="${postReportVO.repContent}"></span><br /> <br />
@@ -639,12 +642,17 @@ button.close {
 								</div>
 								<br>
 								<div id="postId">
-									<label>個人貼文編號:</label> <input type="text" th:field="*{postId}"
+									<label>被檢舉者個人貼文編號:</label> <input type="text" th:field="*{postId}"
+										style="border: 0px; font-weight: bold;" readonly /><br />
+								</div>
+								<br>
+								<div id="reporteeId">
+									<label>被檢舉者會員編號:</label> <input type="text" th:field="*{postId}"
 										style="border: 0px; font-weight: bold;" readonly /><br />
 								</div>
 								<br>
 								<div id="memId">
-									<label>會員編號:</label> <input type="text" th:field="*{memId}"
+									<label>檢舉者會員編號:</label> <input type="text" th:field="*{memId}"
 										style="border: 0px; font-weight: bold;" readonly /><br />
 								</div>
 								<br>
