@@ -46,7 +46,7 @@
 </head>
 <body onload="connect();" onunload="disconnect();">
 
-	<form style="display:none" id="visitMemForm" th:action="@{/member}">
+	<form style="display:none" id="visitMemForm" th:action="@{/member/friendTab}">
 		<input id="visitMem" type="number" th:name="memId" /> <input
 			type="submit" />
 	</form>
@@ -149,7 +149,7 @@
 						</div>
 						<div style="padding: 0px" class="col-5" >
 							<i id="add-contacts" class="fa fa-plus-circle"
-								style="font-size: 30px; color: green"><a th:href="@{/member}"></a></i>
+								style="font-size: 30px; color: green"><a th:href="@{/member/friendTab}"></a></i>
 						</div>
 					</div>
 				</div>
@@ -170,7 +170,7 @@
 						onkeydown="if (event.keyCode == 13) sendMessage();" />
 					<button type="submit" id="sendMessage" class="button"
 						onclick="sendMessage();"
-						style="width: 10%; height: 50px; float: right;">Send</button>
+						style="width: 10%; height: 50px; float: right;">傳送</button>
 				</div>
 			</div>
 		</div>
