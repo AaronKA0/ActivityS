@@ -1581,11 +1581,36 @@
                     // addBtn.removeClass("btn-outline-danger");
                     // addBtn.addClass("btn-dark");
                     addBtn.remove();
-                    $("#follow").before
-                    (
-                        `<button type="button" id="addAct" class="btn btn-danger btn-lg mx-3" onClick="updateAct()">
+                    switch (actStatusData) {
+                        case 1:
+                            $("#follow").before
+                            (
+                                `<button type="button" id="addAct" class="btn btn-danger btn-lg mx-3 disabled">
+                            活動結束</button>`
+                            );
+                            break;
+                        case 2:
+                            $("#follow").before
+                            (
+                                `<button type="button" id="addAct" class="btn btn-warning btn-lg mx-3 disabled">
+                            活動取消</button>`
+                            );
+                            break;
+                        case 3:
+                            $("#follow").before
+                            (
+                                `<button type="button" id="addAct" class="btn btn-primary btn-lg mx-3 disabled">
+                            活動進行中</button>`
+                            );
+                            break;
+                        case 4:
+                            $("#follow").before
+                            (
+                                `<button type="button" id="addAct" class="btn btn-danger btn-lg mx-3" onClick="updateAct()">
                             修改活動</button>`
-                    );
+                            );
+                            break;
+                    }
                 }
             }
         })
