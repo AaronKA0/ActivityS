@@ -350,8 +350,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="actLoc" class="form-label">活動地點:</label>
-                    <select class="form-select" id="actLoc" name="actLoc">
+                    <label for="actLoc1" class="form-label">活動地點:</label>
+                    <select class="form-select" id="actLoc1" name="actLoc">
             <option value="">請選擇縣市</option>
             <option value="台北市">台北市</option>
             <option value="基隆市">基隆市</option>
@@ -376,6 +376,7 @@
             <option value="花蓮縣">花蓮縣</option>
             <option value="連江縣">連江縣</option>
           </select>
+           <input type="text" class="form-control" id="actLoc" name="actLoc" required/>
                     <div class="invalid-feedback">
                         活動地點不得為空:
                     </div>
@@ -520,7 +521,7 @@
         formData.append("regEndTime", regEnd);
         formData.append("actStartTime", actStart);
         formData.append("actEndTime", actEnd);
-        formData.append("actLoc", $('#actLoc').val());
+        formData.append("actLoc", $('#actLoc1').val()+$('#actLoc').val());
         formData.append("actDescr", $('#actDescr').val());
         formData.append("actType", $('#actType').val());
         // 表單中有新增的屬性這邊也要添加

@@ -8,6 +8,12 @@
     <!-- 引入 Bootstrap CSS 文件 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+          <!-- 引入 Bootstrap JavaScript 文件 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style>
         /* 整体背景色 */
         body {
@@ -135,9 +141,9 @@
             content: "已结束";
             position: absolute;
             top: 80%;
-            left: 70%;
+            left: 75%;
             transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 10px;
+            font-size:25px;
             color: rgba(0, 0, 0, 0.1); /* 水印文字颜色 */
             z-index: 0;
         }
@@ -163,6 +169,10 @@
         /* 最新活动和官方活动按钮的样式 */
         #latestActivityButton, #officialActivityButton,#ongoingActivityButton, #registrationOpenButton, #endActivityButton {
             color: #000000; /* 设置默认文字颜色为黑色 */
+        }
+        
+        #careText{
+        color:red !important;
         }
     </style>
 
@@ -482,12 +492,36 @@
 
 
         // 動態生成顯示活動卡片
-        function displayActivities(activities, container) {
+        function displayActivities(activities, container, timeType) {
             var content = '';
             $.each(activities, function (index, activity) {
                 var imageUrl = 'data:image/jpeg;base64,' + activity.actPic;
-                var lastUpdated = new Date(activity.actCrTime).toLocaleString();
+                var timeInfo  = '';
 
+                // 根據 displayType 決定顯示哪種時間信息
+                if (timeType  === 'ongoing') {
+                    // 活動進行中，顯示開始和結束時間
+                    var startTime = new Date(activity.actStartTime).toLocaleString();
+                    var endTime = new Date(activity.actEndTime).toLocaleString();
+                    timeInfo = '進行時間起：' + startTime + ' <br>進行時間迄：' + endTime;
+                } else if (timeType === 'registration') {
+                	// 活動報名中，顯示報名開始和報名結束時間
+                    var regStartTime = new Date(activity.regStartTime).toLocaleString();
+                    var regEndTime = new Date(activity.regEndTime).toLocaleString();
+                    timeInfo = '報名時間起：' + regStartTime + '<br>報名時間迄：' + regEndTime;
+                    
+                    //計算報名截止時間到現在還有幾天
+                    var now = new Date();
+                    var deadline = new Date(activity.regEndTime);
+                    var diff = deadline - now;
+                    var daysRemaining = Math.ceil(diff / (1000 * 60 * 60 * 24));
+                    deadlineInfo = daysRemaining > 0 ? '報名截止還有 ' + daysRemaining + ' 天' : '報名已截止';
+                } else {
+                    // 其他情況，顯示創建時間
+                    var lastUpdated = new Date(activity.actCrTime).toLocaleString();
+                    timeInfo = '創建時間 ' + lastUpdated;
+                }
+                
                 // 检查是否是官方活动
                 var isOfficialActivity = activity.memId === 1;
                 var ribbonHtml = isOfficialActivity ? '<div class="official-activity-ribbon">官方</div>' : '';
@@ -500,9 +534,10 @@
                     '<h4 class="card-title">' + '<b><I>' + activity.actName + '</b></I>' + '</h4>' +
                     '<p class="card-text">' + activity.actDescr + '</p>' +
                     '<button type="button" class="btn btn-primary card-button" data-actid="' + activity.actId + '"><span>查看詳情</span></button>' +
+                    (timeType === 'registration' ? '<div style="text-align: right ;"><small id="careText" class="text-muted">' + deadlineInfo + '</small></div>' : '') +
                     '</div>' +
                     '<div class="card-footer">' +
-                    '<small class="text-muted">創建時間 ' + lastUpdated + '</small>' +
+                    '<small class="text-muted">' + timeInfo + '</small>' +
                     '</div>' +
                     '</div>' +
                     '</div>';
@@ -574,15 +609,16 @@
             var filteredActivities = allActivities.filter(function (activity) {
                 return activity.actStatus === 3; // 篩選 actStatus 為 3 (進行中) 的活動
             });
-            displayActivities(filteredActivities, '#activitiesContainer');
+            displayActivities(filteredActivities, '#activitiesContainer', 'ongoing');
         }
 
         // 顯示報名中的活動
         function displayRegistrationOpenActivities() {
+        	var now = new Date(); // 獲取當前時間
             var filteredActivities = allActivities.filter(function (activity) {
                 return activity.actStatus === 4; // 篩選 actStatus 為 4 (報名中) 的活動
             });
-            displayActivities(filteredActivities, '#activitiesContainer');
+            displayActivities(filteredActivities, '#activitiesContainer', 'registration');
         }
 
         // 顯示已結束的活動
@@ -592,6 +628,7 @@
             });
             displayActivities(filteredActivities, '#activitiesContainer');
         }
+        
 
         // 綁定官方活動按鈕點擊事件
         $('#officialActivityButton').on('click', function () {
@@ -612,6 +649,7 @@
         $('#endActivityButton').on('click', function () {
             displayEndActivities();
         });
+        
 
     });
 </script>
