@@ -132,6 +132,18 @@ public class PostReportController {
 		// System.out.println(membership);
 		List<PostReportVO> list = postReportSvc.getAll();
 		model.addAttribute("postreportListData", list);
+		
+		
+		// delete the post if the post report status is set to 3 (審核未通過)
+		Post post = PostService.getPost(postReport.getReporteeId(), postReport.getPostId());
+		
+		if(postReport.getRepStatus() == 2) {
+			post.setPostStatus((byte)3);
+		} else if(postReport.getRepStatus() == 3){
+			post.setPostStatus((byte)2);
+		}
+		PostService.editPost(post);		
+		
 		return "back-end/postreport/listAllPostReport";
 	}
 
@@ -165,18 +177,6 @@ public class PostReportController {
 		model.addAttribute("success", "- (修改成功)");
 		postReportVO = postReportSvc.getOnePostReport(Integer.valueOf(postReportVO.getRepId()));
 		model.addAttribute("postReportVO", postReportVO);
-		
-		
-		
-		// delete the post if the post report status is set to 3 (審核未通過)
-		Post post = PostService.getPost(postReportVO.getMemId(), postReportVO.getPostId());
-		
-		if(postReportVO.getRepStatus() == 3) {
-			post.setPostStatus((byte)3);
-		} else if(postReportVO.getRepStatus() == 2){
-			post.setPostStatus((byte)2);
-		}
-		PostService.editPost(post);
 		
 		return "back-end/postreport/listOnePostReport"; // 修改成功後轉交listOneEmp.html
 	}
