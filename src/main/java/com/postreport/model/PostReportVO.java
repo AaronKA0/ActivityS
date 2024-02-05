@@ -1,6 +1,7 @@
 package com.postreport.model;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +31,9 @@ public class PostReportVO implements java.io.Serializable {
 
 	@Column(name = "mem_id", updatable = false)
 	private Integer memId;
+	
+	@Column(name = "reportee_id", updatable = false)
+	private Integer reporteeId;
 
 	@Column(name = "emp_id")
 	private Integer empId;
@@ -71,6 +75,14 @@ public class PostReportVO implements java.io.Serializable {
 
 	public void setMemId(Integer memId) {
 		this.memId = memId;
+	}
+
+	public Integer getReporteeId() {
+		return reporteeId;
+	}
+
+	public void setReporteeId(Integer reporteeId) {
+		this.reporteeId = reporteeId;
 	}
 
 	public Integer getEmpId() {
@@ -121,5 +133,13 @@ public class PostReportVO implements java.io.Serializable {
 		this.repTime = repTime;
 	}
 
+	@Override
+	public String toString() {
+		return "PostReportVO [repId=" + repId + ", postId=" + postId + ", memId=" + memId + ", empId=" + empId
+				+ ", repTitle=" + repTitle + ", repContent=" + repContent + ", repPic=" + Arrays.toString(repPic)
+				+ ", repStatus=" + repStatus + ", repTime=" + repTime + "]";
+	}
+
+	
 }
 

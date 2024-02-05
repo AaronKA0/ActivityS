@@ -163,7 +163,7 @@ div.star_block>span.star.-off {
 
 <body>
 
-	<form method="post" style="display:none" id="venForm" th:action="@{/front_end/venue/addVenOrder}">
+	<form method="get" style="display:none" id="venForm" th:action="@{/front_end/venue/addVenOrder}">
 		<input id="selectVen" type="number" th:name="venId" /> <input
 			type="submit" />
 	</form>
@@ -271,21 +271,21 @@ div.star_block>span.star.-off {
 					aria-label="Toolbar with button groups">
 					<div style="width: 100%" class="text-center">
 						<div class="btn-group me-2" role="group" aria-label="Second group">
-							<button id="upcoming-btn" type="button"
+							<a href="#upcoming"><button id="upcoming-btn" type="button"
 								class="active sort-btn  btn btn-outline-secondary"
-								data-filter="">即將到來</button>
+								data-filter="">即將到來</button></a>
 						</div>
 						<div class="btn-group me-2" role="group" aria-label="Second group">
-							<button id="archive-btn" type="button"
-								class="sort-btn  btn btn-outline-secondary" data-filter="">租借歷史</button>
+							<a href="#archive"><button id="archive-btn" type="button"
+								class="sort-btn  btn btn-outline-secondary" data-filter="">租借歷史</button></a>
 						</div>
 						<div class="btn-group me-2" role="group" aria-label="Third group">
-							<button id="cancelled-btn" type="button"
-								class="sort-btn  btn btn-outline-secondary" data-filter="">已取消</button>
+							<a href="#cancelled"><button id="cancelled-btn" type="button"
+								class="sort-btn  btn btn-outline-secondary" data-filter="">已取消</button></a>
 						</div>
 						<div class="btn-group me-2" role="group" aria-label="Second group">
-							<button id="refunded-btn" type="button"
-								class="sort-btn  btn btn-outline-secondary" data-filter="">已退款</button>
+							<a href="#refunded"><button id="refunded-btn" type="button"
+								class="sort-btn  btn btn-outline-secondary" data-filter="">已退款</button></a>
 						</div>
 					</div>
 
@@ -322,6 +322,8 @@ $(".sort-btn").on("click", function(){
 	$(".sort-btn").removeClass("active");
 	$(this).addClass("active");
 	dateOrder = "asc";
+	
+	updateHashWithoutAddingToHistory($(this).closest("a").attr("href").substring(1));
 });
 
 async function getOrders(){
@@ -412,7 +414,6 @@ function displayOrders(){
 	    pageSize: 3,
 	    callback: async function(orders, pagination) {
 	    	$("#orders-body").html("");
-	    	
 // 	    	if(!orders.length){
 // 	    		$("#orders-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h2>無租借的場地</h2></div>`);
 // 	    		return;
@@ -493,7 +494,13 @@ function displayOrders(){
 	<script>
 
 $(document).ready(async function(){
-	await loadOrders();
+	let tab = window.location.hash;
+	
+	if(tab){
+		$(`${tab}-btn`).click();
+	} else{
+		await loadOrders();
+	}
 });
 
 </script>
@@ -596,6 +603,7 @@ $(document).on("click", ".button0", async function(){
 
 
 $(document).on("click", ".ven-link", function(){
+	
 	let venId = $(this).attr("data-venid");
 	$("#selectVen").val(venId);
 	$("#venForm").submit();
@@ -603,6 +611,19 @@ $(document).on("click", ".ven-link", function(){
 });
 </script>
 
+
+<!-- store hash tab in history  -->
+<script>
+
+function updateHashWithoutAddingToHistory(hashTab) {
+    var currentUrl = window.location.href;
+    var newUrl = currentUrl.split('#')[0] + '#' + hashTab;
+
+    // Use replaceState to update the URL without adding to history
+    window.history.replaceState({ path: newUrl }, '', newUrl);
+}
+
+</script>
 
 </body>
 

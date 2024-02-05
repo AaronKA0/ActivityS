@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <title>場地管理</title>
 
+
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -71,10 +72,20 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.10.0/dist/css/bootstrap-datepicker3.min.css">
 
 
+
+<!--   首頁的css   -->
+<link rel="stylesheet" th:href="@{/back-end/10/css/error.css}">
+<link rel="stylesheet" th:href="@{/back-end/10/css/emp_Index.css}">
+
+<!--   首頁的js   -->
+<script th:src="@{/back-end/10/js/aside.js}"></script>
+
+
+
 <style type="text/css">
-body {
-	margin: 2rem 12rem 2rem 12rem;
-}
+ #ven-container { 
+	margin: 2rem 12rem 2rem 12rem; 
+ } 
 
 .modal-dialog {
 	margin: 50px;
@@ -131,22 +142,46 @@ div.star_block>span.star.-off {
 	display: none;
 }
 
-body {
-	margin-right: 100px;
-}
+/*  body { */
+/*  	margin-right: 100px;  */
+/*  }  */
 
 thead tr:first-child {
 	position: sticky;
 	z-index: 12;
 	top: 0;
 }
+
+::-webkit-scrollbar {
+	width: 9px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: rgba(155, 155, 155, 0.5);
+	border-radius: 20px;
+	border-collapse: collapse;
+	border: transparent;
+}
 </style>
 </head>
 
 
 
-<body>
+<body onload="showDivsBasedOnDeptno()">
 
+<!-- aside -->
+	<!-- header -->
+	<div th:insert="~{/back-end/emp_Index :: header-div}"></div>
+
+	<!-- aside -->
+	<div th:insert="~{/back-end/emp_Index :: aside-div}"></div>
+
+
+	<div id="ven-container" style="overflow-y:auto; height:490px; width:1000px; margin-left:250px">
 	<div class="accordion" id="accordionExample" style="margin-top:20px; margin-bottom:20px">
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="headingOne">
@@ -535,6 +570,7 @@ thead tr:first-child {
 			</thead>
 		</table>
 	</div>
+	</div>
 
 
 	<!-- Insert Modal -->
@@ -904,11 +940,11 @@ thead tr:first-child {
 						</dd>
 						<dt class="col-sm-4 text-center">場地地點</dt>
 						<dd class="col-sm-8 text-start">
-							<p id="view-location"></p>
+							<div id="view-location"></div>
 						</dd>
 						<dt class="col-sm-4 text-center">場地說明</dt>
 						<dd class="col-sm-8 text-start">
-							<p id="view-description"></p>
+							<div id="view-description"></div>
 						</dd>
 					</dl>
 					<img style="max-height: 300px" id="view-image" />
@@ -1762,31 +1798,31 @@ let isSearch = false;
 	        return false;
 	    }
 	   
-	    if($('#s-city').select2('data')[0].text !== "全市"){	    	
-	    	if (city.toLowerCase() !== $('#s-city').select2('data')[0].text.toLowerCase()) {
+	    if($('#s-city').select2('data')[0]?.text !== "全市"){	    	
+	    	if (city.toLowerCase() !== $('#s-city').select2('data')[0]?.text.toLowerCase()) {
 	        	return false;
 	    	}
 	    }
 	 
-	    if($('#s-district').select2('data')[0].text !== "全區"){
-	    	if (district.toLowerCase() !== $('#s-district').select2('data')[0].text.toLowerCase()) {
+	    if($('#s-district').select2('data')[0]?.text !== "全區"){
+	    	if (district.toLowerCase() !== $('#s-district').select2('data')[0]?.text.toLowerCase()) {
 	        	return false;
 	    	}
 	    }
 	    else{
-	    	if($('#s-city').select2('data')[0].text === "臺北"){
+	    	if($('#s-city').select2('data')[0]?.text === "臺北"){
 	    		if (!taipei.includes(district.toLowerCase())) {
 	        		return false;
 	    		}
 	    	}
 	    
-	    	if($('#s-city').select2('data')[0].text === "桃園"){
+	    	if($('#s-city').select2('data')[0]?.text === "桃園"){
 	    		if (!taoyuan.includes(district.toLowerCase())) {
 	        		return false;
 	    		}
 	    	}
 	    
-	   		if($('#s-city').select2('data')[0].text === "臺中"){
+	   		if($('#s-city').select2('data')[0]?.text === "臺中"){
 	    		if (!taichung.includes(district.toLowerCase())) {
 	        		return false;
 	    		}
@@ -2640,6 +2676,24 @@ $("#u-price").on("blur", function(){
 
 </script>
 
+
+<!-- Dropdown JS -->
+<script>
+var dropdown = document.getElementsByClassName("dropdown-btn");
+var i;
+
+for (i = 0; i < dropdown.length; i++) {
+    dropdown[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var dropdownContent = this.nextElementSibling;
+        if (dropdownContent.style.display === "block") {
+            dropdownContent.style.display = "none";
+        } else {
+            dropdownContent.style.display = "block";
+        }
+    });
+}
+</script>
 
 </body>
 </html>

@@ -45,5 +45,9 @@ public class MemberReportService {
 		Optional<MemberReportVO> optional = repository.findById(repId);
 		return optional.orElse(null);
 	}
+	
+	public MemberReportVO getReport(Integer memIdA, Integer memIdB) {
+		return repository.getReport(memIdA, memIdB);
+	}
 
 }
