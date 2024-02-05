@@ -4,10 +4,17 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import com.chat.ChatMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+
 import com.chat.JedisPoolUtil;
 import com.google.gson.Gson;
+
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -15,12 +22,11 @@ import redis.clients.jedis.JedisPool;
 public class PostService {
 	// 此範例key的設計為(發送者名稱:接收者名稱)，實際應採用(發送者會員編號:接收者會員編
 
-
 	private static JedisPool pool = JedisPoolUtil.getJedisPool();
 
 	private static Gson gson = new Gson();
 
-	public static Post addPost(Post post) {
+	public Post addPost(Post post) {
 		
 		String key = new StringBuilder("post:" + post.getMemId()).toString();
 		Jedis jedis = pool.getResource();
@@ -33,7 +39,7 @@ public class PostService {
 		jedis.rpush(key, postString);
 		
 		jedis.close();
-		
+
 		return post;
 	}
 	
@@ -80,6 +86,26 @@ public class PostService {
 		
 		return posts;
 	}
+	
+	
+	public static Post getPost(Integer memId, Integer postId) {
+		
+		String key = new StringBuilder("post:" + memId).toString();
+		Jedis jedis = pool.getResource();
+		jedis.select(14);
+		
+		List<String> postStrings = jedis.lrange(key, 0, -1);	
+		List<Post> posts = postStrings.stream()
+				.map(e -> gson.fromJson(e, Post.class))
+				.filter(p -> p.getPostId() == postId)
+				.toList();   
+	
+		jedis.close();
+		
+		return posts.get(0);
+	}
+	
+	
 
 }
 

@@ -39,29 +39,29 @@ body {
 	position: relative;
 }
 
-/* .friend .message:before { */
-/* 	content: ""; */
-/* 	position: absolute; */
-/* 	z-index: 0; */
-/* 	bottom: 0; */
-/* 	left: -7px; */
-/* 	height: 20px; */
-/* 	width: 20px; */
-/* 	background: #eee; */
-/* 	border-bottom-right-radius: 15px; */
-/* } */
+.friend .message:before {
+	content: "";
+	position: absolute;
+	z-index: 0;
+	bottom: 0;
+	left: -7px;
+	height: 20px;
+	width: 20px;
+	background: #eee;
+	border-bottom-right-radius: 15px;
+}
 
-/* .friend .message:after { */
-/* 	content: ""; */
-/* 	position: absolute; */
-/* 	z-index: 1; */
-/* 	bottom: 0; */
-/* 	left: -10px; */
-/* 	width: 10px; */
-/* 	height: 20px; */
-/* 	background: white; */
-/* 	border-bottom-right-radius: 10px; */
-/* } */
+.friend .message:after {
+	content: "";
+	position: absolute;
+	z-index: 1;
+	bottom: 0;
+	left: -10px;
+	width: 10px;
+	height: 20px;
+	background: white;
+	border-bottom-right-radius: 10px;
+}
 .self {
 	align-items: flex-end;
 }
@@ -74,30 +74,30 @@ body {
 	position: relative;
 }
 
-/* .self .message:before { */
-/* 	content: ""; */
-/* 	position: absolute; */
-/* 	z-index: 0; */
-/* 	bottom: 0; */
-/* 	right: -8px; */
-/* 	height: 20px; */
-/* 	width: 20px; */
-/* 	background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%); */
-/* 	background-attachment: fixed; */
-/* 	border-bottom-left-radius: 15px; */
-/* } */
+.self .message:before {
+	content: "";
+	position: absolute;
+	z-index: 0;
+	bottom: 0;
+	right: -8px;
+	height: 20px;
+	width: 20px;
+	background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%);
+	background-attachment: fixed;
+	border-bottom-left-radius: 15px;
+}
 
-/* .self .message:after { */
-/* 	content: ""; */
-/* 	position: absolute; */
-/* 	z-index: 1; */
-/* 	bottom: 0; */
-/* 	right: -10px; */
-/* 	width: 10px; */
-/* 	height: 20px; */
-/* 	background: white; */
-/* 	border-bottom-left-radius: 10px; */
-/* } */
+.self .message:after {
+	content: "";
+	position: absolute;
+	z-index: 1;
+	bottom: 0;
+	right: -10px;
+	width: 10px;
+	height: 20px;
+	background: white;
+	border-bottom-left-radius: 10px;
+}
 .friend:has(+.self) .message:before {
 	content: "";
 	position: absolute;
@@ -196,7 +196,9 @@ body {
 
 .contact img {
 	border-radius: 50%;
-	max-width: 80px;
+	width: 90px;
+	height: 90px;
+	overflow: hidden;
 	margin-left: 10px;
 	border-collapse: collapse;
 }
@@ -283,6 +285,10 @@ body {
 
 #add-contacts:hover {
 	cursor: pointer;
+}
+
+.contact-name h3{
+	margin-left:20px;
 }
 
 ::-webkit-scrollbar {

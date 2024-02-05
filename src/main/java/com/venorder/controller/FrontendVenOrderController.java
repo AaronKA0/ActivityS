@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,7 +96,8 @@ public class FrontendVenOrderController {
     }
 
 
-    @PostMapping("addVenOrder")
+
+    @GetMapping("addVenOrder")
     public String addVenOrder(ModelMap model, @ModelAttribute VenVO ven) {
 
         VenOrderVO venOrderVO = new VenOrderVO();
@@ -105,6 +105,7 @@ public class FrontendVenOrderController {
 
         model.addAttribute("venOrderVO", venOrderVO);
         model.addAttribute("venVO", venVO);
+
         return "front-end/venue/venType";
     }
 

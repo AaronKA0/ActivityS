@@ -29,8 +29,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.postreport.service.PostReportService;
+import com.post.Post;
+import com.post.PostService;
 import com.postreport.model.PostReportVO;
+import com.postreport.service.PostReportService;
 
 @Controller
 @RequestMapping("/postreport")
@@ -163,6 +165,19 @@ public class PostReportController {
 		model.addAttribute("success", "- (修改成功)");
 		postReportVO = postReportSvc.getOnePostReport(Integer.valueOf(postReportVO.getRepId()));
 		model.addAttribute("postReportVO", postReportVO);
+		
+		
+		
+		// delete the post if the post report status is set to 3 (審核未通過)
+		Post post = PostService.getPost(postReportVO.getMemId(), postReportVO.getPostId());
+		
+		if(postReportVO.getRepStatus() == 3) {
+			post.setPostStatus((byte)3);
+		} else if(postReportVO.getRepStatus() == 2){
+			post.setPostStatus((byte)2);
+		}
+		PostService.editPost(post);
+		
 		return "back-end/postreport/listOnePostReport"; // 修改成功後轉交listOneEmp.html
 	}
 

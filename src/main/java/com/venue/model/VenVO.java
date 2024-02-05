@@ -32,6 +32,10 @@ public class VenVO implements java.io.Serializable {
 	public void setVenRating(Double venRating) {
 		this.venRating = venRating;
 	}
+	
+	public Double getVenRating() {
+		return venRating;
+	}
 
 
 	@Id
