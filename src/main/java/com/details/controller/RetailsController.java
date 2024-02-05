@@ -5,16 +5,21 @@ import com.details.dto.ActRandomDTO;
 import com.details.service.IRetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.List;
@@ -40,12 +45,23 @@ public class RetailsController {
 
         model.addAttribute("act", act);
 
-        String base64Pic = Base64.getEncoder().encodeToString(act.getMemPic());
-        if (base64Pic != null) {
+        //處理會員DB的大頭照如果為null的話
+        String base64Pic;
+        if (act.getMemPic() != null) {
+            base64Pic = Base64.getEncoder().encodeToString(act.getMemPic());
             model.addAttribute("memPic", base64Pic);
         } else {
-            //不寫錯誤判斷會掛掉 進不到活動詳情頁面
+            String defPic = "/static/front-end/defaultPic/defMemPic.jpg";
+            try {
+                Resource resource = new ClassPathResource(defPic);
+                byte[] defPicBytes = StreamUtils.copyToByteArray(resource.getInputStream());
+                base64Pic = Base64.getEncoder().encodeToString(defPicBytes);
+                model.addAttribute("memPic", base64Pic);
+            } catch (IOException e) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
         }
+
         //模擬從session取會員id
 //        Integer testMemId = 1;
 //        session.setAttribute("memId", testMemId);
@@ -66,8 +82,17 @@ public class RetailsController {
         ActDTO act = retailsService.getDetail(actId);
         byte[] actPic = act.getActPic();
 
+        //處理會員沒有放活動照片 給預設圖
         if (actPic == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            String defActPic = "/static/front-end/defaultPic/defActPic.png";
+            try {
+                Resource resource = new ClassPathResource(defActPic);
+                byte[] defPicBytes = StreamUtils.copyToByteArray(resource.getInputStream());
+                actPic = defPicBytes;
+            } catch (IOException e) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
+            return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.IMAGE_PNG).body(actPic);
         } else {
             return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.IMAGE_PNG).body(actPic);
         }
