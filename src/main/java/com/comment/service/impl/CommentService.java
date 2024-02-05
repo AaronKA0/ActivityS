@@ -24,7 +24,6 @@ public class CommentService implements ICommentService {
     private ICommentDAO commentDAO;
 
     @Autowired
-    @Qualifier("commentRedisTemplate")
     private RedisTemplate<String, CommentVO> redisTemplate;
 
     @Override
@@ -44,12 +43,14 @@ public class CommentService implements ICommentService {
         //Redis沒有 就去DB查
         if (commentsCache == null || commentsCache.isEmpty()) {
             List<CommentVO> comments = commentDAO.getComments(commentQueryParams);
-            //反轉redis 變成新至舊
-            Collections.reverse(comments);
-            //查完同時存入Redis
-            redisTemplate.opsForList().rightPushAll(redisKey, comments);
-
+            if (comments != null) {
+                //反轉redis 變成新至舊
+                Collections.reverse(comments);
+                //查完同時存入Redis
+                redisTemplate.opsForList().rightPushAll(redisKey, comments);
+            }
             return getCommentsCache(commentQueryParams);
+
         }
         //redis改變排序
         if (commentQueryParams.getSort().equals("DESC")) {

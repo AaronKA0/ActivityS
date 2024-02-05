@@ -5,9 +5,10 @@ import javax.validation.constraints.NotNull;
 public class CommentReportStatus {
     @NotNull
     private Byte repStatus;
-
     @NotNull
     private Integer actId;
+
+    private Integer empId;
 
     public Byte getRepStatus() {
         return repStatus;
@@ -23,6 +24,14 @@ public class CommentReportStatus {
 
     public void setActId(Integer actId) {
         this.actId = actId;
+    }
+
+    public Integer getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(Integer empId) {
+        this.empId = empId;
     }
 
     @Override

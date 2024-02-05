@@ -112,7 +112,6 @@ public class VenOrderController {
     
     
     
-    
     // 去除BindingResult中某個欄位的FieldError紀錄
     public BindingResult removeFieldError(VenOrderVO venOrderVO, BindingResult result, String removedFieldname) {
         List<FieldError> errorsListToKeep = result.getFieldErrors().stream()

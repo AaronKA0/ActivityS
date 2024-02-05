@@ -1,6 +1,7 @@
 package com.membership.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,10 +13,13 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.announcement.model.AnnouncementVO;
+import com.announcement.service.AnnouncementService;
 import com.membership.model.MembershipVO;
 import com.membership.service.MailService;
 import com.membership.service.MembershipService;
@@ -26,6 +30,9 @@ import com.membership.service.RedisService;
 @Controller
 @RequestMapping("/membership")
 public class LoginController {
+	
+	@Autowired
+    AnnouncementService annSvc;
 	
 	@GetMapping("ZuoHuo")
 	public String ZuoHuo(ModelMap model) {
@@ -76,17 +83,12 @@ public class LoginController {
 //	        System.out.print("line 65 :" + "memId:" + memId +" "+"memAcc:" + memAcc +" " + "memPwd:" + memPwd);
 
 
-//			// +++++++++++++++ 將會員個人訊息存入 session +++++++++++++++
-//			List<NotifyVO> notifies = notifySvc.findByMemId(memId);
-//			request.getSession().setAttribute("notifies", notifies);
-//			// +++++++++++++++ 將會員個人訊息存入 session +++++++++++++++
-
 			// 每次登入就更新一次登入時間
 			membershipSvc.updateMemLoginTime(memAcc);
 
 
-//			return "redirect:/Zuo-Huo";
-			return "redirect:/member";
+			return "redirect:/Zuo-Huo";
+//			return "redirect:/member";
 
 
 		} else {
@@ -192,5 +194,12 @@ public class LoginController {
 		return "front-end/membership/updatepassword";
 
 	}
+	
+	@ModelAttribute("annListData")
+    protected List<AnnouncementVO> annListData(Model model) {
+        
+        List<AnnouncementVO> list = annSvc.getAll();
+        return list;
+    }
 
 }

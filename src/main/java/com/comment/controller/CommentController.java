@@ -58,8 +58,8 @@ public class CommentController {
         CommentVO comment = commentService.getCommentById(comId);
 
         //模擬從session取出會員id
-        Integer testMemId = 1;
-        session.setAttribute("memId", testMemId);
+//        Integer testMemId = 1;
+//        session.setAttribute("memId", testMemId);
         Integer memId = (Integer) session.getAttribute("memId");
 
         if (comment == null) {
@@ -76,8 +76,8 @@ public class CommentController {
     public ResponseEntity<CommentVO> insertCommnet(@RequestBody @Valid CommentRequest commentRequest,
                                                    HttpSession session) {
         //模擬從session取出會員id
-        Integer testMemId = 1;
-        session.setAttribute("memId", testMemId);
+//        Integer testMemId = 1;
+//        session.setAttribute("memId", testMemId);
         Integer memId = (Integer) session.getAttribute("memId");
         commentRequest.setMemId(memId);
 
@@ -94,8 +94,8 @@ public class CommentController {
                                                    HttpSession session) {
 
         //模擬從session取出會員id
-        Integer testMemId = 1;
-        session.setAttribute("memId", testMemId);
+//        Integer testMemId = 1;
+//        session.setAttribute("memId", testMemId);
         Integer memId = (Integer) session.getAttribute("memId");
         commentRequest.setMemId(memId);
 
@@ -115,8 +115,8 @@ public class CommentController {
     public ResponseEntity<CommentVO> deleteComment(@PathVariable Integer comId, HttpSession session) {
 
         //模擬從session取出會員id
-        Integer testMemId = 1;
-        session.setAttribute("memId", testMemId);
+//        Integer testMemId = 1;
+//        session.setAttribute("memId", testMemId);
         Integer memId = (Integer) session.getAttribute("memId");
 
         CommentStatus commentStatus = new CommentStatus();

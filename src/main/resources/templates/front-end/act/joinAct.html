@@ -8,6 +8,20 @@
     <!-- 引入 Bootstrap CSS 文件 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+          <!-- 引入 Bootstrap JavaScript 文件 -->
+    <link href="https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/front-end/zuo-huo/css/notify.css}">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+ 	
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style>
         /* 整体背景色 */
         body {
@@ -135,9 +149,9 @@
             content: "已结束";
             position: absolute;
             top: 80%;
-            left: 70%;
+            left: 75%;
             transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 10px;
+            font-size:25px;
             color: rgba(0, 0, 0, 0.1); /* 水印文字颜色 */
             z-index: 0;
         }
@@ -164,38 +178,117 @@
         #latestActivityButton, #officialActivityButton,#ongoingActivityButton, #registrationOpenButton, #endActivityButton {
             color: #000000; /* 设置默认文字颜色为黑色 */
         }
+        
+        #careText{
+        color:red !important;
+        }
     </style>
 
 </head>
 
-<body>
+<div style="width: 200px" class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
+     aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-body" style="padding: 0px; overflow-x: hidden">
+
+        <div class="b-example-divider"></div>
+
+        <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style="width: 200px;">
+            <a href="/member"
+               class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+                <svg class="bi me-2" width="30" height="24">
+                    <use xlink:href="#bootstrap"/>
+                </svg>
+                <span class="fs-5 fw-semibold">會員首頁</span>
+            </a>
+            <div class="list-group list-group-flush border-bottom scrollarea">
+                <a th:href="@{/member/chat}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">聊天</strong>
+                    </div>
+                </a>
+                <a th:href="@{/member/chat}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">通知</strong>
+                    </div>
+                </a>
+                <a th:href="@{/member/venOrder}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">場地預訂</strong>
+                    </div>
+                </a>
+                <a th:href="@{/membership/actreview}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">活動管理</strong>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="b-example-divider"></div>
+
+    </div>
+</div>
 
 <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <button class="btn btn-primary fa fa-bars" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"></button>
         <div class="col-md-3 mb-2 mb-md-0">
-            <a href="index.html" class="d-inline-flex link-body-emphasis text-decoration-none">
-                <span class="fs-4">做伙</span>
+            <a th:href="@{front_end/zuo-huo}" class="d-inline-flex link-body-emphasis text-decoration-none">
+                <img alt="zuo-huo" src="/front-end/zuo-huo/images/LogoName.jpg" style="width: 160px;">
             </a>
         </div>
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-           <li><a th:href="@{/}" class="nav-link px-2 link-secondary">首頁</a></li>
+            <li><a th:href="@{/membership/ZuoHuo}"
+                   class="nav-link px-2 link-secondary">首頁</a></li>
             <li><a th:href="@{/act/joinAct}" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
             <li><a th:href="@{/act/createAct}" class="nav-link px-2 link-secondary">舉辦活動</a></li>
-            <li><a href="../static/web/rent.html" class="nav-link px-2 link-secondary">場地租借</a></li>
-            <li><a href="../static/web/customer.html" class="nav-link px-2 link-secondary">FAQs</a></li>
-            <li><a href="../static/web/about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
+            <li><a th:href="@{front_end/venue/venue}"
+                   class="nav-link px-2 link-secondary">場地租借</a></li>
+            <li><a th:href="@{/faq/faqs}"
+                   class="nav-link px-2 link-secondary">FAQs</a></li>
+            <li><a th:href="@{/faq/faqs}"
+                   class="nav-link px-2 link-secondary">關於我們</a></li>
         </ul>
 
         <div class="col-md-3 text-end">
-            <button type="button" class="btn btn-outline-primary me-2"><a class="nav-link" href="#"
-                                                                          data-bs-toggle="modal"
-                                                                          data-bs-target="#loginModal">登入</a></button>
-            <button type="button" class="btn btn-primary"><a class="nav-link" href="../static/web/register.html">註冊</a></button>
+
+            <!-- 這邊放會員登入後的選項 -->
+            <div class="after-logging" th:if="${session.memId ne null}">
+                <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px; color: blue;"></i>
+
+                <!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
+                <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                   aria-expanded="false" style="font-size: 25px; color: yellow;"></i>
+
+                <ul id="notify_ul" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li id="notify_a1"></li>
+                    <li id="notify_a2"></li>
+                    <li id="notify_a3"></li>
+                    <li><a id="display_all" class="dropdown-item" th:href="@{front_end/notify}">顯示全部</a></li>
+                </ul>
+                <!-- -------------------- 通知訊息功能 下拉選單 END -------------------- -->
+
+                <!-- class拿掉dropdown-toggle 有問題再加回來 -->
+                <i class="icon bi bi-person-circle" id="dropdownMenuLink"
+                   type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                   style="font-size: 40px; margin: 20px;"></i>
+
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="#">個人資料</a></li>
+                    <li><a class="dropdown-item" href="#">Another</a></li>
+                    <li><a id="SignOut" class="dropdown-item" href="#">登出</a></li>
+                </ul>
+
+            </div>
+
         </div>
     </header>
-</div>
-
 <main class="container mt-5">
     <section id="join-event" class="mt-5">
         <h2>加入活動</h2>
@@ -314,9 +407,6 @@
 
 </body>
 <!-- 引入 Bootstrap JavaScript 文件 -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
@@ -381,12 +471,36 @@
 
 
         // 動態生成顯示活動卡片
-        function displayActivities(activities, container) {
+        function displayActivities(activities, container, timeType) {
             var content = '';
             $.each(activities, function (index, activity) {
                 var imageUrl = 'data:image/jpeg;base64,' + activity.actPic;
-                var lastUpdated = new Date(activity.actCrTime).toLocaleString();
+                var timeInfo  = '';
 
+                // 根據 displayType 決定顯示哪種時間信息
+                if (timeType  === 'ongoing') {
+                    // 活動進行中，顯示開始和結束時間
+                    var startTime = new Date(activity.actStartTime).toLocaleString();
+                    var endTime = new Date(activity.actEndTime).toLocaleString();
+                    timeInfo = '進行時間起：' + startTime + ' <br>進行時間迄：' + endTime;
+                } else if (timeType === 'registration') {
+                	// 活動報名中，顯示報名開始和報名結束時間
+                    var regStartTime = new Date(activity.regStartTime).toLocaleString();
+                    var regEndTime = new Date(activity.regEndTime).toLocaleString();
+                    timeInfo = '報名時間起：' + regStartTime + '<br>報名時間迄：' + regEndTime;
+                    
+                    //計算報名截止時間到現在還有幾天
+                    var now = new Date();
+                    var deadline = new Date(activity.regEndTime);
+                    var diff = deadline - now;
+                    var daysRemaining = Math.ceil(diff / (1000 * 60 * 60 * 24));
+                    deadlineInfo = daysRemaining > 0 ? '報名截止還有 ' + daysRemaining + ' 天' : '報名已截止';
+                } else {
+                    // 其他情況，顯示創建時間
+                    var lastUpdated = new Date(activity.actCrTime).toLocaleString();
+                    timeInfo = '創建時間 ' + lastUpdated;
+                }
+                
                 // 检查是否是官方活动
                 var isOfficialActivity = activity.memId === 1;
                 var ribbonHtml = isOfficialActivity ? '<div class="official-activity-ribbon">官方</div>' : '';
@@ -399,9 +513,10 @@
                     '<h4 class="card-title">' + '<b><I>' + activity.actName + '</b></I>' + '</h4>' +
                     '<p class="card-text">' + activity.actDescr + '</p>' +
                     '<button type="button" class="btn btn-primary card-button" data-actid="' + activity.actId + '"><span>查看詳情</span></button>' +
+                    (timeType === 'registration' ? '<div style="text-align: right ;"><small id="careText" class="text-muted">' + deadlineInfo + '</small></div>' : '') +
                     '</div>' +
                     '<div class="card-footer">' +
-                    '<small class="text-muted">創建時間 ' + lastUpdated + '</small>' +
+                    '<small class="text-muted">' + timeInfo + '</small>' +
                     '</div>' +
                     '</div>' +
                     '</div>';
@@ -473,15 +588,16 @@
             var filteredActivities = allActivities.filter(function (activity) {
                 return activity.actStatus === 3; // 篩選 actStatus 為 3 (進行中) 的活動
             });
-            displayActivities(filteredActivities, '#activitiesContainer');
+            displayActivities(filteredActivities, '#activitiesContainer', 'ongoing');
         }
 
         // 顯示報名中的活動
         function displayRegistrationOpenActivities() {
+        	var now = new Date(); // 獲取當前時間
             var filteredActivities = allActivities.filter(function (activity) {
                 return activity.actStatus === 4; // 篩選 actStatus 為 4 (報名中) 的活動
             });
-            displayActivities(filteredActivities, '#activitiesContainer');
+            displayActivities(filteredActivities, '#activitiesContainer', 'registration');
         }
 
         // 顯示已結束的活動
@@ -491,6 +607,7 @@
             });
             displayActivities(filteredActivities, '#activitiesContainer');
         }
+        
 
         // 綁定官方活動按鈕點擊事件
         $('#officialActivityButton').on('click', function () {
@@ -511,8 +628,26 @@
         $('#endActivityButton').on('click', function () {
             displayEndActivities();
         });
+        
 
     });
+    
+    //------------------------ 登出 -------------------------
+    document.getElementById("SignOut").addEventListener("click",
+        function () {
+            // 使用 XMLHttpRequest 或 Fetch API 發送登出請求到後端
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/membership/logout", true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    webSocket.close();
+                    // 處理登出成功的回應，這裡將重新導向到登入頁面
+                    window.location.href = "/membership/login"; // 重新導向到登入頁面
+                }
+            };
+            xhr.send();
+        });
 </script>
 
 </html>

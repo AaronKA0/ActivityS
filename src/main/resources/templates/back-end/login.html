@@ -6,7 +6,8 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 <!--  <link rel="stylesheet" th:href="@{/css/login.css}" />-->
-
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style type="text/css">
 
 /* login.css */
@@ -21,7 +22,7 @@ body, html {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	height: 100vh;
+	height: 600px;
 	background-image: url('back-end/10/images/Logo10.jpg');
 	background-position: top center; /* 圖片頂部至中 */
 	background-repeat: no-repeat;
@@ -34,12 +35,12 @@ body, html {
 	align-items: center;
 	width: 100%;
 	max-width: 330px; /* 指定表單最大寬度 */
-	padding: 20px;
+	padding: 10px;
 	margin-top: -100px; /* 向上偏移，確保表單在圖片下方 */
 	background: rgba(255, 255, 255, 0); /* 表單透明度 */
 	border-radius: 5px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0); /* 表單陰影 */
-	margin-top: 5px;
+	margin-top: 20px;
 }
 
 /* 輸入框樣式 */
@@ -72,18 +73,89 @@ body, html {
 .login-header {
 	font-size: 24px; /* 字體大小 */
 	color: #333; /* 字體顏色 */
-	margin-bottom: 10px; /* 和輸入框的距離 */
-	margin-top: 100px;
+	margin-bottom: -10px; /* 和輸入框的距離 */
+	margin-top:150px;
 }
+
+#activity span {
+    display: inline-block;
+    opacity: 0; /* 開始時不可見 */
+    transform: translateY(-100px); /* 初始位置在頁面上方 */
+}
+
+#activity{
+margin-top:150px;
+}
+
+.submit-btn:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.input-field:focus {
+    transform: scale(1.05);
+    border-color: #e19fae;
+    box-shadow: 0 0 8px #e19fae;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+#container {
+  position: absolute; /* 或者 fixed，取决于您想要的效果 */
+  top: 10%; /* 调整为合适的值以垂直居中 */
+  left: 0; /* 放在左侧 */
+  transform: translateY(-50%); /* 垂直居中 */
+  width: 300px; /* 或者需要的宽度 */
+  height: auto; /* 根据内容调整高度 */
+  background-color: transparent; /* 透明背景或根据需要调整 */
+  color: white; /* 文字颜色 */
+  display: flex;
+  flex-direction: column; /* 子元素垂直排列 */
+  justify-content: center;
+  align-items: center;
+}
+
+#circle, #square {
+  width: 40px;
+  height: 40px;
+  background-color: pink;
+}
+
+#circle {
+  border-radius: 50%; /* 使其成为圆形 */
+}
+
+#square {
+  /* 使其成为正方形 */
+}
+
+#text {
+  font-size: 30px;
+  color:#cc627b;
+  margin: 0 20px;
+}
+
 </style>
 </head>
 <body>
+
+
+<div id="container">
+  <div id="circle"></div>
+  <h1 id="text">Zuo-Huo</h1>
+  <div id="square"></div>
+</div>
 
 	<div class="bg">
 
 		<!--  <img src='/images/Logo10.jpg'>-->
 
-		<div class="login-header">員工登入系統</div>
+		<div id="activity" style="font-size: 2em; font-weight: bold;">
+			<span class="letter">員</span> <span class="letter">工</span> <span
+				class="letter">登</span> <span class="letter">入</span> <span
+				class="letter">系</span> <span class="letter">統</span> <span>
+				</span>
+		</div>
 
 		<form id="loginForm" th:action="@{/login}" method="post">
 			<div>
@@ -97,9 +169,9 @@ body, html {
 			<div>
 				<button type="submit" class="submit-btn">登入</button>
 			</div>
-			
+
 		</form>
-		<a href="#" data-toggle="modal" data-target="#forgotPasswordModal">忘記密碼？</a>
+		<a href="#" data-toggle="modal" data-target="#forgotPasswordModal" id="forgot-password">忘記密碼？</a>
 	</div>
 
 
@@ -145,59 +217,197 @@ body, html {
 			</div>
 		</div>
 	</div>
-
-
-<!-- 忘記密碼彈窗 -->
-<div class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+	
+	<!-- 成功消息（Modal）-->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="forgotPasswordModalLabel">忘記密碼</h5>
+                <h5 class="modal-title" id="successModalLabel">操作成功</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form th:action="@{/forgotPassword}" method="post">
-                	 <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
-          				  <p th:text="${errorMessage}"></p>
-       				 </div>
-               		 <div class="form-group">
-    					<label for="forgot-acc">帳號:</label>
-   						 <input type="text" class="form-control" id="empAcc" name="empAcc" placeholder="請輸入您的帳號" required>
-					</div>
-                    <div class="form-group">
-                        <label for="forgot-email">電子郵件地址:</label>
-                        <input type="email" class="form-control" id="empEmail" name="empEmail" placeholder="請輸入您的電子郵件地址" required>
-                    </div>
-                    <button type="submit" class="btn submit-btn">提交</button>
-                </form>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="window.location.href='/login'">確定</button>
             </div>
         </div>
     </div>
 </div>
 
-	<script>
-	 $(document).ready(function() {
-	        if ($("#errorModal .modal-body p").text() !== "") {
-	            $('#errorModal').modal('show');
-	        }
-	    });
-	
-		window.onload = function() {
-			var url = new URL(window.location.href);
-			var logout = url.searchParams.get("logout");
-			var error = url.searchParams.get("error");
 
-			if (logout === "true") {
-				// 自定義登出訊息框
-				$('#logoutModal').modal('show');
-			} else if (error) {
-				// 自定義錯誤訊息框
-				$('#errorModal').modal('show');
-			}
-		};
+	<!-- 忘記密碼彈窗 -->
+	<div class="modal fade" id="forgotPasswordModal" tabindex="-1"
+		role="dialog" aria-labelledby="forgotPasswordModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="forgotPasswordModalLabel">忘記密碼</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form th:action="@{/forgotPassword}" method="post">
+						<div th:if="${errorMessage}" class="alert alert-danger"
+							role="alert">
+							<p th:text="${errorMessage}"></p>
+						</div>
+						<div class="form-group">
+							<label for="forgot-acc">帳號:</label> <input type="text"
+								class="form-control" id="empAcc" name="empAcc"
+								placeholder="請輸入您的帳號" required>
+						</div>
+						<div class="form-group">
+							<label for="forgot-email">電子郵件地址:</label> <input type="email"
+								class="form-control" id="empEmail" name="empEmail"
+								placeholder="請輸入您的電子郵件地址" required>
+						</div>
+						<button type="submit" class="btn submit-btn">提交</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+$(document).ready(function() {
+  const params = new URLSearchParams(window.location.search);
+  const error = params.get('error');
+  const message = params.get('message');
+  const logout = params.get('logout');
+  
+  if (error) {
+    let errorMessage = '';
+    switch(error) {
+      case 'notFound':
+        errorMessage = '找不到該用戶';
+        break;
+      case 'mismatch':
+        errorMessage = '提供的email和帳號不匹配。';
+        break;
+      case 'true':
+          errorMessage = '帳號或密碼不正確';
+          break;
+      default:
+        errorMessage = '未知錯誤。';
+    }
+ 
+    $('#errorModal .modal-body').text(errorMessage);
+    $('#errorModal').modal('show');
+  } else if (message) {
+    let successMessage = '';
+    switch(message) {
+      case 'passwordSent':
+        successMessage = '新密碼已發送至您的信箱。';
+        break;
+      default:
+        successMessage = '操作成功。';
+    }
+    
+    $('#successModal .modal-body').text(successMessage);
+    $('#successModal').modal('show');
+    
+  }else if (logout) {
+	    // 如果存在logout参数，表示用户已成功登出
+	    $('#logoutModal .modal-body').text('您已成功登出。');
+	    $('#logoutModal').modal('show');
+	  }
+});
+
+function generateSimilarColor() {
+	  let baseHue = 340; // 基准色相，#e19fae 大约对应的 HSL 色相值
+	  let hueVariation = 10; // 允许色相上下波动20度
+	  let saturation = 60; // 饱和度保持不变
+	  let lightness = 70; // 亮度保持不变
+
+	  let hue = baseHue + (Math.random() * hueVariation * 2) - hueVariation; // 随机调整色相
+
+	  return `hsl(${hue}, ${saturation}%, ${lightness}%)`; // 返回生成的颜色字符串
+	}
+
+
+</script>
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.10.4/dist/gsap.min.js"></script>
+	<script>
+	
+	  gsap.to("#activity span", {
+	    duration: 1, // 持續時間1秒
+	    y: 0, // 最終位置（相對於起始位置）
+	    opacity: 1, // 最終透明度
+	    stagger: 0.3, // 每個元素之間的延遲時間
+	    ease: "bounce.out", // 緩動效果
+	    from: {y: -200, opacity: 0}, // 開始位置和透明度
+	    color: generateSimilarColor, // 隨機顏色
+	    fontSize: '+=10px' // 字體放大
+	  });
+	
 	</script>
+	
+<script>
+$(document).ready(function() {
+  // 當鼠標懸停時的動畫效果
+  $("#forgot-password").hover(
+    function() {
+      // 鼠標進入時
+      gsap.to(this, {
+        duration: 0.5, // 動畫持續時間為0.5秒
+        rotationY: 360, // Y軸旋轉360度
+        color: "#e19fae", // 文本顏色變化
+        ease: "power1.inOut", // 動畫緩動函數
+        scale: 1.2 // 放大到1.2倍大小
+      });
+    },
+    function() {
+      // 鼠標離開時
+      gsap.to(this, {
+        duration: 0.5, // 動畫持續時間為0.5秒
+        rotationY: 0, // Y軸旋轉回0度
+        color: "#000", // 文本顏色變回原色
+        ease: "power1.inOut", // 動畫緩動函數
+        scale: 1 // 大小恢復正常
+      });
+    }
+  );
+});
+</script>
+
+<script>
+$(document).ready(function() {
+  // 監聽模態框的顯示事件
+  $('#forgotPasswordModal').on('show.bs.modal', function (e) {
+    // 先設置模態框的初始狀態：透明度為0，縮放為50%
+    gsap.set('#forgotPasswordModal', {opacity: 0, scale: 0.5});
+
+    // 使用GSAP創建動畫：淡入和放大
+    gsap.to('#forgotPasswordModal', {
+      opacity: 1, // 最終透明度為1
+      scale: 1, // 最終縮放為100%
+      duration: 0.5, // 動畫持續時間0.5秒
+      ease: "elastic.out(1, 0.3)" // 使用彈性緩動效果
+    });
+  });
+});
+
+//确保DOM加载完成后执行
+document.addEventListener('DOMContentLoaded', function() {
+  // 选择要动画的元素
+  var circle = document.getElementById('circle');
+  var text = document.getElementById('text');
+  var square = document.getElementById('square');
+
+  // 使用GSAP创建动画
+  gsap.to(circle, {duration: 2, x: 100, ease: "power1.out"}); // 水平移动圆形
+  gsap.to(square, {duration: 2, x: -100, ease: "power1.out"}); // 水平移动方形
+  gsap.from(text, {duration: 2, opacity: 0, scale: 0.5}); // 文本淡入和放大
+  gsap.to(square, {duration: 2, rotation: 360, background: "linear-gradient(150deg, #f09caf, #c95d76)"}); // 正方形旋转和颜色渐变
+});
+</script>
+
+
 
 
 	<!-- jQuery 库 -->

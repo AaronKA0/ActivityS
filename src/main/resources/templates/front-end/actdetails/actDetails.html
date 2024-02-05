@@ -118,6 +118,47 @@
             border: none;
         }
 
+        /*.tibame{*/
+        /*    position: absolute;*/
+        /*}*/
+
+        /* 登入後側邊漢堡選單 */
+        .btn-primary1 {
+            --bs-btn-color: #fff;
+            --bs-btn-bg: #abb0b7;
+            --bs-btn-border-color: #abb0b7;
+            --bs-btn-hover-color: #fff;
+            --bs-btn-hover-bg: #787a7d;
+            --bs-btn-hover-border-color: #8f9093;
+            --bs-btn-focus-shadow-rgb: 49, 132, 253;
+            --bs-btn-active-color: #fff;
+            --bs-btn-active-bg: #787a7d;
+            --bs-btn-active-border-color: #787a7d;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #fff;
+            --bs-btn-disabled-bg: #787a7d;
+            --bs-btn-disabled-border-color: #787a7d;
+        }
+
+        /* 登入前註冊按鈕 */
+        .btn-primary2 {
+            --bs-btn-color: #fff;
+            --bs-btn-bg: #0d6efd;
+            --bs-btn-border-color: #0d6efd;
+            --bs-btn-hover-color: #fff;
+            --bs-btn-hover-bg: #0d6efd;
+            --bs-btn-hover-border-color: #0d6efd;
+            --bs-btn-focus-shadow-rgb: 49, 132, 253;
+            --bs-btn-active-color: #fff;
+            --bs-btn-active-bg: #0d6efd;
+            --bs-btn-active-border-color: #0d6efd;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #fff;
+            --bs-btn-disabled-bg: #0d6efd;
+            --bs-btn-disabled-border-color: #0d6efd;
+
+        }
+
     </style>
 </head>
 
@@ -156,6 +197,12 @@
                         <strong class="mb-1">場地預訂</strong>
                     </div>
                 </a>
+                <a th:href="@{/membership/actreview}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">活動管理</strong>
+                    </div>
+                </a>
             </div>
         </div>
 
@@ -168,7 +215,7 @@
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
 
         <div class="after-logging" th:if="${session.memId ne null}">
-            <button class="btn btn-primary fa fa-bars" type="button" data-bs-toggle="offcanvas"
+            <button class="btn btn-primary1 fa fa-bars" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"></button>
         </div>
 
@@ -179,38 +226,33 @@
         </div>
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="index.html" class="nav-link px-2 link-secondary">首頁</a></li>
-            <li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
-            <li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
-            <li><a href="rent.html" class="nav-link px-2 link-secondary">場地租借</a></li>
-            <li><a href="customer.html" class="nav-link px-2 link-secondary">FAQs</a></li>
-            <li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
+            <li><a th:href="@{/membership/ZuoHuo}"
+                   class="nav-link px-2 link-secondary">首頁</a></li>
+            <li><a th:href="@{/act/joinAct}" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+            <li><a th:href="@{/act/createAct}" class="nav-link px-2 link-secondary">舉辦活動</a></li>
+            <li><a th:href="@{front_end/venue/venue}"
+                   class="nav-link px-2 link-secondary">場地租借</a></li>
+            <li><a th:href="@{/faq/faqs}"
+                   class="nav-link px-2 link-secondary">FAQs</a></li>
+            <li><a th:href="@{/faq/faqs}"
+                   class="nav-link px-2 link-secondary">關於我們</a></li>
         </ul>
 
         <div class="col-md-3 text-end">
 
             <!-- 這邊放會員登入後的選項 -->
             <div class="after-logging" th:if="${session.memId ne null}">
-                <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px; color: blue;"></i>
+                <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px; color: #6161f2;"></i>
 
                 <!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
                 <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                   aria-expanded="false" style="font-size: 25px; color: yellow;"></i>
+                   aria-expanded="false" style="font-size: 25px; color: #eded1e;"></i>
 
-                <ul th:if="${session.notifies ne null}" class="dropdown-menu" aria-labelledby="dropdownMenuButton1"
-                    style="width: 350px;">
-                    <li th:if="${session.notifies[0] ne null and session.notifies[0].notifyContent ne ''}">
-                        <a class="dropdown-item" href="#" th:text="${session.notifies[0].notifyContent}"></a>
-                    </li>
-                    <li th:if="${session.notifies[1] ne null and session.notifies[1].notifyContent ne ''}">
-                        <a class="dropdown-item" href="#" th:text="${session.notifies[1].notifyContent}"></a>
-                    </li>
-                    <li th:if="${session.notifies[2] ne null and session.notifies[2].notifyContent ne ''}">
-                        <a class="dropdown-item" href="#" th:text="${session.notifies[2].notifyContent}"></a>
-                    </li>
-                    <li><a style="background-color: lightgreen; color: white; text-align: center;" class="dropdown-item"
-                           th:href="@{front_end/notify}">顯示全部</a></li>
-
+                <ul id="notify_ul" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li id="notify_a1"></li>
+                    <li id="notify_a2"></li>
+                    <li id="notify_a3"></li>
+                    <li><a id="display_all" class="dropdown-item" th:href="@{front_end/notify}">顯示全部</a></li>
                 </ul>
                 <!-- -------------------- 通知訊息功能 下拉選單 END -------------------- -->
 
@@ -220,9 +262,8 @@
                    style="font-size: 40px; margin: 20px;"></i>
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <li><a class="dropdown-item" href="#">個人資料</a></li>
-                    <li><a class="dropdown-item" href="#">Another</a></li>
-                    <li><a id="SignOut" class="dropdown-item" href="#">登出</a></li>
+                    <li><a class="dropdown-item" th:href="@{/membership/getOne_For_Update}">個人資料</a></li>
+                    <li><a id="SignOut" class="dropdown-item" th:href="@{/membership/login}">登出</a></li>
                 </ul>
 
             </div>
@@ -231,8 +272,8 @@
                 <button type="button" class="btn btn-outline-primary me-2">
                     <a class="nav-link" th:href="@{/membership/logging}">登入</a>
                 </button>
-                <button type="button" class="btn btn-primary">
-                    <a class="nav-link" href="register.html">註冊</a>
+                <button type="button" class="btn btn-primary2">
+                    <a class="nav-link" th:href="@{/membership/addMembership}">註冊</a>
                 </button>
             </div>
         </div>
@@ -254,7 +295,7 @@
                     <div class="w-auto h-100">
                         <div class="bg-white">
                             <img th:src="@{/activity/images/{actId}(actId=${act.actId})}" src=""
-                                 class="w-100 img-fluid"
+                                 class="actImg w-100 img-fluid"
                                  alt="活動照片">
                         </div>
                         <h2 class="fw-bolder">活動內容:</h2>
@@ -329,7 +370,9 @@
                                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
                             </svg>
                             報名截止日期:
-                            <time th:text="${#temporals.format(act.regEndTime, 'yyyy-MM-dd HH:mm')}"></time>
+                            <time id="regEndTime"
+                                  th:text="${#temporals.format(act.regEndTime, 'yyyy-MM-dd HH:mm')}"></time>
+                            <small id="strEndTime" class="badge bg-warning text-wrap"></small>
                         </p>
                         <p class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -338,7 +381,8 @@
                                 <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
                             </svg>
                             活動開始時間：
-                            <time id="startTime" th:text="${actStartTime}">2023-12-01 10:00 AM</time>
+                            <time id="actStartTime" th:text="${actStartTime}">2023-12-01 10:00 AM</time>
+                            <small id="strActStartTime" class="badge bg-success text-wrap"></small>
                         </p>
                         <p class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -348,7 +392,8 @@
                                 <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5"/>
                             </svg>
                             活動結束時間：
-                            <time id="endTime" th:text="${actEndTime}">2023-12-01 4:00 PM</time>
+                            <time id="actEndTime" th:text="${actEndTime}">2023-12-01 4:00 PM</time>
+                            <small id="strActEndTime" class="badge bg-success text-wrap"></small>
                         </p>
 
                         <div id="map"></div>
@@ -374,7 +419,7 @@
                 <div class="card w-100 p-3 mb-2 bg-white rounded" style="border: none;" id="scroll">
                     <div id="comments" class="card-body">
                         <div>
-                            <p class="text-center fw-bold">尚有留言</p>
+
                         </div>
                     </div>
                     <button id="morecomments" type="button" class="btn btn-light" onclick="more()">查看更多</button>
@@ -552,6 +597,39 @@
     </div>
 </div>
 
+
+<!-- 遮罩層 -->
+<div class="backdrop position-fixed top-0 end-0 bottom-0 start-0 bg-dark d-none"
+     style="opacity: 0.5; z-index: 1040;"></div>
+<!-- tibame -->
+<div class="position-relative">
+    <div class="tibame position-fixed top-50 start-50 translate-middle d-none" style="z-index: 1050;">
+        <div class="card text-center w-75 shadow-sm" style="height:400px;">
+            <div class="header">
+                <button type="button" class="tibameclose btn-close position-absolute top-0 end-0"></button>
+            </div>
+            <div class="card-body">
+                <div>
+                    <h2 class="text-danger fw-bolder mt-4">TibaMe新春好禮</h2>
+                    <p class="mt-4">2/1限量領取就業培訓班報名輸入<span class="text-danger">「NY888」</span>享優惠價再折2,888元！
+                    </p>
+                    <small style='color: red; font-size: 10px;'>不限台北/中壢自費班只用(政府補助班除外)</small>
+                    <div>
+                        <p class="mt-4 text-danger fs-1" id="countdown"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer bg-danger mt-auto py-5">
+                <button type="button"
+                        class="btn btn-light text-danger mb-4 position-absolute bottom-0 start-50 translate-middle-x"
+                        onclick="gotibame()">
+                    更多轉職培訓
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--<div id="fb-root"></div>-->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
@@ -572,6 +650,78 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
+    //tibame--------------------------------------------------------------
+    function gotibame() {
+        // window.location.href = `https://www.tibame.com/goodjob`;
+        window.open(`https://www.tibame.com/goodjob`, `_blank`);
+    }
+
+    $(".tibameclose").click(function () {
+        $(".tibame").addClass("d-none");
+        $('.backdrop').addClass('d-none');
+    })
+
+    let timeId;
+    let count = 60;
+    setTimeout(function () {
+        timeId = setInterval(timer, 1000);
+    }, 5000);
+    $("#countdown").html(count);
+
+    function timer() {
+        count--;
+        $("#countdown").html(count);
+        if (count === 0) {
+            $("#countdown").html("下次請早！");
+            clearInterval(timeId);
+            setTimeout(function () {
+                $(".tibame").addClass("d-none");
+                $('.backdrop').addClass('d-none');
+            }, 5000);
+        }
+    }
+
+    //tibame--------------------------------------------------------------
+
+    let end;
+    let diff;
+    let days;
+    //報名截止日期
+    end = new Date($("#regEndTime").text())
+    diff = end - new Date();
+    days = Math.floor(diff / ((1000 * 60 * 60 * 24)));
+    let strEndTime = $("#strEndTime");
+    if (days > 0) {
+        strEndTime.text("剩餘" + days + "天")
+    } else {
+        strEndTime.removeClass("bg-warning");
+        strEndTime.addClass("bg-danger")
+        strEndTime.text("已結束")
+    }
+    //活動開始日期
+    end = new Date($("#actStartTime").text());
+    diff = end - new Date();
+    days = Math.floor(diff / ((1000 * 60 * 60 * 24)));
+    let strActStartTime = $("#strActStartTime");
+    if (days > 0) {
+        strActStartTime.text(days + "天後")
+    } else {
+        strActStartTime.removeClass("bg-success");
+        strActStartTime.addClass("bg-danger")
+        strActStartTime.text("已結束")
+    }
+    //活動結束日期
+    end = new Date($("#actEndTime").text());
+    diff = end - new Date();
+    days = Math.floor(diff / ((1000 * 60 * 60 * 24)));
+    let strActEndTime = $("#strActEndTime");
+    if (days > 0) {
+        strActEndTime.text(days + "天後")
+    } else {
+        strActEndTime.removeClass("bg-success");
+        strActEndTime.addClass("bg-danger")
+        strActEndTime.text("已結束")
+    }
 
     //將thymeleaf帶出來的活動狀態改為中文顯示
     let actStatus = $("#actStatus");
@@ -664,6 +814,16 @@
         showAddressOnMap();
         //天氣預報
         getWeather();
+        //tibame廣告
+        setTimeout(function () {
+            if (!sessionStorage.getItem("tibame")) {
+                $(".tibame").removeClass("d-none");
+                $('.backdrop').removeClass('d-none');
+
+                sessionStorage.setItem("tibame", "true")
+            }
+        }, 5000);
+
     });
 
     let newToOldBtn = $("#newToOld");
@@ -762,6 +922,26 @@
                 let limit = page.limit;
 
                 comments.forEach(function (comment) {
+
+                    let endTime = new Date(comment.comTime);
+                    let diff = new Date() - endTime;
+                    let days = Math.floor(diff / (1000 * 60 * 60 * 24))
+                    let hours = Math.floor(diff / (1000 * 60 * 60))
+                    let minutes = Math.floor(diff / (1000 * 60))
+                    let timeText;
+                    if (days >= 1) {
+                        timeText = days + "天前";
+                    } else if (hours >= 1) {
+                        timeText = hours + "小時前";
+                    } else if (minutes >= 1) {
+                        timeText = minutes + "分鐘前";
+                    } else {
+                        timeText = "剛剛";
+                    }
+                    // console.log(diff)
+                    // console.log(days)
+                    // console.log(hours)
+
                     if (comment.comStatus === 1) { //被檢舉成功的不顯示 後端撈出來之前已經有先判斷了 多寫的
                         commentsHTML +=
                             `<div class="usertext">
@@ -776,6 +956,7 @@
                                 <hr style="margin: 0">
                                 <div class="d-flex align-items-center mb-3">
                                     <small class="text-muted">${comment.comTime}</small>
+                                    <small class="text-muted text-danger-emphasis ms-3">${timeText}</small>
                                         <div class="userfunction ms-auto" data-mem-id="${comment.memId}">
                                             <a href="#" class="login ok badge rounded-pill bg-success" style="text-decoration:none; display: none;"  data-com-id="${comment.comId}">確認</a>
                                             <a href="#" class="login nosee update badge rounded-pill bg-danger" style="text-decoration:none; display: none;"  data-com-id="${comment.comId}">編輯</a>
@@ -807,7 +988,7 @@
                 if (user === undefined) {
                     $(".login").remove();
                 }
-
+                console.log(user)
                 // //each所有的.userfunction來抓memId做判斷
                 // $("#comments .userfunction").each(function () {
                 //     let memId = $(this).data("memId")
@@ -851,7 +1032,7 @@
     $("#commentsform").on("submit", function (e) {
         e.preventDefault();
 
-        var commentData = {
+        let commentData = {
             actId: window.location.pathname.split('/')[2], //路徑有變動的話要改
             // comReplyId:null,
             comContent: $("#comment").val()
@@ -865,8 +1046,10 @@
             dataType: 'json',
             success: function (comments) {
                 $("#comment").val("");
-
                 let commentsHTML = "";
+
+                let timeText = "剛剛";
+
                 commentsHTML +=
                     `<div class="usertext">
                         <div class="mb-3">
@@ -880,6 +1063,7 @@
                         <hr style="margin: 0">
                         <div class="d-flex align-items-center mb-3">
                             <small class="text-muted">${comments.comTime}</small>
+                            <small class="text-muted text-danger-emphasis ms-3">${timeText}</small>
                         <div class="userfunction ms-auto" data-mem-id="${comments.memId}">
                             <a href="#" class="ok badge rounded-pill bg-success" style="text-decoration:none; display: none;"  data-com-id="' + comments.comId + '">確認</a>
                             <a href="#" class="nosee update badge rounded-pill bg-danger" style="text-decoration:none;" data-com-id="${comments.comId}">編輯</a>
@@ -1106,7 +1290,6 @@
         let addBtn = $("#addAct");
         let actRegStatus = addBtn.data("actRegStatus");
 
-
         switch (actRegStatus) {
             case 0:
                 //第一次報名 走新增api
@@ -1121,6 +1304,14 @@
                     showCancelButton: true,
                     confirmButtonText: '下一步',
                     cancelButtonText: '取消',
+                    preConfirm: (value) => {
+                        // 判斷
+                        if (value > actTotal) {
+                            Swal.showValidationMessage(`報名人數超過上限，請重新確認`);
+                            return false;
+                        }
+                        return value;
+                    }
                 }).then((result) => {
                         if (result.isConfirmed && result.value) {
                             Swal.fire({
@@ -1131,6 +1322,13 @@
                                 showCancelButton: true,
                                 confirmButtonText: '送出',
                                 cancelButtonText: '取消',
+                                preConfirm: (value) => {
+                                    if (!value || value.trim() === "") {
+                                        Swal.showValidationMessage("請輸入報名原因")
+                                        return false;
+                                    }
+                                    return value;
+                                }
                             }).then((reasonResult) => {
                                 if (reasonResult.isConfirmed && reasonResult.value) {
 
@@ -1165,7 +1363,7 @@
                 )
                 ;
                 break;
-            //防止用戶利用F12搞事 報名審核失敗 不可再報名
+            //報名審核失敗 不可再報名
             case 1:
                 return;
             case 2:
@@ -1214,6 +1412,14 @@
                     showCancelButton: true,
                     confirmButtonText: '下一步',
                     cancelButtonText: '取消',
+                    preConfirm: (value) => {
+                        // 判斷
+                        if (value > actTotal) {
+                            Swal.showValidationMessage(`報名人數超過上限，請重新確認`);
+                            return false;
+                        }
+                        return value;
+                    }
                 }).then((result) => {
                     if (result.isConfirmed && result.value) {
                         Swal.fire({
@@ -1224,6 +1430,13 @@
                             showCancelButton: true,
                             confirmButtonText: '送出',
                             cancelButtonText: '取消',
+                            preConfirm: (value) => {
+                                if (!value || value.trim() === "") {
+                                    Swal.showValidationMessage("請輸入報名原因")
+                                    return false;
+                                }
+                                return value;
+                            }
                         }).then((reasonResult) => {
                             if (reasonResult.isConfirmed && reasonResult.value) {
 
@@ -1275,77 +1488,105 @@
                 let addBtn = $("#addAct");
                 let regStatus = actReg.regStatus;
 
-                switch (regStatus) {
-                    case 1:   //1 = 報名未通過
-                        addBtn.data("actRegStatus", actReg.regStatus);
-                        addBtn.removeClass("btn-outline-danger");
-                        addBtn.addClass("btn-danger");
-                        addBtn.addClass("disabled");
-                        addBtn.text("報名未通過");
-                        break;
-
-                    case 2:   //2 = 報名了審核中
-                        addBtn.data("actRegStatus", actReg.regStatus);
-                        addBtn.removeClass("btn-outline-danger");
-                        addBtn.addClass("btn-danger");
-                        addBtn.text("取消報名");
-                        break;
-
-                    case 3:   //3 = 報名成功
-                        addBtn.data("actRegStatus", actReg.regStatus);
-                        addBtn.removeClass("btn-outline-danger");
-                        addBtn.addClass("btn-danger");
-                        addBtn.addClass("disabled");
-                        addBtn.text("報名成功");
-                        break;
-
-                    case 4:   //4 = 報名過 自己取消報名
-                        addBtn.data("actRegStatus", actReg.regStatus);
-                        addBtn.removeClass("btn-danger");
-                        addBtn.addClass("btn-outline-danger");
-                        addBtn.text("報名活動");
-                        break;
+                if (actStatusData === 4) { //4 = 活動還在報名中
+                    switch (regStatus) {
+                        case 1: //未通過 不能按
+                            addBtn.data("actRegStatus", actReg.regStatus);
+                            addBtn.text("審核未通過")
+                            addBtn.addClass("disabled")
+                            addBtn.removeClass("btn-outline-danger");
+                            addBtn.addClass("btn-danger");
+                            break;
+                        case 2: //審核中
+                            addBtn.data("actRegStatus", actReg.regStatus);
+                            addBtn.text("取消報名")
+                            addBtn.removeClass("btn-outline-danger");
+                            addBtn.addClass("btn-danger");
+                            break;
+                        case 3: //報名成功 不能按
+                            addBtn.data("actRegStatus", actReg.regStatus);
+                            addBtn.text("報名成功")
+                            addBtn.addClass("disabled")
+                            addBtn.removeClass("btn-outline-danger");
+                            addBtn.addClass("btn-success");
+                            break;
+                        case 4: //取消報名
+                            addBtn.data("actRegStatus", actReg.regStatus);
+                            addBtn.text("報名活動")
+                            addBtn.removeClass("btn-danger");
+                            addBtn.addClass("btn-outline-danger");
+                            break;
+                    }
+                } else {
+                    switch (actStatusData) {
+                        case 1:
+                            addBtn.text("活動結束")
+                            addBtn.addClass("disabled")
+                            addBtn.removeClass("btn-outline-danger");
+                            addBtn.addClass("btn-danger");
+                            break;
+                        case 2:
+                            addBtn.text("活動取消")
+                            addBtn.addClass("disabled")
+                            addBtn.removeClass("btn-outline-danger");
+                            addBtn.addClass("btn-warning");
+                            break;
+                        case 3:
+                            addBtn.text("活動進行中")
+                            addBtn.addClass("disabled")
+                            addBtn.removeClass("btn-outline-danger");
+                            addBtn.addClass("btn-primary");
+                            break;
+                    }
                 }
-
-                switch (actStatusData) {
-                    case 1:
-                        addBtn.removeClass("btn-outline-danger");
-                        addBtn.addClass("btn-danger");
-                        addBtn.addClass("disabled");
-                        addBtn.text("活動已結束");
-                        break;
-                    case 2:
-                        addBtn.removeClass("btn-outline-danger");
-                        addBtn.addClass("btn-danger");
-                        addBtn.addClass("disabled");
-                        addBtn.text("活動已取消");
-                        break;
-                    case 3:
-                        addBtn.removeClass("btn-outline-danger");
-                        addBtn.addClass("btn-danger");
-                        addBtn.addClass("disabled");
-                        addBtn.text("活動進行中");
-                        break;
-                }
-
             },
             error(xhr, sttus, error) {
                 console.log("沒報名過")
                 let addBtn = $("#addAct");
                 addBtn.data("actRegStatus", 0); //用來點擊報名活動判斷沒報名過用
-                addBtn.removeClass("btn-danger");
-                addBtn.addClass("btn-outline-danger");
-                addBtn.text("報名活動");
+                console.log(actStatusData)
+                switch (actStatusData) {
+                    case 1:
+                        addBtn.text("活動結束")
+                        addBtn.addClass("disabled")
+                        addBtn.removeClass("btn-outline-danger");
+                        addBtn.addClass("btn-danger");
+                        break;
+                    case 2:
+                        addBtn.text("活動取消")
+                        addBtn.addClass("disabled")
+                        addBtn.removeClass("btn-outline-danger");
+                        addBtn.addClass("btn-warning");
+                        break;
+                    case 3:
+                        addBtn.text("活動進行中")
+                        addBtn.addClass("disabled")
+                        addBtn.removeClass("btn-outline-danger");
+                        addBtn.addClass("btn-primary");
+                        break;
+                }
 
                 //判斷是不是自己的活動 是的話不能報名 user = 後端session, myActMemId = thymeleaf渲染來的主辦人ID
                 if (user === myActMemId) {
-                    addBtn.text("我的活動");
-                    addBtn.addClass("disabled");
-                    addBtn.removeClass("btn-outline-danger");
-                    addBtn.addClass("btn-dark");
+                    // addBtn.text("我的活動");
+                    // addBtn.addClass("disabled");
+                    // addBtn.removeClass("btn-outline-danger");
+                    // addBtn.addClass("btn-dark");
+                    addBtn.remove();
+                    $("#follow").before
+                    (
+                        `<button type="button" id="addAct" class="btn btn-danger btn-lg mx-3" onClick="updateAct()">
+                            修改活動</button>`
+                    );
                 }
             }
         })
+    }
+
+    //自己的活動連去修改活動 -------------------------------------------------------------------
+    function updateAct() {
+        let actId = window.location.pathname.split('/')[2];
+        window.location.href = `/act/updateAct?id=${actId}`;
     }
 
     //關注活動 -------------------------------------------------------------------------------
@@ -1684,11 +1925,11 @@
             url: 'https://maps.googleapis.com/maps/api/geocode/json',
             data: {
                 address: actLoc,
-                key: 'AIzaSyBjHlN8i2-4cw4QDuaPgyctq7OX1n6c6ls' // 替换为您的 API 密钥
+                key: 'AIzaSyBjHlN8i2-4cw4QDuaPgyctq7OX1n6c6ls'
             },
             success: function (data) {
                 if (data.status === 'OK') {
-                    callback(data.results[0].geometry.location); // 返回坐标
+                    callback(data.results[0].geometry.location); //返回座標
                 } else {
                     callback(null);
                 }
@@ -1708,7 +1949,7 @@
                 lat: lat,
                 lng: lng
             },
-            zoom: 15,
+            zoom: 12,
             gestureHandling: "none",
             disableDefaultUI: true
         });
@@ -1719,6 +1960,11 @@
             },
             map: map
         });
+
+        marker.addListener("click", function () {
+            let googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+            window.open(googleMapsUrl, '_blank');
+        })
     }
 
     //以下為天氣預報 -------------------------------------------------------------------------------
@@ -1779,7 +2025,6 @@
                     window.location.href = "/membership/login"; // 重新導向到登入頁面
                 }
             };
-
             xhr.send();
         });
 

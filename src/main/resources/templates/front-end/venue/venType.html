@@ -15,6 +15,23 @@
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" th:href="@{/front-end/07/css/booking.css}">
   
+  
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link href="https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/front-end/zuo-huo/css/notify.css}">
+  
+  
+  
+  
   <style>
     main {
       min-height: calc(100vh - 70px);
@@ -43,41 +60,125 @@
 </head>
 
 <body>
- 
-  <div class="container">
+
+
+<div style="width: 200px" class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
+     aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-body" style="padding: 0px; overflow-x: hidden">
+
+        <div class="b-example-divider"></div>
+
+        <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style="width: 200px;">
+            <a href="/member"
+               class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+                <svg class="bi me-2" width="30" height="24">
+                    <use xlink:href="#bootstrap"/>
+                </svg>
+                <span class="fs-5 fw-semibold">會員首頁</span>
+            </a>
+            <div class="list-group list-group-flush border-bottom scrollarea">
+                <a th:href="@{/member/chat}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">聊天</strong>
+                    </div>
+                </a>
+                <a th:href="@{/member/chat}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">通知</strong>
+                    </div>
+                </a>
+                <a th:href="@{/member/venOrder}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">場地預訂</strong>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="b-example-divider"></div>
+
+    </div>
+</div>
+
+<div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-      <div class="col-md-3 mb-2 mb-md-0">
-        <a href="index.html" class="d-inline-flex link-body-emphasis text-decoration-none">
-          <span class="fs-4">做伙</span>
-        </a>
-      </div>
 
-      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="index.html" class="nav-link px-2 link-secondary">首頁</a></li>
-        <li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
-        <li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
-        <li><a href="rent.html" class="nav-link px-2 link-secondary">場地租借</a></li>
-        <li><a href="customer.html" class="nav-link px-2 link-secondary">FAQs</a></li>
-        <li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
-      </ul>
+        <div class="after-logging" th:if="${session.memId ne null}">
+            <button class="btn btn-primary fa fa-bars" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"></button>
+        </div>
 
-      <div class="col-md-3 text-end">
-        <button type="button" class="btn btn-outline-primary me-2"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">登入</a></button>
-        <button type="button" class="btn btn-primary"><a class="nav-link" href="register.html">註冊</a></button>
-      </div>
-      
+        <div class="col-md-3 mb-2 mb-md-0">
+            <a th:href="@{/Zuo-Huo}" class="d-inline-flex link-body-emphasis text-decoration-none">
+                <img alt="zuo-huo" src="/front-end/zuo-huo/images/LogoName.jpg" style="width: 160px;">
+            </a>
+        </div>
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a th:href="@{/Zuo-Huo}" class="nav-link px-2 link-secondary">首頁</a></li>
+            <li><a th:href="@{/act/joinAct}" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+            <li><a th:href="@{/act/createAct}" class="nav-link px-2 link-secondary">舉辦活動</a></li>
+            <li><a th:href="@{/front_end/venue/browse}" class="nav-link px-2 link-secondary">場地租借</a></li>
+            <li><a th:href="@{/faq/faqs}" class="nav-link px-2 link-secondary">FAQs</a></li>
+            <li><a th:href="@{/faq/faqs}" class="nav-link px-2 link-secondary">關於我們</a></li>
+        </ul>
+
+        <div class="col-md-3 text-end">
+
+            <!-- 這邊放會員登入後的選項 -->
+            <div class="after-logging" th:if="${session.memId ne null}">
+                <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px; color: blue;"></i>
+
+                <!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
+                <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                   aria-expanded="false" style="font-size: 25px; color: yellow;"></i>
+
+                <ul id="notify_ul" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li id="notify_a1"></li>
+                    <li id="notify_a2"></li>
+                    <li id="notify_a3"></li>
+                    <li><a id="display_all" class="dropdown-item" th:href="@{/front_end/notify}">顯示全部</a></li>
+                </ul>
+                <!-- -------------------- 通知訊息功能 下拉選單 END -------------------- -->
+
+                <!-- class拿掉dropdown-toggle 有問題再加回來 -->
+                <i class="icon bi bi-person-circle" id="dropdownMenuLink"
+                   type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                   style="font-size: 40px; margin: 20px;"></i>
+
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="#">個人資料</a></li>
+                    <li><a class="dropdown-item" href="#">Another</a></li>
+                    <li><a id="SignOut" class="dropdown-item" href="#">登出</a></li>
+                </ul>
+
+            </div>
+
+            <div class="after-logging" th:unless="${session.memId ne null}">
+                <button type="button" class="btn btn-outline-primary me-2">
+                    <a class="nav-link" th:href="@{/membership/logging}">登入</a>
+                </button>
+                <button type="button" class="btn btn-primary">
+                    <a class="nav-link" href="register.html">註冊</a>
+                </button>
+            </div>
+        </div>
+
     </header>
   </div>
 
   <main class="container mt-4">
     <div style="display: block; text-align: center;">
-      <select id="venuepicker" class="form-select" aria-label="Default select example" style="width: 450px; display: inline-block;">
+      <select id="venuepicker" class="form-select" aria-label="Default select example" style="width: 450px; display: inline-block; cursor: pointer;">
         <option value="" selected>請選擇場地</option>
         <!-- 嵌入所有場地資料庫 -->
         
       </select>
       
-      <input type="text" id="datepicker" class="form-select" aria-label="Default select example" value="請選擇日期" style="width: 450px; display: inline-block; margin-left: 50px;">
+      <input type="text" id="datepicker" class="form-select" aria-label="Default select example" value="請選擇日期" style="width: 450px; display: inline-block; margin-left: 50px; cursor: pointer;">
     </div>
     
     <!-- --------------------- 場地詳情內容 --------------------- -->
@@ -160,15 +261,14 @@
 
         <div class="user-input-box">
           <label for="memPhone">手機號碼<span class="star">*</span></label>
-          <input type="text" th:field="*{memPhone}" id="memPhone" /><br/>
-<!--           <span  th:if="${#fields.hasErrors('memPhone')}" th:errors="*{memPhone}" class="error" id="memPhone.errors"></span> -->
+          <input id="memPhone" type="text" th:field="*{memPhone}" /><br/>
+          <span class="error" id="memPhone_errors"></span>
         </div>
 
         <div class="user-input-box">
           <label for="userCount">預估人數<span class="star">*</span></label>
           <input id="userCount" type="text" th:field="*{userCount}" required/><br/>
           <span class="error" id="userCount_errors"></span>
-<!--           <span  th:if="${#fields.hasErrors('userCount')}" th:errors="*{userCount}" class="error" id="userCount_errors"></span> -->
         </div>
         
         <div class="user-input-box">
@@ -317,30 +417,70 @@
 
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+</script>
+
+<script src="https://cdn.tiny.cloud/1/tus9t8o6mklmhwd5c0iaejn9394stnli5i0j2ic9bb4xurm0/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
+<script src="https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/dealfonso/power-buttons/dist/powerbuttons.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+
+
+
+
 <script th:inline="javascript">
     /*<![CDATA[*/
     let user = /*[[${session.memId}]]*/'';
     /*]]>*/
+    /*<![CDATA[*/
+    let venReady = /*[[${venVO}]]*/'';
+    /*]]>*/
+    /*<![CDATA[*/
+    let ovReady = /*[[${venOrderVO}]]*/'';
+    /*]]>*/
+    
 </script>
 
 
 <script>
 
+var ordereddate;
+var closeddates;
+var dates = [];
+
 $(document).ready(async function(){
+	console.log(venReady);
+	console.log(ovReady);
 
 	await getAll();
+	
+	if(venReady){
+		await getVen(venReady.venName);
+		await getClosedbyVen(venReady.venName);
+		$("#venuepicker").val(venReady.venName);
+		$("span.venId").html("");
+        $("span.venId").html(`${venReady.venName}`);
+		datepicker();
+		
+	}else {
+        // 顯示第一筆場地資訊
+//         ----------------------getVen(vens[0].venName);
+    }
+	
 	if(user && user !== ""){
-		   await getMemInfo(user);
-		   $("#credit").prop('checked', true);
+	    await getMemInfo(user);
 	}
 	
 });
 
 
 
-var ordereddate;
-var closeddates;
-var dates = [];
 
 // 取得所有場地資訊
 async function getAll(){
@@ -350,10 +490,6 @@ async function getAll(){
             return response.json();
         }).then(function(vens){     
             if(vens.length > 0){
-            	// 顯示第一筆場地資訊
-                getVen(vens[0].venName);
-//                 getVenCom(vens[0].venId);
-                
                 $("#ven-user").html("");   
                 $("#ven-user").append(`<option value="" selected>請選擇場地</option>`);
                 for(let ven of vens){
@@ -371,6 +507,33 @@ async function getAll(){
         }); 
 }
 
+function datepicker() {
+   
+        dates=[];
+        $('#datepicker').datepicker('destroy');
+        console.log(ordereddate);
+        for(let date of ordereddate){
+            dates.push(date.orderDate);
+        }
+        for(let date of closeddates){
+            dates.push(date.closedDate);
+        }
+        console.log(dates);
+        
+        initDatePicker();	
+};
+
+// 變更場地可預訂的日期
+function initDatePicker(){
+    $("#datepicker").datepicker({
+        beforeShowDay: DisableDates,
+    });
+}
+function DisableDates(date) {
+    var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+    return [dates.indexOf(string) == -1];
+}
+
 
 // 取得會員資訊
 async function getMemInfo(id){
@@ -385,6 +548,7 @@ async function getMemInfo(id){
             $("span.memEmail").html("");
             $("span.memEmail").html(`${mem.memEmail}`);
             $("#memPhone").val(`${mem.memPhone}`);
+            $("#credit").prop('checked', true);
         }).catch(function(err){
             console.log(err);
         }); 
@@ -430,7 +594,7 @@ async function getVen(name){
         body: JSON.stringify({venName: name})
     }).then(function(response){;
         return response.json();
-    }).then(function(ven){     
+    }).then(async function(ven){     
         // 清除清單內容
         $("#ven-name").html("");
         $("#ven-name").html(`${ven.venName}`);
@@ -444,9 +608,9 @@ async function getVen(name){
         $("#ven-price").html(`租金：＄${ven.venPrice} / 天`);
                    
         $("#ven-star").html("");
-        $("#ven-star").html(`${ven.venTotRating}`);
         
-        let starcount = ven.venTotRating;
+        let starcount = Math.round((ven.venTotRating / ven.venRateCount)*100)/100;
+        $("#ven-star").html(starcount);
         $(".star_block span").each(function(){
             $(this).empty();
             $(this).removeClass("-on");
@@ -462,7 +626,7 @@ async function getVen(name){
             starcount--;
             
         });
-        getVenCom(ven.venId);
+        await getVenCom(ven.venId);
         
         let halfprice = parseFloat(ven.venPrice/2);
         $(".venResFee").html("");
@@ -487,6 +651,7 @@ async function getVenCom(id){
         	
         	// 存入orderDate
         	ordereddate = vens;
+        	console.log(ordereddate);
         	
             $("#ven-experience").empty();  
             for(let ven of vens){
@@ -601,17 +766,6 @@ $('#venuepicker').change(async function() {
 });
 
 
-// 變更場地可預訂的日期
-function DisableDates(date) {
-    var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
-    return [dates.indexOf(string) == -1];
-}
-
-function initDatePicker(){
-    $("#datepicker").datepicker({
-        beforeShowDay: DisableDates,
-    });
-}
 
 
 // 選擇信用卡
@@ -648,6 +802,26 @@ $("#bookingnow").on("click", function(){
 });	
 
 
+$(document).ready(function() {
+    
+    $("#memPhone").focus(function(){
+        $("#memPhone_errors").hide();
+    });
+    
+    $(".bookingform").submit(function() {
+        
+        var memPhoneValue = $("#memPhone").val();
+        
+        if ((/^\d{10}$/.test(memPhoneValue))) {
+            $("#memPhone_errors").hide();
+            return true;
+        }else{
+            $("#memPhone_errors").text("請填入正確手機號碼").show();
+            return false;
+        } 
+    });
+});
+
 
 $(document).ready(function() {
 	
@@ -659,7 +833,7 @@ $(document).ready(function() {
     	
         var userCountValue = $("#userCount").val();
         
-        if ((/^\d{2}$/.test(userCountValue.trim()))) {
+        if ((/^\d{2}$/.test(userCountValue))) {
             $("#userCount_errors").hide();
             return true;
         }else{
@@ -669,7 +843,6 @@ $(document).ready(function() {
     });
 });
   
-
 
     
 $(document).ready(function() {
@@ -682,7 +855,7 @@ $(document).ready(function() {
         
     	var taxidValue = $("#taxid").val();
         
-    	if ((/^\d{8}$/.test(taxidValue.trim())) || taxidValue.trim() == "") {
+    	if ((/^\d{8}$/.test(taxidValue)) || taxidValue.trim() == "") {
             $("#taxid_error").hide();
             return true;
         } else {
@@ -691,8 +864,7 @@ $(document).ready(function() {
         }
     });
 });
-  
-  
+   
 
 $(document).ready(function() {
 	
@@ -704,7 +876,7 @@ $(document).ready(function() {
         
     	var accountNumberValue = $("#account_number").val();
         
-    	if ((/^\d{16}$/.test(accountNumberValue.trim()))) {
+    	if ((/^\d{16}$/.test(accountNumberValue))) {
     		$("#account_number_error").hide();
             return true;
         } else {

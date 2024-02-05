@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -94,6 +96,7 @@ public class FrontendVenOrderController {
     }
 
 
+
     @GetMapping("addVenOrder")
     public String addVenOrder(ModelMap model, @ModelAttribute VenVO ven) {
 
@@ -102,7 +105,7 @@ public class FrontendVenOrderController {
 
         model.addAttribute("venOrderVO", venOrderVO);
         model.addAttribute("venVO", venVO);
-        
+
         return "front-end/venue/venType";
     }
 
@@ -118,7 +121,7 @@ public class FrontendVenOrderController {
         List<VenOrderVO> list = venOrderSvc.getAll();
         model.addAttribute("venOrderListData", list);
         model.addAttribute("success", "- (新增成功)");
-        return "redirect:/back_end/ven-order/ven_order_page";
+        return "redirect:/member/venOrder";
     }
 
     
@@ -145,34 +148,51 @@ public class FrontendVenOrderController {
         model.addAttribute("venOrderVO", venOrderVO);
         return "back-end/ven-order/listOneVenOrder";
     }
+    
+    
+    @RequestMapping("feedbackform")
+    public String feedbackform(@RequestParam(name="venOrderId") String venOrderId, ModelMap model, RedirectAttributes redirectAttributes) {
+        
+        VenOrderVO venOrderVO = venOrderSvc.getOneVenOrder(Integer.valueOf(venOrderId));
 
+        if(Objects.isNull(venOrderVO)) {
+            System.out.println("無此訂單");
+            return "/Zuo-Huo";
+        }
+        
+        redirectAttributes.addFlashAttribute("venOrderVO", venOrderVO);
+        return "redirect:/front_end/venue/booking_feedback";
+    }
+    
     
     @PostMapping("feedback")
     public String feedback(@Valid VenOrderVO venOrderVO, ModelMap model) {
-        
+       
         venOrderVO.setVenComTime(Timestamp.valueOf(LocalDateTime.now()));
+        venOrderVO.setVenComStatus((byte)1);
         venOrderSvc.updateVenOrder(venOrderVO);
 
-        List<VenOrderVO> venOrders = venOrderSvc.getVenCom(venOrderVO.getVenVO());
+        VenVO venVO = venSvc.getOneVen(venOrderVO.getVenVO().getVenId());
         
-        double venTotRating = 0;
-        double rating = 0;
-        int ratingSize = 0;
-        
-        // 累加場地評分算出平均
-        for(VenOrderVO order : venOrders) {
-            if(order.getVenRating() != 0) {
-                rating = rating + order.getVenRating();
-                ratingSize++;
-            }
-        }
-        venTotRating = rating / ratingSize;
-        
-        venOrderVO.getVenVO().setVenTotRating(venTotRating);
+        venVO.setVenTotRating(venVO.getVenTotRating()+venOrderVO.getVenRating());
+        venVO.setVenRateCount(venVO.getVenRateCount()+1);
+        venSvc.updateVen(venVO);
         
         model.addAttribute("venOrderVO", venOrderVO);
         return "redirect:/Zuo-Huo";
     }
+        
+//        double venTotRating = 0;
+//        double rating = 0;
+//        int ratingSize = 0;
+//        // 累加場地評分算出平均
+//        for(VenOrderVO order : venOrders) {
+//            if(order.getVenRating() != null) {
+//                rating = rating + order.getVenRating();
+//                ratingSize++;
+//            }
+//        }
+//        venTotRating = rating / ratingSize;
     
     
     

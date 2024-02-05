@@ -87,13 +87,17 @@ h1 {
 	/* border: 2px solid red; */
 	font-size: 30px;
 	color: #474c66;
+	font-weight: bold;
+	margin-top: 15px;
+	margin-left: -10px;
 }
 
 p {
 	/* border: 2px solid red; */
-	margin-top: -38px;
+	margin-top: -25px;
 	margin-left: 870px;
 	color: #262e54;
+	font-size: 16px;
 }
 
 header.header ul>li {
@@ -358,9 +362,12 @@ h7 {
 }
 
 table, th, td {
-    border: 1px solid #00000012;
-    }
-    
+	border: 1px solid #00000012;
+}
+
+button.close {
+	margin-left: 750px;
+}
 </style>
 
 
@@ -369,52 +376,83 @@ table, th, td {
 <body>
 	<header class="header">
 		<h1>【做伙後台管理系統】</h1>
-		<p class="welcome">歡迎您 管理員</p>
+
+		<p>
+			歡迎您， <span id="deptNumber" th:text="${deptno}" style="display: none;">部門編號</span>
+			<span th:text="${dname}">部門名稱</span>
+		</p>
 		<nav>
 			<ul>
-				<li><a href="#">登出</a></li>
+				<li><a href="/login?logout=true" onclick="logout()">登出</a></li>
 			</ul>
 		</nav>
 	</header>
 
+
 	<aside class="aside">
 		<nav class="nav">
 			<div class="sidenav">
-				<a href='select_page'>首頁</a>
+				<a th:href="@{/emp_Index}">首頁</a>
 				<hr>
-				<button class="dropdown-btn">
-					員工管理 <i class="fa fa-caret-down"></i>
-				</button>
-				<div class="dropdown-container">
-					<a href="#">修改密碼</a> <a href="#">員工資料管理</a>
+
+				<div id="superEmp" style="display: block;">
+					<button class="dropdown-btn">
+						員工管理 <i class="fa fa-caret-down"></i>
+					</button>
+					<div class="dropdown-container">
+						<a th:href="@{/emp/select_page}">查詢員工</a> <a
+							th:href="@{/emp/addEmp}">新增員工</a> <a th:href="@{/emp/listAllEmp}">員工資料管理</a>
+					</div>
+					<hr>
 				</div>
-				<hr>
-				<button class="dropdown-btn">
-					一般功能管理 <i class="fa fa-caret-down"></i>
-				</button>
-				<div class="dropdown-container">
-					<a href="#">公告管理</a> <a href="#">FQA管理</a>
+
+
+				<div id="emp" style="display: block;">
+					<button class="dropdown-btn">
+						一般功能管理 <i class="fa fa-caret-down"></i>
+					</button>
+					<div class="dropdown-container">
+						<a th:href="@{/back_end/announcement/ann_page}">公告管理</a>
+					</div>
+					<hr>
 				</div>
-				<hr>
-				<button class="dropdown-btn">
-					會員功能管理 <i class="fa fa-caret-down"></i>
-				</button>
-				<div class="dropdown-container">
-					<a href="#">查詢會員</a> <a href="#">產生通知訊息</a> <a href="#">審核會員檢舉</a>
+
+
+				<div id="mem" style="display: block;">
+					<button class="dropdown-btn">
+						會員功能管理 <i class="fa fa-caret-down"></i>
+					</button>
+					<div class="dropdown-container">
+						<a th:href="@{/membership/listAllMembership}">查詢會員</a> <a
+							th:href="@{/back_end/notify/notify_page}">會員通知管理</a> <a
+							th:href="@{/memberreport/listAllMemberReport}">審核會員檢舉</a> <a
+							th:href="@{/postreport/listAllPostReport}">審核貼文檢舉</a>
+					</div>
+					<hr>
 				</div>
-				<hr>
-				<button class="dropdown-btn">
-					活動功能管理 <i class="fa fa-caret-down"></i>
-				</button>
-				<div class="dropdown-container">
-					<a href="#">審核活動管理</a> <a href="#">審核留言管理</a>
+
+
+				<div id="act" style="display: block;">
+					<button class="dropdown-btn">
+						活動功能管理 <i class="fa fa-caret-down"></i>
+					</button>
+					<div class="dropdown-container">
+						<a th:href="@{/emp_Index/report}">審核活動管理</a> <a
+							th:href="@{/emp_Index/commentreport}">審核留言管理</a>
+					</div>
+					<hr>
 				</div>
-				<hr>
-				<button class="dropdown-btn">
-					場地功能管理 <i class="fa fa-caret-down"></i>
-				</button>
-				<div class="dropdown-container">
-					<a href="#">場地管理</a> <a href="#">場地訂單管理</a> <a href="#">場地狀態管理</a>
+
+
+				<div id="ven" style="display: block;">
+					<button class="dropdown-btn">
+						場地功能管理 <i class="fa fa-caret-down"></i>
+					</button>
+					<div class="dropdown-container">
+						<a th:href="@{/ven/getVens}">場地管理</a> <a
+							th:href="@{/back_end/ven-order/ven_order_page}">場地訂單管理</a> <a
+							th:href="@{/back_end/ven-closed/ven_closed_date}">場地狀態管理</a>
+					</div>
 				</div>
 			</div>
 
@@ -431,17 +469,17 @@ table, th, td {
 			<thead>
 				<tr>
 					<th>編號</th>
-<!-- 					<th>檢舉會員編號</th> -->
-<!-- 					<th>被檢舉會員編號</th> -->
-<!-- 					<th>員工編號</th> -->
+					<!-- 					<th>檢舉會員編號</th> -->
+					<!-- 					<th>被檢舉會員編號</th> -->
+					<!-- 					<th>員工編號</th> -->
 					<th>標題</th>
 					<th>內容</th>
 					<th>圖片</th>
 					<th>狀態</th>
-<!-- 					<th>檢舉時間</th> -->
+					<!-- 					<th>檢舉時間</th> -->
 					<th>查看</th>
 					<th>狀態修改</th>
-<!-- 					<th>修改</th> -->
+					<!-- 					<th>修改</th> -->
 				</tr>
 			</thead>
 			<tbody>
@@ -449,9 +487,9 @@ table, th, td {
 				<th:block th:each="memberReportVO : ${memberreportListData}">
 					<tr>
 						<td th:text="${memberReportVOStat.count}"></td>
-<!-- 						<td th:text="${memberReportVO.reporterId}"></td> -->
-<!-- 						<td th:text="${memberReportVO.reporteeId}"></td> -->
-<!-- 						<td th:text="${memberReportVO.empId}"></td> -->
+						<!-- 						<td th:text="${memberReportVO.reporterId}"></td> -->
+						<!-- 						<td th:text="${memberReportVO.reporteeId}"></td> -->
+						<!-- 						<td th:text="${memberReportVO.empId}"></td> -->
 						<td th:text="${memberReportVO.repTitle}"></td>
 						<td th:text="${memberReportVO.repContent}"></td>
 						<td><img
@@ -459,7 +497,7 @@ table, th, td {
 							width="100px"></td>
 						<td
 							th:text="${memberReportVO.repStatus == 1 ? '審核中' : (memberReportVO.repStatus == 2 ? '通過' : '未通過')}"></td>
-<!-- 						<td th:text="${memberReportVO.repTime}"></td> -->
+						<!-- 						<td th:text="${memberReportVO.repTime}"></td> -->
 
 
 
@@ -485,7 +523,7 @@ table, th, td {
 						</td>
 
 
-					
+
 						<!-- 			<td> -->
 						<!-- 			  <form method="post" th:action="@{/membership/delete}" style="margin-bottom: 0px;"> -->
 						<!-- 			     <input type="submit" value="刪除"> -->
@@ -524,18 +562,25 @@ table, th, td {
 							th:fragment="listOneMemberReport-div">
 							<!-- 此div被select_page.html第128行insert用 -->
 
-							<span>編號: </span><span th:text="${memberReportVO.repId}"></span><br /><br />
-							<span>員工編號: </span><span th:text="${memberReportVO.empId}"></span><br /><br />
-							<span>檢舉者會員編號: </span><span th:text="${memberReportVO.reporterId}"></span><br /><br />
-							<span>被檢舉會員編號: </span><span th:text="${memberReportVO.reporteeId}"></span><br /><br />
-							<span>檢舉標題: </span><span th:text="${memberReportVO.repTitle}"></span><br /><br />
-							<span>檢舉內容: </span><span th:text="${memberReportVO.repContent}"></span><br /><br />
-							<span>檢舉圖片: </span><span><img
+							<span>編號: </span><span th:text="${memberReportVO.repId}"></span><br />
+							<br /> <span>員工編號: </span><span
+								th:text="${memberReportVO.empId}"></span><br />
+							<br /> <span>檢舉者會員編號: </span><span
+								th:text="${memberReportVO.reporterId}"></span><br />
+							<br /> <span>被檢舉會員編號: </span><span
+								th:text="${memberReportVO.reporteeId}"></span><br />
+							<br /> <span>檢舉標題: </span><span
+								th:text="${memberReportVO.repTitle}"></span><br />
+							<br /> <span>檢舉內容: </span><span
+								th:text="${memberReportVO.repContent}"></span><br />
+							<br /> <span>檢舉圖片: </span><span><img
 								th:src="@{/memberreport/DBGifReader} + '?repId=' + ${memberReportVO.repId}"
-								width="200px"></span><br /><br />
-							<span>檢舉時間: </span><span id="repTime" th:text="${memberReportVO.repTime}"></span><br /><br />
-							<span>檢舉狀態: </span><span
-								th:text="${memberReportVO.repStatus == 1 ? '審核中' : (memberReportVO.repStatus == 2 ? '通過' : '未通過')}"></span><br /><br />
+								width="200px"></span><br />
+							<br /> <span>檢舉時間: </span><span id="repTime"
+								th:text="${memberReportVO.repTime}"></span><br />
+							<br /> <span>檢舉狀態: </span><span
+								th:text="${memberReportVO.repStatus == 1 ? '審核中' : (memberReportVO.repStatus == 2 ? '通過' : '未通過')}"></span><br />
+							<br />
 						</div>
 						<!-- =========================================以上為原listOneEmp.jsp的內容========================================== -->
 					</div>
@@ -607,11 +652,11 @@ table, th, td {
 										th:field="*{reporteeId}"
 										style="border: 0px; font-weight: bold;" readonly /><br />
 								</div>
-<!-- 								<br> -->
-<!-- 								<div id="empId"> -->
-<!-- 									<label>員工編號:</label> <input type="text" th:field="*{empId}" -->
-<!-- 										style="border: 0px; font-weight: bold;" readonly /><br /> -->
-<!-- 								</div> -->
+								<!-- 								<br> -->
+								<!-- 								<div id="empId"> -->
+								<!-- 									<label>員工編號:</label> <input type="text" th:field="*{empId}" -->
+								<!-- 										style="border: 0px; font-weight: bold;" readonly /><br /> -->
+								<!-- 								</div> -->
 								<br>
 								<div id="repTitle">
 									<label>檢舉標題:</label> <input type="text" th:field="*{repTitle}"
@@ -651,7 +696,7 @@ table, th, td {
 									<br>
 									<h7 id="error-message" style="color:red";></h7>
 								</div>
-								
+
 							</form>
 						</div>
 
@@ -712,8 +757,7 @@ table, th, td {
 				}
 			});
 		}
-		
-		
+
 		//------------------------必須要打勾checkbox才能送出表單---------------------------
 		window.onload = function() {
 			var submitBtn = document.getElementById("submit");
@@ -733,14 +777,11 @@ table, th, td {
 				errorMessage.textContent = ""; // 清除錯誤訊息
 			};
 		};
-		
+
 		//------------------------將時間去除掉後面的部份(jQuery)---------------------------
-		$(document).ready(function(){
-			$("#repTime").text($("#repTime").text().substring(0,16)); 
+		$(document).ready(function() {
+			$("#repTime").text($("#repTime").text().substring(0, 16));
 		});
-		
-		
-		
 	</script>
 </body>
 </html>

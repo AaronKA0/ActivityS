@@ -20,6 +20,7 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link href="https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/front-end/zuo-huo/css/notify.css}">
 
     <style>
 
@@ -42,6 +43,24 @@
         .page {
             position: sticky;
             bottom: 0;
+        }
+
+        /* 登入後側邊漢堡選單 */
+        .btn-primary1 {
+            --bs-btn-color: #fff;
+            --bs-btn-bg: #abb0b7;
+            --bs-btn-border-color: #abb0b7;
+            --bs-btn-hover-color: #fff;
+            --bs-btn-hover-bg: #787a7d;
+            --bs-btn-hover-border-color: #8f9093;
+            --bs-btn-focus-shadow-rgb: 49, 132, 253;
+            --bs-btn-active-color: #fff;
+            --bs-btn-active-bg: #787a7d;
+            --bs-btn-active-border-color: #787a7d;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #fff;
+            --bs-btn-disabled-bg: #787a7d;
+            --bs-btn-disabled-border-color: #787a7d;
         }
 
     </style>
@@ -82,6 +101,12 @@
                         <strong class="mb-1">場地預訂</strong>
                     </div>
                 </a>
+                <a th:href="@{/membership/actreview}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">活動管理</strong>
+                    </div>
+                </a>
             </div>
         </div>
 
@@ -92,7 +117,7 @@
 
 <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <button class="btn btn-primary fa fa-bars" type="button" data-bs-toggle="offcanvas"
+        <button class="btn btn-primary1 fa fa-bars" type="button" data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"></button>
         <div class="col-md-3 mb-2 mb-md-0">
             <a th:href="@{front_end/zuo-huo}" class="d-inline-flex link-body-emphasis text-decoration-none">
@@ -101,38 +126,33 @@
         </div>
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="index.html" class="nav-link px-2 link-secondary">首頁</a></li>
-            <li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
-            <li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
-            <li><a href="/ven/browse" class="nav-link px-2 link-secondary">場地租借</a></li>
-            <li><a href="customer.html" class="nav-link px-2 link-secondary">FAQs</a></li>
-            <li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
+            <li><a th:href="@{/membership/ZuoHuo}"
+                   class="nav-link px-2 link-secondary">首頁</a></li>
+            <li><a th:href="@{/act/joinAct}" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+            <li><a th:href="@{/act/createAct}" class="nav-link px-2 link-secondary">舉辦活動</a></li>
+            <li><a th:href="@{front_end/venue/venue}"
+                   class="nav-link px-2 link-secondary">場地租借</a></li>
+            <li><a th:href="@{/faq/faqs}"
+                   class="nav-link px-2 link-secondary">FAQs</a></li>
+            <li><a th:href="@{/faq/faqs}"
+                   class="nav-link px-2 link-secondary">關於我們</a></li>
         </ul>
 
         <div class="col-md-3 text-end">
 
             <!-- 這邊放會員登入後的選項 -->
             <div class="after-logging" th:if="${session.memId ne null}">
-                <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px; color: blue;"></i>
+                <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px; color: #6161f2;"></i>
 
                 <!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
                 <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                   aria-expanded="false" style="font-size: 25px; color: yellow;"></i>
+                   aria-expanded="false" style="font-size: 25px; color: #eded1e;"></i>
 
-                <ul th:if="${session.notifies ne null}" class="dropdown-menu" aria-labelledby="dropdownMenuButton1"
-                    style="width: 350px;">
-                    <li th:if="${session.notifies[0] ne null and session.notifies[0].notifyContent ne ''}">
-                        <a class="dropdown-item" href="#" th:text="${session.notifies[0].notifyContent}"></a>
-                    </li>
-                    <li th:if="${session.notifies[1] ne null and session.notifies[1].notifyContent ne ''}">
-                        <a class="dropdown-item" href="#" th:text="${session.notifies[1].notifyContent}"></a>
-                    </li>
-                    <li th:if="${session.notifies[2] ne null and session.notifies[2].notifyContent ne ''}">
-                        <a class="dropdown-item" href="#" th:text="${session.notifies[2].notifyContent}"></a>
-                    </li>
-                    <li><a style="background-color: lightgreen; color: white; text-align: center;" class="dropdown-item"
-                           th:href="@{front_end/notify}">顯示全部</a></li>
-
+                <ul id="notify_ul" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li id="notify_a1"></li>
+                    <li id="notify_a2"></li>
+                    <li id="notify_a3"></li>
+                    <li><a id="display_all" class="dropdown-item" th:href="@{front_end/notify}">顯示全部</a></li>
                 </ul>
                 <!-- -------------------- 通知訊息功能 下拉選單 END -------------------- -->
 
@@ -142,9 +162,8 @@
                    style="font-size: 40px; margin: 20px;"></i>
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <li><a class="dropdown-item" href="#">個人資料</a></li>
-                    <li><a class="dropdown-item" href="#">Another</a></li>
-                    <li><a id="SignOut" class="dropdown-item" href="#">登出</a></li>
+                    <li><a class="dropdown-item" th:href="@{/membership/getOne_For_Update}">個人資料</a></li>
+                    <li><a id="SignOut" class="dropdown-item"  th:href="@{/membership/login}">登出</a></li>
                 </ul>
 
             </div>
@@ -155,8 +174,8 @@
     <main class="main">
         <div>
             <div class="btn-group" role="group" aria-label="Basic example" style="margin-bottom: 30.334px;">
+                <button type="button" class="change btn btn-outline-dark">我的活動</button>
                 <button type="button" class="change btn btn-outline-dark">報名管理</button>
-                <button type="button" class="change btn btn-outline-dark">活動管理</button>
                 <button type="button" class="change btn btn-dark">關注管理</button>
             </div>
             <!--            <div class="d-md-flex justify-content-md-end mb-1">-->
@@ -175,6 +194,14 @@
                     <th>活動編號</th>
                     <th>活動名稱</th>
                     <th>活動詳情</th>
+                    <th>
+                        報名截止日
+                        <select id="time">
+                            <option value="ASC">近到遠</option>
+                            <option value="DESC">遠到近</option>
+                        </select>
+                    </th>
+                    <th>活動開始日</th>
                     <th>關注中</th>
                 </tr>
                 </thead>
@@ -234,20 +261,27 @@
     })
 
     let pageNumber = 1;
+    let endTime = "ASC";
 
     //第幾頁
-    function loadPage(pageNumber) {
-
-        checkFollows(pageNumber);
+    function loadPage(pageNumber, endTime) {
+        checkFollows(pageNumber, endTime);
     }
 
+    //時間排序
+    $("#time").change(function () {
+        endTime = $("#time").val();
+        checkFollows(pageNumber, endTime);
+    });
+
     //查看所有關注的活動
-    function checkFollows(pageNumber) {
+    function checkFollows(pageNumber, endTime) {
         $.ajax({
             url: '/activity/actfollows',
             type: 'GET',
             data: {
                 page: pageNumber - 1,
+                sortDirection: endTime
             },
             dataType: 'json',
             contentType: 'application/json',
@@ -261,7 +295,7 @@
                 let first = actFollowsPageable.first; //當前是第一頁為ture
                 let last = actFollowsPageable.last; // 當前是最後一頁為true
 
-                nextPage(totalPages);
+                nextPage(totalPages, endTime);
 
                 $(".number").each(function () {
                     if ($(this).text() === (number + 1).toString()) {
@@ -283,14 +317,25 @@
 
                 actFollows.forEach(function (actFollow) {
 
+                    let endTime = new Date(actFollow.act.regEndTime);
+                    let now = new Date();
+                    let diff = endTime - now;
+                    let days = Math.floor(diff / (1000 * 60 * 60 * 24))
+
                     if (actFollow.folStatus === 2) {
                         count++;
-
                         followHTML += `<tr>
                                             <td><span class="badge rounded-circle bg-dark">${actFollow.actId}</span></td>
                                             <td><sapn class="fw-bold">${actFollow.act.actName}</sapn></td>
                                             <td>
                                                 <button class="rounded-pill btn btn-info" data-act-id="${actFollow.actId}" onclick="view(this)">查看</button>
+                                            </td>
+                                            <td>
+                                                <span>${actFollow.act.regEndTime}</span>
+                                                <small class="badge ${days > 0 ? "bg-success" : "bg-warning"} text-wrap">${days > 0 ? days + "天後" : "已結束"}</small>
+                                            </td>
+                                            <td>
+                                                <span>${actFollow.act.actStartTime}</span>
                                             </td>
                                             <td class="actStatus pb-3">
                                                 <button class="delbtn rounded-pill btn btn-danger" data-act-id="${actFollow.actId}"
@@ -352,12 +397,12 @@
     }
 
     //分頁元件
-    function nextPage(totalPages) {
+    function nextPage(totalPages, endTime) {
         let pageHTML = "";
         for (let i = 0; i < totalPages; i++) {
             pageHTML +=
                 `<li  class="page-item">
-                <a class="number page-link" href="#" onclick="loadPage(${i + 1}); return false;">${i + 1}</a>
+                <a class="number page-link" href="#" onclick="loadPage(${i + 1},${endTime}); return false;">${i + 1}</a>
                 </li>`;
         }
 
@@ -369,12 +414,12 @@
 
     //下一頁
     function next() {
-        checkFollows(++pageNumber);
+        checkFollows(++pageNumber, endTime);
     }
 
     //上一頁
     function previous() {
-        checkFollows(--pageNumber);
+        checkFollows(--pageNumber, endTime);
     }
 
 
@@ -396,7 +441,7 @@
             case "報名管理":
                 window.location.href = `/membership/actregistration`;
                 break;
-            case "活動管理":
+            case "我的活動":
                 window.location.href = `/membership/actreview`;
                 break;
             case "關注管理":

@@ -192,13 +192,13 @@ button#SignOut:hover {
 			</ul>
 
 			<div class="col-md-3 text-end">
-				<button type="button" class="btn btn-primary">
-					<a class="nav-link" href='login'>登入</a>
-				</button>
-				<button type="button" class="btn btn-primary">
-					<a class="nav-link" href='addMembership'>註冊</a>
-				</button>
-			</div>
+                <button type="button" class="btn btn-outline-primary me-2">
+                    <a class="nav-link" th:href="@{/membership/logging}">登入</a>
+                </button>
+                <button type="button" class="btn btn-primary">
+                    <a class="nav-link" th:href="@{/membership/addMembership}">註冊</a>
+                </button>
+            </div>
 		</header>
 	</div>
 
@@ -256,9 +256,9 @@ button#SignOut:hover {
 					<br>
 					<button type="submit" id="submit">會員登入</button>
 				</div>
-				<h7 th:text="${session.memId}"></h7>
-				<h7 th:text="${session.memName}"></h7>
-				<h7 th:text="${session.IsAccEna}"></h7>
+<!-- 				<h7 th:text="${session.memId}"></h7> -->
+<!-- 				<h7 th:text="${session.memName}"></h7> -->
+<!-- 				<h7 th:text="${session.IsAccEna}"></h7> -->
 				<!--要取session 需要session.memId-->
 			</form>
 		</div>

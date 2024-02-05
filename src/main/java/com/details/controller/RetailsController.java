@@ -47,8 +47,8 @@ public class RetailsController {
             //不寫錯誤判斷會掛掉 進不到活動詳情頁面
         }
         //模擬從session取會員id
-        Integer testMemId = 1;
-        session.setAttribute("memId", testMemId);
+//        Integer testMemId = 1;
+//        session.setAttribute("memId", testMemId);
 
         //判斷會員有沒有登入過 沒有的話將留言牆輸入框隱藏
         Integer memId = (Integer) session.getAttribute("memId");
