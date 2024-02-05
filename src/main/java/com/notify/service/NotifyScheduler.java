@@ -39,22 +39,14 @@ public class NotifyScheduler {
 //    @Scheduled(cron = "0/3 * * * * ?")
 //    public void getBookingNotify() throws InterruptedException {
 //        
-//        MembershipVO memVO = memSrv.getOneMembership(16);
-//        
-//        Set<MembershipVO> memVOset = new HashSet<>();
-//        
-//        memVOset.add(memVO);
-//        
-//        notifyNow.sendNotifyNow(memVOset, "系統通知", "通知成功成功成功");
-//        
 //        Integer memId = null;
 //        Date orderDate = null;
 //        
 //        MembershipVO memVO = new MembershipVO();
 //        
-////        String d = "2024-02-15";
-////        Date afterSomeDays = Date.valueOf(d);
-//        Date afterSomeDays = Date.valueOf(LocalDate.now().plusDays(3));
+//        String d = "2024-02-15";
+//        Date afterSomeDays = Date.valueOf(d);
+//        Date afterSomeDays = Date.valueOf(LocalDate.now().plusDays(2));
 //       
 //        List<VenOrderVO> bookings = venOrderSrv.getLessDay(afterSomeDays);
 //        for(VenOrderVO booking : bookings) {
@@ -79,7 +71,7 @@ public class NotifyScheduler {
 //    public void lottery() throws InterruptedException {
 //        
 //        String title = "一般通知";
-//        String content = ":恭喜您獲得免費使用場地入場卷一張";
+//        String content = "恭喜您獲得免費使用場地入場卷一張";
 //        
 //        Jedis jedis = null;
 //
@@ -97,13 +89,17 @@ public class NotifyScheduler {
 //              List<String> winners = jedis.srandmember("AllMembers", 3);
 //              System.out.println(winners);
 //              
+//              Set<MembershipVO> memVOset = new HashSet<>();
+//              
 //              for (String winner : winners) {
 //                  Integer winnerId = Integer.valueOf(winner);
 //                  MembershipVO winnerVO = memSrv.getOneMembership(winnerId);
-//                  NotifyVO notifyVO = new NotifyVO(winnerVO, title, winnerVO.getMemName() + content);
-//                  notifySrv.addNotify(notifyVO);
+//                  
+//                  memVOset.add(winnerVO);
+//                  
 //                  jedis.sadd("winnerMembers", winnerVO.getMemName());
 //              }
+//              notifyNow.sendNotifyNow(memVOset, title, content);
 //              
 //          } finally {
 //              if(jedis != null)

@@ -83,11 +83,6 @@ public class LoginController {
 //	        System.out.print("line 65 :" + "memId:" + memId +" "+"memAcc:" + memAcc +" " + "memPwd:" + memPwd);
 
 
-//			// +++++++++++++++ 將會員個人訊息存入 session +++++++++++++++
-//			List<NotifyVO> notifies = notifySvc.findByMemId(memId);
-//			request.getSession().setAttribute("notifies", notifies);
-//			// +++++++++++++++ 將會員個人訊息存入 session +++++++++++++++
-
 			// 每次登入就更新一次登入時間
 			membershipSvc.updateMemLoginTime(memAcc);
 

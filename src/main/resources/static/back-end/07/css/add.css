@@ -67,7 +67,10 @@ textarea.texthighter {
     height: 100px;
 }
 
-span {
+span.title,
+span.content,
+span.error,
+div.extra_error {
     display: inline-block;
     width: 200px;
     text-align: left;
@@ -98,7 +101,7 @@ span.error {
     outline: none;
 }
 
-button {
+button.submit_button {
     color: red;
     font-weight: bold;
     padding: 5px;
@@ -110,7 +113,7 @@ button {
     justify-content: center;
 }
 
-span.extra_error {
+div.extra_error {
 	width: 100%;
 	text-align: center;
 	color: red;

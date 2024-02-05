@@ -8,58 +8,78 @@
 
 <link rel="stylesheet" th:href="@{/back-end/07/css/listOne.css}">
 
+<!--   首頁的css   -->
+<link rel="stylesheet" th:href="@{/back-end/10/css/error.css}">
+<link rel="stylesheet" th:href="@{/back-end/10/css/emp_Index.css}">
+
+
 </head>
 
-<body>
+<body onload="showDivsBasedOnDeptno()">
 
+    <!-- header -->
+    <div th:insert="~{/back-end/emp_Index :: header-div}"></div>
+
+    <!-- aside -->
+    <div th:insert="~{/back-end/emp_Index :: aside-div}"></div>
+
+
+<main class="main">
 <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
-		 <div align="center"> <h2>場地訂單資料</h2></div>
-		 
+		 <div align="center"> <h3 style="margin: 0px;">場地訂單資料</h3></div>
+    <div class="nav_div">	
+    
+        <a class="back" th:href="@{/back_end/ven-order/ven_order_page}"><<< 回查詢頁</a>	
+                      
 		 <div class="nav-content">
-		      
-		      <div>
-		          <a class="back" th:href="@{/back_end/ven-order/ven_order_page}">
-		              <<<<<< 回查詢頁</a>
-              </div>
-              
-         </div>
+            <form method="post" th:action="@{getOne_For_Update}">
+                <input type="hidden" name="venOrderId" th:value="${venOrderVO.venOrderId}">
+                <button class="submit_button" type="submit" style="padding: 5px;">修改資料</button>
+            </form>
+        </div>
+    </div>
 </nav>
 
 	<div align="center">
 
         <div id="center" align="center">
         
-            <span class="title">訂單編號:</span><span th:text="${venOrderVO.venOrderId}"></span>
-            <span class="title">場地:</span><span th:text="${venOrderVO.venVO.venName}"></span><br/>
-            <span class="title">預訂會員:</span><span th:text="${venOrderVO.memVO.memId+' / '+venOrderVO.memVO.memName}"></span>
-<!--             <span class="title">負責員工:</span><span th:text="${venOrderVO.empVO.empId+' / '+venOrderVO.empVO.empName}"></span><br/> -->
-            <span class="title">預約日期:</span><span th:text="${venOrderVO.orderDate}"></span>
-            <span class="title">手機號碼:</span><span th:text="${venOrderVO.memPhone}"></span><br/>
-            <span class="title">預估人數:</span><span th:text="${venOrderVO.userCount}"></span>
-            <span class="title">公司統編:</span><span th:text="${venOrderVO.memTaxid}"></span><br/>
-            <span class="title">訂單成立時間:</span><span th:text="${#dates.format(venOrderVO.orderTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+            <span class="title">訂單編號:</span><span class="content" th:text="${venOrderVO.venOrderId}"></span>
+            <span class="title">場地:</span><span class="content" th:text="${venOrderVO.venVO.venName}"></span><br/>
+            <span class="title">預訂會員:</span><span class="content" th:text="${venOrderVO.memVO.memId+' / '+venOrderVO.memVO.memName}"></span>
+            <span class="title">負責員工:</span>
+                <span class="content" th:unless="${venOrderVO.empVO ne null}"></span>
+                <span class="content" th:if="${venOrderVO.empVO ne null}" th:text="${venOrderVO.empVO.empId+' / '+venOrderVO.empVO.empName}"></span><br/>
+            <span class="title">預約日期:</span><span class="content" th:text="${venOrderVO.orderDate}"></span>
+            <span class="title">手機號碼:</span><span class="content" th:text="${venOrderVO.memPhone}"></span><br/>
+            <span class="title">預估人數:</span><span class="content" th:text="${venOrderVO.userCount}"></span>
+            <span class="title">公司統編:</span><span class="content" th:text="${venOrderVO.memTaxid}"></span><br/>
+            <span class="title">訂單成立時間:</span><span class="content" th:text="${#dates.format(venOrderVO.orderTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
             <span class="title">付款方式:</span>
-                <span th:if="${venOrderVO.orderPayType == 1}" th:text="信用卡"></span>
-                <span th:if="${venOrderVO.orderPayType == 2}" th:text="轉帳"></span>
+                <span class="content" th:if="${venOrderVO.orderPayType == 1}" th:text="信用卡"></span>
+                <span class="content" th:if="${venOrderVO.orderPayType == 2}" th:text="轉帳"></span>
             <br/>
-            <span class="title">會員轉帳帳號:</span><span th:text="${venOrderVO.memTransferNum}"></span>
-            <span class="title">信用卡卡號:</span><span th:text="${venOrderVO.memCreditNum}"></span><br/>
+            <span class="title">會員轉帳帳號:</span><span class="content" th:text="${venOrderVO.memTransferNum}"></span>
+            <span class="title">信用卡卡號:</span><span class="content" th:text="${venOrderVO.memCreditNum}"></span><br/>
             <span class="title">訂單狀態:</span>
-                <span th:if="${venOrderVO.orderStatus == 1}" th:text="已付款"></span>
-                <span th:if="${venOrderVO.orderStatus == 2}" th:text="已取消"></span>
-                <span th:if="${venOrderVO.orderStatus == 3}" th:text="已退款"></span>
+                <span class="content" th:if="${venOrderVO.orderStatus == 1}" th:text="已付款"></span>
+                <span class="content" th:if="${venOrderVO.orderStatus == 2}" th:text="已取消"></span>
+                <span class="content" th:if="${venOrderVO.orderStatus == 3}" th:text="已退款"></span>
             <span class="title">租借狀態:</span>
-                <span th:if="${venOrderVO.venRentStatus == 1}" th:text="CheckIn"></span>
-                <span th:if="${venOrderVO.venRentStatus == 2}" th:text="CheckOut"></span>
-                <span th:if="${venOrderVO.venRentStatus == 3}" th:text="Done"></span>
+                <span class="content" th:if="${venOrderVO.venRentStatus == 1}" th:text="CheckIn"></span>
+                <span class="content" th:if="${venOrderVO.venRentStatus == 2}" th:text="CheckOut"></span>
+                <span class="content" th:if="${venOrderVO.venRentStatus == 3}" th:text="Done"></span>
             <br/>
-            <span class="title">場地滿意度:</span><span th:text="${venOrderVO.venRating}"></span>
+            <span class="title">場地滿意度:</span>
+                <span class="content" th:unless="${venOrderVO.venRating ne null}"></span>
+                <span class="content" th:if="${venOrderVO.venRating ne null}" th:text="${venOrderVO.venRating}"></span>
             <span class="title">評論狀態:</span>
-                <span th:if="${venOrderVO.venComStatus == 1}" th:text="可顯示評論"></span>
-                <span th:if="${venOrderVO.venComStatus == 2}" th:text="不允許顯示評論"></span>
+                <span class="content" th:unless="${venOrderVO.venComStatus ne null}"></span>
+                <span class="content" th:if="${venOrderVO.venComStatus == 1}" th:text="可顯示評論"></span>
+                <span class="content" th:if="${venOrderVO.venComStatus == 2}" th:text="不允許顯示評論"></span>
             <br/>
-            <span class="title">場地訂金:</span><span th:text="${venOrderVO.venResFee}"></span>
-            <span class="title">評論時間:</span><span th:text="${#dates.format(venOrderVO.venComTime, 'yyyy-MM-dd HH:mm:ss')}"></span><br/>
+            <span class="title">場地訂金:</span><span class="content" th:text="${venOrderVO.venResFee}"></span>
+            <span class="title">評論時間:</span><span class="content" th:text="${#dates.format(venOrderVO.venComTime, 'yyyy-MM-dd HH:mm:ss')}"></span><br/>
             <div class="has_two">
                 <div class="text_block">
                     <span class="title">活動概述:</span>
@@ -74,15 +94,14 @@
                   
         </div>
         
-        
-        <div>
-            <form method="post" th:action="@{getOne_For_Update}">
-                <input type="hidden" name="venOrderId" th:value="${venOrderVO.venOrderId}">
-                <button class="submit_button" type="submit" style="padding: 5px;">修改資料</button>
-            </form>
-        </div>
-
 	</div>
+</main>
+
+<script th:src="@{/back-end/10/js/jquery-1.11.3.min.js}"></script>
+<!-- 左側jquery為table分頁用 -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<!--   首頁的js   -->
+<script th:src="@{/back-end/10/js/aside.js}"></script>
 
 </body>
 </html>

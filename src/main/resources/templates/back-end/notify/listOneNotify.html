@@ -7,11 +7,23 @@
 <title>會員通知訊息</title>
 
 <link rel="stylesheet" th:href="@{/back-end/07/css/listOne.css}">
+<!--   首頁的css   -->
+<link rel="stylesheet" th:href="@{/back-end/10/css/error.css}">
+<link rel="stylesheet" th:href="@{/back-end/10/css/emp_Index.css}">
+
 
 </head>
 
-<body>
+<body onload="showDivsBasedOnDeptno()">
 
+    <!-- header -->
+    <div th:insert="~{/back-end/emp_Index :: header-div}"></div>
+
+    <!-- aside -->
+    <div th:insert="~{/back-end/emp_Index :: aside-div}"></div>
+     
+     
+<main class="main">
 <nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
          <div align="center"> <h2>會員通知訊息</h2></div>
          
@@ -22,6 +34,13 @@
                       <<<<<< 回查詢頁</a>
               </div>
               
+              <div th:if="${notifyVO.notifyStatus == 1}">
+	            <form method="post" th:action="@{getOne_For_Update}">
+	                <input type="hidden" name="notifyId" th:value="${notifyVO.notifyId}">
+	                <button class="submit_button" type="submit" style="padding: 5px;">修改資料</button>
+	            </form>
+              </div>
+              
          </div>
 </nav>
 
@@ -29,14 +48,14 @@
 
         <div id="center" align="center">
         
-            <span class="title">編號:</span><span th:text="${notifyVO.notifyId}"></span><br/>
-            <span class="title">會員帳號:</span><span th:text="${notifyVO.memVO.memId+' / '+notifyVO.memVO.memName}"></span><br/>
-            <span class="title">通知標題:</span><span th:text="${notifyVO.notifyTitle}"></span><br/>
+            <span class="title">編號:</span><span class="content" th:text="${notifyVO.notifyId}"></span><br/>
+            <span class="title">會員帳號:</span><span class="content" th:text="${notifyVO.memVO.memId+' / '+notifyVO.memVO.memName}"></span><br/>
+            <span class="title">通知標題:</span><span class="content" th:text="${notifyVO.notifyTitle}"></span><br/>
             <span class="title">通知狀態:</span>
-                <span th:if="${notifyVO.notifyStatus == 1}" th:text="未讀"></span>
-                <span th:if="${notifyVO.notifyStatus == 2}" th:text="已讀"></span>
+                <span class="content" th:if="${notifyVO.notifyStatus == 1}" th:text="未讀"></span>
+                <span class="content" th:if="${notifyVO.notifyStatus == 2}" th:text="已讀"></span>
             <br/>
-            <span class="title">通知時間:</span><span th:text="${#dates.format(notifyVO.notifyTime, 'yyyy-MM-dd HH:mm:ss')}"></span><br/>
+            <span class="title">通知時間:</span><span class="content" th:text="${#dates.format(notifyVO.notifyTime, 'yyyy-MM-dd HH:mm:ss')}"></span><br/>
         
             <div class="text_block">
                 <span class="title">通知內容:</span>
@@ -45,15 +64,14 @@
             
         </div>
         
-        
-        <div th:if="${notifyVO.notifyStatus == 1}">
-            <form method="post" th:action="@{getOne_For_Update}">
-                <input type="hidden" name="notifyId" th:value="${notifyVO.notifyId}">
-                <button class="submit_button" type="submit" style="padding: 5px;">修改資料</button>
-            </form>
-        </div>
-
     </div>
+</main>
+
+<script th:src="@{/back-end/10/js/jquery-1.11.3.min.js}"></script>
+<!-- 左側jquery為table分頁用 -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<!--   首頁的js   -->
+<script th:src="@{/back-end/10/js/aside.js}"></script>
 
 </body>
 </html>
