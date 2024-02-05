@@ -97,7 +97,8 @@ public class FrontendVenOrderController {
     }
 
 
-    @PostMapping("addVenOrder")
+
+    @GetMapping("addVenOrder")
     public String addVenOrder(ModelMap model, @ModelAttribute VenVO ven) {
 
         VenOrderVO venOrderVO = new VenOrderVO();
@@ -105,6 +106,7 @@ public class FrontendVenOrderController {
 
         model.addAttribute("venOrderVO", venOrderVO);
         model.addAttribute("venVO", venVO);
+
         return "front-end/venue/venType";
     }
 
