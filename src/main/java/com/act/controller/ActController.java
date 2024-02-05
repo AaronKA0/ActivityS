@@ -3,12 +3,17 @@ package com.act.controller;
 import com.act.dto.ActVoRequest;
 import com.act.model.ActVO;
 import com.act.service.IActService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -88,6 +93,17 @@ public class ActController {
                 throw new RuntimeException(e);
             }
 
+        }else {
+            // 若actPic為空值，則使用預設圖片
+            String defaultPicPath = "/static/front-end/10/fotor-ai.jpg"; // 根據實際路徑調整
+            try {
+                // 讀取預設圖片作為byte[]，這裡假設預設圖片放在resources下
+                Resource resource = new ClassPathResource(defaultPicPath);
+                byte[] defaultPicBytes = StreamUtils.copyToByteArray(resource.getInputStream());
+                actVoRequest.setActPic(defaultPicBytes);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to load default activity picture", e);
+            }
         }
 
         if (actId != null) {
