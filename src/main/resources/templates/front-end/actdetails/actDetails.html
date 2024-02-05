@@ -705,6 +705,10 @@
     let strActStartTime = $("#strActStartTime");
     if (days > 0) {
         strActStartTime.text(days + "天後")
+        if (days < 3) {
+            let notiftHTML = "";
+            $("#follow").after("活動快開始啦！！");
+        }
     } else {
         strActStartTime.removeClass("bg-success");
         strActStartTime.addClass("bg-danger")
