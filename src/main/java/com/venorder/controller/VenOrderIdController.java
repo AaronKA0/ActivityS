@@ -17,6 +17,8 @@ import com.venorder.model.VenOrderVO;
 import com.venorder.service.BookingMail;
 import com.venorder.service.VenOrderService;
 
+import redis.clients.jedis.Jedis;
+
 @Controller
 @Validated
 @RequestMapping("/back_end/ven-order")
@@ -66,9 +68,23 @@ public class VenOrderIdController {
         String memName = venOrderVO.getMemVO().getMemName();
         
         String feedbackURL = "http://localhost:8080/front_end/venue/feedbackform?venOrderId="+venOrderId;
+//      String feedbackURL = "http://zuohuo.ddns.net/front_end/venue/feedbackform?venOrderId="+venOrderId;
         
         String messageText = "Hello! " + memName + " : 感謝您租借我們的場地，請幫我們填寫使用滿意度!!" + feedbackURL;
 
+        String thisId = venOrderId;
+        Jedis jedis = null;
+
+          try {
+                  jedis = new Jedis("localhost", 6379);
+                  jedis.select(7);
+            
+                  jedis.set(venOrderId, venOrderId);
+                  jedis.expire(venOrderId, 180);
+          } finally {
+              if(jedis != null)
+                  jedis.close();
+          }
         
         BookingMail bookingMail = new BookingMail();
         bookingMail.sendMail(to, subject, messageText);

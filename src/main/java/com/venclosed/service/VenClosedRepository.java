@@ -10,6 +10,6 @@ import com.venclosed.model.VenClosedVO;
 public interface VenClosedRepository extends JpaRepository<VenClosedVO, Integer>{
 
     
-    @Query(value = "from VenClosedVO where venVO.venId =:venId")
+    @Query(value = "select * from venue_closed_date where ven_id =:venId", nativeQuery = true)
     List<VenClosedVO> getClosedbyVen(Integer venId);
 }

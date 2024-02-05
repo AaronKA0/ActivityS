@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.venclosed.model.VenClosedVO;
 import com.venclosed.service.VenClosedService;
 import com.venue.model.VenVO;
+import com.venue.service.VenService;
 
 @Controller
 @Validated
@@ -25,7 +26,11 @@ import com.venue.model.VenVO;
 public class FrontendClosedDateController {
 
     @Autowired
-    VenClosedService venClosedSvc;  
+    VenClosedService venClosedSvc; 
+    
+    @Autowired
+    VenService venSvc;  
+    
     
     @PostMapping("getClosedbyVen")
     public @ResponseBody List<VenClosedVO> getClosedbyVen(@RequestBody String json) {
@@ -39,6 +44,9 @@ public class FrontendClosedDateController {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        
+        venVO = venSvc.getByName(venVO.getVenName());
+        
         return venClosedSvc.getClosedbyVen(venVO);
     }
        
