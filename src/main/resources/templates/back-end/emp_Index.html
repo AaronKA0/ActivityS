@@ -70,7 +70,6 @@ img.logo {
 				</button>
 				<div class="dropdown-container">
 					<a th:href="@{/back_end/announcement/ann_page}">公告管理</a> 
-					<a th:href="@{/faq/addFaq}">FQA管理</a>
 				</div>
 				<hr>
 				</div>
@@ -81,9 +80,10 @@ img.logo {
 					會員功能管理 <i class="fa fa-caret-down"></i>
 				</button>
 				<div class="dropdown-container">
-					<a th:href="@{/membership/select_page}">查詢會員</a> 
+					<a th:href="@{/membership/listAllMembership}">查詢會員</a> 
 					<a th:href="@{/back_end/notify/notify_page}">會員通知管理</a>
-					<a th:href="@{/memberreport/select_page}">審核會員檢舉</a>
+					<a th:href="@{/memberreport/listAllMemberReport}">審核會員檢舉</a>
+					<a th:href="@{/postreport/listAllPostReport}">審核貼文檢舉</a>
 				</div>
 				<hr>
 				</div>
