@@ -36,6 +36,8 @@ import com.venorder.service.VenOrderService;
 import com.venue.model.VenVO;
 import com.venue.service.VenService;
 
+import redis.clients.jedis.Jedis;
+
 @Controller
 @RequestMapping("/front_end/venue")
 public class FrontendVenOrderController {
@@ -159,6 +161,21 @@ public class FrontendVenOrderController {
             return "/Zuo-Huo";
         }
         
+        Jedis jedis = null;
+        try {
+            jedis = new Jedis("localhost", 6379);
+            jedis.select(7);
+            
+            String getfeedbackURL = jedis.get(venOrderId);
+            if(getfeedbackURL.isEmpty()) {
+                jedis.close();
+                return "/Zuo-Huo";
+            }
+        } finally {
+            if(jedis != null)
+                jedis.close();
+        }
+        
         redirectAttributes.addFlashAttribute("venOrderVO", venOrderVO);
         return "redirect:/front_end/venue/booking_feedback";
     }
@@ -176,6 +193,19 @@ public class FrontendVenOrderController {
         venVO.setVenTotRating(venVO.getVenTotRating()+venOrderVO.getVenRating());
         venVO.setVenRateCount(venVO.getVenRateCount()+1);
         venSvc.updateVen(venVO);
+        
+        Jedis jedis = null;
+        String venOrderId = String.valueOf(venOrderVO.getVenOrderId());
+        
+        try {
+                jedis = new Jedis("localhost", 6379);
+                jedis.select(7);
+          
+                jedis.del(venOrderId);
+        } finally {
+            if(jedis != null)
+                jedis.close();
+        }
         
         model.addAttribute("venOrderVO", venOrderVO);
         return "redirect:/Zuo-Huo";

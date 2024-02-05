@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -58,6 +59,13 @@ public class ActService implements IActService {
     @Override
     public ActVO getActById(Integer id) {
         return actDao.findById(id).orElse(null);
+    }
+    
+    
+ // ++++++++++++++ Aaron ++++++++++++++
+    @Override
+    public List<ActVO> getByStart(java.sql.Date start, java.sql.Date end) {
+        return null;
     }
 
 
