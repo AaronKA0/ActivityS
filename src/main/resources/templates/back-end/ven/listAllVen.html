@@ -181,6 +181,87 @@ thead tr:first-child {
 	<div th:insert="~{/back-end/emp_Index :: aside-div}"></div>
 
 
+	<aside class="aside">
+		<nav class="nav">
+			<div class="sidenav">
+				<a th:href="@{/emp_Index}">首頁</a>
+				<hr>
+
+				<div id="superEmp" style="display: block;">
+					<button class="dropdown-btn">
+						員工管理 <i class="fa fa-caret-down"></i>
+					</button>
+					<div class="dropdown-container">
+						<a th:href="@{/emp/select_page}">查詢員工</a> <a
+							th:href="@{/emp/addEmp}">新增員工</a> <a th:href="@{/emp/listAllEmp}">員工資料管理</a>
+					</div>
+					<hr>
+				</div>
+
+
+				<div id="emp" style="display: block;">
+					<button class="dropdown-btn">
+						一般功能管理 <i class="fa fa-caret-down"></i>
+					</button>
+					<div class="dropdown-container">
+						<a th:href="@{/back_end/announcement/ann_page}">公告管理</a>
+					</div>
+					<hr>
+				</div>
+
+
+				<div id="mem" style="display: block;">
+					<button class="dropdown-btn">
+						會員功能管理 <i class="fa fa-caret-down"></i>
+					</button>
+					<div class="dropdown-container">
+						<a th:href="@{/membership/listAllMembership}">查詢會員</a> <a
+							th:href="@{/back_end/notify/notify_page}">會員通知管理</a> <a
+							th:href="@{/memberreport/listAllMemberReport}">審核會員檢舉</a> <a
+							th:href="@{/postreport/listAllPostReport}">審核貼文檢舉</a>
+					</div>
+					<hr>
+				</div>
+
+
+				<div id="act" style="display: block;">
+					<button class="dropdown-btn">
+						活動功能管理 <i class="fa fa-caret-down"></i>
+					</button>
+					<div class="dropdown-container">
+						<a th:href="@{/emp_Index/report}">審核活動管理</a> <a
+							th:href="@{/emp_Index/commentreport}">審核留言管理</a>
+					</div>
+					<hr>
+				</div>
+
+
+				<div id="ven" style="display: block;">
+					<button class="dropdown-btn">
+						場地功能管理 <i class="fa fa-caret-down"></i>
+					</button>
+					<div class="dropdown-container">
+						<a th:href="@{/ven/getVens}">場地管理</a> <a
+							th:href="@{/back_end/ven-order/ven_order_page}">場地訂單管理</a> <a
+							th:href="@{/back_end/ven-closed/ven_closed_date}">場地狀態管理</a>
+					</div>
+				</div>
+			</div>
+
+		</nav>
+	</aside>
+
+
+
+
+
+
+
+
+
+
+
+
 	<div id="ven-container" style="overflow-y:auto; height:490px; width:1000px; margin-left:250px">
 	<div class="accordion" id="accordionExample" style="margin-top:20px; margin-bottom:20px">
 		<div class="accordion-item">
