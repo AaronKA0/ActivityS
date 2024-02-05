@@ -161,7 +161,7 @@
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <li><a class="dropdown-item" th:href="@{/membership/getOne_For_Update}">個人資料</a></li>
-                    <li><a id="SignOut" class="dropdown-item"  th:href="@{/membership/login}">登出</a></li>
+                    <li><a id="SignOut" class="dropdown-item" th:href="@{/membership/login}">登出</a></li>
                 </ul>
 
             </div>
@@ -377,6 +377,11 @@
                     let statusChinese = statusMap[actReg.regStatus];
                     let actStatusChinese = actStatusMap[actReg.act.actStatus];
 
+                    let endTime = new Date(actReg.act.actStartTime);
+                    let now = new Date();
+                    let diff = endTime - now;
+                    let days = Math.floor(diff / (1000 * 60 * 60 * 24))
+
                     if (actReg.regStatus !== 4) { //4 = 自己取消報名 就不用再顯示給使用者看到
                         actregHTML +=
                             `<tr class="pb-5 pt-5">
@@ -385,7 +390,10 @@
                                 <td>
                                     <button class="rounded-pill btn btn-info" data-act-id="${actReg.act.actId}" onclick="view(this)">查看</button>
                                 </td>
-                                <td>${actReg.act.actStartTime}</td>
+                                <td>
+                                <span>${actReg.act.actStartTime}</span>
+                                <small class="badge ${days > 0 ? "bg-success" : "bg-warning"} text-wrap">${days > 0 ? days + "天後" : "已結束"}</small>
+                                </td>
                                 <td class="status">${statusChinese}</td>
                                 <td>
                                     <button class="delbtn rounded-pill btn btn-danger"

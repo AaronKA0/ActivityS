@@ -345,7 +345,7 @@
                             主辦人:
                         </p>
                         <div>
-                            <a class="text-decoration-none" th:href="@{/membership/{memId}(memId=${memId})}">
+                            <a class="text-decoration-none" th:href="@{/member(memId=${act.memId})}">
                                 <img th:src="'data:image/png;base64,' + ${memPic}" class="img-fluid"
                                      style="width: 60px; height: auto;">
                             </a>
@@ -705,6 +705,14 @@
     let strActStartTime = $("#strActStartTime");
     if (days > 0) {
         strActStartTime.text(days + "天後")
+        if (days < 3) {
+            let notiftHTML =
+                `<div class="d-inline">
+                    <small class="fw-bolder">溫馨提醒: </small>
+                    <span class="text-warning fs-5">活動快開始啦！！</span>
+                </div>`;
+            $("#follow").after(notiftHTML);
+        }
     } else {
         strActStartTime.removeClass("bg-success");
         strActStartTime.addClass("bg-danger")
