@@ -129,7 +129,6 @@ h6#memBirthdate {
 h6#memPic {
 	margin-left: -500px;
 }
-
 </style>
 
 <style>
@@ -164,30 +163,36 @@ h6#memPic {
 			<div class="col-md-3 mb-2 mb-md-0">
 				<a href='select_page'
 					class="d-inline-flex link-body-emphasis text-decoration-none">
-					<span class="fs-4"><img alt="ZuoHuo" src="/front-end/16/images/ZuoHuo4.jpg" width="160px" ></span>
+					<span class="fs-4"><img alt="ZuoHuo"
+						src="/front-end/16/images/ZuoHuo4.jpg" width="160px"></span>
 				</a>
 			</div>
 
 
 			<ul
 				class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-				<li><a th:href="@{/membership/ZuoHuo}" class="nav-link px-2 link-secondary">首頁</a></li>
-				<li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
-				<li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
-				<li><a href="rent.html" class="nav-link px-2 link-secondary">場地租借</a></li>
-				<li><a th:href="@{/faq/faqs}" 
+				<li><a th:href="@{/membership/ZuoHuo}"
+					class="nav-link px-2 link-secondary">首頁</a></li>
+				<li><a th:href="@{/act/joinAct}"
+					class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+				<li><a th:href="@{/act/createAct}"
+					class="nav-link px-2 link-secondary">舉辦活動</a></li>
+				<li><a th:href="@{/front_end/venue/browse}"
+					class="nav-link px-2 link-secondary">場地租借</a></li>
+				<li><a th:href="@{/faq/faqs}"
 					class="nav-link px-2 link-secondary">FAQs</a></li>
-				<li><a th:href="@{/faq/faqs}"  class="nav-link px-2 link-secondary">關於我們</a></li>
+				<li><a th:href="@{/faq/faqs}"
+					class="nav-link px-2 link-secondary">關於我們</a></li>
 			</ul>
 
 			<div class="col-md-3 text-end">
-                <button type="button" class="btn btn-outline-primary me-2">
-                    <a class="nav-link" th:href="@{/membership/logging}">登入</a>
-                </button>
-                <button type="button" class="btn btn-primary">
-                    <a class="nav-link" th:href="@{/membership/addMembership}">註冊</a>
-                </button>
-            </div>
+				<button type="button" class="btn btn-outline-primary me-2">
+					<a class="nav-link" th:href="@{/membership/logging}">登入</a>
+				</button>
+				<button type="button" class="btn btn-primary">
+					<a class="nav-link" th:href="@{/membership/addMembership}">註冊</a>
+				</button>
+			</div>
 		</header>
 	</div>
 
@@ -236,7 +241,7 @@ h6#memPic {
 						id="registerMemEmail" type="text" placeholder="電子信箱(必填)"
 						autocomplete="off" name="memEmail" /> <span class="error-message"
 						id="memEmail-error"></span><span id="memEmail-error2"></span></li>
-					
+
 					<li class="controls-float"><label class="title"
 						for="registerMemPwd"></label> <input class="form-control text"
 						id="registerMemPwd" type="password" placeholder="會員密碼(必填)"

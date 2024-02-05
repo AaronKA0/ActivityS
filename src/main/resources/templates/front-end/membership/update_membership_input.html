@@ -19,13 +19,20 @@
 	crossorigin="anonymous">
 <!-- 前台畫面header的引入文件-->
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <link href="https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+	integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link
+	href="https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css"
+	rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+	rel="stylesheet" />
 
 
 
@@ -120,133 +127,153 @@ div#status {
 
 /* 登入後側邊漢堡選單 */
 .btn-primary {
-    --bs-btn-color: #fff;
-    --bs-btn-bg: #abb0b7;
-    --bs-btn-border-color: #abb0b7;
-    --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: #787a7d;
-    --bs-btn-hover-border-color: #8f9093;
-    --bs-btn-focus-shadow-rgb: 49,132,253;
-    --bs-btn-active-color: #fff;
-    --bs-btn-active-bg: #787a7d;
-    --bs-btn-active-border-color: #787a7d;
-    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    --bs-btn-disabled-color: #fff;
-    --bs-btn-disabled-bg: #787a7d;
-    --bs-btn-disabled-border-color: #787a7d;
+	--bs-btn-color: #fff;
+	--bs-btn-bg: #abb0b7;
+	--bs-btn-border-color: #abb0b7;
+	--bs-btn-hover-color: #fff;
+	--bs-btn-hover-bg: #787a7d;
+	--bs-btn-hover-border-color: #8f9093;
+	--bs-btn-focus-shadow-rgb: 49, 132, 253;
+	--bs-btn-active-color: #fff;
+	--bs-btn-active-bg: #787a7d;
+	--bs-btn-active-border-color: #787a7d;
+	--bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+	--bs-btn-disabled-color: #fff;
+	--bs-btn-disabled-bg: #787a7d;
+	--bs-btn-disabled-border-color: #787a7d;
 }
 </style>
 </head>
 
 <body>
 
-<div style="width: 200px" class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
-     aria-labelledby="offcanvasExampleLabel">
-    <div class="offcanvas-body" style="padding: 0px; overflow-x: hidden">
+	<div style="width: 200px" class="offcanvas offcanvas-start"
+		tabindex="-1" id="offcanvasExample"
+		aria-labelledby="offcanvasExampleLabel">
+		<div class="offcanvas-body" style="padding: 0px; overflow-x: hidden">
 
-        <div class="b-example-divider"></div>
+			<div class="b-example-divider"></div>
 
-        <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style="width: 200px;">
-            <a href="/member"
-               class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
-                <svg class="bi me-2" width="30" height="24">
-                    <use xlink:href="#bootstrap"/>
-                </svg>
-                <span class="fs-5 fw-semibold">會員首頁</span>
-            </a>
-            <div class="list-group list-group-flush border-bottom scrollarea">
-                <a th:href="@{/member/chat}" class="list-group-item list-group-item-action py-3 lh-tight"
-                   aria-current="true">
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                        <strong class="mb-1">聊天</strong>
-                    </div>
-                </a>
-                <a th:href="@{/member/chat}" class="list-group-item list-group-item-action py-3 lh-tight"
-                   aria-current="true">
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                        <strong class="mb-1">通知</strong>
-                    </div>
-                </a>
-                <a th:href="@{/member/venOrder}" class="list-group-item list-group-item-action py-3 lh-tight"
-                   aria-current="true">
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                        <strong class="mb-1">場地預訂</strong>
-                    </div>
-                </a>
-            </div>
-        </div>
+			<div
+				class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white"
+				style="width: 200px;">
+				<a href="/member"
+					class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+					<svg class="bi me-2" width="30" height="24">
+                    <use xlink:href="#bootstrap" />
+                </svg> <span class="fs-5 fw-semibold">會員首頁</span>
+				</a>
+				<div class="list-group list-group-flush border-bottom scrollarea">
+					<a th:href="@{/member/chat}"
+						class="list-group-item list-group-item-action py-3 lh-tight"
+						aria-current="true">
+						<div
+							class="d-flex w-100 align-items-center justify-content-between">
+							<strong class="mb-1">聊天</strong>
+						</div>
+					</a> <a th:href="@{/member/chat}"
+						class="list-group-item list-group-item-action py-3 lh-tight"
+						aria-current="true">
+						<div
+							class="d-flex w-100 align-items-center justify-content-between">
+							<strong class="mb-1">通知</strong>
+						</div>
+					</a> <a th:href="@{/member/venOrder}"
+						class="list-group-item list-group-item-action py-3 lh-tight"
+						aria-current="true">
+						<div
+							class="d-flex w-100 align-items-center justify-content-between">
+							<strong class="mb-1">場地預訂</strong>
+						</div>
+					</a>
+				</div>
+			</div>
 
-        <div class="b-example-divider"></div>
+			<div class="b-example-divider"></div>
 
-    </div>
-</div>
+		</div>
+	</div>
 
 
 	<div class="container">
-		<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-			
+		<header
+			class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+
 			<div class="after-logging" th:if="${session.memId ne null}">
-            <button class="btn btn-primary fa fa-bars" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"></button>
-        </div>
-			
+				<button class="btn btn-primary fa fa-bars" type="button"
+					data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+					aria-controls="offcanvasExample"></button>
+			</div>
+
 			<div class="col-md-3 mb-2 mb-md-0">
 				<a href='select_page'
 					class="d-inline-flex link-body-emphasis text-decoration-none">
-					<span class="fs-4"><img alt="ZuoHuo" src="/front-end/16/images/ZuoHuo4.jpg" width="160px" ></span>
+					<span class="fs-4"><img alt="ZuoHuo"
+						src="/front-end/16/images/ZuoHuo4.jpg" width="160px"></span>
 				</a>
 			</div>
 
 
 			<ul
 				class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-				<li><a th:href="@{/membership/ZuoHuo}" class="nav-link px-2 link-secondary">首頁</a></li>
-				<li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
-				<li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
-				<li><a href="rent.html" class="nav-link px-2 link-secondary">場地租借</a></li>
-				<li><a th:href="@{/faq/faqs}" 
+				<li><a th:href="@{/membership/ZuoHuo}"
+					class="nav-link px-2 link-secondary">首頁</a></li>
+				<li><a th:href="@{/act/joinAct}"
+					class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+				<li><a th:href="@{/act/createAct}"
+					class="nav-link px-2 link-secondary">舉辦活動</a></li>
+				<li><a th:href="@{/front_end/venue/browse}"
+					class="nav-link px-2 link-secondary">場地租借</a></li>
+				<li><a th:href="@{/faq/faqs}"
 					class="nav-link px-2 link-secondary">FAQs</a></li>
-				<li><a th:href="@{/faq/faqs}"  class="nav-link px-2 link-secondary">關於我們</a></li>
+				<li><a th:href="@{/faq/faqs}"
+					class="nav-link px-2 link-secondary">關於我們</a></li>
 			</ul>
+			
+			<div class="col-md-3 text-end">
 
-			        <div class="col-md-3 text-end">
+				<!-- 這邊放會員登入後的選項 -->
+				<div class="after-logging" th:if="${session.memId ne null}">
+					<i class="icon bi bi-messenger"
+						style="font-size: 25px; margin: 20px; color: #6161f2;"></i>
 
-            <!-- 這邊放會員登入後的選項 -->
-            <div class="after-logging" th:if="${session.memId ne null}">
-                <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px; color: #6161f2;"></i>
+					<!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
+					<i class="icon bi bi-bell-fill" type="button"
+						id="dropdownMenuButton1" data-bs-toggle="dropdown"
+						aria-expanded="false" style="font-size: 25px; color: #eded1e;"></i>
 
-                <!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
-                <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 25px; color: #eded1e;" ></i>
-            
-	            <ul id="notify_ul" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-	                <li id="notify_a1"></li>
-	                <li id="notify_a2"></li>
-	                <li id="notify_a3"></li>
-	                <li><a id="display_all" class="dropdown-item" th:href="@{front_end/notify}">顯示全部</a></li>
-	            </ul>   
-                <!-- -------------------- 通知訊息功能 下拉選單 END -------------------- -->
+					<ul id="notify_ul" class="dropdown-menu"
+						aria-labelledby="dropdownMenuButton1">
+						<li id="notify_a1"></li>
+						<li id="notify_a2"></li>
+						<li id="notify_a3"></li>
+						<li><a id="display_all" class="dropdown-item"
+							th:href="@{front_end/notify}">顯示全部</a></li>
+					</ul>
+					<!-- -------------------- 通知訊息功能 下拉選單 END -------------------- -->
 
-                <!-- class拿掉dropdown-toggle 有問題再加回來 -->
-                <i class="icon bi bi-person-circle" id="dropdownMenuLink"
-                   type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                   style="font-size: 40px; margin: 20px;"></i>
+					<!-- class拿掉dropdown-toggle 有問題再加回來 -->
+					<i class="icon bi bi-person-circle" id="dropdownMenuLink"
+						type="button" data-bs-toggle="dropdown" aria-expanded="false"
+						style="font-size: 40px; margin: 20px;"></i>
 
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <li><a class="dropdown-item" th:href="@{/membership/getOne_For_Update}">個人資料</a></li>
-                    <li><a id="SignOut" class="dropdown-item" href="#">登出</a></li>
-                </ul>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+						<li><a class="dropdown-item"
+							th:href="@{/membership/getOne_For_Update}">個人資料</a></li>
+						<li><a id="SignOut" class="dropdown-item" href="#">登出</a></li>
+					</ul>
 
-            </div>
+				</div>
 
-<!--             <div class="after-logging" th:unless="${session.memId ne null}"> -->
-<!--                 <button type="button" class="btn btn-outline-primary me-2"> -->
-<!--                     <a class="nav-link" th:href="@{/membership/logging}">登入</a> -->
-<!--                 </button> -->
-<!--                 <button type="button" class="btn btn-primary"> -->
-<!--                     <a class="nav-link" href="register.html">註冊</a> -->
-<!--                 </button> -->
-<!--             </div> -->
-        </div>
+				<!--             <div class="after-logging" th:unless="${session.memId ne null}"> -->
+				<!--                 <button type="button" class="btn btn-outline-primary me-2"> -->
+				<!--                     <a class="nav-link" th:href="@{/membership/logging}">登入</a> -->
+				<!--                 </button> -->
+				<!--                 <button type="button" class="btn btn-primary"> -->
+				<!--                     <a class="nav-link" href="register.html">註冊</a> -->
+				<!--                 </button> -->
+				<!--             </div> -->
+			</div>
 		</header>
 	</div>
 
@@ -479,12 +506,16 @@ div#status {
 	<!-- -----------------------------前台畫面引入文件----------------------------------- -->
 
 
-	<script src="https://cdn.tiny.cloud/1/tus9t8o6mklmhwd5c0iaejn9394stnli5i0j2ic9bb4xurm0/tinymce/6/tinymce.min.js"
-        referrerpolicy="origin"></script>
-<script src="https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/dealfonso/power-buttons/dist/powerbuttons.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-	
+	<script
+		src="https://cdn.tiny.cloud/1/tus9t8o6mklmhwd5c0iaejn9394stnli5i0j2ic9bb4xurm0/tinymce/6/tinymce.min.js"
+		referrerpolicy="origin"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/gh/dealfonso/power-buttons/dist/powerbuttons.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 
 
 	<!-- JavaScript part -->
