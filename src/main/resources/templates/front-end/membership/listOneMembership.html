@@ -56,6 +56,24 @@ h4 {
 h6 {
 	font-size: 20px;
 }
+
+/* 登入後側邊漢堡選單 */
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #abb0b7;
+    --bs-btn-border-color: #abb0b7;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #787a7d;
+    --bs-btn-hover-border-color: #8f9093;
+    --bs-btn-focus-shadow-rgb: 49,132,253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #787a7d;
+    --bs-btn-active-border-color: #787a7d;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #787a7d;
+    --bs-btn-disabled-border-color: #787a7d;
+}
 </style>
 </head>
 
@@ -127,16 +145,16 @@ h6 {
 				<li><a href="rent.html" class="nav-link px-2 link-secondary">場地租借</a></li>
 				<li><a th:href="@{/faq/faqs}" 
 					class="nav-link px-2 link-secondary">FAQs</a></li>
-				<li><a href='faqs' class="nav-link px-2 link-secondary">關於我們</a></li>
+				<li><a th:href="@{/faq/faqs}"  class="nav-link px-2 link-secondary">關於我們</a></li>
 			</ul>
 
 			<div class="col-md-3 text-end">
 				<!-- 這邊放會員登入後的選項 -->
             <div class="after-logging" th:if="${session.memId ne null}">
-                <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px; color: blue;"></i>
+                <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px; color: #6161f2;"></i>
 
                 <!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
-                <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 25px; color: yellow;" ></i>
+                <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 25px; color: #eded1e;" ></i>
             
 	            <ul id="notify_ul" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 	                <li id="notify_a1"></li>
@@ -153,7 +171,6 @@ h6 {
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <li><a class="dropdown-item" th:href="@{/membership/getOne_For_Update}">個人資料</a></li>
-                    <li><a class="dropdown-item" href="#">Another</a></li>
                     <li><a id="SignOut" class="dropdown-item" href="#">登出</a></li>
                 </ul>
 

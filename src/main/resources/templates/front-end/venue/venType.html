@@ -49,6 +49,43 @@
 	div.com_star > span.star.-on {
 	  color: yellow;
 	}
+	
+	/* 登入後側邊漢堡選單 */
+        .btn-primary {
+            --bs-btn-color: #fff;
+            --bs-btn-bg: #abb0b7;
+            --bs-btn-border-color: #abb0b7;
+            --bs-btn-hover-color: #fff;
+            --bs-btn-hover-bg: #787a7d;
+            --bs-btn-hover-border-color: #8f9093;
+            --bs-btn-focus-shadow-rgb: 49, 132, 253;
+            --bs-btn-active-color: #fff;
+            --bs-btn-active-bg: #787a7d;
+            --bs-btn-active-border-color: #787a7d;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #fff;
+            --bs-btn-disabled-bg: #787a7d;
+            --bs-btn-disabled-border-color: #787a7d;
+        }
+
+        /* 登入前註冊按鈕 */
+        .btn-primary2 {
+            --bs-btn-color: #fff;
+            --bs-btn-bg: #0d6efd;
+            --bs-btn-border-color: #0d6efd;
+            --bs-btn-hover-color: #fff;
+            --bs-btn-hover-bg: #0d6efd;
+            --bs-btn-hover-border-color: #0d6efd;
+            --bs-btn-focus-shadow-rgb: 49, 132, 253;
+            --bs-btn-active-color: #fff;
+            --bs-btn-active-bg: #0d6efd;
+            --bs-btn-active-border-color: #0d6efd;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #fff;
+            --bs-btn-disabled-bg: #0d6efd;
+            --bs-btn-disabled-border-color: #0d6efd;
+
+        }
 
 
   </style>
@@ -127,11 +164,11 @@
 
             <!-- 這邊放會員登入後的選項 -->
             <div class="after-logging" th:if="${session.memId ne null}">
-                <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px; color: blue;"></i>
+                <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px; color: #6161f2;"></i>
 
                 <!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
                 <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                   aria-expanded="false" style="font-size: 25px; color: yellow;"></i>
+                   aria-expanded="false" style="font-size: 25px; color: #eded1e;"></i>
 
                 <ul id="notify_ul" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li id="notify_a1"></li>
@@ -158,7 +195,7 @@
                 <button type="button" class="btn btn-outline-primary me-2">
                     <a class="nav-link" th:href="@{/membership/logging}">登入</a>
                 </button>
-                <button type="button" class="btn btn-primary">
+                <button type="button" class="btn btn-primary2">
                     <a class="nav-link" href="register.html">註冊</a>
                 </button>
             </div>
@@ -467,6 +504,117 @@ $(document).ready(async function(){
 	}
 	
 });
+
+
+
+var notifycount = 0;
+
+$(document).ready(async function(){
+
+   async function getNotifyByMemId(id){
+       await fetch("/front_end/notify/memberNotify",{
+           method: "POST",
+           body: JSON.stringify({memId: id})
+       }).then(function(response){;
+           return response.json();
+       }).then(function(getAllMemNotifies){
+           if(getAllMemNotifies.length > 0){
+               if(getAllMemNotifies[0]){
+                   $("#notify_a1").html("");
+                   $("#notify_a1").append(`<span class="dropdown-item">${getAllMemNotifies[0].notifyContent}</span>`)
+               }
+               if(getAllMemNotifies[1]){
+                   $("#notify_a2").html("");
+                   $("#notify_a2").append(`<span class="dropdown-item">${getAllMemNotifies[1].notifyContent}</span>`)
+               }
+               if(getAllMemNotifies[2]){
+                   $("#notify_a3").html("");
+                   $("#notify_a3").append(`<span class="dropdown-item">${getAllMemNotifies[2].notifyContent}</span>`)
+               }
+           }
+           
+       }).catch(function(err){
+           console.log(err);
+       }); 
+   }
+
+   async function getUnread(id){
+       await fetch("/front_end/notify/Unread",{
+           method: "POST",
+           body: JSON.stringify({memId: id})
+       }).then(function(response){;
+           return response.json();
+       }).then(function(notifies){  
+           if(notifies.length){
+               notifycount = notifies.length;
+          
+               $('.bi-bell-fill').attr('data-count', `${notifycount}`);
+                console.log(notifycount);
+                // 添加 :after 樣式
+                $('.bi-bell-fill').css('content', 'attr(data-count)');
+           }
+       }).catch(function(err){
+           console.log(err);
+       }); 
+    }
+
+await getNotifyByMemId(user);
+await getUnread(user);
+
+});    
+
+//------------------ Notify webSocket -------------------
+
+var MyPoint = `/notify/${user}`;
+var host = window.location.host;
+var path = window.location.pathname;
+var webCtx = path.substring(0, path.indexOf('/', 1));
+var endPointURL = "ws://" + window.location.host + MyPoint;
+
+var webSocket;
+
+function connect() {
+   if (!user) return;
+   // create a websocket
+   webSocket = new WebSocket(endPointURL);
+
+   webSocket.onmessage = async function (event) {
+
+       let notifyVO = JSON.parse(event.data);
+       notifycount++;
+//        console.log("notice title: " + notifyVO.notifyTitle);
+//        console.log("notice content: " + notifyVO.notifyContent);
+
+       $('.bi-bell-fill').attr('data-count', `${notifycount}`);
+//        console.log(notifycount);
+       // 添加 :after 樣式
+       $('.bi-bell-fill').css('content', 'attr(data-count)');
+
+   }
+
+};
+
+
+//------------------------ 登出 -------------------------
+document.getElementById("SignOut").addEventListener("click",
+   function () {
+       // 使用 XMLHttpRequest 或 Fetch API 發送登出請求到後端
+       var xhr = new XMLHttpRequest();
+       xhr.open("GET", "/membership/logout", true);
+
+       xhr.onreadystatechange = function () {
+           if (xhr.readyState == 4 && xhr.status == 200) {
+               webSocket.close();
+               // 處理登出成功的回應，這裡將重新導向到登入頁面
+               window.location.href = "/membership/login"; // 重新導向到登入頁面
+           }
+       };
+
+       xhr.send();
+   });
+
+
+
 
 
 

@@ -70,7 +70,11 @@ public class CommentDAO implements ICommentDAO {
 //        sql = sql + " LIMIT :limit";
 //        map.put("limit", commentQueryParams.getLimit());
 
-        return namedParameterJdbcTemplate.query(sql, map, new CommentJoinRowMapper());
+        List<CommentVO> list = namedParameterJdbcTemplate.query(sql, map, new CommentJoinRowMapper());
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list;
     }
 
     @Override

@@ -68,7 +68,7 @@ public class ActController {
 
         ActVoRequest actVoRequest = new ActVoRequest();
         actVoRequest.setActName(actName);
-        actVoRequest.setMemId(1);//1為測試用 要使用時改成memId
+        actVoRequest.setMemId(memId);//1為測試用 要使用時改成memId
         actVoRequest.setActUpper(actUpper);
         actVoRequest.setRegStartTime(regStartTime);
         actVoRequest.setRegEndTime(regEndTime);
