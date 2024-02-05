@@ -13,6 +13,9 @@ public class FilterConfig {
 		registrationBean.setFilter(new LoginFilter());
 		registrationBean.addUrlPatterns("/membership/select_page");
 		registrationBean.addUrlPatterns("/act/createAct");
+		registrationBean.addUrlPatterns("/member");
+		registrationBean.addUrlPatterns("/member/chat");
+		registrationBean.addUrlPatterns("/member/venOrder");
 		//registrationBean.addUrlPatterns("/membership/listAllMembership");
 		return registrationBean;
 		
