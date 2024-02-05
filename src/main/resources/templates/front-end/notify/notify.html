@@ -103,22 +103,32 @@
                 <span class="fs-5 fw-semibold">會員首頁</span>
             </a>
             <div class="list-group list-group-flush border-bottom scrollarea">
-                <a th:href="@{/member/chat}" class="list-group-item list-group-item-action py-3 lh-tight"
+                <a th:href="@{/member/chat}"
+                   class="list-group-item list-group-item-action py-3 lh-tight"
                    aria-current="true">
-                    <div class="d-flex w-100 align-items-center justify-content-between">
+                    <div
+                            class="d-flex w-100 align-items-center justify-content-between">
                         <strong class="mb-1">聊天</strong>
                     </div>
-                </a>
-                <a th:href="@{/member/chat}" class="list-group-item list-group-item-action py-3 lh-tight"
+                </a> <a th:href="@{/front_end/notify}"
+                        class="list-group-item list-group-item-action py-3 lh-tight"
+                        aria-current="true">
+                <div
+                        class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">通知</strong>
+                </div>
+            </a> <a th:href="@{/member/venOrder}"
+                    class="list-group-item list-group-item-action py-3 lh-tight"
+                    aria-current="true">
+                <div
+                        class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">場地預訂</strong>
+                </div>
+            </a>
+                <a th:href="@{/membership/actreview}" class="list-group-item list-group-item-action py-3 lh-tight"
                    aria-current="true">
                     <div class="d-flex w-100 align-items-center justify-content-between">
-                        <strong class="mb-1">通知</strong>
-                    </div>
-                </a>
-                <a th:href="@{/member/venOrder}" class="list-group-item list-group-item-action py-3 lh-tight"
-                   aria-current="true">
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                        <strong class="mb-1">場地預訂</strong>
+                        <strong class="mb-1">活動管理</strong>
                     </div>
                 </a>
             </div>
@@ -140,12 +150,15 @@
         </div>
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a th:href="@{/Zuo-Huo}" class="nav-link px-2 link-secondary">首頁</a></li>
+            <li><a th:href="@{/membership/ZuoHuo}"
+                   class="nav-link px-2 link-secondary">首頁</a></li>
             <li><a th:href="@{/act/joinAct}" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
             <li><a th:href="@{/act/createAct}" class="nav-link px-2 link-secondary">舉辦活動</a></li>
             <li><a th:href="@{/front_end/venue/browse}" class="nav-link px-2 link-secondary">場地租借</a></li>
-            <li><a th:href="@{/faq/faqs}" class="nav-link px-2 link-secondary">FAQs</a></li>
-            <li><a th:href="@{/faq/faqs}" class="nav-link px-2 link-secondary">關於我們</a></li>
+            <li><a th:href="@{/faq/faqs}"
+                   class="nav-link px-2 link-secondary">FAQs</a></li>
+            <li><a th:href="@{/faq/faqs}"
+                   class="nav-link px-2 link-secondary">關於我們</a></li>
         </ul>
 
         <div class="col-md-3 text-end">
