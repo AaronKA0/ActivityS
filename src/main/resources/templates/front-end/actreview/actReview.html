@@ -101,12 +101,16 @@
         </div>
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="index.html" class="nav-link px-2 link-secondary">首頁</a></li>
-            <li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
-            <li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
-            <li><a href="/ven/browse" class="nav-link px-2 link-secondary">場地租借</a></li>
-            <li><a href="customer.html" class="nav-link px-2 link-secondary">FAQs</a></li>
-            <li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
+            <li><a th:href="@{/membership/ZuoHuo}"
+                   class="nav-link px-2 link-secondary">首頁</a></li>
+            <li><a th:href="@{/act/joinAct}" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+            <li><a th:href="@{/act/createAct}" class="nav-link px-2 link-secondary">舉辦活動</a></li>
+            <li><a th:href="@{front_end/venue/venue}"
+                   class="nav-link px-2 link-secondary">場地租借</a></li>
+            <li><a th:href="@{/faq/faqs}"
+                   class="nav-link px-2 link-secondary">FAQs</a></li>
+            <li><a th:href="@{/faq/faqs}"
+                   class="nav-link px-2 link-secondary">關於我們</a></li>
         </ul>
 
         <div class="col-md-3 text-end">
@@ -116,7 +120,8 @@
                 <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px; color: blue;"></i>
 
                 <!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
-                <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 25px; color: yellow;" ></i>
+                <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                   aria-expanded="false" style="font-size: 25px; color: yellow;"></i>
 
                 <ul id="notify_ul" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li id="notify_a1"></li>
@@ -126,7 +131,7 @@
                 </ul>
                 <!-- -------------------- 通知訊息功能 下拉選單 END -------------------- -->
 
-<!--                <i class="icon bi bi-person-circle" style="font-size: 40px; margin: 20px;"></i>-->
+                <!--                <i class="icon bi bi-person-circle" style="font-size: 40px; margin: 20px;"></i>-->
 
                 <!-- class拿掉dropdown-toggle 有問題再加回來 -->
                 <i class="icon bi bi-person-circle" id="dropdownMenuLink"
@@ -148,8 +153,8 @@
     <main class="main">
         <div>
             <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="change btn btn-dark">我的活動</button>
                 <button type="button" class="change btn btn-outline-dark">報名管理</button>
-                <button type="button" class="change btn btn-dark">活動管理</button>
                 <button type="button" class="change btn btn-outline-dark">關注管理</button>
             </div>
             <div class="d-md-flex justify-content-md-end mb-1">
@@ -636,7 +641,7 @@
             case "報名管理":
                 window.location.href = `/membership/actregistration`;
                 break;
-            case "活動管理":
+            case "我的活動":
                 window.location.href = `/membership/actreview`;
                 break;
             case "關注管理":
