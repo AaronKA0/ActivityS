@@ -278,7 +278,8 @@ $(document).ready(function() {
   const params = new URLSearchParams(window.location.search);
   const error = params.get('error');
   const message = params.get('message');
-
+  const logout = params.get('logout');
+  
   if (error) {
     let errorMessage = '';
     switch(error) {
@@ -288,10 +289,13 @@ $(document).ready(function() {
       case 'mismatch':
         errorMessage = '提供的email和帳號不匹配。';
         break;
+      case 'true':
+          errorMessage = '帳號或密碼不正確';
+          break;
       default:
         errorMessage = '未知錯誤。';
     }
-    
+ 
     $('#errorModal .modal-body').text(errorMessage);
     $('#errorModal').modal('show');
   } else if (message) {
@@ -306,7 +310,12 @@ $(document).ready(function() {
     
     $('#successModal .modal-body').text(successMessage);
     $('#successModal').modal('show');
-  }
+    
+  }else if (logout) {
+	    // 如果存在logout参数，表示用户已成功登出
+	    $('#logoutModal .modal-body').text('您已成功登出。');
+	    $('#logoutModal').modal('show');
+	  }
 });
 
 function generateSimilarColor() {

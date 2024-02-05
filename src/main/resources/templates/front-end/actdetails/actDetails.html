@@ -122,6 +122,43 @@
         /*    position: absolute;*/
         /*}*/
 
+        /* 登入後側邊漢堡選單 */
+        .btn-primary1 {
+            --bs-btn-color: #fff;
+            --bs-btn-bg: #abb0b7;
+            --bs-btn-border-color: #abb0b7;
+            --bs-btn-hover-color: #fff;
+            --bs-btn-hover-bg: #787a7d;
+            --bs-btn-hover-border-color: #8f9093;
+            --bs-btn-focus-shadow-rgb: 49, 132, 253;
+            --bs-btn-active-color: #fff;
+            --bs-btn-active-bg: #787a7d;
+            --bs-btn-active-border-color: #787a7d;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #fff;
+            --bs-btn-disabled-bg: #787a7d;
+            --bs-btn-disabled-border-color: #787a7d;
+        }
+
+        /* 登入前註冊按鈕 */
+        .btn-primary2 {
+            --bs-btn-color: #fff;
+            --bs-btn-bg: #0d6efd;
+            --bs-btn-border-color: #0d6efd;
+            --bs-btn-hover-color: #fff;
+            --bs-btn-hover-bg: #0d6efd;
+            --bs-btn-hover-border-color: #0d6efd;
+            --bs-btn-focus-shadow-rgb: 49, 132, 253;
+            --bs-btn-active-color: #fff;
+            --bs-btn-active-bg: #0d6efd;
+            --bs-btn-active-border-color: #0d6efd;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #fff;
+            --bs-btn-disabled-bg: #0d6efd;
+            --bs-btn-disabled-border-color: #0d6efd;
+
+        }
+
     </style>
 </head>
 
@@ -160,6 +197,12 @@
                         <strong class="mb-1">場地預訂</strong>
                     </div>
                 </a>
+                <a th:href="@{/membership/actreview}" class="list-group-item list-group-item-action py-3 lh-tight"
+                   aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">活動管理</strong>
+                    </div>
+                </a>
             </div>
         </div>
 
@@ -172,7 +215,7 @@
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
 
         <div class="after-logging" th:if="${session.memId ne null}">
-            <button class="btn btn-primary fa fa-bars" type="button" data-bs-toggle="offcanvas"
+            <button class="btn btn-primary1 fa fa-bars" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"></button>
         </div>
 
@@ -183,23 +226,27 @@
         </div>
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="index.html" class="nav-link px-2 link-secondary">首頁</a></li>
+            <li><a th:href="@{/membership/ZuoHuo}"
+                   class="nav-link px-2 link-secondary">首頁</a></li>
             <li><a th:href="@{/act/joinAct}" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
             <li><a th:href="@{/act/createAct}" class="nav-link px-2 link-secondary">舉辦活動</a></li>
-            <li><a th:href="@{front_end/venue/venue}" class="nav-link px-2 link-secondary">場地租借</a></li>
-            <li><a href="customer.html" class="nav-link px-2 link-secondary">FAQs</a></li>
-            <li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
+            <li><a th:href="@{front_end/venue/venue}"
+                   class="nav-link px-2 link-secondary">場地租借</a></li>
+            <li><a th:href="@{/faq/faqs}"
+                   class="nav-link px-2 link-secondary">FAQs</a></li>
+            <li><a th:href="@{/faq/faqs}"
+                   class="nav-link px-2 link-secondary">關於我們</a></li>
         </ul>
 
         <div class="col-md-3 text-end">
 
             <!-- 這邊放會員登入後的選項 -->
             <div class="after-logging" th:if="${session.memId ne null}">
-                <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px; color: blue;"></i>
+                <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px; color: #6161f2;"></i>
 
                 <!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
                 <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                   aria-expanded="false" style="font-size: 25px; color: yellow;"></i>
+                   aria-expanded="false" style="font-size: 25px; color: #eded1e;"></i>
 
                 <ul id="notify_ul" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li id="notify_a1"></li>
@@ -215,9 +262,8 @@
                    style="font-size: 40px; margin: 20px;"></i>
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <li><a class="dropdown-item" href="#">個人資料</a></li>
-                    <li><a class="dropdown-item" href="#">Another</a></li>
-                    <li><a id="SignOut" class="dropdown-item" href="#">登出</a></li>
+                    <li><a class="dropdown-item" th:href="@{/membership/getOne_For_Update}">個人資料</a></li>
+                    <li><a id="SignOut" class="dropdown-item" th:href="@{/membership/login}">登出</a></li>
                 </ul>
 
             </div>
@@ -226,8 +272,8 @@
                 <button type="button" class="btn btn-outline-primary me-2">
                     <a class="nav-link" th:href="@{/membership/logging}">登入</a>
                 </button>
-                <button type="button" class="btn btn-primary">
-                    <a class="nav-link" href="register.html">註冊</a>
+                <button type="button" class="btn btn-primary2">
+                    <a class="nav-link" th:href="@{/membership/addMembership}">註冊</a>
                 </button>
             </div>
         </div>
@@ -596,7 +642,6 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjHlN8i2-4cw4QDuaPgyctq7OX1n6c6ls&callback=initMap" async
         defer>
 </script>
-<script src="path_to/jquery.countdown.min.js"></script>
 
 <script src="https://cdn.tiny.cloud/1/tus9t8o6mklmhwd5c0iaejn9394stnli5i0j2ic9bb4xurm0/tinymce/6/tinymce.min.js"
         referrerpolicy="origin"></script>
@@ -882,11 +927,14 @@
                     let diff = new Date() - endTime;
                     let days = Math.floor(diff / (1000 * 60 * 60 * 24))
                     let hours = Math.floor(diff / (1000 * 60 * 60))
+                    let minutes = Math.floor(diff / (1000 * 60))
                     let timeText;
                     if (days >= 1) {
                         timeText = days + "天前";
                     } else if (hours >= 1) {
                         timeText = hours + "小時前";
+                    } else if (minutes >= 1) {
+                        timeText = minutes + "分鐘前";
                     } else {
                         timeText = "剛剛";
                     }
@@ -940,7 +988,7 @@
                 if (user === undefined) {
                     $(".login").remove();
                 }
-
+                console.log(user)
                 // //each所有的.userfunction來抓memId做判斷
                 // $("#comments .userfunction").each(function () {
                 //     let memId = $(this).data("memId")
@@ -984,7 +1032,7 @@
     $("#commentsform").on("submit", function (e) {
         e.preventDefault();
 
-        var commentData = {
+        let commentData = {
             actId: window.location.pathname.split('/')[2], //路徑有變動的話要改
             // comReplyId:null,
             comContent: $("#comment").val()
@@ -998,8 +1046,10 @@
             dataType: 'json',
             success: function (comments) {
                 $("#comment").val("");
-
                 let commentsHTML = "";
+
+                let timeText = "剛剛";
+
                 commentsHTML +=
                     `<div class="usertext">
                         <div class="mb-3">
@@ -1013,6 +1063,7 @@
                         <hr style="margin: 0">
                         <div class="d-flex align-items-center mb-3">
                             <small class="text-muted">${comments.comTime}</small>
+                            <small class="text-muted text-danger-emphasis ms-3">${timeText}</small>
                         <div class="userfunction ms-auto" data-mem-id="${comments.memId}">
                             <a href="#" class="ok badge rounded-pill bg-success" style="text-decoration:none; display: none;"  data-com-id="' + comments.comId + '">確認</a>
                             <a href="#" class="nosee update badge rounded-pill bg-danger" style="text-decoration:none;" data-com-id="${comments.comId}">編輯</a>
@@ -1517,13 +1568,25 @@
 
                 //判斷是不是自己的活動 是的話不能報名 user = 後端session, myActMemId = thymeleaf渲染來的主辦人ID
                 if (user === myActMemId) {
-                    addBtn.text("我的活動");
-                    addBtn.addClass("disabled");
-                    addBtn.removeClass("btn-outline-danger");
-                    addBtn.addClass("btn-dark");
+                    // addBtn.text("我的活動");
+                    // addBtn.addClass("disabled");
+                    // addBtn.removeClass("btn-outline-danger");
+                    // addBtn.addClass("btn-dark");
+                    addBtn.remove();
+                    $("#follow").before
+                    (
+                        `<button type="button" id="addAct" class="btn btn-danger btn-lg mx-3" onClick="updateAct()">
+                            修改活動</button>`
+                    );
                 }
             }
         })
+    }
+
+    //自己的活動連去修改活動 -------------------------------------------------------------------
+    function updateAct() {
+        let actId = window.location.pathname.split('/')[2];
+        window.location.href = `/act/updateAct?id=${actId}`;
     }
 
     //關注活動 -------------------------------------------------------------------------------
@@ -1862,11 +1925,11 @@
             url: 'https://maps.googleapis.com/maps/api/geocode/json',
             data: {
                 address: actLoc,
-                key: 'AIzaSyBjHlN8i2-4cw4QDuaPgyctq7OX1n6c6ls' // 替换为您的 API 密钥
+                key: 'AIzaSyBjHlN8i2-4cw4QDuaPgyctq7OX1n6c6ls'
             },
             success: function (data) {
                 if (data.status === 'OK') {
-                    callback(data.results[0].geometry.location); // 返回坐标
+                    callback(data.results[0].geometry.location); //返回座標
                 } else {
                     callback(null);
                 }
@@ -1886,7 +1949,7 @@
                 lat: lat,
                 lng: lng
             },
-            zoom: 15,
+            zoom: 12,
             gestureHandling: "none",
             disableDefaultUI: true
         });
@@ -1897,6 +1960,11 @@
             },
             map: map
         });
+
+        marker.addListener("click", function () {
+            let googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+            window.open(googleMapsUrl, '_blank');
+        })
     }
 
     //以下為天氣預報 -------------------------------------------------------------------------------

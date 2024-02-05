@@ -110,7 +110,9 @@
             <thead class="table-secondary">
             <tr>
                 <th scope="col">編號</th>
+                <th scope="col">活動編號</th>
                 <th scope="col">檢舉者ID</th>
+                <th scope="col">被檢舉者ID</th>
                 <th scope="col">檢舉留言內容</th>
                 <th scope="col">檢舉標題</th>
                 <th scope="col">檢舉原因</th>
@@ -146,6 +148,9 @@
         <option value="10">10筆</option>
         <option value="15">15筆</option>
         <option value="20">20筆</option>
+        <option value="40">40筆</option>
+        <option value="60">60筆</option>
+        <option value="100">100筆</option>
     </select>
 
     <div class="fixed-bottom">
@@ -172,11 +177,11 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">檢舉留言內容</h5>
+                <h5 class="modal-title fw-bolder" id="exampleModalLabel">檢舉留言內容</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <span class="comContent">
+                <span class="comContent fw-normal">
 
                 </span>
             </div>
@@ -192,11 +197,11 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel2">檢舉原因</h5>
+                <h5 class="modal-title fw-bolder" id="exampleModalLabel2">檢舉原因</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <span class="repContent">
+                <span class="repContent fw-normal">
 
                 </span>
             </div>
@@ -389,11 +394,13 @@
                 commentReports.forEach(function (commetreport) {
                     let titleChinese = titleMap[commetreport.repTitle];
                     let statusChinese = statusMap[commetreport.repStatus];
-
+                    console.log("被檢舉的留言是哪個活動內的" + commetreport.comment.actId)
                     commentReportHTML +=
                         `<tr>
                             <td><span class="badge rounded-circle bg-dark">${commetreport.repId}</span></td>
-                            <td><a class="badge rounded-circle bg-secondary text-decoration-none" href="/member?memId=${commetreport.memId}">${commetreport.memId}</a></td>
+                            <td><a class="badge rounded-circle bg-primary text-decoration-none" href="/activity/${commetreport.comment.actId}">${commetreport.comment.actId}</span></td>
+                            <td><span class="badge rounded-circle bg-secondary">${commetreport.memId}</span></td>
+                            <td><span class="badge rounded-circle bg-danger">${commetreport.comment.memId}</span></td>
                             <td>
                             <button type="button" class="rounded-pill btn btn-info btn-sm"
                             data-bs-toggle="modal" data-bs-target="#exampleModal"
