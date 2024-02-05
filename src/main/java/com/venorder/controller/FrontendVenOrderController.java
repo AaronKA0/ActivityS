@@ -179,7 +179,7 @@ public class FrontendVenOrderController {
         venSvc.updateVen(venVO);
         
         model.addAttribute("venOrderVO", venOrderVO);
-        return "redirect:/Zuo-Huo";
+        return "redirect:/member/venOrderArchive";
     }
         
 //        double venTotRating = 0;
