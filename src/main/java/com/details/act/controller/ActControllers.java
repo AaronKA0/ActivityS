@@ -23,7 +23,7 @@ public class ActControllers {
 
     @GetMapping("/acts")
     public ResponseEntity<Page<ActVOs>> reviewActs(
-            @PageableDefault(size = 5, sort = "actStartTime", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 5, sort = "actStartTime", direction = Sort.Direction.ASC) Pageable pageable,
             @RequestParam(required = false) Byte actStatus,
             HttpSession session
     ) {
