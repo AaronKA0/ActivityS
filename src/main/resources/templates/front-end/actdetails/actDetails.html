@@ -345,9 +345,9 @@
                             主辦人:
                         </p>
                         <div>
-                            <a class="text-decoration-none" th:href="@{/membership/{memId}(memId=${memId})}">
-                                <img th:src="'data:image/png;base64,' + ${memPic}" class="img-fluid"
-                                     style="width: 60px; height: auto;">
+                            <a class="text-decoration-none" th:href="@{/member(memId=${act.memId})}">
+                                <img th:src="'data:image/png;base64,' + ${memPic}" class="img-fluid rounded-circle"
+                                     style="width: 70px; height: 70px;">
                             </a>
                             <p id="memId" class="badge bg-primary text-wrap" th:data-mem-id="${act.memId}"
                                th:text="${act.memName}">張三</p>
@@ -705,6 +705,14 @@
     let strActStartTime = $("#strActStartTime");
     if (days > 0) {
         strActStartTime.text(days + "天後")
+        if (days < 3) {
+            let notiftHTML =
+                `<div class="d-inline">
+                    <small class="fw-bolder">溫馨提醒: </small>
+                    <span class="text-warning fs-5">活動快開始啦！！</span>
+                </div>`;
+            $("#follow").after(notiftHTML);
+        }
     } else {
         strActStartTime.removeClass("bg-success");
         strActStartTime.addClass("bg-danger")
@@ -947,7 +955,7 @@
                             `<div class="usertext">
                                 <div class="mb-3">
                                     <a class="text-decoration-none" href="/member?memId=${comment.memId}">
-                                        <img src="data:image/png;base64,${comment.memPic}" class="rounded-circle me-2 img-fluid" alt="" style="max-width: 50px; height: auto;">
+                                        <img src="data:image/png;base64,${comment.memPic}" class="rounded-circle me-2 img-fluid" alt="" style="width: 70px; height: 70px;">
                                     </a>
                                     <p class="star badge bg-primary text-wrap align-top" data-mem-id="${comment.memId}">${comment.memName}</p>
                                 </div>
@@ -1054,7 +1062,7 @@
                     `<div class="usertext">
                         <div class="mb-3">
                             <a class="text-decoration-none" href="/member?memId=${comments.memId}">
-                                <img src="data:image/png;base64,${comments.memPic}" class="rounded-circle me-2 img-fluid" alt="" style="max-width: 50px; height: auto;">
+                                <img src="data:image/png;base64,${comments.memPic}" class="rounded-circle me-2 img-fluid" alt="" style="width: 70px; height: 70px;">
                                 <p class="star badge bg-primary text-wrap align-top" data-mem-id="${comments.memId}">${comments.memName}</p>
                             </a>
                         </div>
@@ -1694,7 +1702,8 @@
                         userHTML +=
                             `<div class="col-md-2 mb-3 mt-3">
                                 <div class="p-3 shadow-sm bg-white border border-1 rounded text-center h-100">
-                                    <a class="text-decoration-none" href="/member?memId=${memNameAndPics[i].memId}"><img src="data:image/png;base64,${memNameAndPics[i].memPic}" class="pic img-fluid d-block mx-auto" style="width: 60px; height: auto">
+                                    <a class="text-decoration-none" href="/member?memId=${memNameAndPics[i].memId}">
+                                    <img src="data:image/png;base64,${memNameAndPics[i].memPic}" class="pic img-fluid rounded-circle d-block mx-auto" style="width: 70px; height: 70px;">
                                     </a>
                                     <p class="star badge bg-primary text-wrap mt-2" data-mem-id="${memNameAndPics[i].memId}">
                                     ${memNameAndPics[i].memName}
@@ -1706,7 +1715,8 @@
                         userHTML +=
                             `<div class="col-md-2 mb-3 mt-3">
                                 <div class="p-3 shadow-sm bg-white border border-1 rounded text-center h-100">
-                                    <a class="text-decoration-none" href="/member?memId=${memNameAndPics[i].memId}"><img src="data:image/png;base64,${memNameAndPics[i].memPic}" class="pic img-fluid d-block mx-auto" style="width: 60px; height: auto">
+                                    <a class="text-decoration-none" href="/member?memId=${memNameAndPics[i].memId}">
+                                    <img src="data:image/png;base64,${memNameAndPics[i].memPic}" class="pic img-fluid rounded-circle d-block mx-auto" style="width: 70px; height: 70px;">
                                     </a>
                                     <p class="badge bg-primary text-wrap mt-2">${memNameAndPics[i].memName}</p>
                                 </div>
@@ -1717,7 +1727,7 @@
                     `<div class="col-md-2 mb-3 mt-3">
                                 <div class="p-3 shadow-sm bg-white border border-1 rounded text-center h-100">
                                     <a class="allPeople text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#moreModal">
-                                         <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="black" class="bi bi-people-fill" viewBox="0 0 16 16">
+                                         <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="black" class="bi bi-people-fill" viewBox="0 0 16 16">
                                           <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
                                         </svg>
                                     </a><br>
@@ -1765,7 +1775,7 @@
                         HTML +=
                             `<div class="shadow-sm d-flex justify-content-around m-3 border">
                                 <div class="">
-                                    <img src="data:image/png;base64,${memNameAndPic.memPic}" class="pic img-fluid rounded float-start" style="width: 60px; height: auto">
+                                    <img src="data:image/png;base64,${memNameAndPic.memPic}" class="pic img-fluid rounded-circle float-start" style="width: 70px; height: 70px;">
                                 </div>
                                 <div class="mt-3">
                                     <p class="star badge bg-primary text-wrap m-0" data-mem-id="${memNameAndPic.memId}">
@@ -1780,7 +1790,7 @@
                         HTML +=
                             `<div class="shadow-sm d-flex justify-content-around m-3 border">
                                 <div class="">
-                                    <img src="data:image/png;base64,${memNameAndPic.memPic}" class="pic img-fluid rounded float-start" style="width: 60px; height: auto">
+                                    <img src="data:image/png;base64,${memNameAndPic.memPic}" class="pic img-fluid rounded-circle float-start" style="width: 70px; height: 70px;">
                                 </div>
                                 <div class="mt-3">
                                     <p class="badge bg-primary text-wrap m-0">${memNameAndPic.memName}</p>
