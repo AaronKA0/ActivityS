@@ -127,21 +127,62 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 	display: block;
 }
 
-.visit-mem:hover{
+.visit-mem:hover {
 	text-decoration: underline;
 	cursor: pointer;
 }
 
+::-webkit-scrollbar {
+	width: 9px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: rgba(155, 155, 155, 0.5);
+	border-radius: 20px;
+	border-collapse: collapse;
+	border: transparent;
+}
+
+main {
+	min-height: calc(100vh - 70px);
+	/* 設定 main 區域的最小高度，確保 footer 固定在底部 */
+}
+
+form {
+	margin-left: 20px;
+	margin-top: 10px;
+}
+
+#reporterId-error, #reporteeId-error, #repTitle-error, #repContent-error
+	{
+	color: red;
+	margin-left: 130px;
+	font-size: 15px;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+td {
+	border: 1px solid;
+}
 </style>
 
 <body>
 
-	<form style="display:none" id="visitMemForm" th:action="@{/member}">
+	<form method="get" style="display: none" id="visitMemForm"
+		th:action="@{/member}">
 		<input id="visitMem" type="number" th:name="memId" /> <input
 			type="submit" />
 	</form>
 
-	<form style="display:none" id="visitChatForm" th:action="@{/member/chat}">
+	<form method="get" style="display: none" id="visitChatForm"
+		th:action="@{/member/chat}">
 		<input id="visitChat" type="number" th:name="memId" /> <input
 			type="submit" />
 	</form>
@@ -166,7 +207,8 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 				<li><a href="index.html" class="nav-link px-2 link-secondary">首頁</a></li>
 				<li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
 				<li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
-				<li><a href="/front_end/venue/browse" class="nav-link px-2 link-secondary">場地租借</a></li>
+				<li><a href="/front_end/venue/browse"
+					class="nav-link px-2 link-secondary">場地租借</a></li>
 				<li><a href="customer.html"
 					class="nav-link px-2 link-secondary">FAQs</a></li>
 				<li><a href="about.html" class="nav-link px-2 link-secondary">關於我們</a></li>
@@ -214,8 +256,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 							class="d-flex w-100 align-items-center justify-content-between">
 							<strong class="mb-1">通知</strong>
 						</div>
-					</a>
-					<a th:href="@{/member/venOrder}"
+					</a> <a th:href="@{/member/venOrder}"
 						class="list-group-item list-group-item-action py-3 lh-tight"
 						aria-current="true">
 						<div
@@ -236,17 +277,19 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 		class="row">
 		<div class="col-3" style="height: 250px">
 			<img id="mem-img"
-				style="max-width: 200px; border-radius: 50%">
+				style="width: 225px; height: 225px; overflow: hidden; border-radius: 50%">
 		</div>
 		<div class="col-3" style="height: 250px">
 			<div class="text-start" style="margin-top: 20px">
 				<h2 style="margin-left: 0px" id="mem-name"></h2>
 				<h5 style="margin-left: 0px" id="mem-num-friend"></h5>
 				<h5 id="mem-relation"></h5>
-				<div class="curMember" style="margin-top: 10px; display:none">
-					<button id="mem-edit" style="font-size: 20px; color: green; ; display:none">
-						更新<i class="fa fa-edit"></i>
-					</button>
+				<div class="curMember" style="margin-top: 10px; display: none">
+					<a th:href="@{membership/getOne_For_Update}"><button
+							id="mem-edit"
+							style="font-size: 20px; color: green;; display: none">
+							更新<i class="fa fa-edit"></i>
+						</button></a>
 				</div>
 				<div class="visitor" style="margin-top: 10px">
 					<button class="visit-relation-btn" id="visit-unfriend"
@@ -271,13 +314,15 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 					</button>
 				</div>
 				<div class="visitor" style="margin-top: 10px">
-					<button id="visit-chat-btn" style="font-size: 20px; color: blue; display:none">
+					<button id="visit-chat-btn"
+						style="font-size: 20px; color: blue; display: none">
 						聊天<i class="fa fa-comments-o"></i>
 					</button>
 
-					<button style="font-size: 20px; color: red">
+					<button id="visit-report-btn" style="font-size: 20px; color: red">
 						檢舉<i class="fa fa-file"></i>
 					</button>
+					<span style="display:none; margin-left: 20px" id="mem-reported">檢舉正在審查中</span>
 				</div>
 			</div>
 		</div>
@@ -292,12 +337,13 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 	</div>
 
 
-	<ul  id="member-tabs" style="width: 1000px; margin-left: 150px; margin-top: 30px; display:none"
+	<ul id="member-tabs"
+		style="width: 1000px; margin-left: 150px; margin-top: 30px; display: none"
 		class="nav nav-tabs">
-		<li id="friend-tab" class="nav-item"><a style="width: 100px"
-			class="nav-link active" aria-current="page" href="#">好友</a></li>
 		<li id="post-tab" class="nav-item"><a style="width: 100px"
-			class="nav-link" href="#">貼文</a></li>
+			class="nav-link active" href="#posts">貼文</a></li>
+		<li id="friend-tab" class="nav-item"><a style="width: 100px"
+			class="nav-link" aria-current="page" href="#friends">好友</a></li>
 		<li id="request-tab" class="curMember nav-item"><a
 			style="width: 100px" class="nav-link" href="#">好友請求</a></li>
 		<li id="block-tab" class="curMember nav-item"><a
@@ -363,12 +409,14 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 				style="display: inline-block; margin-left: 20px; margin-right: 20px">貼文</h2>
 			<i id="post-sort" data-order="desc" class="fa-solid fa-sort"></i>
 		</div>
-		<div style="width: 1000px; height: 500px; overflow-y: auto" id="posts-body" class="text-center"></div>
+		<div style="width: 1000px; height: 500px; overflow-y: auto"
+			id="posts-body" class="text-center"></div>
 	</div>
 
 
 
-	<div style="width: 1000px; margin-left: 150px; border: solid black 1px; display:none"
+	<div
+		style="width: 1000px; margin-left: 150px; border: solid black 1px; display: none"
 		id="friends" class="tab">
 		<div style="background-color: yellow" class="text-center"
 			id="friends-title">
@@ -377,7 +425,8 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 			<input type="text" id="friend-search" placeholder="搜尋好友">
 			<button id="clear-friend-search">清除</button>
 		</div>
-		<div style="width: 1000px; height: 500px; overflow-y: auto" id="friends-body" class="text-center"></div>
+		<div style="width: 1000px; height: 500px; overflow-y: auto"
+			id="friends-body" class="text-center"></div>
 	</div>
 
 	<div
@@ -388,8 +437,8 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 			<h2
 				style="display: inline-block; margin-left: 20px; margin-right: 20px">好友請求</h2>
 		</div>
-		<div style="width: 1000px; height: 500px; overflow-y: auto" id="friend-requests-body"
-			class="text-center"></div>
+		<div style="width: 1000px; height: 500px; overflow-y: auto"
+			id="friend-requests-body" class="text-center"></div>
 	</div>
 
 	<div
@@ -400,7 +449,8 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 			<h2
 				style="display: inline-block; margin-left: 20px; margin-right: 20px">封鎖會員</h2>
 		</div>
-		<div style="width: 1000px; height: 500px; overflow-y: auto" id="blocks-body" class="text-center"></div>
+		<div style="width: 1000px; height: 500px; overflow-y: auto"
+			id="blocks-body" class="text-center"></div>
 	</div>
 
 
@@ -460,21 +510,30 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 // 		await sendFriendRequest();
 // 		await blockMember();
 
+		await getMemReport();
+
 		if(visitId){
 			await displayRelation();
 			await displayBlock();
 		} else{
 			$("#mem-edit").show();
 			$("#member-tabs").show();
-			$("#friends").show();
 		}
+		
+		$("#posts").show();
 
 		
 		member = await loadMember();
 		posts = await loadPosts();
 		await displayFriends();
 		await displayRequests();
-		await displayBlocks();		
+		await displayBlocks();	
+		
+		
+		let tab = window.location.hash;
+		if (tab == "#friends") {
+			$("#friend-tab").click();
+		} 
 	});
 	
 	</script>
@@ -510,9 +569,9 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 			$("#visit-block-member").show();
 			$("#visit-chat-btn").hide();
 			$("#mem-relation").text(`您被${$("#mem-name").text()}封鎖`);
+			$("#posts").hide();
 		} else{
 			$("#member-tabs").show();
-			$("#friends").show();
 		}
 	}
 	
@@ -539,7 +598,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 			$(".visit-relation-btn").hide();
 			$("#visit-unblock-member").show();
 			$("#mem-relation").text("已封鎖");
-			$("#visit-chat-btn").show();
+			$("#visit-chat-btn").hide();
 		}
 		if(isBlocked){
 			$("#visit-add-friend").hide();
@@ -711,7 +770,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 				class="row text-center mem-div" data-id="${mem.memId}">
 				<div class="col-4" style="height: 150px">
 					<img class="request-mem-img" src="data:img/png;base64,${mem.memPic}"
-						style="max-width: 150px; border-radius: 50%">
+						style="width: 150px; height: 150px; overflow: hidden; border-radius: 50%">
 				</div>
 				<div class="col-4" style="height: 150px">
 					<div class="text-center" style="margin-top: 50px">
@@ -816,7 +875,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 				class="row text-center mem-div" data-id="${mem.memId}">
 				<div class="col-4" style="height: 150px">
 					<img class="block-mem-img" src="data:img/png;base64,${mem.memPic}"
-						style="max-width: 150px; border-radius: 50%">
+						style="width: 150px; height: 150px; overflow: hidden; border-radius: 50%">
 				</div>
 				<div class="col-4" style="height: 150px; margin-top: 50px">
 					<div class="text-center">
@@ -902,7 +961,6 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 	$("#clear-friend-search").on("click", async function(){
 		$("#friend-search").val("");
 		await displayFriends();
-// 		$(".friend-div").show();
 	});
 	
 	async function getFriends(){
@@ -924,12 +982,14 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 	    	if(!filteredMembers.length){
 	    		$("#friends-body").html("");
 	    		$("#friends-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>無搜尋到的好友</h3></div>`);
+		    	isSearch = false;
 	    		return;
 	    	}
 		} else{
 	    	if(!friends.length){
 	    		$("#friends-body").html("");
 	    		$("#friends-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h3>暫無好友</h3></div>`);
+		    	isSearch = false;
 	    		return;
 	    	}
 		}
@@ -951,7 +1011,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 					class="row text-center mem-div friend-div" data-id="${mem.memId}" data-userName="${mem.memUsername}">
 					<div class="col-4" style="height: 150px">
 						<img class="friend-mem-img" src="data:img/png;base64,${mem.memPic}"
-							style="max-width: 150px; border-radius: 50%">
+							style="width: 150px; height: 150px; overflow: hidden; border-radius: 50%">
 					</div>
 					<div class="col-4" style="height: 150px">
 						<div style="margin-top:20px" class="text-center">
@@ -997,7 +1057,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 				class="row text-center mem-div friend-div" data-id="${mem.memId}" data-userName="${mem.memUsername}">
 				<div class="col-4" style="height: 150px">
 					<img class="friend-mem-img" src="data:img/png;base64,${mem.memPic}"
-						style="max-width: 150px; border-radius: 50%">
+						style="width: 150px; height: 150px; overflow: hidden; border-radius: 50%">
 				</div>
 				<div class="col-4" style="height: 150px">
 					<div style="margin-top:20px" class="text-center">
@@ -1088,15 +1148,15 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 				body: JSON.stringify({memId: memId})
 			}).then(function(response){
 				return response.json();
-			}).then(function(posts){
+			}).then(async function(posts){
 				posts.sort((a, b) => b.postTime.localeCompare(a.postTime));
-				displayPosts(posts);
+				await displayPosts(posts);
 				return posts;
 			});
 		}		
 	
 	
-	function displayPosts(posts){
+	async function displayPosts(posts){
 		if(visitId){
 			posts = posts.filter(post => post.postStatus != 2);
 		}
@@ -1119,7 +1179,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 // 		    	}
 		    	
 		        for (post of posts) {
-		        let html = `<div class="post" data-id="${post.postId}"><div class="row"><div class="post-time col-6 text-start"></div><div style="display:${visitId? '': 'none'}" data-id="${post.postId}" class="post-report-btn col-6 text-end"><button style="font-size: 20px; color: red">檢舉<i class="fa fa-file"></i></button></div><div style="display:${visitId? 'none': ''}" class="post-status col-6 text-end">${post.postStatus}</div></div><div class="post-title" style="width: 750px"><h3 class="text-center">${post.postTitle}</h3></div><div style="width: 750px" class="post-content text-center">${post.postContent}</div><div class="row"><div class="col-6 text-start"><button style="display:${visitId? 'none': ''}" data-bs-target="#add-post-modal" data-bs-toggle="modal" class="edit-post-btn" data-post="${post.postId}"><i class="fa fa-edit"></i></button></div><div class="col-6 text-end"><button style="display:${visitId? 'none': ''}" class="delete-post-btn" id="deletePost${post.postId}"><i class="fa fa-trash" aria-hidden="true"></button></div></div></div>`;
+		        let html = `<div class="post" data-id="${post.postId}"><div class="row"><div class="post-time col-6 text-start"></div><div style="display:${visitId? '': 'none'}" data-id="${post.postId}" class="post-report-btn col-6 text-end"><button style="display:none; font-size: 20px; color: red">檢舉<i class="fa fa-file"></i></button><span class="post-reported" id="post-reported${post.postId}" style="display:none">檢舉正在審查中</span></div><div style="display:${visitId? 'none': ''}" class="post-status col-6 text-end">${post.postStatus}</div></div><div class="post-title" style="width: 750px"><h3 class="text-center">${post.postTitle}</h3></div><div style="width: 750px" class="post-content text-center">${post.postContent}</div><div class="row"><div class="col-6 text-start"><button style="display:${visitId? 'none': ''}" data-bs-target="#add-post-modal" data-bs-toggle="modal" class="edit-post-btn" data-post="${post.postId}"><i class="fa fa-edit"></i></button></div><div class="col-6 text-end"><button style="display:${visitId? 'none': ''}" class="delete-post-btn" id="deletePost${post.postId}"><i class="fa fa-trash" aria-hidden="true"></button></div></div></div>`;
 		        $("#posts-body").append(html);
 		        displayTime(post.postId, post.postTime);
 		        displayStatus(post.postId, post.postStatus);
@@ -1137,6 +1197,8 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 		        }
 		    }
 		});
+		
+		await getPostReports();
 		}
 	
 	$(document).on("click", ".button0", async function(){
@@ -1148,7 +1210,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 		updatedPost.postStatus = 3; 
 		posts = posts.filter(post => post.postId != postId);
 		
-		displayPosts(posts);
+		await displayPosts(posts);
 
 		await fetch("/member/editPost", {
 			method: "POST",
@@ -1188,11 +1250,11 @@ $(document).on("click", ".edit-post-btn", function() {
                 plugins: [
                     'advlist', 'autolink', 'lists', 'link', 'charmap', 'preview',
                     'anchor', 'searchreplace', 'visualblocks', 'fullscreen',
-                    'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+                    'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount', 'table'
                 ],
                 toolbar: 'undo redo | blocks | bold italic backcolor forecolor| ' +
                     'alignleft aligncenter alignright alignjustify | ' +
-                    'bullist numlist outdent indent | removeformat | code | help',
+                    'bullist numlist table outdent indent | removeformat | code | help', 
                 setup: function(editor) {
                     editor.on('init', function(e) {
                     	if(edit){
@@ -1228,10 +1290,10 @@ $(document).on("click", ".edit-post-btn", function() {
             });
         }
         
-        function displayNewPost(post) {
+        async function displayNewPost(post) {
         	posts.push(post);
         	posts.sort((a, b) => b.postTime.localeCompare(a.postTime));
-        	displayPosts(posts);
+        	await displayPosts(posts);
         	$("#post-sort").attr("data-order", "desc");
         }
 
@@ -1251,7 +1313,7 @@ $(document).on("click", ".edit-post-btn", function() {
 				return post;
 			});
 
-            displayNewPost(newPost);
+            await displayNewPost(newPost);
 			} else{	
 				curPost.postTitle = $("#add-post-title").val();
 				curPost.postContent = tinymce.activeEditor.getContent();
@@ -1275,7 +1337,7 @@ $(document).on("click", ".edit-post-btn", function() {
 				});				
 			}
 			
-			displayPosts(posts);
+			await displayPosts(posts);
             $("#add-discard-btn").click();
             
         });
@@ -1395,14 +1457,14 @@ $(document).on("click", "li.status-li", async function(){
 })
 
 
-$(document).on("click", "#post-sort", function(){
+$(document).on("click", "#post-sort", async function(){
 	if($(this).attr("data-order") == "asc"){
 		posts.sort((a, b) => b.postTime.localeCompare(a.postTime));
-		displayPosts(posts);
+		await displayPosts(posts);
 		$(this).attr("data-order", "desc");
 	} else{
 		posts.sort((a, b) => a.postTime.localeCompare(b.postTime));
-		displayPosts(posts);
+		await displayPosts(posts);
 		$(this).attr("data-order", "asc");
 	}
 });
@@ -1444,107 +1506,299 @@ $("#add-post-modal").on("hidden.bs.modal", function () {
 
 
 
-<!-- 	<!-- 新增貼文檢舉按鈕 --> -->
-<!-- 	<button type="button" class="btn btn-primary" id="openInsertModalBtn">新增貼文檢舉</button> -->
 
 
 
-<!-- 	<!-- 彈窗 --> -->
-<!-- 	<div class="modal fade" id="insertModal" tabindex="-1" role="dialog" -->
-<!-- 		aria-labelledby="insertModalLabel" aria-hidden="true"> -->
-<!-- 		<div class="modal-dialog" role="document"> -->
-<!-- 			<div class="modal-content"> -->
-
-<!-- 				<div class="modal-header"> -->
-<!-- 					<h3 class="modal-title" id="myModalLabel">貼文檢舉</h3> -->
-<!-- 				</div> -->
-
-<!-- 				<div class="modal-body"> -->
-
-<!-- 					<form id="yourFormId" th:action="@{insert}" method="post" -->
-<!-- 						th:object="${postReportVO}" enctype="multipart/form-data"> -->
-
-<!-- 										<div> -->
-<!-- 											<label>員工編號:<font color="red"><b>*</b></font></label> <input -->
-<!-- 												id="empId" type="text" th:field="*{empId}" value="2" -->
-<!-- 												onclick="hideContent('empId.errors');" /><br /> <span -->
-<!-- 												th:if="${#fields.hasErrors('empId')}" th:errors="*{empId}" -->
-<!-- 												class="error" id="empId.errors"></span> -->
-<!-- 										</div> -->
-<!-- 										<br> -->
-
-<!-- 						<div> -->
-<!-- 							<label>個人貼文編號<font color="red"><b>*</b></font></label> <input -->
-<!-- 								id="postId" type="text" th:field="*{postId}" /><br /> <span -->
-<!-- 								class="error" id="postId-error"></span><br> -->
-<!-- 						</div> -->
-
-<!-- 						<div> -->
-<!-- 							<label>會員編號<font color="red"><b>*</b></font></label> <input -->
-<!-- 								id="memId" type="text" th:field="*{memId}" /><br /> <span -->
-<!-- 								class="error" id="memId-error"></span><br> -->
-<!-- 						</div> -->
 
 
-<!-- 						<div> -->
-<!-- 							<label>檢舉標題<font color="red"><b>*</b></font></label> <input -->
-<!-- 								id="repTitle" type="text" th:field="*{repTitle}" /><br /> <span -->
-<!-- 								class="error" id="repTitle-error"></span><br> -->
-<!-- 						</div> -->
+	<!-- 彈窗 -->
+	<div class="modal fade" id="insertModal" tabindex="-1" role="dialog"
+		aria-labelledby="insertModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
 
-<!-- 						<div> -->
-<!-- 							<label>檢舉內容<font color="red"><b>*</b></font></label> -->
-<!-- 							<textarea id="repContent" th:field="*{repContent}" rows="4" -->
-<!-- 								cols="50" style="resize: both;"></textarea> -->
-<!-- 							<br /> <span class="error" id="repContent-error"></span><br> -->
-<!-- 						</div> -->
+				<div class="modal-header text-center">
+					<h3 style="width: 100%" class="modal-title text-center"
+						id="reportTitle">會員檢舉</h3>
+					<button style="display: none" type="button"
+						id="mem-report-btn-close" class="btn-close"
+						data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
 
+				<div class="modal-body">
 
+					<form id="memReportForm" method="post"
+						enctype="multipart/form-data">
 
-<!-- 						<div> -->
-<!-- 							<label>檢舉圖片</label><input type="file" id="registerRepPic" -->
-<!-- 								th:field="*{repPic}" onclick="previewImage()" -->
-<!-- 								multiple="multiple" /> <span class="error" -->
-<!-- 								th:utext="${errorMessage}" id="repPic.errors"></span> <br> -->
-<!-- 							<span class="error-message" id="repPic-error"></span><br> -->
-<!-- 							<div id="blob_holder"></div> -->
-<!-- 						</div> -->
-<!-- 						<br> -->
+						<div>
+							<label>檢舉標題<font color="red"><b>*</b></font></label> <input
+								id="repTitle" type="text" class="mem-report-input" /><br /> <span
+								class="error" id="repTitle-error"></span><br>
+						</div>
 
-<!-- 						<div> -->
+						<div>
+							<label>檢舉內容<font color="red"><b>*</b></font></label>
+							<textarea class="mem-report-input" id="repContent" rows="4"
+								cols="50" style="resize: both;"></textarea>
+							<br /> <span class="error" id="repContent-error"></span><br>
+						</div>
 
-<!-- 							<div> -->
-<!-- 								<button type="submit" id="submit" class="btn btn-secondary">送出新增</button> -->
-<!-- 							</div> -->
-
-<!-- 						</div> -->
-<!-- 					</form> -->
-<!-- 				</div> -->
-
-<!-- 				<br> -->
-
-<!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
-
-
-<!-- 	<script> -->
-// 		// 使用 jQuery 確保 DOM 已加載
-// 		$(document).ready(function() {
-// 			// 觸發按鈕點擊事件，顯示彈窗
-// 			$("#openInsertModalBtn").click(function() {
-// 				$("#insertModal").modal("show");
-// 			});
-
-// 			// 在送出新增按鈕點擊時，可以執行相應的 JavaScript 或 jQuery 代碼
-// 			$("#submitInsert").click(function() {
-// 				// 在這裡添加你想要的邏輯，例如驗證表單等
-// 				console.log("Submit Insert Button Clicked!");
-// 			});
-// 		});
-<!-- 	</script> -->
+						<div>
+							<label>檢舉圖片</label><input class="mem-report-input" type="file"
+								id="registerRepPic" onclick="previewImage()" multiple="multiple" />
+							<span class="error" id="repPic.errors"></span> <br> <span
+								class="error error-message" id="repPic-error"></span><br>
+							<div id="blob_holder"></div>
+						</div>
+						<br>
 
 
+						<div>
+							<div></div>
+							<div class="text-end">
+								<button type="reset" class="btn btn-secondary"
+									id="mem-report-reset">清除</button>
+								<button type="submit" class="btn btn-primary"
+									id="mem-report-submit">送出檢舉</button>
+							</div>
+							<div></div>
+						</div>
+					</form>
+				</div>
+
+				<br>
+
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+
+let reportType;
+let fileByteArray = [];
+let blob_holder = document.querySelector("#blob_holder");
+
+$("#visit-report-btn").click(function() {
+	reportType = "member";
+	$("#mem-report-reset").click();
+	$("#reportTitle").text("會員檢舉");
+	$("#insertModal").modal("show");
+});
+
+$("#mem-report-reset").on("click", function(){
+	$(".error").hide();
+	blob_holder.innerHTML = "";
+});
+
+$("#insertModal").on("hidden.bs.modal", function () {
+	$("#mem-report-reset").click();
+});
+
+//照片上傳-預覽用
+var filereader_support = typeof FileReader != 'undefined';
+if (!filereader_support) {
+	alert("No FileReader support");
+}
+acceptedTypes = {
+	'image/png' : true,
+	'image/jpeg' : true,
+	'image/gif' : true
+};
+function previewImage() {
+
+	var upfile1 = document.getElementById("registerRepPic");
+	upfile1.addEventListener("change", function(event) {
+		var files = event.target.files || event.dataTransfer.files;
+		for (var i = 0; i < files.length; i++) {
+			previewfile(files[i]);
+		}
+	}, false);
+
+}
+function previewfile(file) {
+
+	if (filereader_support === true
+			&& acceptedTypes[file.type] === true) {
+		var reader = new FileReader();
+		reader.onload = function(event) {
+			var image = new Image();
+			image.src = event.target.result;
+			image.width = 180;
+			// 					image.height =180;
+			image.border =0;
+			if (blob_holder.hasChildNodes()) {
+				blob_holder.removeChild(blob_holder.childNodes[0]);
+			}
+			blob_holder.appendChild(image);
+			
+		       fileByteArray = [];			
+	  
+		       var binaryString = atob(image.src.split("base64,")[1]);
+
+		       fileByteArray = new Uint8Array(binaryString.length);
+		       for (var i = 0; i < binaryString.length; i++) {
+		    	   fileByteArray[i] = binaryString.charCodeAt(i);
+		       }
+
+		};
+		reader.readAsDataURL(file);
+		document.getElementById('mem-report-submit').disabled = false;
+	} else {
+		blob_holder.innerHTML = "<div  style='text-align: left;'>"
+				+ "● filename: "
+				+ file.name
+				+ "<br>"
+				+ "● ContentTyp: "
+				+ file.type
+				+ "<br>"
+				+ "● size: "
+				+ file.size
+				+ "bytes"
+				+ "<br>"
+				+ "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";
+		document.getElementById('mem-report-submit').disabled = true;
+	}
+}
+</script>
+
+	<script>
+
+// form submission and validation
+$(document).ready(function(){
+	$("#memReportForm").submit(async function(event){
+		event.preventDefault();
+
+		let hasErrors = false;
+		
+		var repTitle = $("#repTitle").val();
+		if(repTitle.length < 1){
+			$("#repTitle-error").text("請輸入檢舉標題").show();
+			hasErrors = true;
+		}else{
+			$("#repTitle-error").hide();
+		}
+		
+		var repContent = $("#repContent").val();
+		if(repContent.length < 1){
+			$("#repContent-error").text("請輸入檢舉內容").show();
+			hasErrors = true;
+		}else{
+			$("#repContent-error").hide();
+		}
+		
+		if(!hasErrors){
+			if(reportType == "member"){
+				await reportMember();
+				await getMemReport();
+			} else if(reportType == "post"){
+				await reportPost();
+			}
+			$("#mem-report-btn-close").click();
+		}		
+		
+	});
+});
+
+
+
+	async function reportMember(){
+		let memReport = {reporterId: visitId, reporteeId: memId, repTitle: $("#repTitle").val(), repContent: $("#repContent").val(), repPic: fileByteArray && fileByteArray.length ? Array.from(fileByteArray) : null};
+		return await fetch("/memReport/insert", {
+			method: "POST",
+			body: JSON.stringify(memReport)
+		}).then(function(response){
+			return response.json();
+		}).then(function(report){
+			return report;
+		});
+	}
+
+
+
+</script>
+
+
+
+<!-- post report -->
+<script>
+let postId;
+
+	$(document).on("click", "div.post-report-btn button", function() {
+		reportType = "post";
+		postId = $(this).closest("div.post-report-btn").attr("data-id");
+		$("#mem-report-reset").click();
+		$("#reportTitle").text("貼文檢舉");
+		$("#insertModal").modal("show");
+	});
+	
+	async function reportPost(){
+		let postReport = {memId: visitId, reporteeId: memId, postId: postId, repTitle: $("#repTitle").val(), repContent: $("#repContent").val(), repPic: fileByteArray && fileByteArray.length ? Array.from(fileByteArray) : null};
+		return await fetch("/postReport/insertPost", {
+			method: "POST",
+			body: JSON.stringify(postReport)
+		}).then(function(response){
+			return response.json();
+		}).then(async function(report){
+			await loadPosts();
+			return report;
+		});
+	}
+
+
+</script>
+
+
+<!-- check if member has already been reported -->
+<script>
+async function getMemReport(){
+	if(!visitId) return;
+	let memReport = {reporterId: visitId, reporteeId: memId};
+	return await fetch("/memberreport/getReport", {
+		method: "POST",
+		body: JSON.stringify(memReport)
+	}).then(function(response){
+		return response.json();
+	}).then(function(report){
+		if(report){
+			$("#visit-report-btn").hide();
+			$("#mem-reported").show();
+		}
+		return report;
+	}).catch(error => {
+	  });
+}
+
+
+</script>
+
+
+<!-- check if post has already been reported -->
+<script>
+async function getPostReports(){
+	if(!visitId) return;
+	let postReport = {memId: visitId, reporteeId: memId};
+	return await fetch("/postreport/getReport", {
+		method: "POST",
+		body: JSON.stringify(postReport)
+	}).then(function(response){
+		return response.json();
+	}).then(function(reports){
+		$(".post-report-btn button").show();
+		if(reports){
+			for(report of reports){
+				let postReportBtn = $(`.post-report-btn[data-id='${report.postId}']`).first();
+				postReportBtn.find("button").hide();
+				postReportBtn.find(".post-reported").show();				
+			}
+		}
+		return reports;
+	}).catch(error => {
+	  });
+}
+
+
+</script>
 
 
 

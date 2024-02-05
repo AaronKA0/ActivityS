@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
@@ -38,9 +39,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.membership.model.MembershipVO;
 import com.membership.service.MembershipService;
 import com.membership.service.RedisService;
-import com.membership.model.MembershipVO;
 
 @Controller
 @RequestMapping("/membership")
@@ -175,13 +176,27 @@ public class MembershipController {
 	}
 
 //  ----------------getOne_For_Update-----------------
-	@PostMapping("getOne_For_Update")
-	public String getOne_For_Update(@RequestParam("memId") String memId, ModelMap model) {
+//	@PostMapping("getOne_For_Update")
+//	public String getOne_For_Update(@RequestParam("memId") String memId, ModelMap model) {
+//		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+//
+//		/*************************** 2.開始查詢資料 *****************************************/
+//		// EmpService empSvc = new EmpService();
+//		MembershipVO membershipVO = membershipSvc.getOneMembership(Integer.valueOf(memId));
+//
+//		/*************************** 3.查詢完成,準備轉交(Send the Success view) **************/
+//		model.addAttribute("membershipVO", membershipVO);
+//		return "front-end/membership/update_membership_input"; // 查詢完成後轉交update_emp_input.html
+////		return "back-end/membership/select_page";
+//	}
+	
+	@GetMapping("getOne_For_Update")
+	public String getOne_For_Update(ModelMap model, HttpSession session) {
 		/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
 
 		/*************************** 2.開始查詢資料 *****************************************/
 		// EmpService empSvc = new EmpService();
-		MembershipVO membershipVO = membershipSvc.getOneMembership(Integer.valueOf(memId));
+		MembershipVO membershipVO = membershipSvc.getOneMembership((Integer)session.getAttribute("memId"));
 
 		/*************************** 3.查詢完成,準備轉交(Send the Success view) **************/
 		model.addAttribute("membershipVO", membershipVO);

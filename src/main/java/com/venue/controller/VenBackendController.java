@@ -246,7 +246,6 @@ public class VenBackendController {
 			} else {
 				vens.get(i).setVenRating(0.0);
 			}
-
 		}
 		return vens;
 	}

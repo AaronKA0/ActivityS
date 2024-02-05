@@ -24,6 +24,7 @@ public class NotifyNow {
             notifySvc.addNotify(notifyVO);
             NotifyWebSocket.sendNotification(notifyVO);
             System.out.println("傳送成功");
+            System.out.println(notifyVO);
         }
          
         

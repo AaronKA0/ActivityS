@@ -126,7 +126,7 @@ div.star_block>span.star.-off {
 
 <body>
 
-	<form method="post" style="display:none" id="venForm" th:action="@{addVenOrder}">
+	<form method="get" style="display:none" id="venForm" th:action="@{addVenOrder}">
 		<input id="selectVen" type="number" th:name="venId" /> <input
 			type="submit" />
 	</form>
@@ -400,8 +400,9 @@ div.star_block>span.star.-off {
 
 	<script>
 
-let vens;
-let groupedVens;
+let vens = [];
+let groupedVens = [];
+let isSearch = false;
 
 
 $(".sort-btn").on("click", function(){
@@ -430,7 +431,11 @@ async function getVens(){
 	}).then(function(vens){
 		return vens.filter(ven => ven.venStatus == 2);
 	});	
-	filterVens();
+
+	if(isSearch){
+		filterVens();
+	}
+	isSearch = false;
 	groupVens();
 }
 
@@ -465,11 +470,14 @@ function groupVens(){
 			}
 		}
 	}
+	
 		
 }
 
 
 function filterVens(){
+
+    
 	if($("#s-name").val().trim()){
 		let name = $("#s-name").val().trim().toLowerCase();
 		vens = vens.filter(ven => ven.venName.toLowerCase() == name);
@@ -486,23 +494,23 @@ function filterVens(){
     }
     
     
-    if($('#s-city').select2('data')[0].text !== "全市"){	    	
-    	vens = vens.filter(ven => ven.venCity.toLowerCase() == $('#s-city').select2('data')[0].text.toLowerCase());
+    if($('#s-city').select2('data')[0]?.text !== "全市"){	    	
+    	vens = vens.filter(ven => ven.venCity.toLowerCase() == $('#s-city').select2('data')[0]?.text.toLowerCase());
     }
  
-    if($('#s-district').select2('data')[0].text !== "全區"){
-    	vens = vens.filter(ven => ven.venDistrict.toLowerCase() == $('#s-district').select2('data')[0].text.toLowerCase());
+    if($('#s-district').select2('data')[0]?.text !== "全區"){
+    	vens = vens.filter(ven => ven.venDistrict.toLowerCase() == $('#s-district').select2('data')[0]?.text.toLowerCase());
     }
     else{
-    	if($('#s-city').select2('data')[0].text === "臺北"){
+    	if($('#s-city').select2('data')[0]?.text === "臺北"){
     		vens = vens.filter(ven => taipei.includes(ven.venDistrict.toLowerCase()));
     	}
     
-    	if($('#s-city').select2('data')[0].text === "桃園"){
+    	if($('#s-city').select2('data')[0]?.text === "桃園"){
     		vens = vens.filter(ven => taoyuan.includes(ven.venDistrict.toLowerCase()));
     	}
     
-   		if($('#s-city').select2('data')[0].text === "臺中"){
+   		if($('#s-city').select2('data')[0]?.text === "臺中"){
     		vens = vens.filter(ven => taichung.includes(ven.venDistrict.toLowerCase()));
     	}
     }
@@ -530,7 +538,9 @@ function filterVens(){
 	if(!!$("#s-hcount").val()){
 		vens = vens.filter(ven => ven.venRateCount <= parseInt($("#s-hcount").val()));
 	}  
-    
+	
+
+
 }
 
 
@@ -567,6 +577,7 @@ async function loadVens(){
 }
 
 function displayVens(){
+
 	if(!vens.length){
 		$("#venues-body").html("");
 		$("#venues-body").append(`<div style="margin-top:100px; margin-bottom:50px"><h2>暫無搜尋到可以出租的場地</h2></div>`);
@@ -576,6 +587,7 @@ function displayVens(){
 	    dataSource: groupedVens,
 	    pageSize: 3,
 	    callback: async function(vens, pagination) {
+
 	    	$("#venues-body").html("");
 	    	
 // 	    	if(!vens.length){
@@ -761,6 +773,7 @@ $("#s-clear").on("click", async function(){
 
 
 $("#search").on("click", async function(){
+	isSearch = true;
 	await loadVens();
 });
 

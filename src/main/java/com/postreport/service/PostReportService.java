@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.memberreport.model.MemberReportVO;
 import com.postreport.model.PostReportVO;
 
 @Service("postReportService")
@@ -42,5 +43,9 @@ public class PostReportService {
 	public PostReportVO getStatusPostReport(Integer repId) {
 		Optional<PostReportVO> optional = repository.findById(repId);
 		return optional.orElse(null);
+	}
+	
+	public List<PostReportVO> getReport(Integer memIdA, Integer memIdB) {
+		return repository.getReport(memIdA, memIdB);
 	}
 }

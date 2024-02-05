@@ -1,6 +1,7 @@
 package com.memberreport.model;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -120,5 +121,13 @@ public class MemberReportVO implements java.io.Serializable {
 		this.repTime = repTime;
 	}
 
+	@Override
+	public String toString() {
+		return "MemberReportVO [repId=" + repId + ", reporterId=" + reporterId + ", reporteeId=" + reporteeId
+				+ ", empId=" + empId + ", repTitle=" + repTitle + ", repContent=" + repContent + ", repPic="
+				+ Arrays.toString(repPic) + ", repStatus=" + repStatus + ", repTime=" + repTime + "]";
+	}
+
+	
 }
 

@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -94,14 +94,14 @@ public class FrontendVenOrderController {
     }
 
 
-    @PostMapping("addVenOrder")
-    public String addVenOrder(ModelMap model, @ModelAttribute VenVO ven, HttpServletRequest request) {
+    @GetMapping("addVenOrder")
+    public String addVenOrder(ModelMap model, @ModelAttribute VenVO ven) {
 
         VenOrderVO venOrderVO = new VenOrderVO();
         VenVO venVO = venSvc.getOneVen(ven.getVenId());
 
         model.addAttribute("venOrderVO", venOrderVO);
-        request.setAttribute("venVO", venVO);
+        model.addAttribute("venVO", venVO);
         
         return "front-end/venue/venType";
     }
