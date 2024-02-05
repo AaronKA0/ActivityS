@@ -39,7 +39,7 @@ public class MailService {
 				}
 			});
 
-			String changePasswordLink = "http://localhost:8080/membership/updatepassword";
+			String changePasswordLink = "zuohuo.ddns.net/membership/updatepassword";
 
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(myGmail));

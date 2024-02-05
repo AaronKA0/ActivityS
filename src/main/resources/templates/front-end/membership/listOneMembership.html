@@ -110,7 +110,7 @@ h6 {
 							class="d-flex w-100 align-items-center justify-content-between">
 							<strong class="mb-1">聊天</strong>
 						</div>
-					</a> <a th:href="@{/member/chat}"
+					</a> <a th:href="@{/front_end/notify}"
 						class="list-group-item list-group-item-action py-3 lh-tight"
 						aria-current="true">
 						<div
@@ -145,7 +145,7 @@ h6 {
 			</div>
 
 			<div class="col-md-3 mb-2 mb-md-0">
-				<a href='select_page'
+				<a th:href="@{/membership/ZuoHuo}"
 					class="d-inline-flex link-body-emphasis text-decoration-none">
 					<span class="fs-4"><img alt="ZuoHuo"
 						src="/front-end/16/images/ZuoHuo4.jpg" width="160px"></span>
@@ -197,7 +197,7 @@ h6 {
 
 					<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 						<li><a class="dropdown-item"
-							th:href="@{/membership/getOne_For_Update}">個人資料</a></li>
+							th:href="@{/member}">個人資料</a></li>
 						<li><a id="SignOut" class="dropdown-item"
 							th:href="@{/membership/logging}">登出</a></li>
 					</ul>

@@ -134,13 +134,13 @@ div#text {
 							class="d-flex w-100 align-items-center justify-content-between">
 							<strong class="mb-1">聊天</strong>
 						</div>
-					</a> <a th:href="@{/member/chat}"
-						class="list-group-item list-group-item-action py-3 lh-tight"
-						aria-current="true">
-						<div
-							class="d-flex w-100 align-items-center justify-content-between">
-							<strong class="mb-1">通知</strong>
-						</div>
+					</a> <a th:href="@{/front_end/notify}"
+                        class="list-group-item list-group-item-action py-3 lh-tight"
+                        aria-current="true">
+                <div
+                        class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">通知</strong>
+                </div>
 					</a> <a th:href="@{/member/venOrder}"
 						class="list-group-item list-group-item-action py-3 lh-tight"
 						aria-current="true">
@@ -199,7 +199,6 @@ div#text {
 				<li><a th:href="@{/faq/faqs}"
 					class="nav-link px-2 link-secondary">關於我們</a></li>
 			</ul>
-
 			<div class="col-md-3 text-end">
 				<!-- 這邊放會員登入後的選項 -->
 				<div class="after-logging" th:if="${session.memId ne null}">
@@ -228,7 +227,7 @@ div#text {
 
 					<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 						<li><a class="dropdown-item"
-							th:href="@{/membership/getOne_For_Update}">個人資料</a></li>
+							th:href="@{/member}">個人資料</a></li>
 						<li><a id="SignOut" class="dropdown-item"
 							th:href="@{/membership/login}">登出</a></li>
 					</ul>
