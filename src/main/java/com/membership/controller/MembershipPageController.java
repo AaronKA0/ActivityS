@@ -73,6 +73,10 @@ public class MembershipPageController {
 			if (session.getAttribute("memId").equals(memId)) {
 				request.setAttribute("status", "cur");
 			} else {
+				MembershipVO membershipVO = membershipSvc.getOneMembership(memId);
+				if(membershipVO == null) {
+					return "/error/404";
+				}
 				request.setAttribute("status", "visit");
 				request.setAttribute("rMemId", memId);
 			}
