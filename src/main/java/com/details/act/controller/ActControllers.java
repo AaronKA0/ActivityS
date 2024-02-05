@@ -52,6 +52,7 @@ public class ActControllers {
         }
     }
 
+    //首頁最新活動
     @GetMapping("/acts/news")
     public ResponseEntity<List<ActVOs>> getNewActs() {
         List<ActVOs> newActs = actService.getNewActs();
@@ -59,8 +60,9 @@ public class ActControllers {
         return ResponseEntity.status(HttpStatus.OK).body(newActs);
     }
 
+    //首頁官方活動
     @GetMapping("acts/official")
-    public ResponseEntity<List<ActVOs>> getOfficialActs(){
+    public ResponseEntity<List<ActVOs>> getOfficialActs() {
         List<ActVOs> newActs = actService.getOfficialActs();
 
         return ResponseEntity.status(HttpStatus.OK).body(newActs);
