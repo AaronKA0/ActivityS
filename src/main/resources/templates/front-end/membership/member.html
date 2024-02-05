@@ -577,7 +577,7 @@ td {
 	
 	async function displayRelation(){
 		memRelation = await getMemRelation();
-// 		alert("memRelation: " + memRelation);
+
 		if(memRelation == 0){
 			$(".visit-relation-btn").hide();
 			$("#visit-add-friend").show();
@@ -1500,59 +1500,6 @@ $("#add-post-modal").on("hidden.bs.modal", function () {
 });
 
 </script>
-
-
-
-
-
-
-<<<<<<< HEAD
-=======
-<!-- 新增貼文檢舉按鈕 --> 
-<!-- 	<button type="button" class="btn btn-primary" id="openInsertModalBtn">新增貼文檢舉</button> -->
->>>>>>> refs/heads/master
-
-
-
-<<<<<<< HEAD
-=======
-<!-- 彈窗 -->
-<!-- 	<div class="modal fade" id="insertModal" tabindex="-1" role="dialog" -->
-<!-- 		aria-labelledby="insertModalLabel" aria-hidden="true"> -->
-<!-- 		<div class="modal-dialog" role="document"> -->
-<!-- 			<div class="modal-content"> -->
-
-<!-- 				<div class="modal-header"> -->
-<!-- 					<h3 class="modal-title" id="myModalLabel">貼文檢舉</h3> -->
-<!-- 				</div> -->
-
-<!-- 				<div class="modal-body"> -->
-
-<!-- 					<form id="yourFormId" th:action="@{insert}" method="post" -->
-<!-- 						th:object="${postReportVO}" enctype="multipart/form-data"> -->
-
-<!-- 										<div> -->
-<!-- 											<label>員工編號:<font color="red"><b>*</b></font></label> <input -->
-<!-- 												id="empId" type="text" th:field="*{empId}" value="2" -->
-<!-- 												onclick="hideContent('empId.errors');" /><br /> <span -->
-<!-- 												th:if="${#fields.hasErrors('empId')}" th:errors="*{empId}" -->
-<!-- 												class="error" id="empId.errors"></span> -->
-<!-- 										</div> -->
-<!-- 										<br> -->
-
-<!-- 						<div> -->
-<!-- 							<label>個人貼文編號<font color="red"><b>*</b></font></label> <input -->
-<!-- 								id="postId" type="text" th:field="*{postId}" /><br /> <span -->
-<!-- 								class="error" id="postId-error"></span><br> -->
-<!-- 						</div> -->
-
-<!-- 						<div> -->
-<!-- 							<label>會員編號<font color="red"><b>*</b></font></label> <input -->
-<!-- 								id="memId" type="text" th:field="*{memId}" /><br /> <span -->
-<!-- 								class="error" id="memId-error"></span><br> -->
-<!-- 						</div> -->
->>>>>>> refs/heads/master
-
 
 	<!-- 彈窗 -->
 	<div class="modal fade" id="insertModal" tabindex="-1" role="dialog"
