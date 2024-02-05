@@ -915,7 +915,6 @@
                                 <div class="d-flex align-items-center mb-3">
                                     <small class="text-muted">${comment.comTime}</small>
                                     <small class="text-muted text-danger-emphasis ms-3">${timeText}</small>
-                                    <small class="reply text-muted text-info-emphasis ms-3" style="cursor: pointer;">回覆</small>
                                         <div class="userfunction ms-auto" data-mem-id="${comment.memId}">
                                             <a href="#" class="login ok badge rounded-pill bg-success" style="text-decoration:none; display: none;"  data-com-id="${comment.comId}">確認</a>
                                             <a href="#" class="login nosee update badge rounded-pill bg-danger" style="text-decoration:none; display: none;"  data-com-id="${comment.comId}">編輯</a>
@@ -947,7 +946,7 @@
                 if (user === undefined) {
                     $(".login").remove();
                 }
-
+                console.log(user)
                 // //each所有的.userfunction來抓memId做判斷
                 // $("#comments .userfunction").each(function () {
                 //     let memId = $(this).data("memId")
@@ -991,7 +990,7 @@
     $("#commentsform").on("submit", function (e) {
         e.preventDefault();
 
-        var commentData = {
+        let commentData = {
             actId: window.location.pathname.split('/')[2], //路徑有變動的話要改
             // comReplyId:null,
             comContent: $("#comment").val()
@@ -1023,7 +1022,6 @@
                         <div class="d-flex align-items-center mb-3">
                             <small class="text-muted">${comments.comTime}</small>
                             <small class="text-muted text-danger-emphasis ms-3">${timeText}</small>
-                            <small class="reply text-muted text-info-emphasis ms-3" style="cursor: pointer;">回覆</small>
                         <div class="userfunction ms-auto" data-mem-id="${comments.memId}">
                             <a href="#" class="ok badge rounded-pill bg-success" style="text-decoration:none; display: none;"  data-com-id="' + comments.comId + '">確認</a>
                             <a href="#" class="nosee update badge rounded-pill bg-danger" style="text-decoration:none;" data-com-id="${comments.comId}">編輯</a>
