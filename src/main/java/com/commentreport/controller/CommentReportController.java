@@ -73,8 +73,8 @@ public class CommentReportController {
             HttpSession session) {
 
         //模擬從session取出會員id
-        Integer testMemId = 1;
-        session.setAttribute("memId", testMemId);
+//        Integer testMemId = 1;
+//        session.setAttribute("memId", testMemId);
         Integer memId = (Integer) session.getAttribute("memId");
         commentReportRequest.setMemId(memId);
 
@@ -85,7 +85,15 @@ public class CommentReportController {
 
     @PutMapping("/commentreport/{repId}")
     public ResponseEntity<CommentReportVO> updateCommentReport(@PathVariable Integer repId,
-                                                               @RequestBody CommentReportStatus commentReportStatus) {
+                                                               @RequestBody CommentReportStatus commentReportStatus,
+                                                               HttpSession session
+    ) {
+
+        //模擬哪位員工
+//        Integer testEmpId = 1;
+//        session.setAttribute("empId", testEmpId);
+        Integer empId = (Integer)session.getAttribute("empId");
+        commentReportStatus.setEmpId(empId);
 
         CommentReportVO updateCommentReport = commentReportService.updateCommentReport(repId, commentReportStatus);
 

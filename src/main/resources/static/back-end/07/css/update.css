@@ -2,6 +2,13 @@
     box-sizing: border-box;
 }
 
+.nav_div {
+    display: flex; 
+    align-items: center;
+    justify-content: space-around; 
+    height: 60px;
+}
+
 .nav-content {
 	display: flex; 
 	align-items: center; 
@@ -67,7 +74,9 @@ textarea.texthighter {
     height: 100px;
 }
 
-span {
+span.title,
+span.error,
+div.extra_error {
     display: inline-block;
     width: 200px;
     text-align: left;
@@ -99,7 +108,7 @@ span.error {
     outline: none;
 }
 
-button {
+button.submit_button {
     color: red;
     font-weight: bold;
     padding: 5px;
@@ -111,8 +120,8 @@ button {
     justify-content: center;
 }
 
-span.extra_error {
-    width: 100%;
+div.extra_error {
+	width: 100%;
     text-align: center;
     color: red;
 }

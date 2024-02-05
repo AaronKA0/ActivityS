@@ -5,7 +5,9 @@ import com.actfollowed.model.ActFollowedVO;
 import com.actfollowed.service.IActFollowedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +23,23 @@ public class actFollowController {
 
     @GetMapping("/activity/actfollows")
     public ResponseEntity<Page<ActFollowedVO>> getActFollows(
-            @PageableDefault(size = 5) Pageable pageable,
+            @RequestParam(required = false) String sortDirection,
+            @PageableDefault(size = 5, sort = "act.regEndTime", direction = Sort.Direction.ASC) Pageable pageable,
             HttpSession session) {
+
+        //傳進來是DESC的話替換掉pageable內的Sort
+        if ("DESC".equalsIgnoreCase(sortDirection)) {
+            pageable = PageRequest.of(
+                    pageable.getPageNumber(),
+                    pageable.getPageSize(),
+                    Sort.by(Sort.Direction.DESC, "act.regEndTime")
+            );
+        }
 
         //第1種方式.actId從原先詳情那邊的controller的session存到model 存給前端了
         //第2種方式.模擬從session取會員id
-        Integer testMemId = 1;
-        session.setAttribute("memId", testMemId);
+//        Integer testMemId = 1;
+//        session.setAttribute("memId", testMemId);
         Integer memId = (Integer) session.getAttribute("memId");
 
         Page<ActFollowedVO> actFollows = actFollowedService.getActFollows(memId, pageable);
@@ -46,8 +58,8 @@ public class actFollowController {
         //第1種方式.actId從原先詳情那邊的controller的session存到model 存給前端了
 
         //第2種方式.模擬從session取會員id
-        Integer testMemId = 1;
-        session.setAttribute("memId", testMemId);
+//        Integer testMemId = 1;
+//        session.setAttribute("memId", testMemId);
 
         Integer memId = (Integer) session.getAttribute("memId");
 
@@ -61,8 +73,8 @@ public class actFollowController {
                                                          HttpSession session) {
 
         //模擬從session取會員id
-        Integer testMemId = 1;
-        session.setAttribute("memId", testMemId);
+//        Integer testMemId = 1;
+//        session.setAttribute("memId", testMemId);
 
         Integer memId = (Integer) session.getAttribute("memId");
         actFollowRequest.setMemId(memId);
@@ -77,8 +89,8 @@ public class actFollowController {
     public ResponseEntity<ActFollowedVO> updateActFollow(@RequestBody ActFollowRequest actFollowRequest,
                                                          HttpSession session) {
         //模擬從session取會員id
-        Integer testMemId = 1;
-        session.setAttribute("memId", testMemId);
+//        Integer testMemId = 1;
+//        session.setAttribute("memId", testMemId);
 
         Integer memId = (Integer) session.getAttribute("memId");
         actFollowRequest.setMemId(memId);

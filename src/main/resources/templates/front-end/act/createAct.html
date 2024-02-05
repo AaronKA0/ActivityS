@@ -148,68 +148,134 @@
     </style>
 </head>
 
-<body>
-<div class="container">
-    <header
-            class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom"
-    >
-        <div class="col-md-3 mb-2 mb-md-0">
-            <a
-                    href="index.html"
-                    class="d-inline-flex link-body-emphasis text-decoration-none"
-            >
-                <span class="fs-4">做伙</span>
-            </a>
-        </div>
-        
+<body onload="connect();" onunload="disconnect();">
 
-        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li>
-                <a th:href="@{/}" class="nav-link px-2 link-secondary">首頁</a>
-            </li>
-            <li>
-                <a th:href="@{/act/joinAct}" class="nav-link px-2 link-secondary"
-                >瀏覽活動</a
-                >
-            </li>
-            <li>
-                <a th:href="@{/act/createAct}" class="nav-link px-2 link-secondary"
-                >舉辦活動</a
-                >
-            </li>
-            <li>
-                <a href="../static/web/rent.html" class="nav-link px-2 link-secondary"
-                >場地租借</a
-                >
-            </li>
-            <li>
-                <a href="../static/web/customer.html" class="nav-link px-2 link-secondary"
-                >FAQs</a
-                >
-            </li>
-            <li>
-                <a href="../static/web/about.html" class="nav-link px-2 link-secondary"
-                >關於我們</a
-                >
-            </li>
-        </ul>
+	<div style="width: 200px" class="offcanvas offcanvas-start"
+		tabindex="-1" id="offcanvasExample"
+		aria-labelledby="offcanvasExampleLabel">
+		<div class="offcanvas-body" style="padding: 0px; overflow-x: hidden">
 
-        <div class="col-md-3 text-end">
-            <button type="button" class="btn btn-outline-primary me-2">
-                <a
-                        class="nav-link"
-                        href="#"
-                        data-bs-toggle="modal"
-                        data-bs-target="#loginModal"
-                >登入</a
-                >
-            </button>
-            <button type="button" class="btn btn-primary">
-                <a class="nav-link" href="../static/web/register.html">註冊</a>
-            </button>
-        </div>
-    </header>
-</div>
+			<div class="b-example-divider"></div>
+
+			<div
+				class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white"
+				style="width: 200px;">
+				<a href="/member"
+					class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+					<svg class="bi me-2" width="30" height="24">
+                    <use xlink:href="#bootstrap" />
+                </svg> <span class="fs-5 fw-semibold">會員首頁</span>
+				</a>
+				<div class="list-group list-group-flush border-bottom scrollarea">
+					<a th:href="@{/member/chat}"
+						class="list-group-item list-group-item-action py-3 lh-tight"
+						aria-current="true">
+						<div
+							class="d-flex w-100 align-items-center justify-content-between">
+							<strong class="mb-1">聊天</strong>
+						</div>
+					</a> <a th:href="@{/member/chat}"
+						class="list-group-item list-group-item-action py-3 lh-tight"
+						aria-current="true">
+						<div
+							class="d-flex w-100 align-items-center justify-content-between">
+							<strong class="mb-1">通知</strong>
+						</div>
+					</a> <a th:href="@{/member/venOrder}"
+						class="list-group-item list-group-item-action py-3 lh-tight"
+						aria-current="true">
+						<div
+							class="d-flex w-100 align-items-center justify-content-between">
+							<strong class="mb-1">場地預訂</strong>
+						</div>
+					</a>
+				</div>
+			</div>
+
+			<div class="b-example-divider"></div>
+
+		</div>
+	</div>
+
+	<div class="container">
+		<header
+			class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+
+			<div class="after-logging" th:if="${session.memId ne null}">
+				<button class="btn btn-primary fa fa-bars" type="button"
+					data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+					aria-controls="offcanvasExample"></button>
+			</div>
+
+			<div class="col-md-3 mb-2 mb-md-0">
+				<a th:href="@{front_end/zuo-huo}"
+					class="d-inline-flex link-body-emphasis text-decoration-none">
+					<img alt="zuo-huo" src="/front-end/zuo-huo/images/LogoName.jpg"
+					style="width: 160px;">
+				</a>
+			</div>
+			<ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+				<li><a th:href="@{/membership/ZuoHuo}"
+					class="nav-link px-2 link-secondary">首頁</a></li>
+				<li><a th:href="@{/act/joinAct}" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+				<li><a th:href="@{/act/createAct}" class="nav-link px-2 link-secondary">舉辦活動</a></li>
+				<li><a th:href="@{front_end/venue/venue}"
+					class="nav-link px-2 link-secondary">場地租借</a></li>
+				<li><a th:href="@{/faq/faqs}"
+					class="nav-link px-2 link-secondary">FAQs</a></li>
+				<li><a th:href="@{/faq/faqs}"
+					class="nav-link px-2 link-secondary">關於我們</a></li>
+			</ul>
+
+			<div class="col-md-3 text-end">
+
+				<!-- 這邊放會員登入後的選項 -->
+				<div class="after-logging" th:if="${session.memId ne null}">
+					<i class="icon bi bi-messenger"
+						style="font-size: 25px; margin: 20px; color: blue;"></i>
+
+					<!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
+					<i class="icon bi bi-bell-fill" type="button"
+						id="dropdownMenuButton1" data-bs-toggle="dropdown"
+						aria-expanded="false" style="font-size: 25px; color: yellow;"></i>
+
+					<ul id="notify_ul" class="dropdown-menu"
+						aria-labelledby="dropdownMenuButton1">
+						<li id="notify_a1"></li>
+						<li id="notify_a2"></li>
+						<li id="notify_a3"></li>
+						<li><a id="display_all" class="dropdown-item"
+							th:href="@{front_end/notify}">顯示全部</a></li>
+					</ul>
+					<!-- -------------------- 通知訊息功能 下拉選單 END -------------------- -->
+
+					<!-- class拿掉dropdown-toggle 有問題再加回來 -->
+					<i class="icon bi bi-person-circle" id="dropdownMenuLink"
+						type="button" data-bs-toggle="dropdown" aria-expanded="false"
+						style="font-size: 40px; margin: 20px;"></i>
+
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+						<li><a class="dropdown-item"
+							th:href="@{/membership/getOne_For_Update}">個人資料</a></li>
+						<li><a class="dropdown-item" href="#">Another</a></li>
+						<li><a id="SignOut" class="dropdown-item" href="#">登出</a></li>
+					</ul>
+
+				</div>
+
+				<div class="after-logging" th:unless="${session.memId ne null}">
+					<button type="button" class="btn btn-outline-primary me-2">
+						<a class="nav-link" th:href="@{/membership/logging}">登入</a>
+					</button>
+					<button type="button" class="btn btn-primary">
+						<a class="nav-link" href="register.html">註冊</a>
+					</button>
+				</div>
+			</div>
+
+		</header>
+	</div>
+
 
 <main class="container mt-0">
     <section class="my-5">
@@ -285,7 +351,31 @@
 
                 <div class="mb-3">
                     <label for="actLoc" class="form-label">活動地點:</label>
-                    <input type="text" class="form-control" id="actLoc" name="actLoc" required/>
+                    <select class="form-select" id="actLoc" name="actLoc">
+            <option value="">請選擇縣市</option>
+            <option value="台北市">台北市</option>
+            <option value="基隆市">基隆市</option>
+            <option value="新北市">新北市</option>
+            <option value="宜蘭縣">宜蘭縣</option>
+            <option value="桃園市">桃園市</option>
+            <option value="新竹市">新竹市</option>
+            <option value="新竹縣">新竹縣</option>
+            <option value="苗栗縣">苗栗縣</option>
+            <option value="台中市">台中市</option>
+            <option value="彰化縣">彰化縣</option>
+            <option value="南投縣">南投縣</option>
+            <option value="嘉義市">嘉義市</option>
+            <option value="嘉義縣">嘉義縣</option>
+            <option value="雲林縣">雲林縣</option>
+            <option value="台南市">台南市</option>
+            <option value="高雄市">高雄市</option>
+            <option value="澎湖縣">澎湖縣</option>
+            <option value="金門縣">金門縣</option>
+            <option value="屏東縣">屏東縣</option>
+            <option value="台東縣">台東縣</option>
+            <option value="花蓮縣">花蓮縣</option>
+            <option value="連江縣">連江縣</option>
+          </select>
                     <div class="invalid-feedback">
                         活動地點不得為空:
                     </div>

@@ -39,7 +39,6 @@ public class FrontendNotifyController {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        System.out.println(notifySvc.findByMemId(memVO.getMemId()));
         return notifySvc.findByMemId(memVO.getMemId());
     } 
 

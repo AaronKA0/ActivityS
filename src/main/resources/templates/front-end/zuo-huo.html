@@ -229,7 +229,7 @@ main {
 			</div>
 
 			<div class="col-md-3 mb-2 mb-md-0">
-				<a th:href="@{front_end/zuo-huo}"
+				<a th:href="@{/Zuo-Huo}"
 					class="d-inline-flex link-body-emphasis text-decoration-none">
 					<img alt="zuo-huo" src="/front-end/zuo-huo/images/LogoName.jpg"
 					style="width: 160px;">
@@ -238,15 +238,16 @@ main {
 			<ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
 				<li><a th:href="@{/membership/ZuoHuo}"
 					class="nav-link px-2 link-secondary">首頁</a></li>
-				<li><a href="join.html" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
-				<li><a href="create.html" class="nav-link px-2 link-secondary">舉辦活動</a></li>
-				<li><a th:href="@{front_end/venue/venue}"
+				<li><a th:href="@{/act/joinAct}" class="nav-link px-2 link-secondary">瀏覽活動</a></li>
+				<li><a th:href="@{/act/createAct}" class="nav-link px-2 link-secondary">舉辦活動</a></li>
+				<li><a th:href="@{/front_end/venue/browse}"
 					class="nav-link px-2 link-secondary">場地租借</a></li>
 				<li><a th:href="@{/faq/faqs}"
 					class="nav-link px-2 link-secondary">FAQs</a></li>
 				<li><a th:href="@{/faq/faqs}"
 					class="nav-link px-2 link-secondary">關於我們</a></li>
 			</ul>
+
 
 			<div class="col-md-3 text-end">
 
@@ -266,7 +267,7 @@ main {
 						<li id="notify_a2"></li>
 						<li id="notify_a3"></li>
 						<li><a id="display_all" class="dropdown-item"
-							th:href="@{front_end/notify}">顯示全部</a></li>
+							th:href="@{/front_end/notify}">顯示全部</a></li>
 					</ul>
 					<!-- -------------------- 通知訊息功能 下拉選單 END -------------------- -->
 
@@ -432,7 +433,7 @@ main {
                         </svg>
 							官方活動
 						</h3>
-						<a href="join.html" class="">查看所有活動</a>
+						<a th:href="@{/act/joinAct}" class="">查看所有活動</a>
 					</div>
 				</div>
 			</div>
@@ -474,7 +475,7 @@ main {
                         </svg>
 							最新活動
 						</h3>
-						<a href="join.html" class="">查看所有活動</a>
+						<a th:href="@{/act/joinAct}" class="">查看所有活動</a>
 					</div>
 				</div>
 			</div>
@@ -596,25 +597,22 @@ main {
 		src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 	<script th:inline="javascript">
-    /*<![CDATA[*/
-    let user = /*[[${session.memId}]]*/'';
-    /*]]>*/
-    /*<![CDATA[*/
-    let notifies = /*[[${session.notifies}]]*/'';
-    /*]]>*/
-</script>
+	    /*<![CDATA[*/
+	    let user = /*[[${session.memId}]]*/'';
+	    /*]]>*/
+	    /*<![CDATA[*/
+	    let notifies = /*[[${session.notifies}]]*/'';
+	    /*]]>*/
+    </script>
 
 	<script>
 
-    // $("#popupBox").modal({
-    //     show : true
-    // });
        var notifycount = 0;
 
 
-$(document).ready(async function(){
+     $(document).ready(async function(){
     
-    async function getNotifyByMemId(id){
+    	async function getNotifyByMemId(id){
         await fetch("/front_end/notify/memberNotify",{
             method: "POST",
             body: JSON.stringify({memId: id})
@@ -685,11 +683,11 @@ $(document).ready(async function(){
 
             let notifyVO = JSON.parse(event.data);
             notifycount++;
-            console.log("notice title: " + notifyVO.notifyTitle);
-            console.log("notice content: " + notifyVO.notifyContent);
+//             console.log("notice title: " + notifyVO.notifyTitle);
+//             console.log("notice content: " + notifyVO.notifyContent);
 
             $('.bi-bell-fill').attr('data-count', `${notifycount}`);
-            console.log(notifycount);
+//             console.log(notifycount);
             // 添加 :after 樣式
             $('.bi-bell-fill').css('content', 'attr(data-count)');
 

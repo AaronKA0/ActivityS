@@ -25,7 +25,9 @@ public class ActServices implements IActServices {
     public Page<ActVOs> reviewActs(ActQueryParams actQueryParams, Pageable pageable) {
 
         if (actQueryParams.getActStatus() != null) {
-            return actRepository.findByMemIdAndActStatus(actQueryParams.getMemId(), actQueryParams.getActStatus(), pageable);
+            Byte actStatus2 = 2; //增加已取消活動的也搜出來
+
+            return actRepository.findByMemIdAndActStatus(actQueryParams.getMemId(), actQueryParams.getActStatus(), actStatus2, pageable);
         }
 
         return actRepository.findByMemId(actQueryParams.getMemId(), pageable);

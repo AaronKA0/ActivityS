@@ -20,9 +20,9 @@ img {
 header.header {
   z-index: 100 !important;
   border: 2px solid #d68a8a;
+  top: 0;
   width: 100%;
   position: sticky;
-  top: 0;
   height: var(--header-height);
   background-color: #e8bfbc;
 }

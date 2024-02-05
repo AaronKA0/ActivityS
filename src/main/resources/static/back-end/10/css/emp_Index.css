@@ -18,12 +18,11 @@ img {
 
 /* ==================== header 區域 ==================== */
 header.header {
-  
+  z-index: 100 !important;
   border: 2px solid #d68a8a;
   top: 0; /* 距离顶部0像素 */
   width: 100%;
   position: sticky;
-  top: 0;
   height: var(--header-height);
   background-color: #e8bfbc;
 }
@@ -35,7 +34,7 @@ h1 {
 }
 
 p {
-  /* border: 2px solid red; */
+/*   border: 2px solid red; */
   margin-top: -38px;
   margin-left: 870px;
   color: #262e54;
