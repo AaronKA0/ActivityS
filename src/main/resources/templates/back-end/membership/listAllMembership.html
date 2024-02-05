@@ -17,6 +17,12 @@
 	crossorigin="anonymous">
 
 
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/1.13.5/css/dataTables.jqueryui.min.css" />
+	
+<link rel="stylesheet" th:href="@{/back-end/10/css/emp_Index.css}">
+
+
 
 
 <!-- +++++++++新增++++++++++ -->
@@ -29,6 +35,8 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!-- --------------------------------------------------------------------------------------------------- -->
 <!-- +++++++++新增++++++++++ -->
+    <link rel="stylesheet" th:href="@{/back-end/emp_Index/css/emp_Index.css}">
+
 
 
 <style>
@@ -376,60 +384,13 @@ button.close{
 
 </head>
 
-<body>
-	<header class="header">
-		<h1>【做伙後台管理系統】</h1>
-		<p class="welcome">歡迎您 管理員</p>
-		<nav>
-			<ul>
-				<li><a href="#">登出</a></li>
-			</ul>
-		</nav>
-	</header>
+<body onload="showDivsBasedOnDeptno()">
 
-	<aside class="aside">
-		<nav class="nav">
-			<div class="sidenav">
-				<a href='select_page'>首頁</a>
-				<hr>
-				<button class="dropdown-btn">
-					員工管理 <i class="fa fa-caret-down"></i>
-				</button>
-				<div class="dropdown-container">
-					<a href="#">修改密碼</a> <a href="#">員工資料管理</a>
-				</div>
-				<hr>
-				<button class="dropdown-btn">
-					一般功能管理 <i class="fa fa-caret-down"></i>
-				</button>
-				<div class="dropdown-container">
-					<a href="#">公告管理</a> <a href="#">FQA管理</a>
-				</div>
-				<hr>
-				<button class="dropdown-btn">
-					會員功能管理 <i class="fa fa-caret-down"></i>
-				</button>
-				<div class="dropdown-container">
-					<a href='listAllMembership'>查詢會員</a> <a href="#">產生通知訊息</a> <a href="#">審核會員檢舉</a>
-				</div>
-				<hr>
-				<button class="dropdown-btn">
-					活動功能管理 <i class="fa fa-caret-down"></i>
-				</button>
-				<div class="dropdown-container">
-					<a href="#">審核活動管理</a> <a href="#">審核留言管理</a>
-				</div>
-				<hr>
-				<button class="dropdown-btn">
-					場地功能管理 <i class="fa fa-caret-down"></i>
-				</button>
-				<div class="dropdown-container">
-					<a href="#">場地管理</a> <a href="#">場地訂單管理</a> <a href="#">場地狀態管理</a>
-				</div>
-			</div>
+	<!-- header -->
+	<div th:insert="~{/back-end/emp_Index :: header-div}"></div>
 
-		</nav>
-	</aside>
+	<!-- aside -->
+	<div th:insert="~{/back-end/emp_Index :: aside-div}"></div>
 
 
 	<main class="main">
@@ -724,6 +685,16 @@ button.close{
 		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
 		crossorigin="anonymous"></script>
 	<!-- -----------------------------引入文件----------------------------------- -->
+
+
+	<script th:src="@{/back-end/10/js/aside.js}"></script>
+	<script th:src="@{/back-end/10/js/jquery-1.11.3.min.js}"></script>
+	<!-- 左側jquery為table分頁用 -->
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<!-- ●●js  for jquery datatables 用 -->
+	<script
+		src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+	
 
 	<script>
 		//------------------------------DataTable-----------------------------------

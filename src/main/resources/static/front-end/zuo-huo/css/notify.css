@@ -19,7 +19,17 @@ ul#notify_ul {
 }
 
 a#display_all {
-	background-color: lightgreen; 
+	background-color: #a1bfd6; 
 	color: white; 
 	text-align: center;
+	width: 320px;
+	margin-left: 30px;
+}
+
+a#display_all:hover {
+	background-color: #94b1c7; 
+	color: white; 
+	text-align: center;
+	width: 320px;
+	margin-left: 30px;
 }
