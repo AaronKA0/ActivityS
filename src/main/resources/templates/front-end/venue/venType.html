@@ -614,22 +614,22 @@ function connect() {
 
 
 //------------------------ 登出 -------------------------
-document.getElementById("SignOut").addEventListener("click",
-   function () {
-       // 使用 XMLHttpRequest 或 Fetch API 發送登出請求到後端
-       var xhr = new XMLHttpRequest();
-       xhr.open("GET", "/membership/logout", true);
+// document.getElementById("SignOut").addEventListener("click",
+//    function () {
+//        // 使用 XMLHttpRequest 或 Fetch API 發送登出請求到後端
+//        var xhr = new XMLHttpRequest();
+//        xhr.open("GET", "/membership/logout", true);
 
-       xhr.onreadystatechange = function () {
-           if (xhr.readyState == 4 && xhr.status == 200) {
-               webSocket.close();
-               // 處理登出成功的回應，這裡將重新導向到登入頁面
-               window.location.href = "/membership/login"; // 重新導向到登入頁面
-           }
-       };
+//        xhr.onreadystatechange = function () {
+//            if (xhr.readyState == 4 && xhr.status == 200) {
+//                webSocket.close();
+//                // 處理登出成功的回應，這裡將重新導向到登入頁面
+//                window.location.href = "/membership/login"; // 重新導向到登入頁面
+//            }
+//        };
 
-       xhr.send();
-   });
+//        xhr.send();
+//    });
 
 
 
@@ -753,7 +753,8 @@ async function getVen(name){
         $("#ven-name").html("");
         $("#ven-name").html(`${ven.venName}`);
         $("#ven-photo").attr("src", "");
-        $("#ven-photo").attr("src", `data:image/jpeg;base64,${ven.venPic}`);
+        $("#ven-photo").attr("src", ven.venPic? `data:image/jpeg;base64,${ven.venPic}` : "/back-end/01/images/notfind.jpg");
+//         $("#ven-photo").attr("src", `data:image/jpeg;base64,${ven.venPic}`);
         $("#ven-location").html("");
         $("#ven-location").html(`地點：${ven.venLoc}`);
         $("#ven-descr").html("");
