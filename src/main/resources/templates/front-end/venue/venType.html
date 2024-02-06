@@ -590,12 +590,8 @@ async function getVen(name){
         $("#ven-name").html("");
         $("#ven-name").html(`${ven.venName}`);
         $("#ven-photo").attr("src", "");
-<<<<<<< HEAD
         $("#ven-photo").attr("src", ven.venPic? `data:image/jpeg;base64,${ven.venPic}` : "/back-end/01/images/notfind.jpg");
 //         $("#ven-photo").attr("src", `data:image/jpeg;base64,${ven.venPic}`);
-=======
-        $("#ven-photo").attr("src", ven.venPic? `data:image/jpeg;base64,${ven.venPic}` : "back-end/01/images/notfind.png");
->>>>>>> branch 'master' of https://github.com/AaronKA0/ActivityS.git
         $("#ven-location").html("");
         $("#ven-location").html(`地點：${ven.venLoc}`);
         $("#ven-descr").html("");
