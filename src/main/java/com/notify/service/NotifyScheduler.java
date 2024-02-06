@@ -49,7 +49,7 @@ public class NotifyScheduler {
     ActRegService ActRegSrv;
     
     // 活動與場地訂單通知
-//    @Scheduled(cron = "0 17 * * * ?")
+//    @Scheduled(cron = "0/3 * * * * ?")
 //    public void getBookingNotify() throws InterruptedException {
 //        
 //        Integer memId = null;

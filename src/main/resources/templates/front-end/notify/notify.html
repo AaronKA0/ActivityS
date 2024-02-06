@@ -487,14 +487,10 @@ $(document).ready(async function(){
 
 	            let notifyVO = JSON.parse(event.data);
 	            notifycount++;
-//	             console.log("notice title: " + notifyVO.notifyTitle);
-//	             console.log("notice content: " + notifyVO.notifyContent);
 
 	            $('.bi-bell-fill').attr('data-count', `${notifycount}`);
-//	             console.log(notifycount);
 	            // 添加 :after 樣式
 	            $('.bi-bell-fill').css('content', 'attr(data-count)');
-
 	        }
 
 	    };
