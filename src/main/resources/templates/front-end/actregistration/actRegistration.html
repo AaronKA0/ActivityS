@@ -198,8 +198,8 @@
                     <th>活動詳情</th>
                     <th>開始時間
                         <select id="time">
-                            <option value="DESC">新到舊</option>
-                            <option value="ASC">舊到新</option>
+                        	<option value="ASC">近到遠</option>
+                            <option value="DESC">遠到近</option>
                         </select>
                     </th>
                     <th>審核狀態</th>
@@ -270,7 +270,7 @@
     };
     let regStatus; // 狀態預設
     let pageNumber = 1; //第幾頁預設(進function會 -1 所以會變0)
-    let actTime = "DESC"; // 排序預設
+    let actTime = "ASC"; // 排序預設
     // let size = 5; //顯示筆數預設
     //歷史紀錄
     let actStatus;
