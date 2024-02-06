@@ -158,7 +158,7 @@ button.btn:hover {
 
 
 			<div class="form-group">
-				<label>員工密碼:</label> <input type="text" class="input-field"
+				<label>員工密碼:</label> <input type="password" class="input-field"
 					th:field="*{empPwd}" onclick="hideContent('empPwd.errors');" /><br />
 				<span th:if="${#fields.hasErrors('empPwd')}" th:errors="*{empPwd}"
 					class="error" id="empPwd.errors"></span>

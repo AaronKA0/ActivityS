@@ -73,12 +73,18 @@ public class LoginEmpController {
 
 		// 生成隨機密碼
 		String newPassword = generateRandomPassword();
-		newPassword = "pass001";
+//		newPassword = "pass001";
 		
 		// 發送郵件
-		EmpMailService mailService = new EmpMailService();
+		
 		String subject = "忘記密碼重製";
-		String messageText = "您的新密碼是: " + newPassword;
+		String messageText = "<html>" +
+		        "<body>" +
+		        "<h1>Zuo-Huo員工登入系統</h1>" +
+		        "<p>您的新密碼是: <strong>" + newPassword + "</strong></p>" +
+		        "<p>請在登入後盡快更改您的密碼。</p>" +
+		        "</body>" +
+		        "</html>";
 		mailService.sendMail(empEmail, subject, messageText);
 
 		// 更新數據庫中的密碼

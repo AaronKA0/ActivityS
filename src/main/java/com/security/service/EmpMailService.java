@@ -55,8 +55,7 @@ public class EmpMailService {
 			// 設定信中的主旨
 			message.setSubject(subject);
 			// 設定信中的內容
-			message.setText(messageText);
-
+			message.setContent(messageText, "text/html; charset=utf-8");
 			Transport.send(message);
 			System.out.println("傳送成功!");
 		} catch (MessagingException e) {

@@ -67,8 +67,8 @@ public class VenOrderIdController {
         String subject = "租借場地滿意度通知";
         String memName = venOrderVO.getMemVO().getMemName();
         
-        String feedbackURL = "http://localhost:8080/front_end/venue/feedbackform?venOrderId="+venOrderId;
-//      String feedbackURL = "http://zuohuo.ddns.net/front_end/venue/feedbackform?venOrderId="+venOrderId;
+//        String feedbackURL = "http://localhost:8080/front_end/venue/feedbackform?venOrderId="+venOrderId;
+        String feedbackURL = "http://zuohuo.ddns.net/front_end/venue/feedbackform?venOrderId="+venOrderId;
         
         String messageText = "Hello! " + memName + " : 感謝您租借我們的場地，請幫我們填寫使用滿意度!!" + feedbackURL;
 
