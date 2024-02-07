@@ -1605,14 +1605,12 @@ $(document).on("click", "li.status-li", async function(){
 		$(this).closest(".dropdown").find(".status-btn").addClass("fas fa-users");
 		let dropdownMenu = $(this).closest(".dropdown-menu");
 		dropdownMenu.html(privatePost);
-// 		dropdownMenu.append(deletePost);
 	} else if($(this).find(".dropdown-item").hasClass("fa-user-secret")){
 		status = 2;
 		$(this).closest(".dropdown").find(".status-btn").removeClass("fas fa-users");
 		$(this).closest(".dropdown").find(".status-btn").addClass("fa fa-user-secret");
 		let dropdownMenu = $(this).closest(".dropdown-menu");
 		dropdownMenu.html(publicPost);
-// 		dropdownMenu.append(deletePost);
 	} 
 		
 	let updatedPost;
