@@ -263,7 +263,7 @@ thead tr:first-child {
 
 
 	<div id="ven-container" style="overflow-y:auto; height:490px; width:1000px; margin-left:250px">
-	<div class="accordion" id="accordionExample" style="margin-top:20px; margin-bottom:20px">
+	<div class="accordion" id="accordionVenSearch" style="margin-top:20px; margin-bottom:20px">
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="headingOne">
 				<button class="accordion-button text-center" type="button"
@@ -273,7 +273,7 @@ thead tr:first-child {
 				</button>
 			</h2>
 			<div id="collapseOne" class="accordion-collapse collapse"
-				aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+				aria-labelledby="headingOne" data-bs-parent="#accordionVenSearch">
 				<div class="accordion-body">
 					<form>
 
@@ -306,7 +306,7 @@ thead tr:first-child {
 										<div class="row g-3 text-center">
 											<div class="col">
 												<label for="s-city"
-													style="margin-right: 27px; margin-left: 23px">市</label> <select
+													style="margin-right: 27px; margin-left: 31px">市</label> <select
 													class="form-select" id="s-city">
 													<option selected value="全市">全市</option>
 												</select>
@@ -375,14 +375,14 @@ thead tr:first-child {
 											</div>
 										</div>
 										<div class="row g-3 text-center" style="margin-bottom: 20px">
-											<div class="col">
+											<div class="col" style="margin-right:30px">
 												<label for="s-lcount" style="margin-right: 20px">最低評分人數</label>
 												<input step="1" type="number" inputmode="numeric"
 													oninput="this.value = this.value.replace(/\D+/g, '')"
-													style="display: inline-block" class="form-control lower"
+													style="display: inline-block; margin-left: 0px" class="form-control lower"
 													id="s-lcount">
 											</div>
-											<div class="col">
+											<div class="col" style="margin-right:32px">
 												<label for="s-hcount" style="margin-right: 20px">最高評分人數</label>
 												<input step="1" type="number" inputmode="numeric"
 													oninput="this.value = this.value.replace(/\D+/g, '')"
@@ -398,9 +398,9 @@ thead tr:first-child {
 												<div class="input-group log-event" id="s-up-target"
 													data-td-target-input="nearest"
 													data-td-target-toggle="nearest"
-													style="margin-left: 20px; width: 75%">
+													style="margin-left: 25px; width: 75%">
 													<label for="s-update"
-														style="margin-right: 24px; margin-left: 23px">最早上架日期</label>
+														style="margin-right: 25px; margin-left: 23px">最早上架日期</label>
 													<input readonly id="s-update" type="text"
 														class="s-date date form-control"
 														data-td-target="#s-up-target"> <label
@@ -415,9 +415,9 @@ thead tr:first-child {
 												<div class="input-group log-event" id="e-up-target"
 													data-td-target-input="nearest"
 													data-td-target-toggle="nearest"
-													style="margin-left: 20px; width: 75%">
+													style="margin-left: 23px; width: 75%">
 													<label for="e-update"
-														style="margin-right: 24px; margin-left: 23px">最晚上架日期</label>
+														style="margin-right: 26px; margin-left: 23px">最晚上架日期</label>
 													<input readonly id="e-update" type="text"
 														class="e-date date form-control"
 														data-td-target="#e-up-target"> <label
@@ -435,9 +435,9 @@ thead tr:first-child {
 												<div class="input-group log-event" id="s-down-target"
 													data-td-target-input="nearest"
 													data-td-target-toggle="nearest"
-													style="margin-left: 20px; width: 75%">
+													style="margin-left: 25px; width: 75%">
 													<label for="s-downdate"
-														style="margin-right: 24px; margin-left: 23px">最早下架日期
+														style="margin-right: 25px; margin-left: 23px">最早下架日期
 													</label> <input readonly id="s-downdate" type="text"
 														class="s-date date form-control"
 														data-td-target="#s-down-target"> <label
@@ -452,9 +452,9 @@ thead tr:first-child {
 												<div class="input-group log-event" id="e-down-target"
 													data-td-target-input="nearest"
 													data-td-target-toggle="nearest"
-													style="margin-left: 20px; width: 75%">
+													style="margin-left: 23px; width: 75%">
 													<label for="e-downdate"
-														style="margin-right: 24px; margin-left: 23px">最晚下架日期</label>
+														style="margin-right: 26px; margin-left: 23px">最晚下架日期</label>
 													<input readonly id="e-downdate" type="text"
 														class="e-date date form-control"
 														data-td-target="#e-down-target"> <label
@@ -1278,8 +1278,8 @@ async function verifyName(){
 		if(!await verifyName()) return false;
 
 		let venType = {
-				venTypeName: $("#i-type-name").val(),
-				venTypeDescr: $("#i-type-description").val()
+				venTypeName: $("#i-type-name").val().trim(),
+				venTypeDescr: $("#i-type-description").val().trim()
 		};
 		
 		let jsonString = JSON.stringify(venType);
@@ -1401,8 +1401,8 @@ async function verifyName(){
 
 		let venType = {
 				venTypeId: venTypeId,
-				venTypeName: $("#u-type-name").val(),
-				venTypeDescr: $("#u-type-description").val(),
+				venTypeName: $("#u-type-name").val().trim(),
+				venTypeDescr: $("#u-type-description").val().trim(),
 		};
 		
 		let jsonString = JSON.stringify(venType);
@@ -1858,7 +1858,7 @@ let isSearch = false;
 		
 	    if(upCond || downCond) return false;
 	    
-	    if (!name.toLowerCase().includes($("#s-name").val().toLowerCase())) {
+	    if (!name.toLowerCase().includes($("#s-name").val().trim().toLowerCase())) {
 	        return false;
 	    }	
 	    
@@ -1979,7 +1979,9 @@ let isSearch = false;
 		$("#i-type-btn").hide();
 		$("#ventypes-div").hide();
 		$("#vens-div").show();
-
+		$("#s-update-div").show();
+		$("#s-downdate-div").show();
+		$("#accordionVenSearch").show();
 	});
 
 	$("#up-ven").on("click", function(){
@@ -1999,6 +2001,9 @@ let isSearch = false;
 		$("#i-type-btn").hide();
 		$("#ventypes-div").hide();
 		$("#vens-div").show();
+		$("#s-update-div").hide();
+		$("#s-downdate-div").show();
+		$("#accordionVenSearch").show();
 	});
 
 	$("#down-ven").on("click", function(){
@@ -2018,7 +2023,9 @@ let isSearch = false;
 		$("#i-type-btn").hide();
 		$("#ventypes-div").hide();
 		$("#vens-div").show();
-
+		$("#s-downdate-div").hide();
+		$("#s-update-div").show();
+		$("#accordionVenSearch").show();
 	});
 	
 	$("#type-tab").on("click", function(){
@@ -2031,6 +2038,7 @@ let isSearch = false;
 		$("#i-type-btn").show();
 		$("#vens-div").hide();
 		$("#ventypes-div").show();
+		$("#accordionVenSearch").hide();
 	});
 	
 });
@@ -2340,12 +2348,12 @@ $("#price").on("blur", function(){
 		}
 
 		let ven = {
-				venName: $("#name").val(),
+				venName: $("#name").val().trim(),
 				venType: {venTypeName: $('#venType').select2('data')[0].text, venTypeId: isNaN($('#venType').select2('data')[0].id)? null: $('#venType').select2('data')[0].id},
 				venCity: $('#venCity').select2('data')[0].text,
 				venDistrict: $('#venDistrict').select2('data')[0].text,
 				venLoc: $("#location").val(),
-				venDescr: $("#description").val(),
+				venDescr: $("#description").val().trim(),
 				venPic: fileByteArray.length? fileByteArray: null,
 				venPrice: $("#price").val(),
 				venStatus: $('input[name="status"]:checked').val(),
@@ -2590,12 +2598,12 @@ $("#u-price").on("blur", function(){
 
 		let ven = {
 				venId: venId,
-				venName: $("#u-name").val(),
+				venName: $("#u-name").val().trim(),
 				venType: {venTypeName: $('#u-type').select2('data')[0].text, venTypeId: isNaN($('#u-type').select2('data')[0].id)? null: $('#u-type').select2('data')[0].id},
 				venCity: $('#u-city').select2('data')[0].text,
 				venDistrict: $('#u-district').select2('data')[0].text,
 				venLoc: $("#u-location").val(),
-				venDescr: $("#u-description").val(),
+				venDescr: $("#u-description").val().trim(),
 				venPic: fileByteArray.length? fileByteArray: venPic,
 				venPrice: $("#u-price").val()
 		};

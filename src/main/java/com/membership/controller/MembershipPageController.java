@@ -343,7 +343,7 @@ public class MembershipPageController {
 		
 		Set<MembershipVO> members = new HashSet<MembershipVO>();
 		members.add(memberA);
-		notifyNow.sendNotifyNow(members, "系統通知", memberA.getMemUsername() + "，我們已收到並會調查您對" + memberB.getMemUsername() + "的貼文檢舉");
+		notifyNow.sendNotifyNow(members, "系統通知", memberA.getMemUsername() + "，我們已收到並會調查您對" + memberB.getMemUsername() + "的檢舉");
 		
 		return memberReportVO;
 	}
@@ -365,7 +365,7 @@ public class MembershipPageController {
 		
 		Set<MembershipVO> members = new HashSet<MembershipVO>();
 		members.add(memberA);
-		notifyNow.sendNotifyNow(members, "系統通知", memberA.getMemUsername() + "，我們已收到並會調查您對" + memberB.getMemUsername() + "的檢舉");
+		notifyNow.sendNotifyNow(members, "系統通知", memberA.getMemUsername() + "，我們已收到並會調查您對" + memberB.getMemUsername() + "的貼文檢舉");
 		
 		return postReportVO;
 	}

@@ -699,9 +699,11 @@ td {
 		
 		member = await loadMember();
 		posts = await loadPosts();
-		await displayFriends();
-		await displayRequests();
-		await displayBlocks();	
+		
+		if(status != "visit"){
+			await displayRequests();
+			await displayBlocks();
+		}
 		
 		
 		let tab = window.location.hash;
@@ -744,6 +746,7 @@ td {
 			$("#mem-relation").text(`您被${$("#mem-name").text()}封鎖`);
 			$("#posts").hide();
 		} else{
+			await displayFriends();
 			$("#member-tabs").show();
 		}
 	}
@@ -1342,7 +1345,7 @@ td {
 		    pageSize: 3,
 // 		    showSizeChanger: true,
 // 		    sizeChangerOptions: [2, 5, 10, 20, 50, 100],
-		    callback: function(posts, pagination) {
+		    callback: async function(posts, pagination) {
 		    	$("#posts-body").html("");
 		    	
 // 		    	if(!posts.length){
@@ -1367,10 +1370,11 @@ td {
 		        	window.powerButtons('confirm', deleteBtn, options);
 	        	
 		        }
+				await getPostReports();
 		    }
+		
 		});
 		
-		await getPostReports();
 		}
 	
 	$(document).on("click", ".button0", async function(){
@@ -1551,12 +1555,14 @@ $(document).on("click", ".edit-post-btn", function() {
 function displayTime(id, datetime){
 	if(!datetime) return;
 
-	var today = new Date().toISOString().substring(0, 10);
+	var today = new Date();
+	today = new Date(today = today - (today.getTimezoneOffset() * 60000));
+	today = today.toISOString().substring(0, 10).toString();
 	let date = datetime.substring(0,10);
 	let time = datetime.substring(11,16);
 	let hour = parseInt(time.substring(0,2), 10);
 	if(hour < 12){
-		if(hour == 0) time = 12 + time.substring(2);
+		if(hour == 0) time = "12" + time.substring(2);
 		time = "上午 " + time; 
 	} else{
 		hour = hour % 12;
@@ -1564,10 +1570,11 @@ function displayTime(id, datetime){
 		time = "下午 " + hour + time.substring(2); 
 	}
 	$(`.post[data-id='${id}']`).find(".post-time").html("");
-	if(date >= today){
+	if(date == today){
 		$(`.post[data-id='${id}']`).find(".post-time").text(time);
 	} else{
-		$(`.post[data-id='${id}']`).find(".post-time").text(date);
+		let dateString = date + " " + time;
+		$(`.post[data-id='${id}']`).find(".post-time").text(dateString);
 	}
 }
 
