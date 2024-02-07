@@ -438,12 +438,12 @@ div.star_block>span.star.-off {
 			<h6>歡迎您租借我們的場地！</h6>
 			
 						
-			<div style="margin-left: 50px; margin-top: 30px; margin-bottom: 30px">
+			<div id="recent-vens-container" style="display: none; margin-left: 50px; margin-top: 30px; margin-bottom: 30px">
 						<h5>您最近瀏覽的場地</h5>
 						<div id="recent-vens" class="row"></div>		
 			</div>
 
-			<div class="accordion" id="accordionExample">
+			<div style="margin-top:20px; margin-bottom:20px" class="accordion" id="accordionExample">
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="headingOne">
 						<button class="accordion-button" type="button"
@@ -595,7 +595,7 @@ div.star_block>span.star.-off {
 				</div>
 			</div>
 
-			<div style="margin-bottom: 20px;" class="container mt-3">
+			<div style="margin-bottom: 0px;" class="container mt-3">
 				<div class="btn-toolbar row" role="toolbar"
 					aria-label="Toolbar with button groups">
 					<div class="btn-group me-2 col-2" role="group" aria-label="Third group">
@@ -625,6 +625,7 @@ div.star_block>span.star.-off {
 	<script>
 	async function loadRecentVens(){
 	if(memId){
+		$(`#recent-vens-container`).show();
 		await fetch("/ven/recent", {
 			method: "POST",
 			body: JSON.stringify({memId: memId})
@@ -633,7 +634,7 @@ div.star_block>span.star.-off {
 		}).then(async function(recentVens){
 			
 			if(!recentVens.length){
-				$(`#recent-vens`).hide();
+				$(`#recent-vens-container`).hide();
 				return;
 			}
 			for(recentVen of recentVens){
