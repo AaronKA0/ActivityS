@@ -1,6 +1,7 @@
 package com.postreport.controller;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,6 +30,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.membership.model.MembershipVO;
+import com.membership.service.MembershipService;
+import com.notify.service.NotifyNow;
 import com.post.Post;
 import com.post.PostService;
 import com.postreport.model.PostReportVO;
@@ -40,6 +44,12 @@ public class PostReportController {
 
 	@Autowired
 	PostReportService postReportSvc;
+	
+	@Autowired
+	MembershipService membershipSvc;
+	
+	@Autowired
+	NotifyNow notifyNow;
 
 	@GetMapping("addPostReport")
 	public String addPostReport(ModelMap model) {
@@ -139,6 +149,13 @@ public class PostReportController {
 		
 		if(postReport.getRepStatus() == 2) {
 			post.setPostStatus((byte)3);
+			// send notification after post report is successful
+			MembershipVO memberA = membershipSvc.getOneMembership(postReport.getMemId());
+			MembershipVO memberB = membershipSvc.getOneMembership(postReport.getReporteeId());
+
+			Set<MembershipVO> members = new HashSet<MembershipVO>();
+			members.add(memberA);
+			notifyNow.sendNotifyNow(members, "系統通知", "收到您的檢舉後，我們決定刪除" + memberB.getMemUsername() + "的貼文");
 		} else if(postReport.getRepStatus() == 3){
 			post.setPostStatus((byte)2);
 		}

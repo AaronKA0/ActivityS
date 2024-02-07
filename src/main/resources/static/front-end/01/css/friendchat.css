@@ -207,12 +207,19 @@ body {
 	visibility: hidden;
 	margin-top: 0px;
 	margin-left: 20px;
-	height: 15px;
-	width: 15px;
-	background-color: blue;
+	height: 30px;
+	width: 30px;
+	background-color: red;
 	border-radius: 50%;
 	border-collapse: collapse;
 	margin-top: 0px;
+	color:white;
+}
+
+.numUnread{
+	width:30px !important;
+	padding-left: 8px !important;
+	padding-top: 2px;
 }
 
 .contact-time {
