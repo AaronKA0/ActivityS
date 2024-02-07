@@ -156,6 +156,10 @@ public class PostReportController {
 			Set<MembershipVO> members = new HashSet<MembershipVO>();
 			members.add(memberA);
 			notifyNow.sendNotifyNow(members, "系統通知", "收到您的檢舉後，我們決定刪除" + memberB.getMemUsername() + "的貼文");
+			
+			Set<MembershipVO> members2 = new HashSet<MembershipVO>();
+			members2.add(memberB);
+			notifyNow.sendNotifyNow(members2, "系統通知", "在收到檢舉並審核您的貼文後，我們認為它違反了我們的標準並刪除了您的貼文");
 		} else if(postReport.getRepStatus() == 3){
 			post.setPostStatus((byte)2);
 		}

@@ -86,8 +86,8 @@ public class JedisHandleMessage {
 		Jedis jedis = pool.getResource();
 		jedis.select(14);
 
-		Set<String> keys = jedis.keys("msg:" + message.getSender() + "*");
-		Set<String> keys2 = jedis.keys("msg:" + message.getReceiver() + "*");
+		Set<String> keys = jedis.keys("msg:" + message.getSender() + ":" + "*");
+		Set<String> keys2 = jedis.keys("msg:" + message.getReceiver() + ":" + "*");
 
 		TreeSet<ReadStatus> receivers = new TreeSet<ReadStatus>();
 		if (message.getReceiver() != null && !message.getReceiver().isEmpty()) {

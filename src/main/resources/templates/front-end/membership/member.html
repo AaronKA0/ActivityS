@@ -699,9 +699,11 @@ td {
 		
 		member = await loadMember();
 		posts = await loadPosts();
-		await displayFriends();
-		await displayRequests();
-		await displayBlocks();	
+		
+		if(status != "visit"){
+			await displayRequests();
+			await displayBlocks();
+		}
 		
 		
 		let tab = window.location.hash;
@@ -744,6 +746,7 @@ td {
 			$("#mem-relation").text(`您被${$("#mem-name").text()}封鎖`);
 			$("#posts").hide();
 		} else{
+			await displayFriends();
 			$("#member-tabs").show();
 		}
 	}
@@ -1342,7 +1345,7 @@ td {
 		    pageSize: 3,
 // 		    showSizeChanger: true,
 // 		    sizeChangerOptions: [2, 5, 10, 20, 50, 100],
-		    callback: function(posts, pagination) {
+		    callback: async function(posts, pagination) {
 		    	$("#posts-body").html("");
 		    	
 // 		    	if(!posts.length){
@@ -1367,10 +1370,11 @@ td {
 		        	window.powerButtons('confirm', deleteBtn, options);
 	        	
 		        }
+				await getPostReports();
 		    }
+		
 		});
 		
-		await getPostReports();
 		}
 	
 	$(document).on("click", ".button0", async function(){
