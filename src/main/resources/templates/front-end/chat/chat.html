@@ -665,14 +665,16 @@
 		
 		if(!datetime) return;
 
-		var today = new Date().toISOString().substring(0, 10);
+		var today = new Date();
+		today = new Date(today = today - (today.getTimezoneOffset() * 60000));
+		today = today.toISOString().substring(0, 10).toString();
 		let date = datetime.substring(0,10);
 		let time = datetime.substring(11,16);
 		let hour = parseInt(time.substring(0,2), 10);
-		
+
 		if(hour < 12){
 			if(hour == 0) {
-				time = "00" + time.substring(2);
+				time = "12" + time.substring(2);
 			}
 			time = "上午 " + time; 
 		} else{
