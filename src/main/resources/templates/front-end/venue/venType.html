@@ -936,22 +936,21 @@ $("#transfer").on("click", function(){
 
 // 點擊立即預訂
 $("#bookingnow").on("click", function(){
+	let date = $("#datepicker").val();
+	let venpicked = $("#venuepicker").val();
+	console.log(date);
 	if(!user) {
 	    alert("請登入會員");  
 	    return;
+	}else if(date == "請選擇日期" || date == "" || venpicked == ""){
+		alert("請選擇日期和場地"); 
+		return;
 	}else{
 		$("input#memId").val(user);
-	}
-	let date = $("#datepicker").val();
-	let venpicked = $("#venuepicker").val();
-	
-	if(date !== "" && venpicked !== ""){
 	    $(".bookingform").css("display", "block");
 	    // 將頁面滾動到預定表單
 	    var formBottom = $(".bookingform").offset().top;
 	    $("html, body").animate({ scrollTop: formBottom }, "fast"); 
-	}else{
-	    alert("請選擇日期和場地");  
 	}
   
 });	
