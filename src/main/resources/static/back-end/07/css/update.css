@@ -37,7 +37,7 @@ form {
     text-align: left;
     padding: 5px;
     border-radius: 8px;
-    background-color: #dcdcdc;
+    background-color: #FFE5D9;
 }
 
 input,
@@ -98,7 +98,7 @@ span.error {
 }
 
 .immutable {
-    background-color: #dcdcdc;
+    background-color: #FFE5D9;
     border: 2px solid white;
     border-radius: 5px;
     color: gray;
