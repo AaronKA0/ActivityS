@@ -25,7 +25,6 @@ public class JedisHandleMessage {
 
 	public static List<String> getHistoryMsg(String sender, String receiver, Boolean update) {
 
-		System.out.println("jedis get history msg: sender: " + sender + "; receiver: " + receiver);
 		String key = new StringBuilder("msg:" + sender).append(":").append(receiver).toString();
 		String key2 = new StringBuilder("msg:" + receiver).append(":").append(sender).toString();
 		Jedis jedis = pool.getResource();
@@ -55,10 +54,8 @@ public class JedisHandleMessage {
 				updatedData.add(updatedMsg);
 				jedis.lset(key, i, updatedMsg);
 				jedis.lset(key2, i, updatedMsg);
-				System.out.println("updated messages: " + updatedMsg);
 			} else if (msg.getStatus() != 3) {
 				updatedData.add(data);
-				System.out.println("non-deleted messages: " + data);
 			}
 		}
 
@@ -86,13 +83,11 @@ public class JedisHandleMessage {
 
 	public static Set<ReadStatus> getChatReceivers(ChatMessage message) {
 
-		System.out.println("current receiver: " + message.getReceiver());
-
 		Jedis jedis = pool.getResource();
 		jedis.select(14);
-		System.out.println("receivers: sender: " + message.getSender() + "; receiver: " + message.getReceiver());
-		Set<String> keys = jedis.keys("msg:" + message.getSender() + "*");
-		Set<String> keys2 = jedis.keys("msg:" + message.getReceiver() + "*");
+
+		Set<String> keys = jedis.keys("msg:" + message.getSender() + ":" + "*");
+		Set<String> keys2 = jedis.keys("msg:" + message.getReceiver() + ":" + "*");
 
 		TreeSet<ReadStatus> receivers = new TreeSet<ReadStatus>();
 		if (message.getReceiver() != null && !message.getReceiver().isEmpty()) {
@@ -127,11 +122,9 @@ public class JedisHandleMessage {
 				}
 				if (i == messages.size() - 1) {
 					time = cm.getTime();
-					System.out.println("latest message at: " + time);
 				}
 			}
-			System.out.println("number of messages: " + messages.size());
-			System.out.println("all read for: " + receiver + "? " + allRead);
+
 			ReadStatus rs = new ReadStatus();
 			rs.setUserName(receiver);
 			rs.setIsRead(allRead);
@@ -143,7 +136,6 @@ public class JedisHandleMessage {
 				rs.setNumUnread(0);
 				rs.setIsSelected(true);
 			}
-			System.out.println("receiver: " + rs);
 
 			// cannot chat with any user who blocked you
 			String relationString = jedis.get("relation:" + receiver + ":" + message.getSender());
@@ -167,8 +159,7 @@ public class JedisHandleMessage {
 				.toString();
 		Jedis jedis = pool.getResource();
 		jedis.select(14);
-		System.out.println("delete msg; id: " + message.getId() + "; sender: " + message.getSender() + "; receiver: "
-				+ message.getReceiver());
+
 		List<String> historyData = jedis.lrange(key, 0, -1);
 
 		for (int i = 0; i < historyData.size(); i++) {
@@ -193,8 +184,7 @@ public class JedisHandleMessage {
 				.toString();
 		Jedis jedis = pool.getResource();
 		jedis.select(14);
-		System.out.println("delete msg; id: " + message.getId() + "; sender: " + message.getSender() + "; receiver: "
-				+ message.getReceiver());
+
 		List<String> historyData = jedis.lrange(key, 0, -1);
 
 		for (int i = 0; i < historyData.size(); i++) {

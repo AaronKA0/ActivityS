@@ -733,6 +733,7 @@
         // create a websocket
         webSocket = new WebSocket(endPointURL);
 
+        console.log(endPointURL);
         webSocket.onmessage = async function (event) {
 
             let notifyVO = JSON.parse(event.data);
@@ -762,7 +763,7 @@
                     <button type="button" class="btn-close"
                         data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
-                <div id="toast-body${notify.notifyId}" class="toast-body" style="background-color: #ffff00">
+                <div id="toast-body${notify.notifyId}" class="toast-body" style="background-color: #eded1e">
                 </div>
             </div>`
 

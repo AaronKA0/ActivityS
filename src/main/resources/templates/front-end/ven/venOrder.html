@@ -514,7 +514,9 @@ let orderPagination;
 
 
 $(".sort-btn").on("click", function(){
-	curDate = new Date().toJSON().slice(0, 10);
+	var curDate = new Date();
+	curDate = new Date(curDate = curDate - (curDate.getTimezoneOffset() * 60000));
+	curDate = curDate.toISOString().substring(0, 10).toString();
 	$(".sort-btn").removeClass("active");
 	$(this).addClass("active");
 	dateOrder = "asc";

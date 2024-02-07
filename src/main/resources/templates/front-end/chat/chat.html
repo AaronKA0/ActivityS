@@ -30,7 +30,7 @@
 	color: white;
 }
 </style>
-<title>最大私人聊天室</title>
+<title>做伙私人聊天室</title>
 
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap">
@@ -421,7 +421,6 @@
 			}).then(function(response){
 				return response.json();
 			}).then(function(mem){
-				console.log(mem);
 				return mem;
 			});
 			return member;
@@ -465,7 +464,6 @@
 		var path = window.location.pathname;
 		var webCtx = path.substring(0, path.indexOf('/', 1));
 		var endPointURL = "ws://" + window.location.host + MyPoint;
-// 		alert(endPointURL);
 
 		var self = `${user}`;
 		var friend = receiver;
@@ -476,7 +474,7 @@
 			webSocket = new WebSocket(endPointURL);
 
 			webSocket.onopen = function(event) {
-				console.log("Connect Success!");
+
 			};
 
 			webSocket.onmessage = async function(event) {
@@ -561,7 +559,7 @@
 			};
 
 			webSocket.onclose = function(event) {
-				console.log("Disconnected!");
+
 			};
 		}
 
@@ -571,10 +569,9 @@
 			var message = inputMessage.val().trim();
 
 			if (message === "") {
-				// 				alert("Input a message");
 				inputMessage.focus();
 			} else if (friend === "") {
-				alert("Choose a friend");
+
 			} else {
 				var jsonObj = {
 					"type" : "chat",
@@ -591,7 +588,6 @@
 
 		async function loadFriendList(jsonObj) {
 
-			console.log("jsonObj.readStatuses: " + jsonObj.readStatuses);
 			var friends = jsonObj.readStatuses;
 
 			if (!friends.length) {
@@ -669,14 +665,16 @@
 		
 		if(!datetime) return;
 
-		var today = new Date().toISOString().substring(0, 10);
+		var today = new Date();
+		today = new Date(today = today - (today.getTimezoneOffset() * 60000));
+		today = today.toISOString().substring(0, 10).toString();
 		let date = datetime.substring(0,10);
 		let time = datetime.substring(11,16);
 		let hour = parseInt(time.substring(0,2), 10);
-		
+
 		if(hour < 12){
 			if(hour == 0) {
-				time = "00" + time.substring(2);
+				time = "12" + time.substring(2);
 			}
 			time = "上午 " + time; 
 		} else{
