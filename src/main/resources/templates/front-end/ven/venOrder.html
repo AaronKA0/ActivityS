@@ -638,8 +638,6 @@ function displayOrders(){
 	        		}
 	        		
 	        		if(order){
-	        			alert("order date: " + order.orderDate);
-	        			alert("curDate: " + curDate);
 	        			let ven = order.venVO;
 	        			let isUpcoming = order.orderStatus == 1 && order.orderDate >= curDate;
 	        			let isPast = order.orderStatus == 1 && order.orderDate < curDate;
