@@ -56,6 +56,8 @@ public class ChatController {
 		State stateMessage = new State("open", userName, userNames);
 		String stateMessageJson = gson.toJson(stateMessage);
 		userSession.getAsyncRemote().sendText(stateMessageJson);
+		
+		System.out.println("state message json: " + stateMessageJson);
 
 		String text = String.format("Session ID = %s, connected; userName = %s%nusers: %s", userSession.getId(),
 				userName, userNames);

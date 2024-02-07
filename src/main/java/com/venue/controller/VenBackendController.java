@@ -22,8 +22,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.membership.model.MembershipVO;
 import com.ventype.service.VenTypeService;
+import com.venue.model.RecentVen;
 import com.venue.model.VenVO;
+import com.venue.service.RecentVenService;
 import com.venue.service.VenService;
 
 @Controller
@@ -184,7 +187,7 @@ public class VenBackendController {
 		return venSvc.getOneVen(ven.getVenId());		
 	}
 
-	@RequestMapping("updateTime")
+	@PostMapping("updateTime")
 	public @ResponseBody VenVO updateTime(@RequestBody String json) {
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -248,6 +251,21 @@ public class VenBackendController {
 			}
 		}
 		return vens;
+	}
+	
+	
+	@PostMapping("recent")
+	public @ResponseBody List<RecentVen> getRecentVens(@RequestBody String json) {		
+		MembershipVO mem = gson.fromJson(json, MembershipVO.class);
+		List<RecentVen> vens = RecentVenService.getVens(mem.getMemId());
+		return vens;
+	}
+	
+	@PostMapping("addRecent")
+	public @ResponseBody RecentVen addRecentVen(@RequestBody String json) {		
+		RecentVen ven = gson.fromJson(json, RecentVen.class);
+		RecentVenService.addVen(ven);
+		return ven;
 	}
 
 }

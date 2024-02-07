@@ -3,6 +3,7 @@ package com.membership.controller;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executors;
@@ -42,6 +43,7 @@ import com.google.gson.Gson;
 import com.membership.model.MembershipVO;
 import com.membership.service.MembershipService;
 import com.membership.service.RedisService;
+import com.notify.service.NotifyNow;
 
 @Controller
 @RequestMapping("/membership")
@@ -308,6 +310,8 @@ public class MembershipController {
 		    } else {
 		        System.out.println("無法取得會員信箱");
 		    }
+		       
+		    
 		}
 
 
