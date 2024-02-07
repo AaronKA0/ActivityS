@@ -284,7 +284,7 @@ public class FaqController {
 			props.put("mail.smtp.port", "465");
 
 			final String myGmail = "ballbrotherx87@gmail.com"; // 寄出者的信箱
-			final String myGmail_password = "dqbyvnwyklogkkyl"; // 寄出者密碼
+			final String myGmail_password = "fgygcmheubhcikrz"; // 寄出者密碼
 
 			Session session = Session.getInstance(props, new Authenticator() {
 				protected PasswordAuthentication getPasswordAuthentication() {
