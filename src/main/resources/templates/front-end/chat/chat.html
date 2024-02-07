@@ -421,7 +421,6 @@
 			}).then(function(response){
 				return response.json();
 			}).then(function(mem){
-				console.log(mem);
 				return mem;
 			});
 			return member;
@@ -465,7 +464,6 @@
 		var path = window.location.pathname;
 		var webCtx = path.substring(0, path.indexOf('/', 1));
 		var endPointURL = "ws://" + window.location.host + MyPoint;
-// 		alert(endPointURL);
 
 		var self = `${user}`;
 		var friend = receiver;
@@ -476,7 +474,7 @@
 			webSocket = new WebSocket(endPointURL);
 
 			webSocket.onopen = function(event) {
-				console.log("Connect Success!");
+
 			};
 
 			webSocket.onmessage = async function(event) {
@@ -561,7 +559,7 @@
 			};
 
 			webSocket.onclose = function(event) {
-				console.log("Disconnected!");
+
 			};
 		}
 
@@ -571,10 +569,9 @@
 			var message = inputMessage.val().trim();
 
 			if (message === "") {
-				// 				alert("Input a message");
 				inputMessage.focus();
 			} else if (friend === "") {
-				alert("Choose a friend");
+
 			} else {
 				var jsonObj = {
 					"type" : "chat",
@@ -591,7 +588,6 @@
 
 		async function loadFriendList(jsonObj) {
 
-			console.log("jsonObj.readStatuses: " + jsonObj.readStatuses);
 			var friends = jsonObj.readStatuses;
 
 			if (!friends.length) {

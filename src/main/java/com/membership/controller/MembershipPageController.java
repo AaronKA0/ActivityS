@@ -80,7 +80,7 @@ public class MembershipPageController {
 				request.setAttribute("status", "visit");
 				request.setAttribute("rMemId", memId);
 			}
-			System.out.println("visiting member: " + memId);
+
 		} else {
 			request.setAttribute("status", "cur");
 		}
@@ -104,7 +104,7 @@ public class MembershipPageController {
 				request.setAttribute("status", "visit");
 				request.setAttribute("rMemId", memId);
 			}
-			System.out.println("visiting member: " + memId);
+
 		} else {
 			request.setAttribute("status", "cur");
 		}
@@ -334,7 +334,7 @@ public class MembershipPageController {
 	@PostMapping("memReport/insert")
 	public @ResponseBody MemberReportVO memReportInsert(@RequestBody String json)  {
 		MemberReportVO memberReportVO = gson.fromJson(json, MemberReportVO.class);
-		System.out.println(memberReportVO);
+
 		memberReportSvc.addMemberReport(memberReportVO);
 		
 		// send report received notification
@@ -356,7 +356,7 @@ public class MembershipPageController {
 	@PostMapping("postReport/insertPost")
 	public @ResponseBody PostReportVO memReportInsertPost(@RequestBody String json)  {
 		PostReportVO postReportVO = gson.fromJson(json, PostReportVO.class);
-		System.out.println(postReportVO);
+
 		postReportSvc.addPostReport(postReportVO);
 		
 		// send report received notification

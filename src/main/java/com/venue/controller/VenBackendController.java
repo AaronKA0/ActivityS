@@ -126,7 +126,7 @@ public class VenBackendController {
 
 				if (ven.getVenDowntime() != null) {
 					if (ven2.getVenDowntime() == null || ven.getVenDowntime().compareTo(ven2.getVenDowntime()) != 0) {
-						System.out.println("different downtime");
+
 						return;
 					} else {
 //						sendEmail();
@@ -134,7 +134,7 @@ public class VenBackendController {
 
 				} else {
 					if (ven2.getVenUptime() == null || ven.getVenUptime().compareTo(ven2.getVenUptime()) != 0) {
-						System.out.println("different uptime");
+
 						return;
 					}
 				}
@@ -150,9 +150,6 @@ public class VenBackendController {
 				ven2.setVenModTime(Timestamp.valueOf(LocalDateTime.now()));
 
 				venSvc.updateVen(ven2);
-
-				System.out.println(ven2);
-				System.out.println("modified status");
 			}
 		};
 		Timer timer = new Timer("Timer");
@@ -233,7 +230,6 @@ public class VenBackendController {
 			}
 		}
 
-		System.out.println(venNames.get(0) + " " + type + " " + time);
 		return null;
 	}
 
