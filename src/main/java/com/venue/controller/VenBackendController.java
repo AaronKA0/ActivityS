@@ -22,8 +22,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.membership.model.MembershipVO;
 import com.ventype.service.VenTypeService;
+import com.venue.model.RecentVen;
 import com.venue.model.VenVO;
+import com.venue.service.RecentVenService;
 import com.venue.service.VenService;
 
 @Controller
@@ -123,7 +126,7 @@ public class VenBackendController {
 
 				if (ven.getVenDowntime() != null) {
 					if (ven2.getVenDowntime() == null || ven.getVenDowntime().compareTo(ven2.getVenDowntime()) != 0) {
-						System.out.println("different downtime");
+
 						return;
 					} else {
 //						sendEmail();
@@ -131,7 +134,7 @@ public class VenBackendController {
 
 				} else {
 					if (ven2.getVenUptime() == null || ven.getVenUptime().compareTo(ven2.getVenUptime()) != 0) {
-						System.out.println("different uptime");
+
 						return;
 					}
 				}
@@ -147,9 +150,6 @@ public class VenBackendController {
 				ven2.setVenModTime(Timestamp.valueOf(LocalDateTime.now()));
 
 				venSvc.updateVen(ven2);
-
-				System.out.println(ven2);
-				System.out.println("modified status");
 			}
 		};
 		Timer timer = new Timer("Timer");
@@ -184,7 +184,7 @@ public class VenBackendController {
 		return venSvc.getOneVen(ven.getVenId());		
 	}
 
-	@RequestMapping("updateTime")
+	@PostMapping("updateTime")
 	public @ResponseBody VenVO updateTime(@RequestBody String json) {
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -230,7 +230,6 @@ public class VenBackendController {
 			}
 		}
 
-		System.out.println(venNames.get(0) + " " + type + " " + time);
 		return null;
 	}
 
@@ -248,6 +247,21 @@ public class VenBackendController {
 			}
 		}
 		return vens;
+	}
+	
+	
+	@PostMapping("recent")
+	public @ResponseBody List<RecentVen> getRecentVens(@RequestBody String json) {		
+		MembershipVO mem = gson.fromJson(json, MembershipVO.class);
+		List<RecentVen> vens = RecentVenService.getVens(mem.getMemId());
+		return vens;
+	}
+	
+	@PostMapping("addRecent")
+	public @ResponseBody RecentVen addRecentVen(@RequestBody String json) {		
+		RecentVen ven = gson.fromJson(json, RecentVen.class);
+		RecentVenService.addVen(ven);
+		return ven;
 	}
 
 }

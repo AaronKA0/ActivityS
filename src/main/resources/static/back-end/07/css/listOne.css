@@ -25,7 +25,7 @@ div#center {
 	width: 100%;
 	padding: 5px;
     border-radius: 8px;
-	background-color: #f5f5dc;
+	background-color: #ffffe0;
 }
 
 div.has_two {
@@ -50,7 +50,7 @@ span.title {
 }
 
 textarea{ 
-	background-color: #f5f5dc;
+	background-color: #ffffe0;
     border: 1px solid black;
     border-radius: 5px;
     resize: none;

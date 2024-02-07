@@ -1,6 +1,7 @@
 package com.memberreport.controller;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,6 +31,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.memberreport.service.MemberReportService;
+import com.membership.model.MembershipVO;
+import com.membership.service.MembershipService;
+import com.notify.service.NotifyNow;
 import com.memberreport.model.MemberReportVO;
 
 @Controller
@@ -38,6 +42,12 @@ public class MemberReportController {
 
 	@Autowired
 	MemberReportService memberReportSvc;
+	
+	@Autowired
+	NotifyNow notifyNow;
+	
+	@Autowired
+	MembershipService membershipSvc;
 
 	@GetMapping("addMemberReport")
 	public String addMemberReport(ModelMap model) {
@@ -130,6 +140,19 @@ public class MemberReportController {
 		// System.out.println(membership);
 		List<MemberReportVO> list = memberReportSvc.getAll();
 		model.addAttribute("memberreportListData", list);
+		
+		if(memberReportVO.getRepStatus() == 2) {
+			// send notification after member report is successful
+			MembershipVO memberA = membershipSvc.getOneMembership(memberReportVO.getReporterId());
+			MembershipVO memberB = membershipSvc.getOneMembership(memberReportVO.getReporteeId());
+
+			Set<MembershipVO> members = new HashSet<MembershipVO>();
+			members.add(memberA);
+			notifyNow.sendNotifyNow(members, "系統通知", "收到您的檢舉後，我們決定暫停" + memberB.getMemUsername() + "的帳戶");
+		}
+		
+		
+		
 		return "back-end/memberreport/listAllMemberReport";
 	}
 

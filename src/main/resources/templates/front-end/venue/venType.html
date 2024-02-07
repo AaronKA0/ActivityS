@@ -176,8 +176,10 @@
 
             <!-- 這邊放會員登入後的選項 -->
             <div class="after-logging" th:if="${session.memId ne null}">
-                <i class="icon bi bi-messenger" style="font-size: 25px; margin: 20px; color: #6161f2;"></i>
-
+            
+                <a th:href="@{/member/chat}"><i class="icon bi bi-messenger"
+                   style="font-size: 28px; margin: 20px; color: #6161f2;"></i></a>
+                
                 <!-- -------------------- 通知訊息功能 下拉選單 -------------------- -->
                 <i class="icon bi bi-bell-fill" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
                    aria-expanded="false" style="font-size: 25px; color: #eded1e;"></i>
@@ -196,9 +198,9 @@
                    style="font-size: 40px; margin: 20px;"></i>
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <li><a class="dropdown-item" href="#">個人資料</a></li>
-                    <li><a class="dropdown-item" href="#">Another</a></li>
-                    <li><a id="SignOut" class="dropdown-item" href="#">登出</a></li>
+                    <li><a class="dropdown-item"
+                           th:href="@{/member}">個人資料</a></li>
+                    <li><a id="SignOut" class="dropdown-item" th:href="@{/membership/login}">登出</a></li>
                 </ul>
 
             </div>
@@ -614,22 +616,22 @@ function connect() {
 
 
 //------------------------ 登出 -------------------------
-document.getElementById("SignOut").addEventListener("click",
-   function () {
-       // 使用 XMLHttpRequest 或 Fetch API 發送登出請求到後端
-       var xhr = new XMLHttpRequest();
-       xhr.open("GET", "/membership/logout", true);
+// document.getElementById("SignOut").addEventListener("click",
+//    function () {
+//        // 使用 XMLHttpRequest 或 Fetch API 發送登出請求到後端
+//        var xhr = new XMLHttpRequest();
+//        xhr.open("GET", "/membership/logout", true);
 
-       xhr.onreadystatechange = function () {
-           if (xhr.readyState == 4 && xhr.status == 200) {
-               webSocket.close();
-               // 處理登出成功的回應，這裡將重新導向到登入頁面
-               window.location.href = "/membership/login"; // 重新導向到登入頁面
-           }
-       };
+//        xhr.onreadystatechange = function () {
+//            if (xhr.readyState == 4 && xhr.status == 200) {
+//                webSocket.close();
+//                // 處理登出成功的回應，這裡將重新導向到登入頁面
+//                window.location.href = "/membership/login"; // 重新導向到登入頁面
+//            }
+//        };
 
-       xhr.send();
-   });
+//        xhr.send();
+//    });
 
 
 
@@ -934,22 +936,21 @@ $("#transfer").on("click", function(){
 
 // 點擊立即預訂
 $("#bookingnow").on("click", function(){
+	let date = $("#datepicker").val();
+	let venpicked = $("#venuepicker").val();
+	console.log(date);
 	if(!user) {
 	    alert("請登入會員");  
 	    return;
+	}else if(date == "請選擇日期" || date == "" || venpicked == ""){
+		alert("請選擇日期和場地"); 
+		return;
 	}else{
 		$("input#memId").val(user);
-	}
-	let date = $("#datepicker").val();
-	let venpicked = $("#venuepicker").val();
-	
-	if(date !== "" && venpicked !== ""){
 	    $(".bookingform").css("display", "block");
 	    // 將頁面滾動到預定表單
 	    var formBottom = $(".bookingform").offset().top;
 	    $("html, body").animate({ scrollTop: formBottom }, "fast"); 
-	}else{
-	    alert("請選擇日期和場地");  
 	}
   
 });	

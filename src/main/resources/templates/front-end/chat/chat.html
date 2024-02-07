@@ -421,7 +421,6 @@
 			}).then(function(response){
 				return response.json();
 			}).then(function(mem){
-				console.log(mem);
 				return mem;
 			});
 			return member;
@@ -465,9 +464,9 @@
 		var path = window.location.pathname;
 		var webCtx = path.substring(0, path.indexOf('/', 1));
 		var endPointURL = "ws://" + window.location.host + MyPoint;
-// 		alert(endPointURL);
 
 		var self = `${user}`;
+		var friend = receiver;
 		var webSocket;
 
 		function connect() {
@@ -475,8 +474,7 @@
 			webSocket = new WebSocket(endPointURL);
 
 			webSocket.onopen = function(event) {
-				console.log("Connect Success!");
-				var friend = receiver;
+
 			};
 
 			webSocket.onmessage = async function(event) {
@@ -527,6 +525,8 @@
 					
 					if (jsonObj.status == 1
 							&& $(".contact.selected").data("contact") != jsonObj.sender) {
+						let numUnread = parseInt($(`.contact[data-contact='${jsonObj.sender}']`).find(".numUnread").text());
+						$(`.contact[data-contact='${jsonObj.sender}']`).find(".numUnread").text(++numUnread);
 						$(`.contact[data-contact='${jsonObj.sender}']`).find(
 								".new").visible();
 					}
@@ -559,7 +559,7 @@
 			};
 
 			webSocket.onclose = function(event) {
-				console.log("Disconnected!");
+
 			};
 		}
 
@@ -569,10 +569,9 @@
 			var message = inputMessage.val().trim();
 
 			if (message === "") {
-				// 				alert("Input a message");
 				inputMessage.focus();
 			} else if (friend === "") {
-				alert("Choose a friend");
+
 			} else {
 				var jsonObj = {
 					"type" : "chat",
@@ -607,7 +606,7 @@
 
 					$("#contacts-display")
 							.append(
-									`<div class="contact row" data-contact="${friend.memId}"><div class="col-3 text-center contact-img"><img src="${friend.memPic? 'data:image/png;base64,' + friend.memPic: '/front-end/16/images/notfind.jpg'}"></div><div style="margin-top:20px" class="col-6 contact-name"><h3>${friend.memUsername}</h3></div><div class="col-3 contact-info"><div class="new row"></div><div class="row contact-time"></div></div></div>`);
+									`<div class="contact row" data-contact="${friend.memId}"><div class="col-3 text-center contact-img"><img src="${friend.memPic? 'data:image/png;base64,' + friend.memPic: '/front-end/16/images/notfind.jpg'}"></div><div style="margin-top:20px" class="col-5 contact-name"><h3>${friend.memUsername}</h3></div><div class="col-4 contact-info"><div class="new row"><span class="numUnread">${friends[i].numUnread}<span></div><div style="font-size:14px" class="row contact-time"></div></div></div>`);
 
 
 
@@ -630,6 +629,7 @@
 			selectedUser = true;
 			getChatHistory($(this).data("contact"));
 			$(this).find(".new").invisible();
+			$(this).find(".numUnread").text(0);
 		});
 
 		function disconnect() {
@@ -671,15 +671,20 @@
 		let hour = parseInt(time.substring(0,2), 10);
 		
 		if(hour < 12){
-			if(hour == 0) time = 12 + time.substring(2);
+			if(hour == 0) {
+				time = "00" + time.substring(2);
+			}
 			time = "上午 " + time; 
 		} else{
 			hour = hour % 12;
+			if(!(hour == 10 || hour == 11)){
+				hour = "0" + hour;
+			}
 			if(hour == 0) hour = 12;
 			time = "下午 " + hour + time.substring(2); 
 		}
 		$(`.contact[data-contact='${name}']`).find(".contact-time").html("");
-		if(date >= today){
+		if(date == today){
 			$(`.contact[data-contact='${name}']`).find(".contact-time").text(time);
 		} else{
 	    	let dayBeforeYes = new Date(), yesterday = new Date();
@@ -687,6 +692,7 @@
 			yesterday.setDate(yesterday.getDate() - 1);	
 			let contactDate = new Date(date).toLocaleDateString();
 			let dateString = contactDate == dayBeforeYes.toLocaleDateString()? "前天" : contactDate == yesterday.toLocaleDateString()? "昨天" : contactDate;
+			dateString = dateString + " " + time;
 			$(`.contact[data-contact='${name}']`).find(".contact-time").text(dateString);
 		}
 	}

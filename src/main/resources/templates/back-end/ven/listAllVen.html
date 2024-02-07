@@ -870,7 +870,7 @@ thead tr:first-child {
 								<input style="margin-bottom: 10px" class="align-top" type="file"
 									id="u-file" name="u-pic" accept="image/*"> <span
 									id="u-preview"> <img style="max-height: 200px"
-									id="u-oldPic" src="back-end/01/images/notfind.jpg" class="preview_img"></img>
+									id="u-oldPic" src="/back-end/01/images/notfind.jpg" class="preview_img"></img>
 									<img style="max-height: 200px" id="u-newPic"
 									class="preview_img"></img>
 								</span>
@@ -1293,9 +1293,7 @@ async function verifyName(){
 		    cache: false,    //This will force requested pages not to be cached by the browser  
 		     processData:false, //To avoid making query String instead of JSON
 		     success: async function(resposeJsonObject){
-// 		    	 alert("success");
 		    	 await reload();
-// 		    	 $(".btn-close").click();
 		    }
 		});
 	});
@@ -1418,9 +1416,7 @@ async function verifyName(){
 		    cache: false,    //This will force requested pages not to be cached by the browser  
 		     processData:false, //To avoid making query String instead of JSON
 		     success: async function(responseJsonObject){
-// 		    	 alert("success");
 		    	 await reload();
-// 		    	 $(".btn-close").click();
 		    }
 		});
 	});
@@ -1569,10 +1565,10 @@ $(document).ready(function() {
 				method: "GET",
 			}).then(function(response){
 				return response.json();
-			}).then(function(result){
-				return result.filter(ord => ord.orderStatus != 1).map(ord => ord.venVO.venName);
+			}).then(function(results){
+				return results.filter(ord => ord.orderStatus == 1).map(ord => ord.venVO.venName);
 			});
-		
+
 		reservedVenNames = [];
 		$(".check:checked").each(function(index) {
 			let venName = $(this).closest("tr").find("td").eq(1).text();
@@ -1610,7 +1606,6 @@ $(document).ready(function() {
 		    cache: false,    //This will force requested pages not to be cached by the browser  
 		     processData:false, //To avoid making query String instead of JSON
 		     success: async function(resposeJsonObject){
-// 		    	 alert("下架");
 		    	 await reload();
 		    }
 		});
@@ -1711,9 +1706,7 @@ $(document).ready(function() {
 		    cache: false,    //This will force requested pages not to be cached by the browser  
 		     processData:false, //To avoid making query String instead of JSON
 		     success: async function(resposeJsonObject){
-// 		    	 alert("success");
 		    	 await reload();
-// 		    	 $(".btn-close").click();
 		    }
 		});
 	});
@@ -2360,8 +2353,6 @@ $("#price").on("blur", function(){
 				venDowntime: $("#downtime").val()? $("#downtime").val()+":00": ""
 		};
 		
-// 		console.log(ven);
-		
 		let jsonString = JSON.stringify(ven);
 		
 		$.ajax({ 
@@ -2373,9 +2364,7 @@ $("#price").on("blur", function(){
 		    cache: false,    //This will force requested pages not to be cached by the browser  
 		     processData:false, //To avoid making query String instead of JSON
 		     success: async function(resposeJsonObject){
-// 		    	 alert("success");
 		    	 await reload();
-// 		    	 $(".btn-close").click();
 		    }
 		});
 	});
@@ -2611,8 +2600,6 @@ $("#u-price").on("blur", function(){
 				venPrice: $("#u-price").val()
 		};
 		
-// 		console.log(ven);
-		
 		let jsonString = JSON.stringify(ven);
 		
 		$.ajax({ 
@@ -2624,9 +2611,7 @@ $("#u-price").on("blur", function(){
 		    cache: false,    //This will force requested pages not to be cached by the browser  
 		     processData:false, //To avoid making query String instead of JSON
 		     success: async function(resposeJsonObject){
-// 		    	 alert("success");
 		    	 await reload();
-// 		    	 $(".btn-close").click();
 		    }
 		});
 	});

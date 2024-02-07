@@ -46,12 +46,10 @@ public class ChatController {
 //		}
 
 		receiver = receiver.equals("none") ? "" : receiver;
-		System.out.println("open receiver: " + receiver);
+
 		ChatMessage msg = new ChatMessage("", userName, receiver, "");
 
 		Set<ReadStatus> userNames = JedisHandleMessage.getChatReceivers(msg);
-		
-		System.out.println("list of receivers: " + userNames);
 		
 		State stateMessage = new State("open", userName, userNames);
 		String stateMessageJson = gson.toJson(stateMessage);
@@ -59,7 +57,6 @@ public class ChatController {
 
 		String text = String.format("Session ID = %s, connected; userName = %s%nusers: %s", userSession.getId(),
 				userName, userNames);
-		System.out.println(text);
 	}
 
 	@OnMessage
@@ -67,9 +64,7 @@ public class ChatController {
 		ChatMessage chatMessage = gson.fromJson(message, ChatMessage.class);
 		String sender = chatMessage.getSender();
 		String receiver = chatMessage.getReceiver();
-		System.out.println("on message controller: sender: " + sender + "; receiver: " + receiver);
 
-		
 		if ("delete".equals(chatMessage.getType())) {
 			JedisHandleMessage.deleteMsg(chatMessage);
 		}
@@ -80,14 +75,12 @@ public class ChatController {
 		
 		if ("history".equals(chatMessage.getType()) || "delete".equals(chatMessage.getType()) || "retrieve".equals(chatMessage.getType())) {
 
-			System.out.println("getting chat history with: " + receiver + " for: " + sender);
 			userMap.put(sender, receiver);
 			List<String> historyData = JedisHandleMessage.getHistoryMsg(sender, receiver, true);
 			String historyMsg = gson.toJson(historyData);
 			ChatMessage cmHistory = new ChatMessage("history", sender, receiver, historyMsg);
 			if (userSession != null && userSession.isOpen() && !receiver.equals("none")) {
 				userSession.getAsyncRemote().sendText(gson.toJson(cmHistory));
-				System.out.println("user history = " + gson.toJson(cmHistory));
 			}
 
 			List<String> historyData2 = JedisHandleMessage.getHistoryMsg(receiver, sender, false);
@@ -97,7 +90,6 @@ public class ChatController {
 			Session receiverSession = sessionsMap.get(receiver);
 			if (sender.equals(userMap.get(receiver)) && receiverSession != null && receiverSession.isOpen() && !receiver.equals("none")) {
 				receiverSession.getAsyncRemote().sendText(gson.toJson(cmHistory2));
-				System.out.println("receiver history = " + gson.toJson(cmHistory2));
 			}
 
 			return;
@@ -108,7 +100,6 @@ public class ChatController {
 		chatMessage.setStatus((byte) 1);
 		if (receiverSession != null && receiverSession.isOpen()) {
 			
-			System.out.println("user map: receiver: " + receiver + "; sender: " + sender);
 			if (sender.equals(userMap.get(receiver))) {
 				chatMessage.setStatus((byte) 2);
 			}
@@ -116,19 +107,17 @@ public class ChatController {
 			String savedMessage = JedisHandleMessage.saveChatMessage(sender, receiver, chatMessage);
 			receiverSession.getAsyncRemote().sendText(savedMessage);
 			userSession.getAsyncRemote().sendText(savedMessage);
-			System.out.println("Message received: " + savedMessage);
 
 		} else {
 
 			String savedMessage = JedisHandleMessage.saveChatMessage(sender, receiver, chatMessage);
 			userSession.getAsyncRemote().sendText(savedMessage);
-			System.out.println("Message received: " + savedMessage);
 		}
 	}
 
 	@OnError
 	public void onError(Session userSession, Throwable e) {
-		System.out.println("Error: " + e.toString());
+
 	}
 
 	@OnClose
@@ -155,11 +144,6 @@ public class ChatController {
 
 		String text = String.format("session ID = %s, disconnected; close code = %d%nusers: %s", userSession.getId(),
 				reason.getCloseCode().getCode(), userNames);
-		System.out.println(text);
 	}
 	
-	
-	public void updateNotification() {
-		System.out.println("new notification");
-	}
 }

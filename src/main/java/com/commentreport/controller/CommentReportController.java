@@ -89,8 +89,8 @@ public class CommentReportController {
     ) {
 
         //模擬哪位員工
-//        Integer testEmpId = 1;
-//        session.setAttribute("empId", testEmpId);
+        Integer testEmpId = 1;
+        session.setAttribute("empId", testEmpId);
         Integer empId = (Integer)session.getAttribute("empId");
         commentReportStatus.setEmpId(empId);
 
