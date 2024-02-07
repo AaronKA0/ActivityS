@@ -302,8 +302,8 @@ td {
 
 <body>
 
-	<form method="get" style="display: none" id="visitMemForm"
-		th:action="@{/member}">
+	<form method="post" style="display: none" id="visitMemForm"
+		th:action="@{/mem}">
 		<input id="visitMem" type="number" th:name="memId" /> <input
 			type="submit" />
 	</form>
@@ -687,6 +687,8 @@ td {
 
 		await getMemReport();
 
+		$("#posts").show();
+		
 		if(visitId){
 			await displayRelation();
 			await displayBlock();
@@ -694,9 +696,6 @@ td {
 			$("#mem-edit").show();
 			$("#member-tabs").show();
 		}
-		
-		$("#posts").show();
-
 		
 		member = await loadMember();
 		posts = await loadPosts();
@@ -728,7 +727,6 @@ td {
 	}
 	
 	async function displayBlock(){
-		console.log(memId + " : " + visitId);
 		let relation = {memIdA: memId, memIdB: visitId};
 		let status = await fetch("/member/getRelationStatus", {
 			method: "POST",
@@ -944,7 +942,7 @@ td {
 				let html = `<div style="width:500px; margin-top: 100px; margin-bottom: 50px; margin-left:250px"
 				class="row text-center mem-div" data-id="${mem.memId}">
 				<div class="col-4" style="height: 150px">
-					<img class="request-mem-img" src="data:img/png;base64,${mem.memPic}"
+					<img class="request-mem-img" src="${mem.memPic? 'data:img/png;base64,' + mem.memPic: '/front-end/01/images/notfind.jpg'}"
 						style="width: 150px; height: 150px; overflow: hidden; border-radius: 50%">
 				</div>
 				<div class="col-4" style="height: 150px">
@@ -1049,7 +1047,7 @@ td {
 				let html = `<div style="width:500px; margin-top: 100px; margin-bottom: 50px; margin-left:250px"
 				class="row text-center mem-div" data-id="${mem.memId}">
 				<div class="col-4" style="height: 150px">
-					<img class="block-mem-img" src="data:img/png;base64,${mem.memPic}"
+					<img class="block-mem-img" src="${mem.memPic? 'data:img/png;base64,' + mem.memPic: '/front-end/01/images/notfind.jpg'}"
 						style="width: 150px; height: 150px; overflow: hidden; border-radius: 50%">
 				</div>
 				<div class="col-4" style="height: 150px; margin-top: 50px">
@@ -1185,7 +1183,7 @@ td {
 					let html = `<div style="width:500px; margin-top: 100px; margin-bottom: 50px; margin-left:250px"
 					class="row text-center mem-div friend-div" data-id="${mem.memId}" data-userName="${mem.memUsername}">
 					<div class="col-4" style="height: 150px">
-						<img class="friend-mem-img" src="data:img/png;base64,${mem.memPic}"
+						<img class="friend-mem-img" src="${mem.memPic? 'data:img/png;base64,' + mem.memPic: '/front-end/01/images/notfind.jpg'}"
 							style="width: 150px; height: 150px; overflow: hidden; border-radius: 50%">
 					</div>
 					<div class="col-4" style="height: 150px">
@@ -1231,7 +1229,7 @@ td {
 				let html = `<div style="width:500px; margin-top: 100px; margin-bottom: 50px; margin-left:250px"
 				class="row text-center mem-div friend-div" data-id="${mem.memId}" data-userName="${mem.memUsername}">
 				<div class="col-4" style="height: 150px">
-					<img class="friend-mem-img" src="data:img/png;base64,${mem.memPic}"
+					<img class="friend-mem-img" src="${mem.memPic? 'data:img/png;base64,' + mem.memPic: '/front-end/01/images/notfind.jpg'}"
 						style="width: 150px; height: 150px; overflow: hidden; border-radius: 50%">
 				</div>
 				<div class="col-4" style="height: 150px">
@@ -1306,7 +1304,6 @@ td {
 			}).then(function(response){
 				return response.json();
 			}).then(function(mem){
-				console.log(mem);
 				$("#mem-img").attr("src",mem.memPic? "data:image/png;base64," + mem.memPic: "/front-end/01/images/notfind.jpg");
 				$("#mem-name").text(mem.memUsername);
 				$("#mem-intro").text(mem.memIntro);
@@ -1763,7 +1760,7 @@ $("#insertModal").on("hidden.bs.modal", function () {
 //照片上傳-預覽用
 var filereader_support = typeof FileReader != 'undefined';
 if (!filereader_support) {
-	alert("No FileReader support");
+
 }
 acceptedTypes = {
 	'image/png' : true,

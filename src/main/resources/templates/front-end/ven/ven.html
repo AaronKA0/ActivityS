@@ -169,7 +169,7 @@ https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.css
 
 
         /* 登入後側邊漢堡選單 */
-        .btn-primary {
+        #offcanvas-btn {
             --bs-btn-color: #fff;
             --bs-btn-bg: #abb0b7;
             --bs-btn-border-color: #abb0b7;
@@ -254,6 +254,13 @@ div.star_block>span.star.-off {
 .ven-card {
 	display: flex;
 	height: 425px;
+}
+
+.recent-ven-card {
+	display: flex;
+	height: 100px;
+	width: 100px;
+	height:150px;
 }
 
 .card-body {
@@ -348,7 +355,7 @@ div.star_block>span.star.-off {
             class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
 
         <div class="after-logging" th:if="${session.memId ne null}">
-            <button class="btn btn-primary fa fa-bars" type="button"
+            <button id="offcanvas-btn" class="btn btn-primary fa fa-bars" type="button"
                     data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
                     aria-controls="offcanvasExample"></button>
         </div>
@@ -428,9 +435,15 @@ div.star_block>span.star.-off {
 	<main id="top" class="container mt-5">
 		<section id="venue-rental" class="mt-5 text-center">
 			<h1>場地租借</h1>
-			<p>歡迎租借我們的場地！</p>
+			<h6>歡迎您租借我們的場地！</h6>
+			
+						
+			<div id="recent-vens-container" style="display: none; margin-left: 50px; margin-top: 30px; margin-bottom: 30px">
+						<h5>您最近瀏覽的場地</h5>
+						<div id="recent-vens" class="row"></div>		
+			</div>
 
-			<div class="accordion" id="accordionExample">
+			<div style="margin-top:20px; margin-bottom:20px" class="accordion" id="accordionExample">
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="headingOne">
 						<button class="accordion-button" type="button"
@@ -582,28 +595,68 @@ div.star_block>span.star.-off {
 				</div>
 			</div>
 
-			<div class="container mt-3">
-				<div class="btn-toolbar" role="toolbar"
+			<div style="margin-bottom: 0px;" class="container mt-3">
+				<div class="btn-toolbar row" role="toolbar"
 					aria-label="Toolbar with button groups">
-					<div class="btn-group me-2" role="group" aria-label="Third group">
+					<div class="btn-group me-2 col-2" role="group" aria-label="Third group">
 						<button id="high-rating-btn" type="button"
 							class="active sort-btn  btn btn-outline-secondary" data-filter="">最高評價</button>
 					</div>
-					<div class="btn-group me-2" role="group" aria-label="Second group">
+					<div class="btn-group me-2 col-2" role="group" aria-label="Second group">
 						<button id="low-price-btn" type="button"
-							class="sort-btn  btn btn-outline-secondary" data-filter="">最低價</button>
+							class="sort-btn  btn btn-outline-secondary" data-filter="">最低價格</button>
 					</div>
-
 				</div>
 			</div>
-
-
+			
 			<div id="venues">
 				<div id="venues-body"></div>
 			</div>
 		</section>
 	</main>
 
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/	
+			let memId = /*[[${session.memId}]]*/'';
+		/*]]>*/
+	</script>
+	
+	<script>
+	async function loadRecentVens(){
+	if(memId){
+		$(`#recent-vens-container`).show();
+		await fetch("/ven/recent", {
+			method: "POST",
+			body: JSON.stringify({memId: memId})
+		}).then(function(response){
+			return response.json();
+		}).then(async function(recentVens){
+			
+			if(!recentVens.length){
+				$(`#recent-vens-container`).hide();
+				return;
+			}
+			for(recentVen of recentVens){
+				let ven = await getVen(recentVen.venId);
+				
+				$(`#recent-vens`).append(`<div class="col col-2" style="margin-top:20px">
+    					<div class="card recent-ven-card ven-card text-center" data-venid="${ven.venId}">
+    					<img src="${ven.venPic? 'data:image/png;base64,' + ven.venPic: '/front-end/01/images/notfind.jpg'}"
+    						class="card-img-top ven-img recentVenPic${ven.venId}" alt="...">
+    					<div class="card-body">
+    						<h6 class="card-title ven-name">${ven.venName}</h6>
+    						</div>
+    				</div>
+    			</div>`);
+			}
+			return vens;
+		});	
+	}
+	}
+	
+	</script>
+	
 
 	<script>
 
@@ -654,7 +707,7 @@ async function loadVenPics(){
 	}).then(function(response){
 		return response.json();
 	}).then(function(ven){
-		$(`#venPic${ven.venId}`).attr("src", ven.venPic? "data:image/png;base64," + ven.venPic: "/front-end/01/images/notfind.jpg");
+		$(`.venPic${ven.venId}`).attr("src", ven.venPic? "data:image/png;base64," + ven.venPic: "/front-end/01/images/notfind.jpg");
 	});
 	}
 }
@@ -687,7 +740,7 @@ function filterVens(){
     
 	if($("#s-name").val().trim()){
 		let name = $("#s-name").val().trim().toLowerCase();
-		vens = vens.filter(ven => ven.venName.toLowerCase() == name);
+		vens = vens.filter(ven => ven.venName.toLowerCase().startsWith(name));
 	}
 	
     let types = [];
@@ -810,8 +863,8 @@ function displayVens(){
 	        		if(ven){
 	        			$(`#ven-row-${i}`).append(`<div class="col col-3" style="margin-top:50px">
 	        					<div class="card ven-card text-center" data-venid="${ven.venId}">
-	        					<img src="${ven.venPic? 'data:image/png;base64,' + venPic: '/front-end/01/images/notfind.jpg'}"
-	        						class="card-img-top ven-img" id="venPic${ven.venId}" alt="...">
+	        					<img src="${ven.venPic? 'data:image/png;base64,' + ven.venPic: '/front-end/01/images/notfind.jpg'}"
+	        						class="card-img-top ven-img venPic${ven.venId}" alt="...">
 	        					<div class="card-body">
 	        						<h5 class="card-title ven-name">${ven.venName}</h5>
 	        						<h5 class="card-title ven-type">${ven.venType.venTypeName}</h5>
@@ -852,9 +905,9 @@ function displayVens(){
 	<script>
 
 $(document).ready(async function(){
+	await loadRecentVens();
 	await loadVenTypes();
 	await loadVens();
-// await getVens();
 });
 
 </script>
@@ -985,8 +1038,30 @@ $("#search").on("click", async function(){
 });
 
 
-$(document).on("click", ".ven-card", function(){
+async function getVen(venId){
+	return await fetch("/ven/getById", {
+		method: "POST",
+		body: JSON.stringify({venId: venId})
+	}).then(function(response){
+		return response.json();
+	}).then(function(ven){
+		return ven;
+	});	
+}
+
+$(document).on("click", ".ven-card", async function(){
+	
 	let venId = $(this).attr("data-venid");
+		
+	if(memId){		
+		await fetch("/ven/addRecent", {
+			method: "POST",
+			body: JSON.stringify({venId: venId, memId: memId})
+		}).then(function(response){
+			return response.json();
+		}).then(function(vens){});	
+	}
+	
 	$("#selectVen").val(venId);
 	$("#venForm").submit();
 });
