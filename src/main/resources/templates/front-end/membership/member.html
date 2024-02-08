@@ -686,13 +686,12 @@ td {
 // 		await blockMember();
 
 		await getMemReport();
-
-		$("#posts").show();
 		
 		if(visitId){
 			await displayRelation();
 			await displayBlock();
 		} else{
+			$("#posts").show();
 			$("#mem-edit").show();
 			$("#member-tabs").show();
 		}
@@ -747,6 +746,7 @@ td {
 			$("#posts").hide();
 		} else{
 			await displayFriends();
+			$("#posts").show();
 			$("#member-tabs").show();
 		}
 	}
