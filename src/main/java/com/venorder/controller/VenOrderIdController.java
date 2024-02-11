@@ -70,7 +70,7 @@ public class VenOrderIdController {
 //        String feedbackURL = "http://localhost:8080/front_end/venue/feedbackform?venOrderId="+venOrderId;
         String feedbackURL = "http://zuohuo.ddns.net/front_end/venue/feedbackform?venOrderId="+venOrderId;
         
-        String messageText = "Hello! " + memName + " : 感謝您租借我們的場地，請幫我們填寫使用滿意度!!" + feedbackURL;
+        String messageText = "Hello! " + memName + " : 感謝您租借我們的場地，請在'20天內'幫我們填寫使用滿意度!!" + feedbackURL;
 
         String thisId = venOrderId;
         Jedis jedis = null;
@@ -80,7 +80,7 @@ public class VenOrderIdController {
                   jedis.select(7);
             
                   jedis.set(venOrderId, venOrderId);
-                  jedis.expire(venOrderId, 180);
+                  jedis.expire(venOrderId, 1728000L);
           } finally {
               if(jedis != null)
                   jedis.close();
