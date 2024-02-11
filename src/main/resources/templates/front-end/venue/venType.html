@@ -602,11 +602,8 @@ function connect() {
 
        let notifyVO = JSON.parse(event.data);
        notifycount++;
-//        console.log("notice title: " + notifyVO.notifyTitle);
-//        console.log("notice content: " + notifyVO.notifyContent);
 
        $('.bi-bell-fill').attr('data-count', `${notifycount}`);
-//        console.log(notifycount);
        // 添加 :after 樣式
        $('.bi-bell-fill').css('content', 'attr(data-count)');
 
@@ -632,8 +629,6 @@ function connect() {
 
 //        xhr.send();
 //    });
-
-
 
 
 
@@ -755,7 +750,10 @@ async function getVen(name){
         $("#ven-name").html("");
         $("#ven-name").html(`${ven.venName}`);
         $("#ven-photo").attr("src", "");
-        $("#ven-photo").attr("src", `data:image/jpeg;base64,${ven.venPic}`);
+//         $("#ven-photo").attr("src", '/front-end/01/images/notfind.jpg');
+
+        $("#ven-photo").attr("src", ven.venPic ? `data:image/jpeg;base64,${ven.venPic}` : '/front-end/01/images/notfind.jpg');
+        
         $("#ven-location").html("");
         $("#ven-location").html(`地點：${ven.venLoc}`);
         $("#ven-descr").html("");
