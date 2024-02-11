@@ -49,28 +49,28 @@ public class NotifyScheduler {
     ActRegService ActRegSrv;
     
     // 活動與場地訂單通知
-//    @Scheduled(cron = "0/10 * * * * ?")
-//    public void getBookingNotify() throws InterruptedException {
-//        
-//        Integer memId = null;
-//        
-//        MembershipVO venMemVO = new MembershipVO();
-//        Set<MembershipVO> venOrderMemset = new HashSet<>();
-//        
-//        Date afterTwoDays = Date.valueOf(LocalDate.now().plusDays(2));
-//        System.out.println(afterTwoDays);
-//       
-//        List<VenOrderVO> bookings = venOrderSrv.getByOrderDate(afterTwoDays);
-//        
-//        for(VenOrderVO booking : bookings) {
-//            memId = (booking.getMemVO()).getMemId();
-//            venMemVO = memSrv.getOneMembership(memId);
-//            venOrderMemset.add(venMemVO);
-//        }
-//        notifyNow.sendNotifyNow(venOrderMemset, "場地通知", "提醒您在" + afterTwoDays + "有預定場地");
-//        
-//        System.out.println("新增完成");
-//    }    
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void getBookingNotify() throws InterruptedException {
+        
+        Integer memId = null;
+        
+        MembershipVO venMemVO = new MembershipVO();
+        Set<MembershipVO> venOrderMemset = new HashSet<>();
+        
+        Date afterTwoDays = Date.valueOf(LocalDate.now().plusDays(2));
+        System.out.println(afterTwoDays);
+       
+        List<VenOrderVO> bookings = venOrderSrv.getByOrderDate(afterTwoDays);
+        
+        for(VenOrderVO booking : bookings) {
+            memId = (booking.getMemVO()).getMemId();
+            venMemVO = memSrv.getOneMembership(memId);
+            venOrderMemset.add(venMemVO);
+        }
+        notifyNow.sendNotifyNow(venOrderMemset, "場地通知", "提醒您在" + afterTwoDays + "有預定場地");
+        
+        System.out.println("新增完成");
+    }    
 
 
         

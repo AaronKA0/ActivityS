@@ -410,64 +410,62 @@ $(document).ready(async function(){
 	        return false;
 		});
 	
-	
-		
-		var notifycount = 0;
 
-	     $(document).ready(async function(){
+// 	     $(document).ready(async function(){
 	    
-	        async function getNotifyByMemId(id){
-	        await fetch("/front_end/notify/memberNotify",{
-	            method: "POST",
-	            body: JSON.stringify({memId: id})
-	        }).then(function(response){;
-	            return response.json();
-	        }).then(function(getAllMemNotifies){
-	            if(getAllMemNotifies.length > 0){
-	                if(getAllMemNotifies[0]){
-	                    $("#notify_a1").html("");
-	                    $("#notify_a1").append(`<span class="dropdown-item">${getAllMemNotifies[0].notifyContent}</span>`)
-	                }
-	                if(getAllMemNotifies[1]){
-	                    $("#notify_a2").html("");
-	                    $("#notify_a2").append(`<span class="dropdown-item">${getAllMemNotifies[1].notifyContent}</span>`)
-	                }
-	                if(getAllMemNotifies[2]){
-	                    $("#notify_a3").html("");
-	                    $("#notify_a3").append(`<span class="dropdown-item">${getAllMemNotifies[2].notifyContent}</span>`)
-	                }
-	            }
+// 	        async function getNotifyByMemId(id){
+// 	        await fetch("/front_end/notify/memberNotify",{
+// 	            method: "POST",
+// 	            body: JSON.stringify({memId: id})
+// 	        }).then(function(response){;
+// 	            return response.json();
+// 	        }).then(function(getAllMemNotifies){
+// 	            if(getAllMemNotifies.length > 0){
+// 	                if(getAllMemNotifies[0]){
+// 	                    $("#notify_a1").html("");
+// 	                    $("#notify_a1").append(`<span class="dropdown-item">${getAllMemNotifies[0].notifyContent}</span>`)
+// 	                }
+// 	                if(getAllMemNotifies[1]){
+// 	                    $("#notify_a2").html("");
+// 	                    $("#notify_a2").append(`<span class="dropdown-item">${getAllMemNotifies[1].notifyContent}</span>`)
+// 	                }
+// 	                if(getAllMemNotifies[2]){
+// 	                    $("#notify_a3").html("");
+// 	                    $("#notify_a3").append(`<span class="dropdown-item">${getAllMemNotifies[2].notifyContent}</span>`)
+// 	                }
+// 	            }
 	            
-	        }).catch(function(err){
-	            console.log(err);
-	        }); 
-	    }
+// 	        }).catch(function(err){
+// 	            console.log(err);
+// 	        }); 
+// 	    }
 	    
-	    async function getUnread(id){
-	        await fetch("/front_end/notify/Unread",{
-	            method: "POST",
-	            body: JSON.stringify({memId: id})
-	        }).then(function(response){;
-	            return response.json();
-	        }).then(function(notifies){  
-	            if(notifies.length){
-	                notifycount = notifies.length;
+// 	    async function getUnread(id){
+// 	        await fetch("/front_end/notify/Unread",{
+// 	            method: "POST",
+// 	            body: JSON.stringify({memId: id})
+// 	        }).then(function(response){;
+// 	            return response.json();
+// 	        }).then(function(notifies){  
+// 	            if(notifies.length){
+// 	                notifycount = notifies.length;
 	           
-	                $('.bi-bell-fill').attr('data-count', `${notifycount}`);
-	                 console.log(notifycount);
-	                 // 添加 :after 樣式
-	                 $('.bi-bell-fill').css('content', 'attr(data-count)');
-	            }
-	        }).catch(function(err){
-	            console.log(err);
-	        }); 
-	    }
+// 	                $('.bi-bell-fill').attr('data-count', `${notifycount}`);
+// 	                 console.log(notifycount);
+// 	                 // 添加 :after 樣式
+// 	                 $('.bi-bell-fill').css('content', 'attr(data-count)');
+// 	            }
+// 	        }).catch(function(err){
+// 	            console.log(err);
+// 	        }); 
+// 	    }
 	    
-	    await getNotifyByMemId(user);
-	    await getUnread(user);
+// 	    await getNotifyByMemId(user);
+// 	    await getUnread(user);
 	    
-	});    
+// 	});    
 
+        var notifycount = 0;
 	    //------------------ Notify webSocket -------------------
 
 	    var MyPoint = `/notify/${user}`;
