@@ -6,6 +6,7 @@ public class ReadStatus implements Comparable<ReadStatus> {
 	
 	private String userName;
 	private Boolean isRead;
+	private Integer numUnread;
 	private String time;
 	private Boolean isSelected;
 	
@@ -38,12 +39,18 @@ public class ReadStatus implements Comparable<ReadStatus> {
 	public void setIsSelected(Boolean isSelected) {
 		this.isSelected = isSelected;
 	}
-
+		
+	public Integer getNumUnread() {
+		return numUnread;
+	}
+	public void setNumUnread(Integer numUnread) {
+		this.numUnread = numUnread;
+	}
 	
 	@Override
 	public String toString() {
-		return "ReadStatus [userName=" + userName + ", isRead=" + isRead + ", time=" + time + ", isSelected="
-				+ isSelected + "]";
+		return "ReadStatus [userName=" + userName + ", isRead=" + isRead + ", numUnread=" + numUnread + ", time=" + time
+				+ ", isSelected=" + isSelected + "]";
 	}
 	@Override
 	public int hashCode() {

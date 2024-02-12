@@ -315,7 +315,7 @@ div.star_block>span.star.-off {
 
 <body>
 
-	<form method="get" style="display:none" id="venForm" th:action="@{/front_end/venue/addVenOrder}">
+	<form method="post" style="display:none" id="venForm" th:action="@{/front_end/venue/addVenOrder}">
 		<input id="selectVen" type="number" th:name="venId" /> <input
 			type="submit" />
 	</form>
@@ -506,14 +506,17 @@ div.star_block>span.star.-off {
 
 let orders;
 let groupedOrders;
-let curDate;
+let curDate = new Date();
+curDate = new Date(curDate = curDate - (curDate.getTimezoneOffset() * 60000));
+curDate = curDate.toISOString().substring(0, 10).toString();
 
 let dateOrder;
-
-
+let orderPagination;
 
 $(".sort-btn").on("click", function(){
-	curDate = new Date().toJSON().slice(0, 10);
+	curDate = new Date();
+	curDate = new Date(curDate = curDate - (curDate.getTimezoneOffset() * 60000));
+	curDate = curDate.toISOString().substring(0, 10).toString();
 	$(".sort-btn").removeClass("active");
 	$(this).addClass("active");
 	dateOrder = "asc";
@@ -599,12 +602,16 @@ async function loadOrders(){
 }
 
 function displayOrders(){
+	if(orderPagination){
+		orderPagination.pagination('destroy');
+	}
 	if(!orders.length){
 		$("#orders-body").html("");
 		$("#orders-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h2>無租借的場地</h2></div>`);
 		return;
 	}
-	$('#orders').pagination({
+
+	orderPagination = $('#orders').pagination({
 	    dataSource: groupedOrders,
 	    pageSize: 3,
 	    callback: async function(orders, pagination) {

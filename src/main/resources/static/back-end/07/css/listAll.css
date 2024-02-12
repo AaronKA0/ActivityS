@@ -12,14 +12,14 @@ div.function {
 }
 
 a.navbar-brand {
-	border: 1px solid black;
+	border: 1px solid gray;
 	border-radius: 5px;
-    color: blue; 
-    background-color: #b0c4de; 
+    color:  #4169e1; 
+    background-color: #f0fff0; 
     text-decoration: none; 
-    padding: 5px; 
+    padding: 8px; 
     margin: 0 5px;
-    box-shadow: 3px 3px black;
+    box-shadow: 3px 3px #c0c0c0;
 }
 
 table.display {

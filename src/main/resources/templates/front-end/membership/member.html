@@ -302,8 +302,8 @@ td {
 
 <body>
 
-	<form method="get" style="display: none" id="visitMemForm"
-		th:action="@{/member}">
+	<form method="post" style="display: none" id="visitMemForm"
+		th:action="@{/mem}">
 		<input id="visitMem" type="number" th:name="memId" /> <input
 			type="submit" />
 	</form>
@@ -686,23 +686,23 @@ td {
 // 		await blockMember();
 
 		await getMemReport();
-
+		
 		if(visitId){
 			await displayRelation();
 			await displayBlock();
 		} else{
+			$("#posts").show();
 			$("#mem-edit").show();
 			$("#member-tabs").show();
 		}
 		
-		$("#posts").show();
-
-		
 		member = await loadMember();
 		posts = await loadPosts();
-		await displayFriends();
-		await displayRequests();
-		await displayBlocks();	
+		
+		if(status != "visit"){
+			await displayRequests();
+			await displayBlocks();
+		}
 		
 		
 		let tab = window.location.hash;
@@ -728,7 +728,6 @@ td {
 	}
 	
 	async function displayBlock(){
-		console.log(memId + " : " + visitId);
 		let relation = {memIdA: memId, memIdB: visitId};
 		let status = await fetch("/member/getRelationStatus", {
 			method: "POST",
@@ -746,6 +745,8 @@ td {
 			$("#mem-relation").text(`您被${$("#mem-name").text()}封鎖`);
 			$("#posts").hide();
 		} else{
+			await displayFriends();
+			$("#posts").show();
 			$("#member-tabs").show();
 		}
 	}
@@ -944,7 +945,7 @@ td {
 				let html = `<div style="width:500px; margin-top: 100px; margin-bottom: 50px; margin-left:250px"
 				class="row text-center mem-div" data-id="${mem.memId}">
 				<div class="col-4" style="height: 150px">
-					<img class="request-mem-img" src="data:img/png;base64,${mem.memPic}"
+					<img class="request-mem-img" src="${mem.memPic? 'data:img/png;base64,' + mem.memPic: '/front-end/01/images/notfind.jpg'}"
 						style="width: 150px; height: 150px; overflow: hidden; border-radius: 50%">
 				</div>
 				<div class="col-4" style="height: 150px">
@@ -1049,7 +1050,7 @@ td {
 				let html = `<div style="width:500px; margin-top: 100px; margin-bottom: 50px; margin-left:250px"
 				class="row text-center mem-div" data-id="${mem.memId}">
 				<div class="col-4" style="height: 150px">
-					<img class="block-mem-img" src="data:img/png;base64,${mem.memPic}"
+					<img class="block-mem-img" src="${mem.memPic? 'data:img/png;base64,' + mem.memPic: '/front-end/01/images/notfind.jpg'}"
 						style="width: 150px; height: 150px; overflow: hidden; border-radius: 50%">
 				</div>
 				<div class="col-4" style="height: 150px; margin-top: 50px">
@@ -1185,7 +1186,7 @@ td {
 					let html = `<div style="width:500px; margin-top: 100px; margin-bottom: 50px; margin-left:250px"
 					class="row text-center mem-div friend-div" data-id="${mem.memId}" data-userName="${mem.memUsername}">
 					<div class="col-4" style="height: 150px">
-						<img class="friend-mem-img" src="data:img/png;base64,${mem.memPic}"
+						<img class="friend-mem-img" src="${mem.memPic? 'data:img/png;base64,' + mem.memPic: '/front-end/01/images/notfind.jpg'}"
 							style="width: 150px; height: 150px; overflow: hidden; border-radius: 50%">
 					</div>
 					<div class="col-4" style="height: 150px">
@@ -1231,7 +1232,7 @@ td {
 				let html = `<div style="width:500px; margin-top: 100px; margin-bottom: 50px; margin-left:250px"
 				class="row text-center mem-div friend-div" data-id="${mem.memId}" data-userName="${mem.memUsername}">
 				<div class="col-4" style="height: 150px">
-					<img class="friend-mem-img" src="data:img/png;base64,${mem.memPic}"
+					<img class="friend-mem-img" src="${mem.memPic? 'data:img/png;base64,' + mem.memPic: '/front-end/01/images/notfind.jpg'}"
 						style="width: 150px; height: 150px; overflow: hidden; border-radius: 50%">
 				</div>
 				<div class="col-4" style="height: 150px">
@@ -1306,7 +1307,6 @@ td {
 			}).then(function(response){
 				return response.json();
 			}).then(function(mem){
-				console.log(mem);
 				$("#mem-img").attr("src",mem.memPic? "data:image/png;base64," + mem.memPic: "/front-end/01/images/notfind.jpg");
 				$("#mem-name").text(mem.memUsername);
 				$("#mem-intro").text(mem.memIntro);
@@ -1345,7 +1345,7 @@ td {
 		    pageSize: 3,
 // 		    showSizeChanger: true,
 // 		    sizeChangerOptions: [2, 5, 10, 20, 50, 100],
-		    callback: function(posts, pagination) {
+		    callback: async function(posts, pagination) {
 		    	$("#posts-body").html("");
 		    	
 // 		    	if(!posts.length){
@@ -1370,10 +1370,11 @@ td {
 		        	window.powerButtons('confirm', deleteBtn, options);
 	        	
 		        }
+				await getPostReports();
 		    }
+		
 		});
 		
-		await getPostReports();
 		}
 	
 	$(document).on("click", ".button0", async function(){
@@ -1554,12 +1555,14 @@ $(document).on("click", ".edit-post-btn", function() {
 function displayTime(id, datetime){
 	if(!datetime) return;
 
-	var today = new Date().toISOString().substring(0, 10);
+	var today = new Date();
+	today = new Date(today = today - (today.getTimezoneOffset() * 60000));
+	today = today.toISOString().substring(0, 10).toString();
 	let date = datetime.substring(0,10);
 	let time = datetime.substring(11,16);
 	let hour = parseInt(time.substring(0,2), 10);
 	if(hour < 12){
-		if(hour == 0) time = 12 + time.substring(2);
+		if(hour == 0) time = "12" + time.substring(2);
 		time = "上午 " + time; 
 	} else{
 		hour = hour % 12;
@@ -1567,10 +1570,11 @@ function displayTime(id, datetime){
 		time = "下午 " + hour + time.substring(2); 
 	}
 	$(`.post[data-id='${id}']`).find(".post-time").html("");
-	if(date >= today){
+	if(date == today){
 		$(`.post[data-id='${id}']`).find(".post-time").text(time);
 	} else{
-		$(`.post[data-id='${id}']`).find(".post-time").text(date);
+		let dateString = date + " " + time;
+		$(`.post[data-id='${id}']`).find(".post-time").text(dateString);
 	}
 }
 
@@ -1601,14 +1605,12 @@ $(document).on("click", "li.status-li", async function(){
 		$(this).closest(".dropdown").find(".status-btn").addClass("fas fa-users");
 		let dropdownMenu = $(this).closest(".dropdown-menu");
 		dropdownMenu.html(privatePost);
-// 		dropdownMenu.append(deletePost);
 	} else if($(this).find(".dropdown-item").hasClass("fa-user-secret")){
 		status = 2;
 		$(this).closest(".dropdown").find(".status-btn").removeClass("fas fa-users");
 		$(this).closest(".dropdown").find(".status-btn").addClass("fa fa-user-secret");
 		let dropdownMenu = $(this).closest(".dropdown-menu");
 		dropdownMenu.html(publicPost);
-// 		dropdownMenu.append(deletePost);
 	} 
 		
 	let updatedPost;
@@ -1763,7 +1765,7 @@ $("#insertModal").on("hidden.bs.modal", function () {
 //照片上傳-預覽用
 var filereader_support = typeof FileReader != 'undefined';
 if (!filereader_support) {
-	alert("No FileReader support");
+
 }
 acceptedTypes = {
 	'image/png' : true,

@@ -80,7 +80,31 @@ public class MembershipPageController {
 				request.setAttribute("status", "visit");
 				request.setAttribute("rMemId", memId);
 			}
-			System.out.println("visiting member: " + memId);
+
+		} else {
+			request.setAttribute("status", "cur");
+		}
+		return "front-end/membership/member";
+	}
+	
+	// member page
+	@PostMapping("/mem")
+	public String mem(Model model, HttpSession session, @ModelAttribute MembershipVO member,
+			HttpServletRequest request) {
+
+		Integer memId = member.getMemId();
+		if (memId != null) {
+			if (session.getAttribute("memId").equals(memId)) {
+				request.setAttribute("status", "cur");
+			} else {
+				MembershipVO membershipVO = membershipSvc.getOneMembership(memId);
+				if(membershipVO == null) {
+					return "/error/404";
+				}
+				request.setAttribute("status", "visit");
+				request.setAttribute("rMemId", memId);
+			}
+
 		} else {
 			request.setAttribute("status", "cur");
 		}
@@ -290,7 +314,7 @@ public class MembershipPageController {
 	}
 
 
-	@RequestMapping("venOrder/active")
+	@GetMapping("venOrder/active")
 	public @ResponseBody List<VenOrderVO> getActiveOrders() {
 		return venOrderSvc.getAll();
 	}
@@ -310,7 +334,7 @@ public class MembershipPageController {
 	@PostMapping("memReport/insert")
 	public @ResponseBody MemberReportVO memReportInsert(@RequestBody String json)  {
 		MemberReportVO memberReportVO = gson.fromJson(json, MemberReportVO.class);
-		System.out.println(memberReportVO);
+
 		memberReportSvc.addMemberReport(memberReportVO);
 		
 		// send report received notification
@@ -319,7 +343,7 @@ public class MembershipPageController {
 		
 		Set<MembershipVO> members = new HashSet<MembershipVO>();
 		members.add(memberA);
-		notifyNow.sendNotifyNow(members, "系統通知", memberA.getMemUsername() + "我們已收到並會調查您對" + memberB.getMemUsername() + "的貼文檢舉");
+		notifyNow.sendNotifyNow(members, "系統通知", memberA.getMemUsername() + "，我們已收到並會調查您對" + memberB.getMemUsername() + "的檢舉");
 		
 		return memberReportVO;
 	}
@@ -332,7 +356,7 @@ public class MembershipPageController {
 	@PostMapping("postReport/insertPost")
 	public @ResponseBody PostReportVO memReportInsertPost(@RequestBody String json)  {
 		PostReportVO postReportVO = gson.fromJson(json, PostReportVO.class);
-		System.out.println(postReportVO);
+
 		postReportSvc.addPostReport(postReportVO);
 		
 		// send report received notification
@@ -341,7 +365,7 @@ public class MembershipPageController {
 		
 		Set<MembershipVO> members = new HashSet<MembershipVO>();
 		members.add(memberA);
-		notifyNow.sendNotifyNow(members, "系統通知", memberA.getMemUsername() + "我們已收到並會調查您對" + memberB.getMemUsername() + "的檢舉");
+		notifyNow.sendNotifyNow(members, "系統通知", memberA.getMemUsername() + "，我們已收到並會調查您對" + memberB.getMemUsername() + "的貼文檢舉");
 		
 		return postReportVO;
 	}
