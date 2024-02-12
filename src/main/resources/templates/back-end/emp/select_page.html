@@ -160,6 +160,42 @@ h1 {
     margin-inline-end: 0px;
     font-weight: bold;
 }
+
+.card {
+  border-radius: 8px; /* 圓角邊框 */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 盒子陰影 */
+  background-color: #ffffff; /* 背景色 */
+  margin: 16px; /* 邊距 */
+  overflow: hidden; /* 隱藏超出邊框的內容 */
+}
+
+.card-header {
+  background-color: #f4f4f4; /* 標頭背景色 */
+  padding: 16px; /* 內邊距 */
+  font-size: 24px; /* 字體大小 */
+  font-weight: bold; /* 字體加粗 */
+}
+
+.card-body {
+  padding: 16px; /* 內邊距 */
+}
+
+.card-title {
+  color: #333333; /* 標題文字顏色 */
+  margin-bottom: 8px; /* 標題下方邊距 */
+}
+
+.card-text {
+  color: #666666; /* 內容文字顏色 */
+  line-height: 1.6; /* 行高 */
+}
+
+/* 針對圖片的樣式 */
+.img-fluid {
+  max-width: 100%; /* 最大寬度 */
+  height: auto; /* 自動高度 */
+  border-radius: 4px; /* 圖片圓角 */
+}
 </style>
 
 </head>
@@ -304,7 +340,7 @@ h1 {
                                     <p class="card-text">
                                         <strong>員工編號:</strong> <span th:text="${empVO.empId}"></span><br>
                                         <strong>員工狀態:</strong> <span th:text="${empVO.empStatus == 1 ? '在職' : '離職'}"></span><br>
-                                        <strong>部門:</strong> <span th:text="${empVO.deptVO.deptno} + '-[' + ${empVO.deptVO.dname} + ']'"></span><br>
+                                        <strong>職稱:</strong> <span th:text="${empVO.deptVO.dname}"></span><br>
                                         <strong>員工姓名:</strong> <span th:text="${empVO.empName}"></span><br>
                                         <strong>Email:</strong> <span th:text="${empVO.empEmail}"></span><br>
                                         <strong>電話:</strong> <span th:text="${empVO.empPhone}"></span><br>
