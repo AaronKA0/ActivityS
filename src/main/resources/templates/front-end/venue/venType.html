@@ -240,7 +240,7 @@
       <div class="row row-cols-1 row-cols-md-2 g-4">
         <div class="col" style="width: 60%;">
             <div class="card">
-                <img src="" id="ven-photo" class="card-img-top" style="height: 440px;"> <!-- 場地照片 -->
+                <img src="/front-end/01/images/notfind.jpg" id="ven-photo" class="card-img-top" style="height: 440px;"> <!-- 場地照片 -->
               
             </div>
         </div>
@@ -750,10 +750,7 @@ async function getVen(name){
         $("#ven-name").html("");
         $("#ven-name").html(`${ven.venName}`);
         $("#ven-photo").attr("src", "");
-//         $("#ven-photo").attr("src", '/front-end/01/images/notfind.jpg');
-
-        $("#ven-photo").attr("src", ven.venPic ? `data:image/jpeg;base64,${ven.venPic}` : '/front-end/01/images/notfind.jpg');
-        
+        $("#ven-photo").attr("src", `data:image/jpeg;base64,${ven.venPic}`);
         $("#ven-location").html("");
         $("#ven-location").html(`地點：${ven.venLoc}`);
         $("#ven-descr").html("");
