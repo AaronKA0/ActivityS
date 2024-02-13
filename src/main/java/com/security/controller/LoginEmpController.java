@@ -73,7 +73,7 @@ public class LoginEmpController {
 
 		// 生成隨機密碼
 		String newPassword = generateRandomPassword();
-//		newPassword = "pass001";
+		newPassword = "pass001";
 		
 		// 發送郵件
 		
