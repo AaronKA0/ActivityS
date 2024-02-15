@@ -24,7 +24,6 @@ public class AnnouncementService {
 
     public AnnouncementVO getOneAnnouncement(Integer annId) {
         Optional<AnnouncementVO> optional = repository.findById(annId);
-//      return optional.get();
         return optional.orElse(null);    // public T orElse(T other) : 如果值存在就回傳其值，否則回傳other的值
     }
     

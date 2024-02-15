@@ -48,27 +48,6 @@ public class BookingMail {
             e.printStackTrace();
         }
     }
-    
-    
-//    public static String generateUrl() {
-//        String uniqueId = UUID.randomUUID().toString();
-//        String url = "https://example.com/" + uniqueId;
-//        return url;
-//    }
 
-
-//    public static void main(String args[]) {
-//
-//        String to = "aaron38123@gmail.com";
-//
-//        String subject = "租借場地滿意度通知";
-//
-//        String ch_name = "peter1";
-//        String passRandom = "111";
-//        String messageText = "Hello! " + ch_name + " : 感謝您租借我們的場地，請我們填寫使用滿意度!!";
-//
-//        BookingMail bookingMail = new BookingMail();
-//        bookingMail.sendMail(to, subject, messageText);
-//    }
     
 }

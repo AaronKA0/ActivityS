@@ -211,18 +211,6 @@ public class FrontendVenOrderController {
         model.addAttribute("venOrderVO", venOrderVO);
         return "redirect:/member/venOrderArchive";
     }
-        
-//        double venTotRating = 0;
-//        double rating = 0;
-//        int ratingSize = 0;
-//        // 累加場地評分算出平均
-//        for(VenOrderVO order : venOrders) {
-//            if(order.getVenRating() != null) {
-//                rating = rating + order.getVenRating();
-//                ratingSize++;
-//            }
-//        }
-//        venTotRating = rating / ratingSize;
     
     
     
