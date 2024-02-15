@@ -410,60 +410,7 @@ $(document).ready(async function(){
 	        return false;
 		});
 	
-
-// 	     $(document).ready(async function(){
-	    
-// 	        async function getNotifyByMemId(id){
-// 	        await fetch("/front_end/notify/memberNotify",{
-// 	            method: "POST",
-// 	            body: JSON.stringify({memId: id})
-// 	        }).then(function(response){;
-// 	            return response.json();
-// 	        }).then(function(getAllMemNotifies){
-// 	            if(getAllMemNotifies.length > 0){
-// 	                if(getAllMemNotifies[0]){
-// 	                    $("#notify_a1").html("");
-// 	                    $("#notify_a1").append(`<span class="dropdown-item">${getAllMemNotifies[0].notifyContent}</span>`)
-// 	                }
-// 	                if(getAllMemNotifies[1]){
-// 	                    $("#notify_a2").html("");
-// 	                    $("#notify_a2").append(`<span class="dropdown-item">${getAllMemNotifies[1].notifyContent}</span>`)
-// 	                }
-// 	                if(getAllMemNotifies[2]){
-// 	                    $("#notify_a3").html("");
-// 	                    $("#notify_a3").append(`<span class="dropdown-item">${getAllMemNotifies[2].notifyContent}</span>`)
-// 	                }
-// 	            }
-	            
-// 	        }).catch(function(err){
-// 	            console.log(err);
-// 	        }); 
-// 	    }
-	    
-// 	    async function getUnread(id){
-// 	        await fetch("/front_end/notify/Unread",{
-// 	            method: "POST",
-// 	            body: JSON.stringify({memId: id})
-// 	        }).then(function(response){;
-// 	            return response.json();
-// 	        }).then(function(notifies){  
-// 	            if(notifies.length){
-// 	                notifycount = notifies.length;
-	           
-// 	                $('.bi-bell-fill').attr('data-count', `${notifycount}`);
-// 	                 console.log(notifycount);
-// 	                 // 添加 :after 樣式
-// 	                 $('.bi-bell-fill').css('content', 'attr(data-count)');
-// 	            }
-// 	        }).catch(function(err){
-// 	            console.log(err);
-// 	        }); 
-// 	    }
-	    
-// 	    await getNotifyByMemId(user);
-// 	    await getUnread(user);
-	    
-// 	});    
+   
 
         var notifycount = 0;
 	    //------------------ Notify webSocket -------------------
@@ -511,60 +458,6 @@ $(document).ready(async function(){
 
 	            xhr.send();
 	        });
-	
-	
-// 	async function getNotifyByMemId(id){
-//         await fetch("/front_end/notify/memberNotify",{
-//             method: "POST",
-//             body: JSON.stringify({memId: id})
-//         }).then(function(response){;
-//             return response.json();
-//         }).then(function(notifies){  
-//             // 清除清單內容
-//             $("#notify-items").html("");
-//            
-//             for(let notify of notifies){
-//                 $("#notify-items").append(
-//                     `<tr id="this_notify">
-//                     <th>${notify.notifyTitle}</th>
-//                     <td>${notify.notifyContent}</td>
-//                     <td>${moment(notify.notifyTime).format('YYYY-MM-DD HH:mm:ss')}</td>
-//                     </tr>`);
-//             }
-//            
-//         }).catch(function(err){
-//             console.log(err);
-//         }); 
-//     }
-//	
-//     await getNotifyByMemId(memId);
-	
-    // fetch 是一個非同步函數所以需要使用 await
-//     async function getNotifyByTitle(notifyTitle){
-//         await fetch("/front_end/notify/notifyTitle",{
-//             method: "POST",
-//             body: JSON.stringify({notifyTitle: notifyTitle})
-//         }).then(function(response){;
-//             return response.json();
-//         }).then(function(notifies){     
-//             // 清除清單內容
-//             $("#notify-items").html("");
-//            
-//             for(let notify of notifies){
-//             	if(memId == `${notify.membershipVO.memId}`){
-//            	
-//             	$("#notify-items").append(
-// 					`<tr id="this_notify">
-// 					<th>${notify.notifyTitle}</th>
-// 					<td>${notify.notifyContent}</td>
-// 					<td>${moment(notify.notifyTime).format('YYYY-MM-DD HH:mm:ss')}</td>
-// 					</tr>`);
-//             	}
-//             }
-//         }).catch(function(err){
-//             console.log(err);
-//         }); 
-//     }
 
     
 </script>

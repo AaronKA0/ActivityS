@@ -12,11 +12,9 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
-import com.membership.model.MembershipVO;
 import com.notify.model.NotifyVO;
 
 @ServerEndpoint(value = "/notify/{userId}")

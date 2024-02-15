@@ -53,7 +53,7 @@ public class AnnController {
         annSvc.addAnnouncement(announcementVO);
         
         // 新增會員訊息至 Redis
-//        NotifyRedisSvc.addNotifyToRedis(announcementVO, 1800L);
+        // NotifyRedisSvc.addNotifyToRedis(announcementVO, 1800L);
         
         
         List<AnnouncementVO> list = annSvc.getAll();
@@ -65,15 +65,11 @@ public class AnnController {
     
     @PostMapping("getOne_For_Update")
     public String getOne_For_Update(@RequestParam("annId") String annId, ModelMap model) {
-        /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
         
-        /*************************** 2.開始查詢資料 *****************************************/
-//      EmpService empSvc = new EmpService();
         AnnouncementVO announcementVO = annSvc.getOneAnnouncement(Integer.valueOf(annId));
 
-        /*************************** 3.查詢完成,準備轉交(Send the Success view) **************/
         model.addAttribute("announcementVO", announcementVO);
-        return "back-end/announcement/updateAnn";   // 查詢完成後轉交update_emp_input.html
+        return "back-end/announcement/updateAnn";
     }
 
 
@@ -94,7 +90,7 @@ public class AnnController {
         model.addAttribute("success", "- (修改成功)");
         announcementVO = annSvc.getOneAnnouncement(Integer.valueOf(announcementVO.getAnnId()));
         model.addAttribute("announcementVO", announcementVO);
-        return "back-end/announcement/listOneAnn";   // 修改成功後轉交listOneEmp.html
+        return "back-end/announcement/listOneAnn";
     }
     
 
