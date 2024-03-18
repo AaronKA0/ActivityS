@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.chat.JedisPoolUtil;
 import com.google.gson.Gson;
 import com.venue.model.RecentVen;
@@ -13,13 +16,15 @@ import com.venue.model.RecentVen;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+@Service("recentVenService")
 public class RecentVenService {
 	
 	private static JedisPool pool = JedisPoolUtil.getJedisPool();
 
-	private static Gson gson = new Gson();
+	@Autowired
+	Gson gson;
 	
-	public static void addVen(RecentVen ven) {		
+	public void addVen(RecentVen ven) {		
 		String key = "recentVens:" + ven.getMemId();	
 		Jedis jedis = pool.getResource();
 		jedis.select(14);
@@ -29,7 +34,7 @@ public class RecentVenService {
 	}
 	
 	
-	public static List<RecentVen> getVens(Integer memId) {
+	public List<RecentVen> getVens(Integer memId) {
 		
 		Jedis jedis = pool.getResource();
 		jedis.select(14);

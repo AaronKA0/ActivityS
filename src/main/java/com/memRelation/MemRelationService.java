@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.chat.JedisPoolUtil;
 import com.google.gson.Gson;
 import com.post.Post;
@@ -13,13 +16,15 @@ import com.post.Post;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+@Service("memRelationService")
 public class MemRelationService {
 	
 	private static JedisPool pool = JedisPoolUtil.getJedisPool();
 
-	private static Gson gson = new Gson();
+	@Autowired
+	Gson gson;
 	
-	public static MemRelation getRelationStatus(MemRelation relation) {
+	public MemRelation getRelationStatus(MemRelation relation) {
 		
 		String key = new StringBuilder("relation:" + relation.getMemIdA() + ":" + relation.getMemIdB()).toString();
 		
@@ -38,7 +43,7 @@ public class MemRelationService {
 
 	}
 
-	public static void sendFriendRequest(MemRelation relation) {
+	public void sendFriendRequest(MemRelation relation) {
 		
 		String key1 = new StringBuilder("relation:" + relation.getMemIdA() + ":" + relation.getMemIdB()).toString();
 		String key2 = new StringBuilder("relation:" + relation.getMemIdB() + ":" + relation.getMemIdA()).toString();
@@ -59,7 +64,7 @@ public class MemRelationService {
 	}
 	
 	// unsend friend request, unfriend, unblock
-	public static void removeRelation(MemRelation relation) {
+	public void removeRelation(MemRelation relation) {
 		
 		String key = new StringBuilder("relation:" + relation.getMemIdA() + ":" + relation.getMemIdB()).toString();
 		String key2 = new StringBuilder("relation:" + relation.getMemIdB() + ":" + relation.getMemIdA()).toString();
@@ -78,7 +83,7 @@ public class MemRelationService {
 
 	}
 	
-	public static void acceptRequest(MemRelation relation) {
+	public void acceptRequest(MemRelation relation) {
 		
 		String key1 = new StringBuilder("relation:" + relation.getMemIdA() + ":" + relation.getMemIdB()).toString();
 		String key2 = new StringBuilder("relation:" + relation.getMemIdB() + ":" + relation.getMemIdA()).toString();
@@ -102,7 +107,7 @@ public class MemRelationService {
 
 	}
 	
-	public static void blockMember(MemRelation relation) {
+	public void blockMember(MemRelation relation) {
 		
 		String key = new StringBuilder("relation:" + relation.getMemIdA() + ":" + relation.getMemIdB()).toString();
 		String key2 = new StringBuilder("relation:" + relation.getMemIdB() + ":" + relation.getMemIdA()).toString();
@@ -121,7 +126,7 @@ public class MemRelationService {
 		jedis.close();
 	}
 	
-	public static List<MemRelation> getFriends(Integer memId) {
+	public List<MemRelation> getFriends(Integer memId) {
 		
 		Jedis jedis = pool.getResource();
 		jedis.select(14);
@@ -137,7 +142,7 @@ public class MemRelationService {
 		return friends;
 	}
 		
-	public static List<MemRelation> getBlocks(Integer memId) {
+	public List<MemRelation> getBlocks(Integer memId) {
 		
 		Jedis jedis = pool.getResource();
 		jedis.select(14);
@@ -153,7 +158,7 @@ public class MemRelationService {
 		return blocks;
 	}
 	
-	public static List<MemRelation> getFriendRequests(Integer memId) {
+	public List<MemRelation> getFriendRequests(Integer memId) {
 		
 		Jedis jedis = pool.getResource();
 		jedis.select(14);

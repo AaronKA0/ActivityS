@@ -12,10 +12,9 @@ import com.venue.model.VenVO;
 
 public interface VenRepository extends JpaRepository<VenVO, Integer> {
 
-	@Transactional
-	@Modifying
-	@Query(value = "delete from venue where ven_id =?1", nativeQuery = true)
-	void deleteByVenId(int venId);
+//	@Modifying
+//	@Query(value = "delete from venue where ven_id =?1", nativeQuery = true)
+//	void deleteByVenId(int venId);
 	
 	@Query(value = "from VenVO where venName =:name")
 	VenVO getByName(String name);	

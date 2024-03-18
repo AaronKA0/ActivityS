@@ -10,20 +10,23 @@ import java.util.TreeSet;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.google.gson.Gson;
 import com.memRelation.MemRelation;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+@Service
 public class JedisHandleMessage {
-	// 此範例key的設計為(發送者名稱:接收者名稱)，實際應採用(發送者會員編號:接收者會員編號)
 
 	private static JedisPool pool = JedisPoolUtil.getJedisPool();
 
 	private static Gson gson = new Gson();
 
-	public static List<String> getHistoryMsg(String sender, String receiver, Boolean update) {
+	public List<String> getHistoryMsg(String sender, String receiver, Boolean update) {
 
 		String key = new StringBuilder("msg:" + sender).append(":").append(receiver).toString();
 		String key2 = new StringBuilder("msg:" + receiver).append(":").append(sender).toString();
@@ -63,7 +66,7 @@ public class JedisHandleMessage {
 		return updatedData;
 	}
 
-	public static String saveChatMessage(String sender, String receiver, ChatMessage message) {
+	public String saveChatMessage(String sender, String receiver, ChatMessage message) {
 		// 對雙方來說，都要各存著歷史聊天記錄
 		String senderKey = new StringBuilder("msg:" + sender).append(":").append(receiver).toString();
 		String receiverKey = new StringBuilder("msg:" + receiver).append(":").append(sender).toString();
@@ -81,8 +84,8 @@ public class JedisHandleMessage {
 		return savedMessage;
 	}
 
-	public static Set<ReadStatus> getChatReceivers(ChatMessage message) {
-
+	public Set<ReadStatus> getChatReceivers(ChatMessage message) {
+		
 		Jedis jedis = pool.getResource();
 		jedis.select(14);
 
@@ -153,7 +156,7 @@ public class JedisHandleMessage {
 		return result;
 	}
 
-	public static void deleteMsg(ChatMessage message) {
+	public void deleteMsg(ChatMessage message) {
 
 		String key = new StringBuilder("msg:" + message.getSender()).append(":").append(message.getReceiver())
 				.toString();
@@ -176,7 +179,7 @@ public class JedisHandleMessage {
 
 	}
 
-	public static void retrieveMsg(ChatMessage message) {
+	public void retrieveMsg(ChatMessage message) {
 
 		String key = new StringBuilder("msg:" + message.getSender()).append(":").append(message.getReceiver())
 				.toString();
