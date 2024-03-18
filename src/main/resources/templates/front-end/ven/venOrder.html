@@ -605,6 +605,7 @@ function displayOrders(){
 	if(orderPagination){
 		orderPagination.pagination('destroy');
 	}
+	
 	if(!orders.length){
 		$("#orders-body").html("");
 		$("#orders-body").append(`<div style="margin-top:200px; margin-bottom:50px"><h2>無租借的場地</h2></div>`);

@@ -193,7 +193,11 @@ public class FrontendVenOrderController {
         
         venVO.setVenTotRating(venVO.getVenTotRating()+venOrderVO.getVenRating());
         venVO.setVenRateCount(venVO.getVenRateCount()+1);
-        venSvc.updateVen(venVO);
+        try {
+			venSvc.updateVen(venVO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         
         Jedis jedis = null;
         String venOrderId = String.valueOf(venOrderVO.getVenOrderId());

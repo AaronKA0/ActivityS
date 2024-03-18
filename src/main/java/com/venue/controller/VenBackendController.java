@@ -39,151 +39,88 @@ public class VenBackendController {
 	@Autowired
 	VenTypeService venTypeSvc;
 	
-	Gson gson = new Gson();
+	@Autowired
+	RecentVenService recentVenSvc;
+
+	@Autowired
+	Gson gson;
 
 //	@Autowired
 //	EmailService emailService;
 
 	@PostMapping("insert")
-	public @ResponseBody VenVO insertVenue(@RequestBody String jsonString) {
-		VenVO ven = null;
+	public @ResponseBody VenVO insertVenue(@RequestBody VenVO ven) {
+
 		try {
-			ven = new ObjectMapper().readValue(jsonString, VenVO.class);
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (JsonProcessingException e) {
+			venSvc.addVen(ven);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		venTypeSvc.addVenType(ven.getVenType());
-
-		ven.setVenModTime(Timestamp.valueOf(LocalDateTime.now()));
-		ven.setVenTotRating(0.0);
-		ven.setVenRateCount(0);
-		venSvc.addVen(ven);
 
 		if (ven.getVenUptime() == null && ven.getVenDowntime() == null)
 			return null;
 
-		scheduleUpdate(ven);
+		venSvc.scheduleUpdate(ven);
 		return null;
 	}
 
 	@PostMapping("update")
-	public @ResponseBody VenVO updateVenue(@RequestBody String jsonString) {
-		VenVO ven = null;
+	public @ResponseBody VenVO updateVenue(@RequestBody VenVO ven) {
+
 		try {
-			ven = new ObjectMapper().readValue(jsonString, VenVO.class);
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (JsonProcessingException e) {
+			venSvc.updateVen(ven);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		venTypeSvc.addVenType(ven.getVenType());
-
-		VenVO ven2 = venSvc.getOneVen(ven.getVenId());
-
-		ven2.setVenModTime(Timestamp.valueOf(LocalDateTime.now()));
-		ven2.setVenName(ven.getVenName());
-		ven2.setVenType(ven.getVenType());
-		ven2.setVenCity(ven.getVenCity());
-		ven2.setVenDistrict(ven.getVenDistrict());
-		ven2.setVenLoc(ven.getVenLoc());
-		ven2.setVenDescr(ven.getVenDescr());
-		ven2.setVenPrice(ven.getVenPrice());
-		ven2.setVenPic(ven.getVenPic());
-
-		venSvc.updateVen(ven2);
 
 		return null;
 	}
 
-//	private void sendEmail() {
-////		 email/notification services
-//		System.out.println("sent email");
-//		String email = "nathan333.hsu@gmail.com";
-//		String title = "<h1>您有被取消的場地預約</h1>";
-//		String content = "<p>由於場地被下架，您有被<b>取消</b>的場地預約.</p><p>請點擊下面的連結查看您目前所有的場地預約.</p><p><a href='https://www.w3schools.com'>查看場地預約</a></p>";
-//		emailService.sendEmail(email, title, content);
-//	}
-
-//	private void scheduleEmail() {
-//		TimerTask task = new TimerTask() {
-//			public void run() {
-//				sendEmail();
-//			}
-//		};
-//		Timer timer = new Timer("Timer");
-//		timer.schedule(task, Timestamp.valueOf(LocalDateTime.now()));
-//	}
-
-	private void scheduleUpdate(VenVO ven) {
-		TimerTask task = new TimerTask() {
-			public void run() {
-
-				VenVO ven2 = venSvc.getByName(ven.getVenName());
-
-				if (ven.getVenDowntime() != null) {
-					if (ven2.getVenDowntime() == null || ven.getVenDowntime().compareTo(ven2.getVenDowntime()) != 0) {
-
-						return;
-					} else {
-//						sendEmail();
-					}
-
-				} else {
-					if (ven2.getVenUptime() == null || ven.getVenUptime().compareTo(ven2.getVenUptime()) != 0) {
-
-						return;
-					}
-				}
-
-				if (ven.getVenStatus() == (byte) 1) {
-					ven2.setVenStatus((byte) 2);
-				} else {
-					ven2.setVenStatus((byte) 1);
-				}
-
-				ven2.setVenUptime(null);
-				ven2.setVenDowntime(null);
-				ven2.setVenModTime(Timestamp.valueOf(LocalDateTime.now()));
-
-				venSvc.updateVen(ven2);
-			}
-		};
-		Timer timer = new Timer("Timer");
-
-		Date date;
-		if (ven.getVenUptime() != null) {
-			date = new Date(ven.getVenUptime().getTime());
-		} else {
-			date = new Date(ven.getVenDowntime().getTime());
-		}
-
-		timer.schedule(task, date);
-	}
 
 	@RequestMapping("getByName")
 	public @ResponseBody VenVO validateName(@RequestBody String json) {
-		VenVO ven = null;
-		try {
-			ven = new ObjectMapper().readValue(json, VenVO.class);
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
+		VenVO ven = gson.fromJson(json, VenVO.class);
 		String venName = ven.getVenName();
-		return venSvc.getByName(venName);		
+		return venSvc.getByName(venName);
 	}
-	
+
 	@RequestMapping("getById")
 	public @ResponseBody VenVO getById(@RequestBody String json) {
 		VenVO ven = gson.fromJson(json, VenVO.class);
-		return venSvc.getOneVen(ven.getVenId());		
+		return venSvc.getOneVen(ven.getVenId());
 	}
 
+
+	@RequestMapping("all")
+	public @ResponseBody List<VenVO> getAllVens() {
+		List<VenVO> vens = venSvc.getAll();
+
+		for (int i = 0; i < vens.size(); i++) {
+
+			vens.get(i).setVenPic(null);
+			if (vens.get(i).getVenRateCount() > 0) {
+				vens.get(i).setVenRating(vens.get(i).getVenTotRating() / vens.get(i).getVenRateCount());
+			} else {
+				vens.get(i).setVenRating(0.0);
+			}
+		}
+		return vens;
+	}
+
+	@PostMapping("recent")
+	public @ResponseBody List<RecentVen> getRecentVens(@RequestBody String json) {
+		MembershipVO mem = gson.fromJson(json, MembershipVO.class);
+		List<RecentVen> vens = recentVenSvc.getVens(mem.getMemId());
+		return vens;
+	}
+
+	@PostMapping("addRecent")
+	public @ResponseBody RecentVen addRecentVen(@RequestBody String json) {
+		RecentVen ven = gson.fromJson(json, RecentVen.class);
+		recentVenSvc.addVen(ven);
+		return ven;
+	}
+	
 	@PostMapping("updateTime")
 	public @ResponseBody VenVO updateTime(@RequestBody String json) {
 
@@ -223,45 +160,22 @@ public class VenBackendController {
 					ven.setVenStatus((byte) 1);
 //					scheduleEmail();
 				}
-				venSvc.updateVen(ven);
+				try {
+					venSvc.updateVen(ven);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			} else {
-				venSvc.updateVen(ven);
-				scheduleUpdate(ven);
+				try {
+					venSvc.updateVen(ven);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				venSvc.scheduleUpdate(ven);
 			}
 		}
 
 		return null;
-	}
-
-	@RequestMapping("all")
-	public @ResponseBody List<VenVO> getAllVens() {
-		List<VenVO> vens = venSvc.getAll();
-
-		for (int i = 0; i < vens.size(); i++) {
-
-			vens.get(i).setVenPic(null);
-			if (vens.get(i).getVenRateCount() > 0) {
-				vens.get(i).setVenRating(vens.get(i).getVenTotRating() / vens.get(i).getVenRateCount());
-			} else {
-				vens.get(i).setVenRating(0.0);
-			}
-		}
-		return vens;
-	}
-	
-	
-	@PostMapping("recent")
-	public @ResponseBody List<RecentVen> getRecentVens(@RequestBody String json) {		
-		MembershipVO mem = gson.fromJson(json, MembershipVO.class);
-		List<RecentVen> vens = RecentVenService.getVens(mem.getMemId());
-		return vens;
-	}
-	
-	@PostMapping("addRecent")
-	public @ResponseBody RecentVen addRecentVen(@RequestBody String json) {		
-		RecentVen ven = gson.fromJson(json, RecentVen.class);
-		RecentVenService.addVen(ven);
-		return ven;
 	}
 
 }

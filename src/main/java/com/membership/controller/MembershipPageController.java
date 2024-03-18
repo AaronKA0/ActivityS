@@ -57,11 +57,18 @@ public class MembershipPageController {
 	PostReportService postReportSvc;
 	
 	@Autowired
+	PostService postSvc;
+	
+	@Autowired
+	MemRelationService memRelationSvc;
+	
+	@Autowired
 	NotifyNow notifyNow;
 	
-	private static Gson gson = new Gson();
+	@Autowired
+	Gson gson;
 	
-	private static ObjectMapper mapper = new ObjectMapper();
+
 	
 	// member page
 	@GetMapping("/member")
@@ -134,7 +141,7 @@ public class MembershipPageController {
 		// send notification of new post to all friends
 		Integer memId = post.getMemId();
 		MembershipVO member = membershipSvc.getOneMembership(memId);
-		List<MemRelation> friends = MemRelationService.getFriends(memId);
+		List<MemRelation> friends = memRelationSvc.getFriends(memId);
 
 		Stream<MembershipVO> stream =  friends.stream()
 		.map(f -> membershipSvc.getOneMembership(f.getMemIdB()));
@@ -142,26 +149,26 @@ public class MembershipPageController {
 		Set<MembershipVO> friendSet = stream.collect(Collectors.toSet()); 
 
 		notifyNow.sendNotifyNow(friendSet, "一般通知", member.getMemUsername() + "有一個新的貼文" + "《" + post.getPostTitle() + "》");
-		return new PostService().addPost(post);
+		return postSvc.addPost(post);
 	}
 
 	@RequestMapping("member/editPost")
 	public @ResponseBody Post editPost(@RequestBody String json) {
 		Post post = gson.fromJson(json, Post.class);
-		return PostService.editPost(post);
+		return postSvc.editPost(post);
 	}
 
 	@RequestMapping("member/getPosts")
 	public @ResponseBody List<Post> getPosts(@RequestBody String json) {
 		MembershipVO member = gson.fromJson(json, MembershipVO.class);
-		return PostService.getPosts(member.getMemId());
+		return postSvc.getPosts(member.getMemId());
 	}
 
 	@RequestMapping("member/sendFriendRequest")
 	public @ResponseBody MemRelation sendFriendRequest(@RequestBody String json) {
 
 		MemRelation relation = gson.fromJson(json, MemRelation.class);
-		MemRelationService.sendFriendRequest(relation);
+		memRelationSvc.sendFriendRequest(relation);
 
 		// send friend request notification
 		MembershipVO memberA = membershipSvc.getOneMembership(relation.getMemIdA());
@@ -177,7 +184,7 @@ public class MembershipPageController {
 	@RequestMapping("member/acceptFriendRequest")
 	public @ResponseBody MemRelation acceptFriendRequest(@RequestBody String json) {
 		MemRelation relation = gson.fromJson(json, MemRelation.class);
-		MemRelationService.acceptRequest(relation);
+		memRelationSvc.acceptRequest(relation);
 
 		// send friend request accepted notification
 		MembershipVO memberA = membershipSvc.getOneMembership(relation.getMemIdA());
@@ -193,20 +200,20 @@ public class MembershipPageController {
 	@RequestMapping("member/getFriendRequests")
 	public @ResponseBody List<MemRelation> getFriendRequests(@RequestBody String json) {
 		MembershipVO member = gson.fromJson(json, MembershipVO.class);
-		return MemRelationService.getFriendRequests(member.getMemId());
+		return memRelationSvc.getFriendRequests(member.getMemId());
 	}
 
 	@RequestMapping("member/getBlockedMembers")
 	public @ResponseBody List<MemRelation> getBlocks(@RequestBody String json) {
 		MembershipVO member = gson.fromJson(json, MembershipVO.class);
-		return MemRelationService.getBlocks(member.getMemId());
+		return memRelationSvc.getBlocks(member.getMemId());
 	}
 
 	@RequestMapping("member/unblock")
 	public @ResponseBody MemRelation unblock(@RequestBody String json) {
 
 		MemRelation relation = gson.fromJson(json, MemRelation.class);
-		MemRelationService.removeRelation(relation);
+		memRelationSvc.removeRelation(relation);
 		return relation;
 	}
 
@@ -214,21 +221,21 @@ public class MembershipPageController {
 	public @ResponseBody MemRelation blockMember(@RequestBody String json) {
 
 		MemRelation relation = gson.fromJson(json, MemRelation.class);
-		MemRelationService.blockMember(relation);
+		memRelationSvc.blockMember(relation);
 		return relation;
 	}
 
 	@RequestMapping("member/getFriends")
 	public @ResponseBody List<MemRelation> getFriends(@RequestBody String json) {
 		MembershipVO member = gson.fromJson(json, MembershipVO.class);
-		return MemRelationService.getFriends(member.getMemId());
+		return memRelationSvc.getFriends(member.getMemId());
 	}
 
 	@RequestMapping("member/unfriend")
 	public @ResponseBody MemRelation unfriend(@RequestBody String json) {
 
 		MemRelation relation = gson.fromJson(json, MemRelation.class);
-		MemRelationService.removeRelation(relation);
+		memRelationSvc.removeRelation(relation);
 		return relation;
 	}
 
@@ -236,7 +243,7 @@ public class MembershipPageController {
 	public @ResponseBody MemRelation unsendRequest(@RequestBody String json) {
 
 		MemRelation relation = gson.fromJson(json, MemRelation.class);
-		MemRelationService.removeRelation(relation);
+		memRelationSvc.removeRelation(relation);
 		return relation;
 	}
 
@@ -244,7 +251,7 @@ public class MembershipPageController {
 	public @ResponseBody MemRelation getRelationStatus(@RequestBody String json) {
 
 		MemRelation relation = gson.fromJson(json, MemRelation.class);
-		return MemRelationService.getRelationStatus(relation);
+		return memRelationSvc.getRelationStatus(relation);
 	}
 	
 	@GetMapping("member/notification")
@@ -268,23 +275,24 @@ public class MembershipPageController {
 		return "redirect:/member#friends";
 	}
 
-	@RequestMapping("mem/venOrders")
+	@PostMapping("mem/venOrders")
 	public @ResponseBody List<VenOrderVO> getMemOrders(@RequestBody String json) {
 //		VenOrderVO venOrder = gson.fromJson(json, VenOrderVO.class);
 		VenOrderVO venOrder = null;
 		try {
-			venOrder = mapper.readValue(json, VenOrderVO.class);
+			venOrder = 	new ObjectMapper().readValue(json, VenOrderVO.class);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
 		return venOrderSvc.getMemOrders(venOrder.getMemVO().getMemId());
 	}
 
-	@RequestMapping("mem/updateVenOrder")
+	@PostMapping("mem/updateVenOrder")
 	public @ResponseBody VenOrderVO updateVenOrder(@RequestBody String json) {
+//		VenOrderVO venOrder = gson.fromJson(json, VenOrderVO.class);
 		VenOrderVO venOrder = null;
 		try {
-			venOrder = mapper.readValue(json, VenOrderVO.class);
+			venOrder = new ObjectMapper().readValue(json, VenOrderVO.class);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
@@ -300,7 +308,11 @@ public class MembershipPageController {
 			} else {
 				ven.setVenTotRating(ven.getVenTotRating() - oldVenOrder.getVenRating() + venOrder.getVenRating());
 			}
-			venSvc.updateVen(ven);
+			try {
+				venSvc.updateVen(ven);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			oldVenOrder.setVenRating(venOrder.getVenRating());
 		}
 		venOrderSvc.updateVenOrder(oldVenOrder);

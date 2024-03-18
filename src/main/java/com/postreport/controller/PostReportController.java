@@ -46,6 +46,9 @@ public class PostReportController {
 	PostReportService postReportSvc;
 	
 	@Autowired
+	PostService postSvc;
+	
+	@Autowired
 	MembershipService membershipSvc;
 	
 	@Autowired
@@ -145,7 +148,7 @@ public class PostReportController {
 		
 		
 		// delete the post if the post report status is set to 3 (審核未通過)
-		Post post = PostService.getPost(postReport.getReporteeId(), postReport.getPostId());
+		Post post = postSvc.getPost(postReport.getReporteeId(), postReport.getPostId());
 		
 		if(postReport.getRepStatus() == 2) {
 			post.setPostStatus((byte)3);
@@ -163,7 +166,7 @@ public class PostReportController {
 		} else if(postReport.getRepStatus() == 3){
 			post.setPostStatus((byte)2);
 		}
-		PostService.editPost(post);		
+		postSvc.editPost(post);		
 		
 		return "back-end/postreport/listAllPostReport";
 	}

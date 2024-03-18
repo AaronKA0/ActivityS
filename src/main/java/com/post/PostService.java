@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
 import com.chat.JedisPoolUtil;
 import com.google.gson.Gson;
@@ -19,12 +20,14 @@ import com.google.gson.Gson;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+@Service("postService")
 public class PostService {
 	// 此範例key的設計為(發送者名稱:接收者名稱)，實際應採用(發送者會員編號:接收者會員編
 
 	private static JedisPool pool = JedisPoolUtil.getJedisPool();
 
-	private static Gson gson = new Gson();
+	@Autowired
+	Gson gson;
 
 	public Post addPost(Post post) {
 		
@@ -43,7 +46,7 @@ public class PostService {
 		return post;
 	}
 	
-	public static Post editPost(Post post) {
+	public Post editPost(Post post) {
 		
 		System.out.println("edit post: " + post);
 		
@@ -70,7 +73,7 @@ public class PostService {
 		return post;
 	}
 	
-	public static List<Post> getPosts(Integer memId) {
+	public List<Post> getPosts(Integer memId) {
 		
 		String key = new StringBuilder("post:" + memId).toString();
 		Jedis jedis = pool.getResource();
@@ -88,7 +91,7 @@ public class PostService {
 	}
 	
 	
-	public static Post getPost(Integer memId, Integer postId) {
+	public Post getPost(Integer memId, Integer postId) {
 		
 		String key = new StringBuilder("post:" + memId).toString();
 		Jedis jedis = pool.getResource();

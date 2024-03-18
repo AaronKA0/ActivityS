@@ -14,7 +14,6 @@ public class JedisPoolUtil {
 			synchronized (JedisPoolUtil.class) {
 				if (pool == null) {
 					JedisPoolConfig config = new JedisPoolConfig();
-					// can set pool size to 30 or 50
 					config.setMaxTotal(50);
 					config.setMaxIdle(50);
 					config.setMaxWaitMillis(10000);
@@ -25,7 +24,6 @@ public class JedisPoolUtil {
 		return pool;
 	}
 
-	// 可在ServletContextListener的contextDestroyed裡呼叫此方法註銷Redis連線池
 	public static void shutdownJedisPool() {
 		if (pool != null)
 			pool.destroy();

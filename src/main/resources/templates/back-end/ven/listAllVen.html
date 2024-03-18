@@ -2357,8 +2357,8 @@ $("#price").on("blur", function(){
 				venPic: fileByteArray.length? fileByteArray: null,
 				venPrice: $("#price").val(),
 				venStatus: $('input[name="status"]:checked').val(),
-				venUptime: $("#uptime").val()? $("#uptime").val()+":00": "",
-				venDowntime: $("#downtime").val()? $("#downtime").val()+":00": ""
+				venUptime: $("#uptime").val()? $("#uptime").val()+":00": null,
+				venDowntime: $("#downtime").val()? $("#downtime").val()+":00": null
 		};
 		
 		let jsonString = JSON.stringify(ven);
